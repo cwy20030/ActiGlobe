@@ -42,7 +42,7 @@ pak::pak("cwy20030/ActiGlobe")
 
 
   @Manual{,
-    title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer},
+    title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer}, </n>
     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
     year = {2025},
     note = {R package version 0.0.1},
