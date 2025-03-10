@@ -4,7 +4,7 @@ Title: Automated Cross-continental Actigraphic Harmonizer
 Version: 0.0.1
 Author: C. William Yao [aut, cre, cph] (<https://orcid.org/0000-0002-7234-7375>), Giorgio Varesco [aut, cph], Guido Simonelli [aut, cph]
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
-Description: An automated actigraphic recording harmonization specifically designed to process longitudinal actigraphy recordings affected by mid-to-long range traveling. Equppied with a bidirectional encoder, ActiGlobe reorganizes daily recordings based on the travel log or journal. The affected epochs due to traveling, will be flagged in the summary documentation. Along with a graphic summary report, the harmonized recordings will be split by day and saved localy (with or without the affected recordings). Besides visual inspection, each report also comes with adjusted paramters and a few simple daily active-rest pattern estimates (e.g., total sleep time, active period and linear cosinor estimates).
+Description: An automated actigraphic recording harmonization specifically designed to process longitudinal actigraphy recordings affected by mid-to-long range travelling. Equipped with a bidirectional encoder, ActiGlobe reorganizes daily recordings based on the travel log or journal. The affected epochs due to travelling, will be flagged in the summary documentation. Along with a graphic summary report, the harmonized recordings will be split by day and saved locally (with or without the affected recordings). Besides visual inspection, each report also comes with adjusted parameters and a few simple daily active-rest pattern estimates (e.g., total sleep time, active period and linear cosinor estimates).
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -20,7 +20,7 @@ Authors@R: c(
 Date: 2025-03-10
 Depends: 
     lubridate,
-    R (>= 3.1.0)
+    R (>= 4.0.0)
 Imports: 
     card,
     ggplot2,
