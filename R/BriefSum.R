@@ -17,7 +17,12 @@
 #
 #
 #' @title Summarize the Actigraphy Recording by Day
-#' @import hms lubridate
+#' @import hms
+#' @importFrom lubridate hour
+#' @importFrom lubridate minute
+#' @importFrom lubridate second
+#' @importFrom lubridate dst
+#' @importFrom lubridate ymd
 #' @param df A data.frame containing the actigraphy records
 #' @param SR The sampling rate of the actigraphy (unit at Hz). Note that Hz should be equal to or less than 1.
 #' @param Start The starting date and time of the recording in formats like this "2021-03-05 18:31:03"

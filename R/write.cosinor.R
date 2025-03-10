@@ -71,8 +71,8 @@ write.cosinor = function(Dir, DailyAct, Bdf, ID, VAct = NULL, VTm = NULL){
     if (is.null(VAct))  VAct = names(df)[[2]]
 
     names(df) = c("Tm", "Act")
-    df[["Tm"]] = as.numeric(df[["Tm"]])
-    df[["Act"]] = as.numeric(df[["Act"]])
+    Tm = as.numeric(df[["Tm"]])
+    Act = as.numeric(df[["Act"]])
 
     #### Get the time zone for the current ID and date
     TZ = U[D == d]
@@ -81,9 +81,9 @@ write.cosinor = function(Dir, DailyAct, Bdf, ID, VAct = NULL, VTm = NULL){
 
     #### Create activity trend for the top panel ---------------
 
-    df[["Act"]][is.na(df[["Act"]])] = 0 #### Just in acse, provide a zero imputation for NA.
+    Act[is.na(Act)] = 0 #### Just in acse, provide a zero imputation for NA.
 
-    if (all(df[["Act"]] == 0)) {
+    if (all(Act == 0)) {
 
       top.plot =
         ggplot(df, aes(x = Tm, y = Act)) +
@@ -123,7 +123,7 @@ write.cosinor = function(Dir, DailyAct, Bdf, ID, VAct = NULL, VTm = NULL){
 
     ## Fit cosinor models with 24Hr period ---------------
     phi <- 0
-    m1 = cosinor(Act ~ Tm , df, tau = 24)
+    m1 = cosinor(t = Tm, y = Act, tau = 24)
 
 
     Coef = m1$coefficients[1:3]

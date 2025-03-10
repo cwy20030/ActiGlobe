@@ -2,7 +2,7 @@ Package: ActiGlobe
 Type: Package
 Title: Automated Cross-continental Actigraphic Harmonizer
 Version: 0.0.1
-Author: C. William Yao [aut, cre, cph] (<https://orcid.org/0000-0002-7234-7375>), Giorgio Varesco [aut, cre], Guido Simonelli [aut, cre, cph]
+Author: C. William Yao [aut, cre, cph] (<https://orcid.org/0000-0002-7234-7375>), Giorgio Varesco [aut, cph], Guido Simonelli [aut, cph]
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
 Description: An automated actigraphic recording harmonization specifically designed to process longitudinal actigraphy recordings affected by mid-to-long range traveling. Equppied with a bidirectional encoder, ActiGlobe reorganizes daily recordings based on the travel log or journal. The affected epochs due to traveling, will be flagged in the summary documentation. Along with a graphic summary report, the harmonized recordings will be split by day and saved localy (with or without the affected recordings). Besides visual inspection, each report also comes with adjusted paramters and a few simple daily active-rest pattern estimates (e.g., total sleep time, active period and linear cosinor estimates).
 License: GPL (>= 3)
@@ -12,21 +12,21 @@ RoxygenNote: 7.3.2
 Authors@R: c(
     person("C. William", "Yao", , "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-7234-7375")),
-    person("Giorgio", "Varesco", , "giorgio.varesco@umontreal.ca", role = c("aut", "cre"),
+    person("Giorgio", "Varesco", , "giorgio.varesco@umontreal.ca", role = c("aut", "ctb"),
            comment = c(ORCID = "0000-0001-9385-6972")),
-    person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "cre", "cph"),
+    person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "ctb", "fnd"),
            comment = c(ORCID = "0000-0002-5400-319X"))
   )
 Date: 2025-03-10
 Depends: 
-    R (>= 3.5)
+    lubridate,
+    R (>= 3.1.0)
 Imports: 
     card,
     ggplot2,
     grDevices,
     gridExtra,
     hms,
-    lubridate,
     readr,
     utils
 Suggests: 
