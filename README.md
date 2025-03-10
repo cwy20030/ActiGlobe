@@ -39,7 +39,8 @@ pak::pak("cwy20030/ActiGlobe")
   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Automated Cross-continental Actigraphic Harmonizer_. R
   package version 0.0.1, <https://github.com/cwy20030/ActiGlobe>.
 
-Une entrée BibTeX pour les utilisateurs LaTeX est
+
+### BibTeX citation format
 
   @Manual{,
     title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer},
