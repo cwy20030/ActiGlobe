@@ -11,6 +11,9 @@
 <div align="center">
   <img src="Logo.png" width="300px" />
 </div>
+
+<br>
+
 The goal of ActiGlobe is to provide a comprehensive and user-centered
 analysis of actigraphy data, especially for individuals undergoing long
 travel. It ensures accurate time-shift adjustments, including daylight
