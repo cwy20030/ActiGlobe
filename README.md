@@ -22,6 +22,8 @@ activity patterns. ActiGlobe aims to simplify the process of importing,
 adjusting, analyzing, and exporting actigraphy data, making it an
 essential tool for researchers and professionals in the field.
 
+<br>
+
 ## Installation
 
 You can install the development version of ActiGlobe from
