@@ -1,6 +1,3 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # ActiGlobe
 
 <!-- badges: start -->
@@ -40,7 +37,9 @@ pak::pak("cwy20030/ActiGlobe")
   package version 0.0.1, <https://github.com/cwy20030/ActiGlobe>.
 
 
+
 ### BibTeX citation format
+
 
   @Manual{,
     title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer},
