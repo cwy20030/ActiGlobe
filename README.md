@@ -34,7 +34,7 @@ pak::pak("cwy20030/ActiGlobe")
 
 
 
-Citation for the pre-release package ‘ActiGlobe’ in publication:
+## Citation for the pre-release package ‘ActiGlobe’ in publication:
 
   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Automated Cross-continental Actigraphic Harmonizer_. R
   package version 0.0.1, <https://github.com/cwy20030/ActiGlobe>.
