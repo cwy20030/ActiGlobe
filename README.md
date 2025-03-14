@@ -11,6 +11,9 @@
 <div align="center">
   <img src="Logo.png" width="300px" />
 </div>
+
+<br>
+
 The goal of ActiGlobe is to provide a comprehensive and user-centered
 analysis of actigraphy data, especially for individuals undergoing long
 travel. It ensures accurate time-shift adjustments, including daylight
@@ -19,31 +22,33 @@ activity patterns. ActiGlobe aims to simplify the process of importing,
 adjusting, analyzing, and exporting actigraphy data, making it an
 essential tool for researchers and professionals in the field.
 
+<br>
+
 ## Installation
 
 You can install the development version of ActiGlobe from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("cwy20030/ActiGlobe")
+# install.packages("devtools")
+devtools::install_github("cwy20030/ActiGlobe")
 ```
 
+<br>
 
-
-## Citation for the pre-release package ‘ActiGlobe’ in publication:
+## Citation 
+### For the pre-release package ‘ActiGlobe’ in publication:
 
   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Automated Cross-continental Actigraphic Harmonizer_. R
   package version 0.0.1, <https://github.com/cwy20030/ActiGlobe>.
-
-
+  
+<br>
 
 ### BibTeX citation format
-
-
   @Manual{,
-    title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer},
-    author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
-    year = {2025},
-    note = {R package version 0.0.1},
-    url = {https://github.com/cwy20030/ActiGlobe},
+    title = {ActiGlobe: Automated Cross-continental Actigraphic Harmonizer},  
+    author = {C. William Yao and Giorgio Varesco and Guido Simonelli},  
+    year = {2025},  
+    note = {R package version 0.0.1},  
+    url = {https://github.com/cwy20030/ActiGlobe},  
+  }
