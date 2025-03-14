@@ -17,7 +17,7 @@ Authors@R: c(
     person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "ctb", "fnd"),
            comment = c(ORCID = "0000-0002-5400-319X"))
   )
-Date: 2025-03-10
+Date: 2025-03-14
 Depends: 
     lubridate,
     R (>= 4.0.0)

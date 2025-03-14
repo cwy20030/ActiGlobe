@@ -38,8 +38,11 @@ TAdjust = function(Bdf, TLog){
   b = Bdf$Cumulative_End_Second
 
 
+  D = TLog$date_Start
 
- ## Convert Travel Log to Parameters ------------
+
+
+  ## Convert Travel Log to Parameters ------------
   P = R2P(Bdf = Bdf,
           D = TLog$date_Start,
           U = TLog$UTC_Offset)
@@ -54,7 +57,8 @@ TAdjust = function(Bdf, TLog){
   Bdf$UTC = U
   Bdf$Recording_Period = Prd
   Bdf$Hour_to_Adjust = H2J
-
+  Epoch = Bdf$Epoch
+  SR = 1/Epoch
 
 
 
@@ -73,7 +77,8 @@ TAdjust = function(Bdf, TLog){
   Bdf$Cumulative_End_Second = y
 
   ### Adjust Daily Data Point ------------
-  N = y - x
+  Sec = y - x
+  N = (Sec/Epoch) + 1 #### Plus one for the End
   Bdf$nDataPoints = N
 
   ### Warning and Exclusion ------------
@@ -82,11 +87,13 @@ TAdjust = function(Bdf, TLog){
   Bdf$Excluded[is.na(y)] = TRUE
 
   ##### Label Travel Days
-  Bdf$Warning[Bdf$Date %in% TLog$date_Start] = "Travel Day"
-  Bdf$Excluded[Bdf$Date %in% TLog$date_Start] = TRUE
+  Bdf$Warning[Bdf$Date %in% D] = "Travel Day"
+  Bdf$Excluded[Bdf$Date %in% D] = TRUE
 
-  Bdf$Warning[Bdf$Date %in% (TLog$date_Start-1)] = "Day Before Travel"
-  Bdf$Warning[Bdf$Date %in% (TLog$date_Start+1)] = "Day After Travel"
+  D = as.Date(D)
+
+  Bdf$Warning[Bdf$Date %in% (D-1)] = "Day Before Travel"
+  Bdf$Warning[Bdf$Date %in% (D+1)] = "Day After Travel"
 
   ##### Label Incomplete
   fDP = max(Bdf$nDataPoints, na.rm = T)
