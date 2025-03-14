@@ -30,8 +30,8 @@ You can install the development version of ActiGlobe from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("cwy20030/ActiGlobe")
+# install.packages("devtools")
+devtools::install_github("cwy20030/ActiGlobe")
 ```
 
 <br>
