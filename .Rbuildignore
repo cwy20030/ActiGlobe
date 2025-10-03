@@ -1,0 +1,15 @@
+^.*\.Rproj$
+^.*\.pptx$
+^Build\.Rmd$
+^\.Rproj\.user$
+^LICENSE\.md$
+^ReadMe\.txt$
+^\.Rhistory$
+^Test.nb\.html$
+^Test\.Rmd$
+^Ref$
+^Resources$
+^old$
+^Undone$
+^CODE_OF_CONDUCT\.md$
+^\.$

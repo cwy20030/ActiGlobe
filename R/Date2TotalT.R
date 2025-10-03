@@ -1,0 +1,80 @@
+#  File ActiGlobe/R/Date2TotalT.R
+#
+#  Copyright (C) 2025  C. William Yao, PhD
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#' @title Compute Total Time in Each Date (Per Day)
+#'
+#' @description
+#' For an ordered vector of Dates or date-times, `Date2TotalT()` calculates the
+#' interval from each element to the next (and for the last element, to the
+#' following calendar day at midnight) and returns these durations in the
+#' requested time unit.
+#'
+#' @param DT
+#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending order.
+#'   Each entry represents the start of an interval.  Internally, the function
+#'   appends one extra day beyond the last entry so that the final interval
+#'   covers a full 24 h until the next midnight. See \code{as.POSIXct}.
+#'
+#' @param TUnit
+#'   Character string specifying the unit for the output durations.
+#'   Must be one of `"hour"`, `"minute"`, or `"second"`.  Comparison is
+#'   case-insensitive.  Default is `"hour"`, meaning the returned values
+#'   are in decimal hours.
+#'
+#' @return
+#'   A numeric vector of the same length as `DT`.  Each element is the
+#'   elapsed time between the corresponding entry in `DT` and the next
+#'   boundary (either the next date-time in `Date`, or midnight following
+#'   the last date), expressed in the units given by `TUnit`.
+#'
+#' @examples
+#' # Two calendar days: returns c(24, 24) hours
+#' Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
+#'
+#' # Working in minutes
+#' Date2TotalT(as.POSIXct(c("2021-06-10 08:00:00",
+#'                         "2021-06-10 14:30:00")), "minute")
+#'
+#' # In seconds (case-insensitive unit name)
+#' Date2TotalT(as.Date("2022-12-31"), "SeCoNd")
+#'
+#' @export
+Date2TotalT = function(DT, TUnit = "hour"){
+
+  ## Convert the displayed unit into a factor.
+  Divider =  ifelse(tolower(TUnit) == "hour", 3600,
+                    ifelse(tolower(TUnit) == "minute", 60,
+                           ifelse(tolower(TUnit) == "second", 1, NA)))
+
+
+  #### Compute the supposed data points for each day ---------------
+  MxD = as.character(as.POSIXct(max(as.Date(DT)) + 1))
+  iniDs =  DT # Vector 1 for the starting date
+  endDs = c(DT[-1],MxD) # Vector 2 for the next date
+
+  sTotalSec = as.numeric(as.POSIXct(endDs)) - as.numeric(as.POSIXct(iniDs)) # Supposed seconds for each day
+
+  Out = sTotalSec/Divider # Convert the output based on TUnit
+
+  return(Out)
+}
+
+
+
+
+

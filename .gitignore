@@ -1,0 +1,22 @@
+# R and R Markdown
+.Rproj.user
+ActiGlobe.Rproj
+Build.Rmd
+Test.Rmd
+Test.nb.html
+.Rhistory
+.RData
+.Ruserdata
+
+# Office files
+*.pptx
+
+
+# Folders (ignore directory and contents)
+Ref/
+Resources/
+old/
+Undone/
+.httr-oauth
+.DS_Store
+.quarto
