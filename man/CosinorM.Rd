@@ -2,98 +2,95 @@
 % Please edit documentation in R/CosinorM.R
 \name{CosinorM}
 \alias{CosinorM}
-\title{`"Cosinor"` Model}
+\title{`Cosinor` Model}
 \usage{
 CosinorM(time, activity, tau, method = "OLS", type = "HC3")
 }
 \arguments{
-\item{time}{Numeric vector of time coordinates for each data point.}
+\item{time}{Numeric vector of time coordinates for each data point}
 
-\item{activity}{Numeric vector of activity counts from an actigraphy device.}
+\item{activity}{Numeric vector of activity counts from an actigraphy device}
 
-\item{tau}{Numeric scalar or vector for the assumed circadian period. Default is 24 for single-phase; multiple phases can be supplied via [c()].}
+\item{tau}{Numeric scalar or vector for the assumed circadian period. Default is 24 for single-phase; multiple phases can be supplied via [c()]}
 
-\item{method}{Character string specifying estimation method:
-`OLS`: Ordinary least squares via `stats::lm()`. (default)
-`FGLS`: Feasible generalized least squares (Harvey 1976), which models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares.
-If an unrecognized value is supplied, an error is returned.}
+\item{method}{Character string specifying estimation method
+\itemize{
+  \item "OLS": Ordinary least squares via \code{\link[stats]{lm}} (default)
+  \item "FGLS": Feasible generalized least squares; models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares
+}}
 
-\item{type}{Character string passed to [sandwich::vcovHC()] for robust standard error computation.}
+\item{type}{Character string passed to \code{\link[sandwich]{vcovHC}} for robust standard error computation}
 }
 \value{
-A list of class `c("CosinorM", "lm")` containing:
-  * `tau`: The assumed period length
-  * `time`: The time coordiantes of the recording.
-  * `method`: The estimation method used.
-  * `coef.cosinor`: `MESOR`, amplitude, and `acrophase` estimates.
-  * `vcov`: Robust variance-covariance matrix.
-  * `se`: Standard errors.
+A list of class c("CosinorM", "lm") containing:
+\itemize{
+  \item tau: The assumed period length
+  \item time: The time coordinates of the recording
+  \item method: The estimation method used
+  \item coef.cosinor: Named numeric vector with entries:
+    \itemize{
+      \item MESOR: Mid-line estimating statistic of rhythm
+      \item Amplitude: Predicted peak activity magnitude
+      \item Acrophase: Acrophase in radian (time-of-peak)
+      \item Beta: the coefficient of the cosine function
+      \item Gamma: the coefficient of the sine function
+    }
+  \item vcov: Robust variance-covariance matrix
+  \item se: Standard errors
+}
 Inherits all components from stats::lm.
-
-#' @references
-Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
-
-Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392–399. doi:10.2307/2346786.
-
-Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461–465. doi:10.2307/1913974
 }
 \description{
-`"Cosinor"` Model
+Fit a cosine-based harmonic linear regression on circular time (hours of day)
 }
 \details{
-The `"Cosinor"` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
+The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
+
+\strong{Single-phase equation}:
+      \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} + \phi\right) }
+\itemize{
+  \item \eqn{ M }: MESOR (mid-line estimating statistic of rhythm), the intercept
+  \item \eqn{ A }: Amplitude, peak deviation from M
+  \item \eqn{ t }: Time coordinate within the cycle
+  \item \eqn{ \tau }: The assumed period length
+  \item \eqn{ \phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
 }
-\section{Single-phase equation}{
 
-`y = M + A * cos(2π * t / τ + φ)`
-
-`M: MESOR (mid-line estimating statistic of rhythm), the intercept.`
-`A: Amplitude, peak deviation from M.`
-`t: Time coordinate within the cycle.`
-`τ: The assumed period length.`
-`φ: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients.`
+\strong{Linearized form}:
+     \deqn{ \hat{y} = M + \beta x + \gamma z + \epsilon }
+\itemize{
+  \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
+  \item \eqn{x = cos(\frac{2\pi t} {\tau})}, cosine-transformed time
+  \item \eqn{\gamma = -A * sin(\phi)}, estimated coefficient for the sine term
+  \item \eqn{z = sin(\frac{2\pi t} {\tau})}, sine-transformed time
+  \item \eqn{ \epsilon }: error term
 }
-
-\section{`"Linearized"` form}{
-
-`y_hat = M + β * x + γ * z + ε`
-
-`β = A * cos(φ)`, the estimated coefficients for the cosine function.
-`x = cos(2π * t / τ)`
-`γ = -A * sin(φ)`, the estimated coefficients for the sine function.
-`z = sin(2π * t / τ)`
-`ε = error term`
 
 Model parameters are estimated by minimizing the residual sum of squares:
-`RSS = sum[ y - (M + β * x + γ * z) ]^2`.
-By default, [stats::lm()] achieve this through QR decomposition, instead of the typical single vector decomposition technique.
+\deqn{RSS = \sum_{i=1}^n (y_i - (M + \beta x_i + \gamma z_i))^2}
+By default, \code{\link[stats]{lm}} fits this via QR decomposition.
+
+\strong{Acrophase \eqn{ (\phi) } interpretation}:
+ \eqn{ \phi } is derived from
+ \deqn{ \phi = \arctan(\frac{\gamma} {\beta}) }
+ Note, \eqn{ \phi } is converted to clock time to identify the peak activity time.
+
+\strong{Amplitude \eqn{ (A) } estimation}:
+Amplitude is calculated from fitted sine and cosine coefficients as:
+\deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 }
-
-\section{`Acrophase` interpretation}{
-
-`φ` is derived from `atan2(-γ, β)` and converted to clock time to identify the peak activity time.
-}
-
-\section{Amplitude estimation}{
-
-Amplitude (A) is calculated from the fitted sine and cosine coefficients
-obtained in the linearized model. Specifically:
-`A = sqrt(β^2 + γ^2)`
-
-This formula comes directly from the relationship between the `"linearized"`
-parameters and the polar representation of the cosine wave.
-}
-
 \examples{
-#' require(stats)
+require(stats)
 require(graphics)
 
 
 \dontrun{
 # Import data
-FlyEast
+data(FlyEast)
 
-BdfList =
+
+# Create quick summary of the recording with adjustment for daylight saving.
+BdfList <-
 BriefSum(df = FlyEast ,
          SR = 1/60,
          Start = "2017-10-24 13:45:00")
@@ -112,13 +109,18 @@ fit <- CosinorM(time = df$Time,
 fit$coef.cosinor
 
 
-# plot KDE in hours
-plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "KDE")
+# plot Cosinor in hours
+plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 }
+}
+\references{
+Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
+
+Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392-399. doi:10.2307/2346786.
+
+Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 }
 \seealso{
-[stats::lm()] for general linear model.
-
-`CosinorM.KD` for Gaussian.
+\code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
 }
-\keyword{`cosinor`}
+\keyword{cosinor}

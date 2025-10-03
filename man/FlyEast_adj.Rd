@@ -12,7 +12,7 @@ An adjusted FlyEast data with 40 thousands plus rows and 3 variables:
 \item{Hour}{The simplified time coordinates in hour form converted  from `DateTime`}
 \item{Activity}{The activity count measured by a tri-axis actigraphy}
 \item{Activity_ID}{Numeric values denoted the sequence of each activity count in the recording}
-\item{Note}{Summary annotation derived from [BriefSum()].}
+\item{Note}{Summary annotation derived from \code{\link{BriefSum}}.}
 }
 }
 \usage{

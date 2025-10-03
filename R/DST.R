@@ -23,7 +23,7 @@
 #' @details
 #' For each element of `DT`, returns `TRUE` if that date-time is in
 #' daylight saving time (DST) under the specified time zone.  The
-#' function handles transitions by detecting the “gain” or “loss” of
+#' function handles transitions by detecting the "gain" or "loss" of
 #' hours via `DST2GL()` and flipping the DST flag on the transition day.
 #'
 #' @param DT
@@ -31,7 +31,7 @@
 #'   the dates/times to test.  These need not be sorted.
 #'
 #' @param TZ
-#'   A single string naming an IANA time zone (e.g. `"America/New_York"`).
+#'   A single string naming an IANA time zone (e.g. `America/New_York`).
 #'   If `"local"`, it will extract local time zone using `Sys.timezone()`.  Must match one entry in
 #'   `OlsonNames()`.
 #'

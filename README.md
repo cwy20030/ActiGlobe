@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-![version](https://img.shields.io/badge/version-0.1.0-green)
+![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
@@ -38,7 +38,8 @@ devtools::install_github("cwy20030/ActiGlobe")
 ### For the pre-release package ‘ActiGlobe’ in publication:
 
   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Automated Cross-continental Actigraphy Harmonizer_. R
-  package version 0.1.0, <https://github.com/cwy20030/ActiGlobe>.
+
+  package version 0.1.9, <https://github.com/cwy20030/ActiGlobe>.
   
 <br>
 
@@ -47,6 +48,6 @@ devtools::install_github("cwy20030/ActiGlobe")
     title = {ActiGlobe: Automated Cross-continental Actigraphy Harmonizer},  
     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},  
     year = {2025},  
-    note = {R package version 0.0.1},  
+    note = {R package version 0.1.9},  
     url = {https://github.com/cwy20030/ActiGlobe},  
   }

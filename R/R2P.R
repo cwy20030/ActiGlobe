@@ -65,8 +65,9 @@ R2P = function(Bdf, D, U){
       Period = as.Date(D[d]:(D[d+1]-1))
 
     } else {
-
-      Period = as.Date(D[d]:MaxDate)
+      fD <- which(DT == D[d])
+      eD <- which(DT == MaxDate)
+      Period = as.Date(DT[c(fD:eD)])
     }
 
     Bdf$Recording_Period[DT %in% Period] = d

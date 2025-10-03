@@ -84,7 +84,7 @@
 #' \item{Hour}{The simplified time coordinates in hour form converted  from `DateTime`}
 #' \item{Activity}{The activity count measured by a tri-axis actigraphy}
 #' \item{Activity_ID}{Numeric values denoted the sequence of each activity count in the recording}
-#' \item{Note}{Summary annotation derived from [BriefSum()].}
+#' \item{Note}{Summary annotation derived from \code{\link{BriefSum}}.}
 #' }
 #'
 #' @seealso [data(FlyEast)]
@@ -98,7 +98,7 @@
 #' A modified travel log documenting the dates when the wearer departs for long-distance travel.
 #'
 #' @docType data
-#' @keywords travel, timezone, daylight_saving, diary
+#' @keywords travel timezone `daylight saving` diary
 #' @name TLog
 #' @usage data(TLog)
 #' @format A data frame with over 40,000 rows and 5 variables:
@@ -109,6 +109,6 @@
 #'   \item{date_Start}{Start date of the wearer's initial location or date of departure.}
 #'   \item{date_End}{Optional date when the wearer departs again from the initial location or previous destination.}
 #' }
-#' @seealso [TravelLog()], [IANA]
+#' @seealso \code{\link{TravelLog}}, \code{\link{IANA}}
 #'
 "TLog"
