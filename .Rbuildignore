@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^.*\.pptx$
+^.*\.png$
 ^Build\.Rmd$
 ^\.Rproj\.user$
 ^LICENSE\.md$
