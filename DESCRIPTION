@@ -1,7 +1,7 @@
 Package: ActiGlobe
 Type: Package
 Title: AUTOMATED CROSS-CONTINENTAL ACTIGRAPHY HARMONIZER
-Version: 0.1.7
+Version: 0.1.8
 Author: Who wrote it
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
 Description: A library specifically designed to process longitudinal actigraphy recordings affected by mid-to-long range travelling. To harmonize recordings, the affected epochs will be adjusted based on the travel log or journal. Along with a graphic and a tabular summary report, the harmonized recordings will be split by day and saved locally (with or without the affected recordings). Besides visual inspection, each report also comes with a summary of time adjusted and several daily active-rest pattern estimates.
@@ -19,7 +19,7 @@ Authors@R: c(
     person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "ctb", "fnd"),
            comment = c(ORCID = "0000-0002-5400-319X"))
   )
-Date: 2025-10-03
+Date: 2025-10-06
 Imports: 
     ggplot2,
     ggrepel,

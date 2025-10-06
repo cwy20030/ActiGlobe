@@ -7,6 +7,11 @@ Revision history for the R/ActiGlobe package
 `CosinorM()` add MM-type esitmation
 "MM": MM-type estimation (Yohai 1987) is a two-step robust estimation procedure, via \code{MASS::rlm}. It is more resistant to outliers than the typical OLS estimation. 
 
+## Version 0.1.8, 2025-10-03
+- New master and class functions added: ggCosinorM
+
+- Version update and debugged: CosinorM, plot.ActiGlobe, UTCwDST, TZ2UTC
+
 ## Version 0.1.7, 2025-09-13
 - New master and class functions added: C2T
 
