@@ -38,7 +38,7 @@ devtools::install_github("cwy20030/ActiGlobe")
 ### For the pre-release package ‘ActiGlobe’ in publication:
 
   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Automated Cross-continental Actigraphy Harmonizer_. R
-  package version 0.1.0, <https://github.com/cwy20030/ActiGlobe>.
+  package version 0.1.7, <https://github.com/cwy20030/ActiGlobe>.
   
 <br>
 
