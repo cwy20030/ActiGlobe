@@ -8,9 +8,6 @@ Test.nb.html
 .RData
 .Ruserdata
 
-# Git
-FETCH_HEAD
-
 # Office files
 *.pptx
 

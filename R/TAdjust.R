@@ -43,7 +43,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   aDST = Bdf$Daylight_Saving
   RS = Bdf$Recording_Start
   RE = Bdf$Recording_End
-  GL <- Bdf$GL_Offset
+  GL0 <- Bdf$GL_Offset
   nDP = Bdf$nDataPoints
   a = Bdf$Cumulative_Start_Second
   b = Bdf$Cumulative_End_Second
@@ -73,6 +73,11 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   SameUTC = UTCs == U ### Determine if the original UTC from BriefSum is the same as the new UTC from R2P
   nuUDST = ifelse(SameUTC, aDST, pUDST) ### New logical indicator of whether daylight saving occurs...
 
+
+
+
+
+
   ### If TZ is not specified, guess it.
 
   gTZ = sapply(1:length(DT), function(x){
@@ -81,14 +86,13 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
             DT = DT[[x]],
             iTZ = TZ,
             All = FALSE)
-
   })
 
 
   ### Step 1 Change NDPs
   #### Based on the new daylight saving, we will change the NDPs and cumulative time...
-  A1 = ifelse(nuUDST & GL == 0, 0, -1 * GL) ### Adjusting factor for incorrect initial GL guesses
-  GL = GL + A1 ### Update GL....
+  A1 = ifelse(nuUDST & GL0 == 0, 0, -1 * GL0) ### Adjusting factor for incorrect initial GL guesses
+  GL = GL0 + A1 ### Update GL....
 
   NDP = ifelse(A1 == 0, nDP, nDP + (A1 * 3600/Epc)) ### Remove the inappropriately adjusted gain or loss due to suspected time shift
   mDP = max(cumsum(nDP)) - max(cumsum(NDP))  ### Number of data points needed to be added.
@@ -96,7 +100,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
 
 
   ### Step 2 Edit cumulative time based on NDPs
-  a1 = cumsum((c(0, NDP[-length(NDP)])) * Epc) + Epc #Line 134 from  BriefSum
+  a1 = cumsum((c(1, NDP[-length(NDP)])) * Epc)  #Line 134 from  BriefSum
   b1 = cumsum(NDP * Epc) #Line 135 from  BriefSum
 
 
@@ -111,12 +115,12 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   P2J = H2J*3600
 
   ### Adjust Cumulative Start DataPoint ------------
-  x = a1 - P2J
+  x = a1 + P2J
   x[x > LstP] = NA
 
 
   ### Adjust Cumulative End DataPoint ------------
-  y = b1 - P2J
+  y = b1 + P2J
   y[y > LstP] = NA
 
 
@@ -133,7 +137,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   Timel = sequence(nvec = Nl,
                    from = Tl,
                    by = Epc[[1]]) #### All time points on the last day.
-  HMSl = as.POSIXct(Timel)
+  HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])
   Datel = suppressWarnings(DateFormat(HMSl)) ### Extract all the dates
   uniDl = unique(Datel) #### Check the numbers of the unique date spanning for the last day.
 

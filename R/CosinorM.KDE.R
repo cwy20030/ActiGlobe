@@ -15,120 +15,70 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#' @title KDE-based circadian cosinor summary
+#' KDE-based circadian cosinor summary
 #'
-#' @description
-#' Fit a wrapped Gaussian kernel density estimate (KDE) on circular time
+#' Fit a wrapped-Gaussian kernel density estimate (KDE) on circular time
 #' (hours of day) weighted by activity and extract cosinor summaries:
-#' MESOR, first-harmonic coefficients (β, γ), Amplitude and Acrophase.
+#' MESOR, first-harmonic coefficients (Beta, Gamma), Amplitude and Acrophase.
 #'
-#' @details
 #' This function builds a circular KDE from event times (hours in [0,24))
-#' and non-negative weights (activity). The KDE is computed on a regular grid
+#' and nonnegative weights (activity). The KDE is computed on a regular grid
 #' over [0, 2*pi) using a wrapped Gaussian kernel with specified bandwidth.
 #' Cosinor quantities are obtained by numerical integration of the KDE:
-#' MESOR is the mean level, β and γ are the first-harmonic cosine and
+#' MESOR is the mean level, Beta and Gamma are the first-harmonic cosine and
 #' sine coefficients, Amplitude is the magnitude of the first harmonic, and
 #' Acrophase is the peak time expressed in radian and hour.
 #'
 #' @param time Numeric vector of event times in hours. Values are interpreted
 #'   modulo 24 and must lie in [0, 24). If not numeric, the function will
-#'   attempt to convert using an internal function: `C2T()`.
+#'   attempt to convert using C2T.
 #' @param activity Numeric vector of non-negative weights corresponding to
 #'   each time point. If not numeric, the function will coerce to numeric.
 #' @param bw Numeric scalar. Kernel standard deviation on the circular scale
-#'   in radian. Controls smoothing of the wrapped Gaussian kernel. Default 0.4.
+#'   (radians). Controls smoothing of the wrapped Gaussian kernel. Default 0.4.
 #' @param grid Integer. Number of evaluation points for the circular KDE grid.
 #'   Default 360 (i.e., one-degree resolution on the 0..2*pi circle).
 #'
 #' @details
-#' The `"Wrapped Gaussian KDE"` method estimates rhythmic characteristics via a smooth circular density from weighted time-point observations, then extracts harmonic parameters via numerical integration over the circle. Unlike the closed-form solution of the traditional linear cosinor model [`CosinorM`], the model derives parameters from the fitted smoothed density.
+#' - The KDE is computed for each grid angle t_g by summing weighted Gaussian
+#'   densities of the wrapped angular differences t_g - theta_i, where theta_i
+#'   are the input times converted to `radian`.
+#' - Numerical integration over the closed circular interval is performed with
+#'   the trapezoid rule after ordering the grid and appending the first grid
+#'   point shifted by 2*pi to close the circle.
+#' - Cosinor integrals used:
+#'   - I0 = ∫ f(theta) d-theta
+#'   - Icos = ∫ f(theta) cos(theta) d-theta
+#'   - Isin = ∫ f(theta) sin(theta) dtheta
+#'   - MESOR = I0 / (2*pi)
+#'   - Beta = a1 = Icos / pi
+#'   - Gamma = b1 = Isin / pi
+#'   - Amplitude = sqrt(a1^2 + b1^2)
+#'   - Acrophase (radians) = atan2(-b1, a1) modulo 2*pi
+#'   - Acrophase (hours) = Acrophase.rad * 24 / (2*pi)
 #'
-#' @section Circular KDE construction:
-#' For each time coordinate, we can convert them into angular coordinates:
-#' `θ = (time %% 24) / 24 * 2π`.
-#' This procedure defines a regular grid over `[0, 2π]` for the KDE.
+#' @return A list of class c("CosinorM.KDE") with elements:
+#'   - tau: 24 (period in hours)
+#'   - kdf: data.frame with columns
+#'       **theta** angular grid in radians; **density** KDE values; **hour** grid in hours
+#'   - coef.cosinor: named numeric vector with entries
+#'       **MESOR**, **Beta**, **Gamma**, **Amplitude**, **Acrophase.rad**, **Acrophase.hr**
 #'
-#' To compute the KDE based on the recorded activities, the algorithm then compute the shortest distance between each time angular coordinate and each pre-defined grid point (default = 360 equally spaced points on the circle).
-#' `diffs = (tg - θ + π) %% (2π) - π`
-#' Note that points near the 0 or 2π cut are treated as neighbors rather than far apart.
-#'
-#' Given that the recorded activities closest to the a grid coordinate would contribute more localized information than those afar, the grid–time distances can then be used as weighting for each recording.
-#' `f(gt) = sum(activity * kernel)`
-#'
-#' `kernel: A mean-centred Gaussian kernel.`
-#' `f(gt): The estimated circular density at the angle gt`
-#'
-#' @section Harmonic integration:
-#' Integrate the density and its projections using the trapezoid rule:
-#'   `I0 = ∫ f(θ) dθ`
-#'   `Icos = ∫ f(θ) * cos(θ) dθ`
-#'   `Isin = ∫ f(θ) * sin(θ) dθ`
-#'
-#' These integrals approximate the first Fourier harmonic of the circular density.
-#'
-#' @section Parameter definitions:
-#' `MESOR = I0 / (2π)`, the mean level of the density.
-#' `a1 = Icos / π`, cosine coefficient.
-#' `b1 = Isin / π`, sine coefficient.
-#'
-#' @section Amplitude estimation:
-#' Amplitude (A) is calculated from the harmonic coefficients:
-#' `A = sqrt(a1^2 + b1^2)`
-#'
-#' @section Acrophase interpretation:
-#' Acrophase (φ) is derived from:
-#' `φ = atan2(-b1, a1) %% (2π)`
-#'
-#' and converted to clock time:
-#' `Acrophase_hour = φ * 24 / (2π)`
-#'
-#'
-#' @return
-#' A list of class c("CosinorM.KDE") with elements:
-#'   * `method`: KDE
-#'   * `tau`: 24 (period in hours)
-#'   * `time`: The time coordiantes of the recording.
-#'   * `kdf`: data.frame with columns
-#'          - `θ`, angular grid in radians
-#'          - `density`, KDE values
-#'          - `hour` grid in hours
-#'   * `coef.cosinor`: named numeric vector with entries `MESOR`, `Beta`, `Gamma`, `Amplitude`, `Acrophase.rad`, and `Acrophase.hr`
-#'
-#' @seealso `"cosinor"` model implementations and circular KDE methods
+#' @seealso cosinor model implementations and circular KDE methods
 #'
 #' @examples
-#' require(stats)
-#' require(graphics)
-#'
-#'
-#' \dontrun{
-#' # Import data
-#' FlyEast
-#'
-#' BdfList =
-#' BriefSum(df = FlyEast ,
-#'          SR = 1/60,
-#'          Start = "2017-10-24 13:45:00")
-#'
-#' # Let's extract actigraphy data from a single day
-#' df <- BdfList$df
-#' df <- subset(df, df$Date == "2017-10-27")
-#'
-#' fit <- CosinorM.KDE(time = df$Time,
-#'                     activity = df$Activity,
-#'                      bw = 0.4,
-#'                      grid = 360)
-#'
+#' # simulate times (hours) and activity weights
+#' set.seed(1)
+#' times <- runif(200, 0, 24)
+#' activity <- pmax(0, rnorm(200, mean = 1 + 0.5 * cos(2 * pi * times / 24 - 1), sd = 0.5))
+#' fit <- CosinorM.KDE(times, activity)
 #' # inspect coefficients
-#'
 #' fit$coef.cosinor
-#'
 #' # plot KDE in hours
 #' plot(fit$kdf$hour, fit$kdf$density, type = "l", xlab = "Hour", ylab = "KDE")
 #'
 #'
-#' }
+#'
 #' @keywords circular cosinor KDE circadian
 #' @export
 
@@ -148,7 +98,6 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
     return(x)
   }
 
-  # Trapezoid integration
   trap_int <- function(x, y) sum((y[-1] + y[-length(y)]) * diff(x)) / 2
 
   # convert hours -> radians in [0,2*pi)
@@ -182,9 +131,6 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
   Isin <- trap_int(theta_ext, f_ext * sin(theta_ext))# ∫ f sin
 
 
-
-
-
   MESOR <- I0 / (2 * pi)
   a1 <- Icos / pi
   b1 <- Isin / pi
@@ -206,11 +152,7 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
   fit <- list()
 
   fit$tau <- 24
-  fit$time <- time
-  fit$method <- "KDE"
   fit$kdf <- kdf
-  fit$theta_g <- theta_g
-  fit$f_g <- f_g
   fit$coef.cosinor <- coef_cos
 
 

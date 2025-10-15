@@ -168,7 +168,7 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
   ## ---------------------------------------------------------------------------
   VNames = names(df)
   VNames = VNames[!VNames %in%
-                    c("DateTime","Date","Time","UTCs","DaylightSaving","nPoint") ]
+                    c("DateTime","Date","Time","UTC","DaylightSaving","nPoint","Note") ]
 
   ## ---------------------------------------------------------------------------
   ## 7. Main loop: slice, align and annotate each calendar day
@@ -248,8 +248,7 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     ## -------------------------------------------------------------------------
     ## 7b. Finalize column names and store in Out (unless excluded)
     ## -------------------------------------------------------------------------
-    names(Temp) = c(VNames, "DateTime", "Date", "Time",
-                    "UTC", "DaylightSaving", "nPoint", "Note")
+    names(Temp) = c(VNames, "DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")
 
     if (!Ecl[d]) {
       Out[[D]] = Temp
@@ -270,222 +269,12 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
   mNP    = oNP[! oNP %in% nNP]  # original points never reassigned
 
   ndf          = df
-  ndf[[VTm]]   = as.numeric(ndf[[VTm]])
+  # ndf[[VTm]]   = C2T(ndf[[VTm]])  ### Will crash R Studio
   ndf$Note     = ""
-  ndf[ndf$nPoint %in% nNP, ]         = df3.5
+
+  VNames2 <- names(df)[names(df) %in%  names(Temp)]
+  ndf[ndf$nPoint %in% nNP, VNames2]   = df3.5[VNames2]
   ndf[ndf$nPoint %in% mNP, "Note"]   = "Unallocated"
-
-  ## ---------------------------------------------------------------------------
-  ## 9. Return a list: per-day data and the full annotated df
-  ## ---------------------------------------------------------------------------
-  return(list(
-    "Daily_df" = Out,
-    "df"       = ndf
-  ))
-}
-
-
-
-Act2Daily = function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
-                     Incomplete = FALSE, Travel = TRUE) {
-
-  ## ---------------------------------------------------------------------------
-  ## 1. Extract essential per-day metadata from Bdf
-  ## ---------------------------------------------------------------------------
-  DT    = Bdf$Date                   # Calendar date for each recording day
-  aTZ   = Bdf$TZ_code                # Time zone identifier per day
-  Epc   = Bdf$Epoch                  # Epoch length (seconds) per day
-  UTCs  = Bdf$UTC                    # UTC offset for each day
-  DSTs  = Bdf$Daylight_Saving        # Daylight saving flag per day
-
-  # Cumulative recording seconds at start/end → convert to epoch indices
-  a     = Bdf$Cumulative_Start_Second  # Seconds from midnight to first data point
-  b     = Bdf$Cumulative_End_Second    # Seconds from midnight to last data point
-  iDP   = a / Epc                       # Starting epoch index (1-based)
-  eDP   = b / Epc                       # Ending epoch index (1-based)
-
-  # Recording boundary times as strings
-  RS    = Bdf$Recording_Start        # e.g. "HH:MM:SS" for day start
-  RE    = Bdf$Recording_End          # e.g. "HH:MM:SS" for day end
-  DRS   = paste0(DT, " ", RS)        # Full datetime at recording start
-  DRE   = paste0(DT, " ", RE)        # Full datetime at recording end
-
-
-  ## ---------------------------------------------------------------------------
-  ## 2. Determine divider to convert seconds into requested TUnit
-  ## ---------------------------------------------------------------------------
-  TDivider = ifelse(
-    TUnit == "day",    24 * 3600,
-    ifelse(TUnit == "hour", 3600,
-           ifelse(TUnit == "minute", 60,
-                  ifelse(TUnit == "second", 1, NA)
-           )
-    )
-  )
-
-  # If an invalid TUnit was provided, prompt user to choose one
-  if (is.na(TDivider)) {
-    TUnit     = Demand(c("day", "hour", "minute", "second"), "Time Unit")
-    TDivider  = ifelse(
-      TUnit == "day",    24 * 3600,
-      ifelse(TUnit == "hour", 3600,
-             ifelse(TUnit == "minute", 60,
-                    ifelse(TUnit == "second", 1, NA)
-             )
-      )
-    )
-  }
-
-
-  ## ---------------------------------------------------------------------------
-  ## 3. Set default variable names for activity and time columns
-  ## ---------------------------------------------------------------------------
-  if (is.null(VAct)) VAct = names(df)[[2]]  # Default: second column of df
-  if (is.null(VTm))  VTm  = names(df)[[1]]  # Default: first column of df
-
-
-  ## ---------------------------------------------------------------------------
-  ## 4. Build warning & exclusion masks
-  ## ---------------------------------------------------------------------------
-  W   = Bdf$Warning                      # Warning label per day
-  Ecl = Bdf$Excluded                     # Logical: exclude this day?
-  fDP = max(Bdf$nDataPoints, na.rm = TRUE)  # Max points in a full day
-
-  # Optionally keep "Incomplete Recording" days
-  if (Incomplete) {
-    Ecl[W == "Incomplete Recording"] = FALSE
-  }
-
-  # Handle travel days: keep if Travel=TRUE, else exclude
-  if (Travel) {
-    Ecl[grep("Travel", W)] = FALSE
-    warning("Due to travel, some activity counts will overlap spanning adjacent days!")
-  } else {
-    Ecl[grep("Travel", W)] = TRUE
-  }
-
-
-  ## ---------------------------------------------------------------------------
-  ## 5. Initialize output list structure (one element per date)
-  ## ---------------------------------------------------------------------------
-  Out = rep(list(list()), length(DT))
-  names(Out) = DT  # Use each date string as list element name
-
-
-  ## ---------------------------------------------------------------------------
-  ## 6. Identify which df columns were not generated by ActiGlobe
-  ## ---------------------------------------------------------------------------
-  VNames = names(df)
-  VNames = VNames[!VNames %in%
-                     c("DateTime","Date","Time","UTCs","DaylightSaving","nPoint") ]
-
-
-  ## ---------------------------------------------------------------------------
-  ## 7. Main loop: slice, align and annotate each calendar day
-  ## ---------------------------------------------------------------------------
-  for (d in seq_along(DT)) {
-
-    # Convert current date to character and POSIX numeric
-    D     = as.character(DT[[d]])
-    D.num = as.numeric(as.POSIXct(D, tz = aTZ[[d]]))
-
-    # Compute start/end epoch indices for this day
-    S = a[[d]] / Epc[[d]]
-    E = b[[d]] / Epc[[d]]
-
-    # Parse full POSIXct start/end datetimes
-    rs  = as.POSIXct(DRS[d], tz = aTZ[[d]])
-    re  = as.POSIXct(DRE[d], tz = aTZ[[d]])
-    nrs = as.numeric(rs)
-    nre = as.numeric(re)
-
-    # Generate a continuous vector of epoch‐timestamps
-    YMDHMS = seq(from = nrs, to = nre, by = Epc[[d]])
-    AllT   = as.POSIXct(YMDHMS, tz = aTZ[[d]])
-
-    # Compute time offset from midnight (in chosen TUnit)
-    Time = (YMDHMS - D.num) / TDivider
-
-    # Extract the raw df rows for this day’s epochs
-    Temp = df[S:E, VNames]
-
-    # Add new columns for timeline and metadata
-    Temp[[VTm]]  = Time
-    Temp$YMDHMS  = AllT
-    Temp$Date    = D
-    Temp$Time    = format(AllT, "%H:%M:%S")
-    Temp$UTC     = UTCs[[d]]
-    Temp$DST     = DSTs[[d]]
-    Temp$Act_ID  = seq(S, E)           # Original epoch index
-    Temp$Note    = Bdf[d, "Warning"]   # Day’s warning label
-
-    # Reorder to consistent column layout
-    Temp = Temp[c(VNames, "YMDHMS", "Date", "Time",
-                  "UTC", "DST", "Act_ID", "Note")]
-
-    ## -------------------------------------------------------------------------
-    ## 7a. If first day’s recording starts after midnight, prepend empty rows
-    ## -------------------------------------------------------------------------
-    if (d == 1 && S > 1) {
-      # How many epochs missing before first measure?
-      ERows = fDP - (1 + (b[[d]] - a[[d]]) / Epc[[d]])
-
-      # Create blank template for missing epochs
-      TmpDf = as.data.frame(
-        matrix(NA, nrow = ERows, ncol = ncol(Temp))
-      )
-      names(TmpDf) = names(Temp)
-
-      # Generate timestamps from midnight to first epoch
-      YMDHMS2  = seq(from = D.num, to = nrs, by = Epc[[d]])
-      YMDHMS2  = YMDHMS2[-length(YMDHMS2)]  # drop overlap point
-      AllT2    = as.POSIXct(YMDHMS2, tz = aTZ[[d]])
-      Time2    = (YMDHMS2 - D.num) / TDivider
-
-      # Fill blank template with “No Measure” metadata
-      TmpDf$YMDHMS = AllT2
-      TmpDf[[VTm]] = Time2
-      TmpDf$Date   = D
-      TmpDf$Time   = format(AllT2, "%H:%M:%S")
-      TmpDf$UTC    = UTCs[[d]]
-      TmpDf$DST    = DSTs[[d]]
-      TmpDf$Note   = "No Measure"
-
-      # Prepend to daily Temp
-      Temp = rbind(TmpDf, Temp)
-    }
-
-    ## -------------------------------------------------------------------------
-    ## 7b. Finalize column names and store in Out (unless excluded)
-    ## -------------------------------------------------------------------------
-    names(Temp) = c(VNames, "DateTime", "Date", "Time",
-                    "UTC", "DaylightSaving", "nPoint", "Note")
-
-    if (!Ecl[d]) {
-      Out[[D]] = Temp
-    } else {
-      Out[[D]] = list()   # keep empty for excluded days
-    }
-  }
-
-
-  ## ---------------------------------------------------------------------------
-  ## 8. Recombine, remove overlap, and flag unallocated epochs
-  ## ---------------------------------------------------------------------------
-  df3    = do.call(rbind, Out)
-  df3.5  = df3[!duplicated(df3$nPoint), ]
-  df3.5  = subset(df3.5, !is.na(df3.5$nPoint))
-
-  oNP    = df$nPoint
-  nNP    = df3.5$nPoint
-  mNP    = oNP[! oNP %in% nNP]  # original points never reassigned
-
-  ndf          = df
-  ndf[[VTm]]   = as.numeric(ndf[[VTm]])
-  ndf$Note     = ""
-  ndf[ndf$nPoint %in% nNP, ]         = df3.5
-  ndf[ndf$nPoint %in% mNP, "Note"]   = "Unallocated"
-
 
   ## ---------------------------------------------------------------------------
   ## 9. Return a list: per-day data and the full annotated df

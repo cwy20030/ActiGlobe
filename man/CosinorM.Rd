@@ -2,7 +2,7 @@
 % Please edit documentation in R/CosinorM.R
 \name{CosinorM}
 \alias{CosinorM}
-\title{`"Cosinor"` Model}
+\title{`Cosinor` Model}
 \usage{
 CosinorM(time, activity, tau, method = "OLS", type = "HC3")
 }
@@ -22,65 +22,58 @@ If an unrecognized value is supplied, an error is returned.}
 }
 \value{
 A list of class `c("CosinorM", "lm")` containing:
-  * `tau`: The assumed period length
-  * `time`: The time coordiantes of the recording.
-  * `method`: The estimation method used.
-  * `coef.cosinor`: `MESOR`, amplitude, and `acrophase` estimates.
-  * `vcov`: Robust variance-covariance matrix.
-  * `se`: Standard errors.
+- `tau`: The assumed period length
+- `time`: The time coordiantes of the recording.
+- `method`: The estimation method used.
+- `coef.cosinor`: `MESOR`, amplitude, and `acrophase` estimates.
+- `vcov`: Robust variance-covariance matrix.
+- `se`: Standard errors.
 Inherits all components from stats::lm.
-
-#' @references
-Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
-
-Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392–399. doi:10.2307/2346786.
-
-Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461–465. doi:10.2307/1913974
 }
 \description{
-`"Cosinor"` Model
+`Cosinor` Model
 }
 \details{
-The `"Cosinor"` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
+The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
 }
 \section{Single-phase equation}{
 
-`y = M + A * cos(2π * t / τ + φ)`
+y = M + A * cos(2π * t / τ + φ)
 
-`M: MESOR (mid-line estimating statistic of rhythm), the intercept.`
-`A: Amplitude, peak deviation from M.`
-`t: Time coordinate within the cycle.`
-`τ: The assumed period length.`
-`φ: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients.`
+- M: MESOR (mid-line estimating statistic of rhythm), the intercept.
+- A: Amplitude, peak deviation from M.
+- t: Time coordinate within the cycle.
+- τ: The assumed period length.
+- φ: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients.
 }
 
-\section{`"Linearized"` form}{
+\section{Linearized form}{
 
-`y_hat = M + β * x + γ * z + ε`
+y_hat = M + β * x + γ * z + ε
 
-`β = A * cos(φ)`, the estimated coefficients for the cosine function.
-`x = cos(2π * t / τ)`
-`γ = -A * sin(φ)`, the estimated coefficients for the sine function.
-`z = sin(2π * t / τ)`
-`ε = error term`
+- β = A * cos(φ), the estimated coefficients for the cosine function.
+- x = cos(2π * t / τ)
+- γ = -A * sin(φ), the estimated coefficients for the sine function.
+- z = sin(2π * t / τ)
+- ε = error term
 
 Model parameters are estimated by minimizing the residual sum of squares:
-`RSS = sum[ y - (M + β * x + γ * z) ]^2`.
+RSS = sum[ y - (M + β * x + γ * z) ]^2.
 By default, [stats::lm()] achieve this through QR decomposition, instead of the typical single vector decomposition technique.
 }
 
-\section{`Acrophase` interpretation}{
+\section{Acrophase interpretation}{
 
-`φ` is derived from `atan2(-γ, β)` and converted to clock time to identify the peak activity time.
+φ is derived from atan2(-γ, β) and converted to clock time to identify the peak activity time.
 }
 
 \section{Amplitude estimation}{
 
 Amplitude (A) is calculated from the fitted sine and cosine coefficients
 obtained in the linearized model. Specifically:
-`A = sqrt(β^2 + γ^2)`
+A = sqrt(β^2 + γ^2)
 
-This formula comes directly from the relationship between the `"linearized"`
+This formula comes directly from the relationship between the linearized
 parameters and the polar representation of the cosine wave.
 }
 
@@ -115,6 +108,13 @@ fit$coef.cosinor
 # plot KDE in hours
 plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "KDE")
 }
+}
+\references{
+Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
+
+Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392–399. doi:10.2307/2346786.
+
+Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461–465. doi:10.2307/1913974
 }
 \seealso{
 [stats::lm()] for general linear model.
