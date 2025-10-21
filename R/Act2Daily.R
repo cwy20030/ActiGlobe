@@ -249,6 +249,8 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     ## 7b. Finalize column names and store in Out (unless excluded)
     ## -------------------------------------------------------------------------
     names(Temp) = c(VNames, "DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")
+    Temp$DateTime = paste0(as.character(Temp$Date), " ", as.character(Temp$Time))
+
 
     if (!Ecl[d]) {
       Out[[D]] = Temp

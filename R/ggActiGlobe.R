@@ -80,7 +80,7 @@
 
 
 
-ggActiGlobe <- function(df, Bdf, VAct, VDT, ...) {
+ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", VD = "Date", ...) {
 
 
   ## Ensure Note column exists
@@ -88,33 +88,63 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT, ...) {
     df$Note <- ""
   }
 
+  NR = 1:nrow(df)
   A <- df[[VAct]]
   Mx = round(max(A, na.rm = TRUE))
   mn = round(min(A, na.rm = TRUE))
 
 
+
+  D <- df[[VD]]
   DT <- df[[VDT]]
+  T <- sub("^\\S+\\s+", "", as.character(DT))
+
   if (!inherits(DT, c("POSIXct", "POSIXlt"))) {
     DT <- as.POSIXct(DT)
   }
 
+
   Nt <- df$Note
 
   ## Identify midnight boundaries
-  MdN <- as.factor(ifelse(grepl("0", DT), "1", "0"))
+  MdN <- as.factor(ifelse(grepl("00:00:00", T) | !grepl(":",T), "1", "0"))
+
+
+
+  ##### X Tick Control -----------------
+  NTicks = 0.2
+  Ds <- c(D[[1]],D[MdN == "1"])
+  NTicks = floor(length(Ds)*NTicks)
+
+
+  Idx <- which(!duplicated(D))
+
+
+  XTicks <-
+    pick_ticks(Ds = Ds,
+               NTicks = NTicks)
+
+  Xcrd <- Idx[XTicks$indices] ### X Coordinate for the selected ticks
+  Xtx <- XTicks$values ### Selected x ticks label
+
+
 
   ## Flag points with any Note (e.g. travel overlap or unallocated)
   E <- as.factor(ifelse(Nt != "", "1", "0"))
 
-  ggplot2::ggplot(mapping = ggplot2::aes(x = DT, y = A, colour = E)) +
+  ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
     ggplot2::geom_point(alpha = 0.05) +
     ggplot2::geom_vline(
-      xintercept = as.numeric(DT[MdN == "1"]),
+      xintercept = as.numeric(NR[MdN == "1"]),
       linetype   = "dashed",
       color      = "blue",
       size       = 0.8
     ) +
     ggplot2::scale_y_continuous(limits = c(mn, Mx)) +
+    ggplot2::scale_x_continuous(
+      breaks =  Xcrd,                    # numeric positions on the NR axis
+      labels = Xtx          # text to show at those positions
+    ) +
     ggplot2::labs(x = "Date", y = "Activity Count") +
     ggplot2::theme_classic() +
     ggplot2::theme(
@@ -125,3 +155,37 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT, ...) {
     )
 
 }
+
+
+
+
+# Pick Ticks
+
+pick_ticks <- function(Ds, NTicks) {
+  n <- length(Ds)
+  if (n == 0) return(integer(0))
+
+  # Interpret NTicks: if <=1 treat as fraction of length, otherwise treat as count
+  if (NTicks <= 1) {
+    k <- floor(n * NTicks)
+  } else {
+    k <- floor(NTicks)
+  }
+
+  # Ensure at least one tick
+  k <- max(k, 1)
+  # Do not request more ticks than available
+  k <- min(k, n)
+
+  # Generate k roughly-equal spaced indices, include first and last when possible
+  idx <- unique(round(seq(1, n, length.out = k)))
+  # In rare rounding cases ensure correct length by adjusting with seq.int
+  if (length(idx) < k) {
+    idx <- seq.int(1, n, length.out = k)
+    idx <- unique(round(idx))
+  }
+  idx <- as.integer(idx)
+
+  list(indices = idx, values = Ds[idx])
+}
+
