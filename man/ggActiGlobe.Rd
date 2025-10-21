@@ -4,7 +4,7 @@
 \alias{ggActiGlobe}
 \title{Plot an Overview of an `ActiGlobe` Activity Time Series}
 \usage{
-ggActiGlobe(df, Bdf, VAct, VDT = "DateTime", VD = "Date", ...)
+ggActiGlobe(df, Bdf, VAct, VDT = "DateTime", ...)
 }
 \arguments{
 \item{df}{A data.frame of annotated actigraphy epochs.  Must include:
