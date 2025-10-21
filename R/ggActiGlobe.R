@@ -1,4 +1,4 @@
-# File ActiGlobe/R/plot.ActiGlobe.R
+# File ActiGlobe/R/ggActiGlobe.R
 #
 # Copyright (C) 2025  C. William Yao, PhD
 #
@@ -21,7 +21,7 @@
 #' Creates a time‐series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
 #'
 #' @import ggplot2
-#' @param x A data.frame of annotated actigraphy epochs.  Must include:
+#' @param df A data.frame of annotated actigraphy epochs.  Must include:
 #'   - An activity column named by `VAct`.
 #'   - A datetime column named by `VDT`.
 #'   - Optionally, a `Note` column to flag affected epochs.
@@ -53,10 +53,10 @@
 #'          SR = 1/60,
 #'          Start = "2017-10-24 13:45:00")
 #'
-#' p <- plot.ActiGlobe(df   = BdfList$df,
-#'                     Bdf  = BdfList$Bdf,
-#'                     VAct = "Activity",
-#'                     VDT  = "DateTime")
+#' p <- ggActiGlobe(df   = BdfList$df,
+#'                  Bdf  = BdfList$Bdf,
+#'                  VAct = "Activity",
+#'                  VDT  = "DateTime")
 #'
 #' print(p)
 #'
@@ -66,20 +66,21 @@
 #' data(TLog)
 #'
 #' BdfList$Bdf.adj = TAdjust(BdfList$Bdf, TLog)
-#' p2 <- plot.ActiGlobe(df   = BdfList$df,
-#'                     Bdf  = BdfList$Bdf.adj,
-#'                     VAct = "Activity",
-#'                     VDT  = "DateTime")
+#' p2 <-  ggActiGlobe(df   = BdfList$df,
+#'                  Bdf  = BdfList$Bdf,
+#'                  VAct = "Activity",
+#'                  VDT  = "DateTime")
 #' print(p2)
 #'
 #' # Pro-tip: [`cowplot`] can help stack the time series graphs in one single plot
 #' }
 #'
-#' @rdname plot.ActiGlobe
 #' @keywords visualization actigraphy
 #' @export
 
-plot.ActiGlobe <- function(x, Bdf, VAct, VDT, ...) {
+
+
+ggActiGlobe <- function(df, Bdf, VAct, VDT, ...) {
 
 
   ## Ensure Note column exists
