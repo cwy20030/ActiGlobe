@@ -80,7 +80,7 @@
 
 
 
-ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", VD = "Date", ...) {
+ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
 
 
   ## Ensure Note column exists
@@ -94,7 +94,7 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", VD = "Date", ...) {
   mn = round(min(A, na.rm = TRUE))
 
 
-
+  VD = "Date"
   D <- df[[VD]]
   DT <- df[[VDT]]
   T <- sub("^\\S+\\s+", "", as.character(DT))
