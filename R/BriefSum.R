@@ -23,7 +23,7 @@
 #' @param SR The sampling rate of the actigraphy (unit at Hz). Note that Hz should be equal to or less than 1.
 #' @param Start The starting date and time of the recording in formats like this "2021-03-05 18:31:03"
 #' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
-#' @returns A data.frame where each row holds all metadata for one recording day: the calendar date, time‐zone code, epoch length (seconds), UTC offset, daylight‐saving flag, cumulative start/end seconds from midnight, recording start/end times (HH:MM:SS), any warning labels (e.g. “Travel”, “Incomplete Recording”), an exclusion flag, and the expected number of epochs for a full day
+#' @returns A data.frame where each row holds all metadata for one recording day: the calendar date, time--zone code, epoch length (seconds), UTC offset, daylight--saving flag, cumulative start/end seconds from midnight, recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`, `Incomplete Recording`), an exclusion flag, and the expected number of epochs for a full day
 #' @keywords Summary Actigraphy
 #' @examples
 #' # Export the data in a list

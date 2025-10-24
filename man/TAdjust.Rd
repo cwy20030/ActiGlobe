@@ -17,7 +17,7 @@ TAdjust(Bdf, TLog, TZ = NULL)
 `TAdjust()` is a function that corrects data points and time-shift based on travelling log. Note that it is important to ensure that the UTC-offset value is correct. When in doubt, please use the UTC function or consult IANA table in the package. Daylight saving will not be reassessed as in BriefSum function.
 }
 \seealso{
-[TravelLog()]
+\code{\link{TravelLog}}
 }
 \keyword{Actigraphy}
 \keyword{Adjust}

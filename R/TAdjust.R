@@ -25,7 +25,7 @@
 #' @param TLog A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.
 #' @param TZ The time zone when the recording started. (default = "NULL", which will disregard the use of the initial geographical location-based time zone indicator)
 #' @keywords Adjust Actigraphy
-#' @seealso [TravelLog()]
+#' @seealso \code{\link{TravelLog}}
 #' @export
 
 
@@ -111,8 +111,10 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   ### If U from R2P is the same as the original then H2J to 0
   H2J = ifelse(SameUTC,0,aH2J)
 
+
   ## Adjust DataPoint ------------------------
   P2J = H2J*3600
+
 
   ### Adjust Cumulative Start DataPoint ------------
   x = a1 + P2J
@@ -124,9 +126,25 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   y[y > LstP] = NA
 
 
+  ### Adjust Cumulative Start DataPoint V2 will give you the same as the above------------
+#  if ( Version == 2) {
+#    T2A = c(0,diff(H2J))
+#    x = a1
+#    y = b1
+#    STR = which(!T2A == 0)
+#    for (nr in STR) {
+#      x[nr:length(x)] = x[nr:length(x)] + T2A[[nr]]*3600
+#      y[nr:length(y)] = y[nr:length(y)] + T2A[[nr]]*3600
+#    }
+#  }
+
+
+
   ### Adjust Daily Data Point ------------
   Sec = y - x
   N = 1 + (Sec/Epc)  #### Plus one for the End
+
+
 
 
   ################### Check the Last Day ###################

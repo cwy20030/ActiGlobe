@@ -38,7 +38,7 @@ UTCwDST(UTCs = c("UTC+01:00", "UTC+08:00"))
 # Use numeric offset directly
 UTCwDST(UTCs = c(1, 8))
 
-# UTC−5 commonly includes DST zones (e.g., New York)
+# UTC-5 commonly includes DST zones (e.g., New York)
 UTCwDST(UTCs = -5)
 }
 }

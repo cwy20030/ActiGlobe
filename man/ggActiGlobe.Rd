@@ -12,8 +12,8 @@ ggActiGlobe(df, Bdf, VAct, VDT = "DateTime", ...)
 - A datetime column named by `VDT`.
 - Optionally, a `Note` column to flag affected epochs.}
 
-\item{Bdf}{A BriefSum object containing per‐day metadata for the recording.
-If you have applied jet‐lag or daylight‐saving adjustments, pass the output
+\item{Bdf}{A BriefSum object containing per-day metadata for the recording.
+If you have applied jet-lag or daylight-saving adjustments, pass the output
 from the ActiGlobe function `TAdjust`.}
 
 \item{VAct}{Character. Name of the activity column in `df` (numeric counts).}
@@ -29,7 +29,7 @@ A `ggplot` object showing:
   - Points `colored` by whether they were flagged in `Note`.
 }
 \description{
-Creates a time‐series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
+Creates a time-series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
 }
 \examples{
 \dontrun{

@@ -23,7 +23,7 @@
 #' Create visualization of a CosinorM model fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
 #'
 #' @import stats ggplot2 ggrepel viridis
-#' @param object A fitted model of class [CosinorM()]
+#' @param object A fitted model of class \code{\link{CosinorM}}
 #' @param labels Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).
 #' @param ci Logical; Default `TRUE` computes and draws pointwise parametric confidence bands for the fitted cosinor curve using the model covariance.
 #' @param ci_level Confidence level for the pointwise bands, expressed in numeric value between 0 and 1.
@@ -61,7 +61,7 @@
 #' }
 #'
 #' @seealso
-#' [ggplot2::ggplot()], [ggrepel::geom_label_repel()], [stats::predict()]
+#' \code{\link[ggplot2]{ggplot}}, \code{\link[ggrepel]{geom_label_repel}}, \code{\link[stats]{predict}}
 #'
 #' @export
 

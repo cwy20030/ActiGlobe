@@ -18,7 +18,7 @@
 #' @title Plot an Overview of an `ActiGlobe` Activity Time Series
 #'
 #' @description
-#' Creates a time‐series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
+#' Creates a time-series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
 #'
 #' @import ggplot2
 #' @param df A data.frame of annotated actigraphy epochs.  Must include:
@@ -26,8 +26,8 @@
 #'   - A datetime column named by `VDT`.
 #'   - Optionally, a `Note` column to flag affected epochs.
 #'
-#' @param Bdf A BriefSum object containing per‐day metadata for the recording.
-#'   If you have applied jet‐lag or daylight‐saving adjustments, pass the output
+#' @param Bdf A BriefSum object containing per-day metadata for the recording.
+#'   If you have applied jet-lag or daylight-saving adjustments, pass the output
 #'   from the ActiGlobe function `TAdjust`.
 #'
 #' @param VAct Character. Name of the activity column in `df` (numeric counts).

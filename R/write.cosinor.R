@@ -32,7 +32,7 @@
 #' @param VAct The name of the variable containing activity score  (default assumed the second variable)
 #' @param VTm The name of the variable containing the time coordiante (default assumed the first variable)
 #' @keywords Export Actigraphy Cosinor Trend
-#' @seealso [Act2Daily()]
+#' @seealso \code{\link{Act2Daily}}
 #' @export
 
 

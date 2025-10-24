@@ -23,7 +23,7 @@ write.cosinor(Dir, DailyAct, Bdf, ID, VAct = NULL, VTm = NULL)
 `write.cosinor()` is a multi-wrapper function which generate cosinor plot using CosinorM and data trend using `geom_smooth`. All daily results could be found in the exported report.
 }
 \seealso{
-[Act2Daily()]
+\code{\link{Act2Daily}}
 }
 \keyword{Actigraphy}
 \keyword{Cosinor}

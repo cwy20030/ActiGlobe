@@ -29,13 +29,13 @@ the 86400s of a normal day, and converts the remainder to hours.
 # Example around a typical spring-forward transition (e.g. US second Sunday in March)
 dates <- as.Date(c("2021-03-13", "2021-03-14", "2021-03-15"))
 
-# On 2021-03-14 clocks jumped forward: day is 23h → output = -1
+# On 2021-03-14 clocks jumped forward: day is 23h so output = -1
 DST2GL(dates)
 
 # Example around a fall-back transition (e.g. first Sunday in November)
 dates <- as.Date(c("2021-10-31", "2021-11-01", "2021-11-02"))
 
-# On 2021-11-07 clocks fall back: day is 25h → output = +1
+# On 2021-11-07 clocks fall back: day is 25h so output = +1
 DST2GL(dates)
 
 }

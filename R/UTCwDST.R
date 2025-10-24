@@ -49,7 +49,7 @@
 #' # Use numeric offset directly
 #' UTCwDST(UTCs = c(1, 8))
 #'
-#' # UTC−5 commonly includes DST zones (e.g., New York)
+#' # UTC-5 commonly includes DST zones (e.g., New York)
 #' UTCwDST(UTCs = -5)
 #'}
 #' @seealso
@@ -82,7 +82,7 @@ UTCwDST <- function(UTCs) {
 
 
 
-  # Check DST status in mid‐winter vs. mid‐summer
+  # Check DST status in mid-winter vs. mid-summer
   wDT <- as.POSIXct(JAN1, tz = "UTC") ### NO daylight saving time for the north hemispher but yes for the south
   sDT <- as.POSIXct("2021-07-15", tz = "UTC") ### Yes to daylight saving time for the north hemispher but NO for the south
 

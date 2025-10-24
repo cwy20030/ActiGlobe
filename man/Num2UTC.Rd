@@ -22,5 +22,5 @@ print(x)
 
 }
 \seealso{
-[UTC2Num()]
+\code{\link{UTC2Num}}
 }
