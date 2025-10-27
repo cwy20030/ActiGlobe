@@ -1,0 +1,12 @@
+name: ActiGlobe
+version: 1
+build:
+  image: ubuntu:22.04
+  commands:
+    - apt-get update -y
+    - apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev
+    - R -e 'install.packages(c("remotes","pkgdown","devtools"), repos="https://cloud.r-project.org")'
+    - R -e 'remotes::install_deps(dependencies = TRUE)'
+    - R -e 'devtools::test()'
+    - R -e 'devtools::check()'
+
