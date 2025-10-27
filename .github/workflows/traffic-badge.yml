@@ -1,0 +1,39 @@
+name: Update traffic badges
+
+on:
+  schedule:
+    - cron: '0 6 * * *'    # daily at 06:00 UTC
+  push:
+    branches: [ main ]
+
+jobs:
+  traffic_badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate traffic badges
+        uses: m-ender/traffic-to-badge@v1
+        with:
+          my_token: ${{ secrets.TRAFFIC_TOKEN }}
+          static_list: ${{ github.repository }}
+          traffic_branch: badges
+          views_color: brightgreen
+          clones_color: blue
+          views_week_color: orange
+          clones_week_color: yellow
+
+      - name: Commit and push badges branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan badge-update
+          git reset --soft
+          git clean -fd
+          git add -A traffic_output || true
+          git commit -m "chore: update traffic badges" || echo "no changes to commit"
+          git push --force origin badge-update:badges
