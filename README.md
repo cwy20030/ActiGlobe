@@ -4,6 +4,7 @@
 
 ![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![Codev Preview](https://codev.dev/badge/ORG/REPO.svg)](https://codev.dev/ORG/REPO)
 
 <!-- badges: end -->
 <div align="center">
