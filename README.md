@@ -4,6 +4,7 @@
 
 ![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+![Views](https://raw.githubusercontent.com/cwy20030/ActiGlobe/badges/traffic_output/views.svg)
 
 
 <!-- badges: end -->
