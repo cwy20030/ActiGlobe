@@ -2,9 +2,13 @@ name: Update traffic badges
 
 on:
   schedule:
-    - cron: '0 6 * * *'    # daily at 06:00 UTC
+    - cron: '0 6 * * *'
   push:
-    branches: [ main ]
+    branches: 
+      - main
+
+permissions:
+  contents: read
 
 jobs:
   traffic_badge:
@@ -28,12 +32,29 @@ jobs:
 
       - name: Commit and push badges branch
         if: success()
+        env:
+          GIT_EMAIL: "github-actions[bot]@users.noreply.github.com"
+          GIT_NAME: "github-actions[bot]"
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan badge-update
-          git reset --soft
-          git clean -fd
+          git config user.name "${GIT_NAME}"
+          git config user.email "${GIT_EMAIL}"
+          # ensure badges branch exists locally
+          git fetch origin badges || true
+          git checkout --orphan tmp-badges || git checkout badges
+          # copy generated output (action typically writes to traffic_output)
+          rm -rf . || true
+          git checkout --orphan tmp || true
+          git clean -fdx || true
+          # if the action placed files under traffic_output, move them to root for commit
+          if [ -d traffic_output ]; then
+            mkdir -p tmp_dir
+            mv traffic_output/* tmp_dir/ || true
+            rm -rf traffic_output
+            mkdir -p traffic_output
+            mv tmp_dir/* traffic_output/ || true
+            rm -rf tmp_dir
+          fi
           git add -A traffic_output || true
           git commit -m "chore: update traffic badges" || echo "no changes to commit"
-          git push --force origin badge-update:badges
+          # push to badges branch
+          git push --force origin HEAD:badges
