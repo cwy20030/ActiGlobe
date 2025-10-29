@@ -22,14 +22,17 @@ A data.frame where each row holds all metadata for one recording day: the calend
 Summarize the Actigraphy Recording by Day
 }
 \examples{
-# Export the data in a list
+
 \dontrun{
+# Import data
 data(FlyEast)
 
-Bdf = BriefSum(df = FlyEast,
+BdfList = BriefSum(df = FlyEast,
                SR = 1/60,
                Start = "2017-10-19 13:45:00")
-print(Bdf)
+
+str(BdfList)
+# View(BdfList)
 
 ## install library "zeallot"
 ## library(zeallot)

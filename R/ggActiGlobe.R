@@ -150,7 +150,7 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
     ggplot2::theme(
       plot.margin     = ggplot2::margin(0, 0, 0, 0),
       axis.line       = ggplot2::element_line(size = 0.8),
-      axis.text       = ggplot2::element_text(color = "black"),
+      axis.text       = ggplot2::element_text(color = "black", face = "bold"),
       legend.position = "none"
     )
 

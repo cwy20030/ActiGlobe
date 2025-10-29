@@ -140,7 +140,7 @@ df <- BdfList$df
 df <- subset(df, df$Date == "2017-10-27")
 
 
-fit.KDE <- CosinorM.KDE(time = df$Time,
+fit <- CosinorM.KDE(time = df$Time,
            activity = df$Activity)
 
 # inspect coefficients

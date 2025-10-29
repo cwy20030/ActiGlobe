@@ -72,7 +72,7 @@ By default, \code{\link[stats]{lm}} fits this via QR decomposition.
 
 \strong{Acrophase \eqn{ (\phi) } interpretation}:
  \eqn{ \phi } is derived from
- \deqn{ \phi = atan2(-\gamma, \beta) }
+ \deqn{ \phi = \arctan(\frac{\gamma} {\beta}) }
  Note, \eqn{ \phi } is converted to clock time to identify the peak activity time.
 
 \strong{Amplitude \eqn{ (A) } estimation}:
@@ -80,15 +80,17 @@ Amplitude is calculated from fitted sine and cosine coefficients as:
 \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 }
 \examples{
-#' require(stats)
+require(stats)
 require(graphics)
 
 
 \dontrun{
 # Import data
-FlyEast
+data(FlyEast)
 
-BdfList =
+
+# Create quick summary of the recording with adjustment for daylight saving.
+BdfList <-
 BriefSum(df = FlyEast ,
          SR = 1/60,
          Start = "2017-10-24 13:45:00")
@@ -107,8 +109,8 @@ fit <- CosinorM(time = df$Time,
 fit$coef.cosinor
 
 
-# plot KDE in hours
-plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "KDE")
+# plot Cosinor in hours
+plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 }
 }
 \references{
@@ -119,8 +121,6 @@ Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial mo
 Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 }
 \seealso{
-\code{\link[stats]{lm}} for general linear model.
-
-`CosinorM.KD` for Gaussian.
+\code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
 }
 \keyword{cosinor}

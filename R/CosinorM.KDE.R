@@ -149,7 +149,7 @@
 #' df <- subset(df, df$Date == "2017-10-27")
 #'
 #'
-#' fit.KDE <- CosinorM.KDE(time = df$Time,
+#' fit <- CosinorM.KDE(time = df$Time,
 #'            activity = df$Activity)
 #'
 #' # inspect coefficients
@@ -211,19 +211,31 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
   Icos <- trap_int(theta_ext, f_ext * cos(theta_ext))# integral f cos
   Isin <- trap_int(theta_ext, f_ext * sin(theta_ext))# integral f sin
 
-
-  MESOR <- I0 / (2 * pi)
+  ## Extract MESOR, beta, gamma
+  mesor <- I0 / (2 * pi)
   beta <- Icos / pi
   gamma <- Isin / pi
-  Amplitude <- sqrt(beta^2 + gamma^2)
-  Acrophase_rad <- (atan2(-gamma, beta) %% (2 * pi))
-  Acrophase_hour <- Acrophase_rad * 24 / (2 * pi)
+
+  ## Compute amplitude and acrophase
+  amplitude <- sqrt(beta^2 + gamma^2)
+
+  acrophase <- theta <- atan(abs(gamma) / beta)
+
+  Bs <- beta
+  Gs <- gamma
+  acrophase <- ifelse(Bs >= 0 & Gs > 0, -theta,
+                            ifelse(Bs < 0 & Gs >= 0, theta - pi,
+                                   ifelse(Bs <= 0 & Gs < 0, -theta - pi,
+                                          ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA))))
+
+
+  Acrophase_hour <- acrophase * 24 / (2 * pi)
 
 
   coef_cos <- c(
-    MESOR = MESOR,
-    Amplitude = Amplitude,
-    Acrophase = Acrophase_rad,
+    MESOR = mesor,
+    Amplitude = amplitude,
+    Acrophase = acrophase,
     Acrophase.hr = Acrophase_hour,
     Beta = beta,
     Gamma = gamma

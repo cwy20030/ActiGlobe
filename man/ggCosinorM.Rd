@@ -38,7 +38,7 @@ Create visualization of a CosinorM model fit using ggplot2. The plot shows the p
 \examples{
 \dontrun{
 # Import data
-FlyEast
+data(FlyEast)
 
 BdfList =
 BriefSum(df = FlyEast ,
@@ -55,7 +55,7 @@ fit <- CosinorM(time = df$Time,
                 method = "OLS")
 
 
-p <- ggCosinorM(fit,
+p <- ggCosinorM(object = fit,
                 labels = TRUE,
                 ci = TRUE,
                 ci_level = 0.95,

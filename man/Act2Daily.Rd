@@ -61,31 +61,47 @@ when you move into a time zone with a smaller UTC offset, a brief gap appears
 on "Travel Day", with labeling - "Unallocated", which represents "time lose".
 }
 \examples{
-# Option 1. Create a list that includes the adjusted recordings both in long
-# format and as a nested list by day.
 
 \dontrun{
+
+# Import data
+data(FlyEast)
+
+
+# Create quick summary of the recording with adjustment for daylight saving.
+BdfList <-
+BriefSum(df = FlyEast ,
+         SR = 1/60,
+         Start = "2017-10-24 13:45:00")
+
+
+ # Let's extract the quick summary of the recording
+Bdf <- BdfList$Bdf
+
+### Note that since the original data was affected by travel-induced time
+### shift, the recordings would not be properly segmented from 2017-11-02.
+
+## To avoid time shift due to travelling, we will keep only the first 8 days.
+Bdf <- Bdf[1:8,]
+
+
+# Segment Data by Day
 dfList =
  Act2Daily(df = FlyEast,
-           Bdf = Bdf.adj,
+           Bdf = Bdf,
            VAct = "Activity",
            VTm = "X2",
            Incomplete = TRUE,
            Travel = TRUE)
 
-}
+str(dfList) ### Look at the output structure
+View(dfList)
 
-# Option 2, separate storage with the help of "\%<-\%" operate from "zeallot"
-\dontrun{
-library(zeallot)
-c(Dailydf, Newdf) \%<-\%
- Act2Daily(df = df,
-           Bdf = Bdf.adj,
-           VAct = "Activity",
-           VTm = "X2",
-           Incomplete = TRUE,
-           Travel = TRUE)
+
 }
+}
+\seealso{
+\code{\link{TAdjust}} \code{\link{write.act}}
 }
 \keyword{Actigraphy}
 \keyword{Daily}

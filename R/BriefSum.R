@@ -26,14 +26,17 @@
 #' @returns A data.frame where each row holds all metadata for one recording day: the calendar date, time--zone code, epoch length (seconds), UTC offset, daylight--saving flag, cumulative start/end seconds from midnight, recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`, `Incomplete Recording`), an exclusion flag, and the expected number of epochs for a full day
 #' @keywords Summary Actigraphy
 #' @examples
-#' # Export the data in a list
+#'
 #' \dontrun{
+#' # Import data
 #' data(FlyEast)
 #'
-#' Bdf = BriefSum(df = FlyEast,
+#' BdfList = BriefSum(df = FlyEast,
 #'                SR = 1/60,
 #'                Start = "2017-10-19 13:45:00")
-#' print(Bdf)
+#'
+#' str(BdfList)
+#' # View(BdfList)
 #'
 #' ## install library "zeallot"
 #' ## library(zeallot)

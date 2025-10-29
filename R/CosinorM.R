@@ -52,7 +52,7 @@
 #' @details
 #' \strong{Acrophase \eqn{ (\phi) } interpretation}:
 #'  \eqn{ \phi } is derived from
-#'  \deqn{ \phi = atan2(-\gamma, \beta) }
+#'  \deqn{ \phi = \arctan(\frac{\gamma} {\beta}) }
 #'  Note, \eqn{ \phi } is converted to clock time to identify the peak activity time.
 #'
 #' \strong{Amplitude \eqn{ (A) } estimation}:
@@ -98,19 +98,20 @@
 #' Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 #'
 #' @seealso
-#' \code{\link[stats]{lm}} for general linear model.
+#' \code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
 #'
-#' `CosinorM.KD` for Gaussian.
 #' @examples
-#' #' require(stats)
+#' require(stats)
 #' require(graphics)
 #'
 #'
 #' \dontrun{
 #' # Import data
-#' FlyEast
+#' data(FlyEast)
 #'
-#' BdfList =
+#'
+#' # Create quick summary of the recording with adjustment for daylight saving.
+#' BdfList <-
 #' BriefSum(df = FlyEast ,
 #'          SR = 1/60,
 #'          Start = "2017-10-24 13:45:00")
@@ -129,8 +130,8 @@
 #' fit$coef.cosinor
 #'
 #'
-#' # plot KDE in hours
-#' plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "KDE")
+#' # plot Cosinor in hours
+#' plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 #' }
 #' @keywords cosinor
 #' @export
@@ -197,9 +198,23 @@ CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
   beta   <- Coef[vars[grepl("^C", vars)]]
   gamma  <- Coef[vars[grepl("^S", vars)]]
 
-  ## Compute amp and phi
+  ## Compute amplitude and acrophase
   amplitude  <- sqrt(beta^2 + gamma^2)
-  acrophase  <- atan2(-gamma, beta)
+
+
+  acrophase <- theta <- atan(abs(gamma) / beta)
+
+  for (nl in 1:nT) {
+
+    Bs <- beta[[nl]]
+    Gs <- gamma[[nl]]
+    acrophase[[nl]] <- ifelse(Bs >= 0 & Gs > 0, -theta,
+                             ifelse(Bs < 0 & Gs >= 0, theta - pi,
+                                    ifelse(Bs <= 0 & Gs < 0, -theta - pi,
+                                          ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA))))
+
+  }
+
 
 
   # Prepare Output

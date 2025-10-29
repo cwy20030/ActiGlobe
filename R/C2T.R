@@ -30,7 +30,6 @@ C2T <- function(Time){
 
 
     x <- as.numeric(decimal_hours)
-    x <- x - x[[1]]
   }
 
   if (any(is.na(x))) warning(paste0("NAs introduced by coercion"))
