@@ -1,5 +1,7 @@
 
-# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="Logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
+# ActiGlobe <align = "center">
+
+<a href="https://github.com/cwy20030/ActiGlobe"><img src="Logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
 
