@@ -16,7 +16,10 @@
 ^\.$
 ^\.github$
 ^FETCH_HEAD$
+<<<<<<< HEAD
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^vignettes$
+=======
+>>>>>>> 8377d0a41c4b7a1d0dcbdf9bc433795d587017c7
