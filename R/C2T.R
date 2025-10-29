@@ -22,15 +22,14 @@ C2T <- function(Time){
 
   if (length(na.omit(x)) == 0) {
 
-     hms <- as.POSIXct(Time, format = TimeFormat(Time))
+    hms <- as.POSIXct(Time, format = TimeFormat(Time))
 
-     decimal_hours <- as.numeric(format(hms, "%H")) +
-                      as.numeric(format(hms, "%M")) / 60 +
-                      as.numeric(format(hms, "%S")) / 3600
+    decimal_hours <- as.numeric(format(hms, "%H")) +
+      as.numeric(format(hms, "%M")) / 60 +
+      as.numeric(format(hms, "%S")) / 3600
 
 
-     x <- as.numeric(decimal_hours)
-     x <- x - x[[1]]
+    x <- as.numeric(decimal_hours)
   }
 
   if (any(is.na(x))) warning(paste0("NAs introduced by coercion"))

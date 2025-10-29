@@ -1,8 +1,10 @@
 Package: ActiGlobe
 Type: Package
 Title: AUTOMATED CROSS-CONTINENTAL ACTIGRAPHY HARMONIZER
-Version: 0.1.7
-Author: Who wrote it
+Version: 0.1.9
+Authors@R: c(person("C. William", "Yao", email = "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut","cre","cph"), comment = c(ORCID="0000-0002-7234-7375")),
+             person("Giorgio", "Varesco", email = "giorgio.varesco@umontreal.ca", role = c("aut","ctb"), comment = c(ORCID="0000-0001-9385-6972")),
+             person("Guido", "Simonelli", email = "guido.simonelli@umontreal.ca", role = c("aut","ctb","fnd"), comment = c(ORCID="0000-0002-5400-319X")))
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
 Description: A library specifically designed to process longitudinal actigraphy recordings affected by mid-to-long range travelling. To harmonize recordings, the affected epochs will be adjusted based on the travel log or journal. Along with a graphic and a tabular summary report, the harmonized recordings will be split by day and saved locally (with or without the affected recordings). Besides visual inspection, each report also comes with a summary of time adjusted and several daily active-rest pattern estimates.
 License: GPL (>= 3)
@@ -11,15 +13,7 @@ LazyData: true
 RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.0.0)
-Authors@R: c(
-    person("C. William", "Yao", , "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut", "cre", "cph"),
-           comment = c(ORCID = "0000-0002-7234-7375")),
-    person("Giorgio", "Varesco", , "giorgio.varesco@umontreal.ca", role = c("aut", "ctb"),
-           comment = c(ORCID = "0000-0001-9385-6972")),
-    person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "ctb", "fnd"),
-           comment = c(ORCID = "0000-0002-5400-319X"))
-  )
-Date: 2025-10-03
+Date: 2025-10-14
 Imports: 
     ggplot2,
     ggrepel,
@@ -39,3 +33,9 @@ URL: https://github.com/cwy20030/ActiGlobe
 BugReports: https://github.com/cwy20030/ActiGlobe/issues
 ByteCompile: true
 Config/testthat/edition: 3
+NeedsCompilation: no
+Author: C. William Yao [aut, cre, cph]
+    (<https://orcid.org/0000-0002-7234-7375>),
+  Giorgio Varesco [aut, ctb] (<https://orcid.org/0000-0001-9385-6972>),
+  Guido Simonelli [aut, ctb, fnd]
+    (<https://orcid.org/0000-0002-5400-319X>)

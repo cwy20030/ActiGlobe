@@ -21,7 +21,7 @@
 #' @title Convert Numbers to Standard UTC Offset
 #' @param x UTC Offsets <e.g., "UTC+09:30" or "UTC-07:00">
 #' @export
-#' @seealso [UTC2Num()]
+#' @seealso \code{\link{UTC2Num}}
 #' @examples
 #' # Convert UTC to numeric values
 #' x = c(9.5,-7)
