@@ -83,11 +83,12 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   D = DateFormat(TLog$date_Start)
 
   ## Convert Travel Log to Parameters ------------
-  if(any(!D %in% DT)){
+  if (any(!D %in% DT)) {
 
     D2k = which(D %in% DT)
     TLog = TLog[D2k,]
     D = DateFormat(TLog$date_Start)
+
   }
 
   P = R2P(Bdf = Bdf,
@@ -187,9 +188,10 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
 
   Epl <- as.numeric(Epc[[1]])
-  Timel = sequence(nvec = Nl,
-                   from = Tl,
-                   by = Epl) #### All time points on the last day.
+
+  Timel = seq(nvec = Tl,
+              from = Nl,
+              by = Epl) #### All time points on the last day.
 
 
   HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])
