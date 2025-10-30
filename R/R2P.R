@@ -56,23 +56,23 @@ R2P = function(Bdf, D, U){
 
   Bdf$UTC.old = Bdf$UTC[[1]]
 
- for (d in 1:length(D)){
+  for (d in 1:length(D)){
 
-  if (D[d] %in% DT) { ### Check if the travel dates in the log existed in recording
+    if (D[d] %in% DT) { ### Check if the travel dates in the log existed in recording
 
-    if (d < length(D)){
+      if (d < length(D)){
 
-      Period = as.Date(D[d]:(D[d+1]-1))
+        Period = as.Date(D[d]:(D[d+1]-1))
 
-    } else {
-      fD <- which(DT == D[d])
-      eD <- which(DT == MaxDate)
-      Period = as.Date(DT[c(fD:eD)])
+      } else {
+        fD <- which(DT == D[d])
+        eD <- which(DT == MaxDate)
+        Period = as.Date(DT[c(fD:eD)])
+      }
+
+      Bdf$Recording_Period[DT %in% Period] = d
+      Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
     }
-
-    Bdf$Recording_Period[DT %in% Period] = d
-    Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
-   }
   }
 
   ### Compute Changes in Hours -------------
@@ -81,9 +81,8 @@ R2P = function(Bdf, D, U){
 
 
   ## Update Recording Period
-  if (!MinDate %in% D) {
+  if (!MinDate %in% D)
     Bdf$Recording_Period = ifelse( is.na(Bdf$Recording_Period), 1,  Bdf$Recording_Period + 1)
-  }
 
 
 

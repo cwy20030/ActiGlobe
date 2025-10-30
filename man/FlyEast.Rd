@@ -18,4 +18,7 @@ data(FlyEast)
 \description{
 This sample data is a modified version of a continuous wrist-worn actigraphy recording (Philips `ActiWatch5`) collected over a month. The data was originally collected to monitor the influence of jetleg on professional athelets' performance during competitions.
 }
+\seealso{
+\code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}
+}
 \keyword{FlyEast}

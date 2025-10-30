@@ -63,6 +63,7 @@
 #' \item{Marker}{A binary indicator generated when the wearer press the button to record onset of sleep or awake.}
 #' }
 #'
+#' @seealso \code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}
 "FlyEast"
 
 
@@ -87,7 +88,7 @@
 #' \item{Note}{Summary annotation derived from \code{\link{BriefSum}}.}
 #' }
 #'
-#' @seealso [data(FlyEast)]
+#' @seealso \code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{FlyEast}}
 "FlyEast_adj"
 
 
@@ -98,7 +99,7 @@
 #' A modified travel log documenting the dates when the wearer departs for long-distance travel.
 #'
 #' @docType data
-#' @keywords travel timezone `daylight saving` diary
+#' @keywords travel timezone daylight saving diary
 #' @name TLog
 #' @usage data(TLog)
 #' @format A data frame with over 40,000 rows and 5 variables:
@@ -109,6 +110,6 @@
 #'   \item{date_Start}{Start date of the wearer's initial location or date of departure.}
 #'   \item{date_End}{Optional date when the wearer departs again from the initial location or previous destination.}
 #' }
-#' @seealso \code{\link{TravelLog}}, \code{\link{IANA}}
+#' @seealso \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}
 #'
 "TLog"
