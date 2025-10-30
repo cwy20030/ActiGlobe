@@ -17,4 +17,7 @@
 ^\.$
 ^\.github$
 ^FETCH_HEAD$
-
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^vignettes$
