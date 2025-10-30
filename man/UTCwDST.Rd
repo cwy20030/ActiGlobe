@@ -42,7 +42,6 @@ UTCwDST(UTCs = c(1, 8))
 # UTC-5 commonly includes DST zones (e.g., New York)
 UTCwDST(UTCs = -5)
 }
-
 }
 \seealso{
 \code{\link{DST}}, \code{\link{UTC2Num}}, \code{\link{OlsonNames}}
