@@ -36,6 +36,7 @@ R2P = function(Bdf, D, U){
 
   ## Extract Date info from summary
   DT = Bdf$Date ## All Recording Dates
+  DT <- DateFormat(DT)
   MinDate = min(DT) ## First Date
   MaxDate = max(DT) ## Last Date
 
@@ -65,7 +66,10 @@ R2P = function(Bdf, D, U){
       } else {
         fD <- which(DT == D[d])
         eD <- which(DT == MaxDate)
-        Period = as.Date(DT[c(fD:eD)])
+
+        idx <- seq.int(from = as.integer(fD), to = as.integer(eD))
+        subDT <- DT[idx]
+
       }
 
       Bdf$Recording_Period[DT %in% Period] = d

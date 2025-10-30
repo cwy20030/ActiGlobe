@@ -183,15 +183,15 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
 
   ################### Check the Last Day ###################
   Idxl = length(DT)
-  Nl = as.numeric(N[Idxl]) #### Last number of data
+  Nl = as.integer(N[Idxl]) #### Last number of data
   Dl = DT[Idxl] #### Last date of the recording
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
 
   Epl <- as.numeric(Epc[[1]])
 
-  Timel = seq(nvec = Tl,
-              from = Nl,
-              by = Epl) #### All time points on the last day.
+  Timel = seq(from = Tl,
+              by = Epl,
+              length.out = Nl) #### All time points on the last day.
 
 
   HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])
