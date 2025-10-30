@@ -1,50 +1,117 @@
-# ActiGlobe
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
 
 ![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
-
-
-
 <!-- badges: end -->
-<div align="center">
-  <img src="Logo.png" width="300px" />
-</div>
 
-<br>
+ActiGlobe is designed to make it easy to pre-process longitudinal
+actigraphy recordings, especially for the recordings affected by time
+shift due to daylight saving changes and or cross-continental travel. It
+streamlines the process from end-to-end, to simplify the process of
+pre-processing, analyzing, and exporting daily actigraphy data and
+visual reports, making it an essential tool for researchers and
+professionals in the field.
 
-The goal of ActiGlobe is to provide a comprehensive and user-centered analysis of actigraphy data, especially for individuals undergoing long travel. It ensures accurate time-shift adjustments, including daylight saving changes, to deliver precise and insightful analysis of daily activity patterns. ActiGlobe aims to simplify the process of importing,
-adjusting, analyzing, and exporting daily actigraphy data and visual reports, making it an essential tool for researchers and professionals in the field. 
-
-<br>
+Learn more about how to use ActiGlobe at
+<https://cwy20030.github.io/ActiGlobe/>.
 
 ## Installation
 
-You can install the development version of ActiGlobe from
-[GitHub](https://github.com/) with:
+The pre-released version of ActiGlobe can installed from
+[GitHub](https://github.com/) with: ::: .ActiGlobe-devel
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("cwy20030/ActiGlobe")
 ```
 
+:::
+
+Coming soon… ::: .ActiGlobe-release
+
+``` r
+install.packages("ActiGlobe")
+```
+
+:::
+
 <br>
 
-## Citation 
+## Citation
+
 ### For the pre-release package ‘ActiGlobe’ in publication:
 
-  Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: An Automated Tool for Cross-continental Actigraphy Data Harmonization, Visualization and Analysis_. R
+``` r
+citation("ActiGlobe")
+#> To cite package 'ActiGlobe' in publications use:
+#> 
+#>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
+#>   Processor for Cross-continental Travel_. R package version 0.1.9,
+#>   <https://github.com/cwy20030/ActiGlobe>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {ActiGlobe: Wearable Recording Processor for Cross-continental Travel},
+#>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
+#>     year = {2025},
+#>     note = {R package version 0.1.9},
+#>     url = {https://github.com/cwy20030/ActiGlobe},
+#>   }
+```
 
-  package version 0.1.9, <https://github.com/cwy20030/ActiGlobe>.
-  
-<br>
+To convert to EndNote compatible format, paste the BibTeX entry in
+\[online bibtex-converter\]
+(<https://asouqi.github.io/bibtex-converter/>)
 
-### BibTeX citation format
-  @Manual{,
-    title = {ActiGlobe: An Automated Tool for Cross-continental Actigraphy Data Harmonization, Visualization and Analysis},  
-    author = {C. William Yao and Giorgio Varesco and Guido Simonelli},  
-    year = {2025},  
-    note = {R package version 0.1.9},  
-    url = {https://github.com/cwy20030/ActiGlobe},  
-  }
+## Quick Start - No Time Change
+
+``` r
+### Load ActiGlobe into R
+library(ActiGlobe)
+```
+
+``` r
+### Replace FlyEast with the dataset and specify sampling rate in SR and the start of the recording. 
+BdfList = 
+BriefSum(df = FlyEast,
+         SR = 1/60,
+         Start = "2017-10-24 13:45:00")
+
+
+### Extract the summary report and the enriched data
+Bdf <- BdfList$Bdf
+df <- BdfList$df
+```
+
+``` r
+### Import the travel log into R and give it a name
+TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
+
+### Replace the TLog with the name of the travel log assigned
+Bdf.adj = TAdjust(Bdf = Bdf, 
+                  TLog = TLog)
+```
+
+Take a coffee break if needed because ActiGlobe will adjust time shift
+and anonymize the travel destination to keep participants’ privacy.
+
+``` r
+dfList = Act2Daily(df = df,
+                   Bdf = Bdf.adj,
+                   VAct = "Activity",
+                   VTm = "Time",
+                   Incomplete = TRUE,
+                   Travel = TRUE)
+```
+
+## Code of conduct
+
+Please note that this project is released with a [Contributor Code of
+Conduct](https://github.com/cwy20030/ActiGlobe/CODE_OF_CONDUCT.html). By
+participating in this project you agree to abide by its terms.
