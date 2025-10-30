@@ -7,11 +7,8 @@ Test.nb.html
 .Rhistory
 .RData
 .Ruserdata
-
 # Office files
 *.pptx
-
-
 # Folders (ignore directory and contents)
 Ref/
 Resources/
@@ -20,3 +17,5 @@ Undone/
 .httr-oauth
 .DS_Store
 .quarto
+docs
+inst/doc
