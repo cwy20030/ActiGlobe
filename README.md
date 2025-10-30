@@ -7,6 +7,7 @@
 
 ![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![AGPLv3 license](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
