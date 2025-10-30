@@ -22,7 +22,7 @@ data(FlyEast_adj)
 This is the subset of the travel-adjusted `FlyEast` data. The data was originally collected to monitor the influence of jetleg on professional athelets' performance during competitions.
 }
 \seealso{
-[data(FlyEast)]
+\code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{FlyEast}}
 }
 \keyword{FlyEast_adj}
 \keyword{adjust}
