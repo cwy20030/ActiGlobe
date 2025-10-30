@@ -130,9 +130,11 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   Nl = N[Idxl] #### Last number of data
   Dl = DT[Idxl] #### Last date of the recording
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
+
+  Epl <- as.numeric(Epc[[1]])
   Timel = sequence(nvec = Nl,
                    from = Tl,
-                   by = Epc[[1]]) #### All time points on the last day.
+                   by = Epl) #### All time points on the last day.
   HMSl = as.POSIXct(Timel)
   Datel = suppressWarnings(DateFormat(HMSl)) ### Extract all the dates
   uniDl = unique(Datel) #### Check the numbers of the unique date spanning for the last day.
