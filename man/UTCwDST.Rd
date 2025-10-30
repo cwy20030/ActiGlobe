@@ -31,15 +31,17 @@ If at least one zone shows a shift in DST status between the two dates,
 the function returns `TRUE` for that offset.
 }
 \examples{
+
+ \dontrun{
 # Check for DST transitions in UTC+1 and UTC+8
 UTCwDST(UTCs = c("UTC+01:00", "UTC+08:00"))
 
 # Use numeric offset directly
 UTCwDST(UTCs = c(1, 8))
 
-# UTC−5 commonly includes DST zones (e.g., New York)
+# UTC-5 commonly includes DST zones (e.g., New York)
 UTCwDST(UTCs = -5)
-
+}
 }
 \seealso{
 \code{\link{DST}}, \code{\link{UTC2Num}}, \code{\link{OlsonNames}}

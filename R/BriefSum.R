@@ -23,17 +23,20 @@
 #' @param SR The sampling rate of the actigraphy (unit at Hz). Note that Hz should be equal to or less than 1.
 #' @param Start The starting date and time of the recording in formats like this "2021-03-05 18:31:03"
 #' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
-#' @returns A data.frame where each row holds all metadata for one recording day: the calendar date, time‐zone code, epoch length (seconds), UTC offset, daylight‐saving flag, cumulative start/end seconds from midnight, recording start/end times (HH:MM:SS), any warning labels (e.g. “Travel”, “Incomplete Recording”), an exclusion flag, and the expected number of epochs for a full day
+#' @returns A data.frame where each row holds all metadata for one recording day: the calendar date, time--zone code, epoch length (seconds), UTC offset, daylight--saving flag, cumulative start/end seconds from midnight, recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`, `Incomplete Recording`), an exclusion flag, and the expected number of epochs for a full day
 #' @keywords Summary Actigraphy
 #' @examples
-#' # Export the data in a list
+#'
 #' \dontrun{
+#' # Import data
 #' data(FlyEast)
 #'
-#' Bdf = BriefSum(df = FlyEast,
+#' BdfList = BriefSum(df = FlyEast,
 #'                SR = 1/60,
 #'                Start = "2017-10-19 13:45:00")
-#' print(Bdf)
+#'
+#' str(BdfList)
+#' # View(BdfList)
 #'
 #' ## install library "zeallot"
 #' ## library(zeallot)
@@ -73,7 +76,9 @@ BriefSum = function(df, SR, Start, TZ = "local") {
   T = as.numeric(as.POSIXct(Start)) + (0:(nrow(df)-1) * Epc)
 
   ### Convert date time
-  AllT = as.POSIXct(x = T, tz = TZ)
+  AllT <- if (is.numeric(T)) as.POSIXct(x = T, origin = "1970-01-01", tz = TZ) else as.POSIXct(x = T, tz = TZ)
+
+
 
   ##### Extract date
   Ds = format(AllT,"%Y-%m-%d")

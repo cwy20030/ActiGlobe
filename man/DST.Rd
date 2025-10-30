@@ -10,7 +10,7 @@ DST(DT, TZ = "local")
 \item{DT}{A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
 the dates/times to test.  These need not be sorted.}
 
-\item{TZ}{A single string naming an IANA time zone (e.g. `"America/New_York"`).
+\item{TZ}{A single string naming an IANA time zone (e.g. `America/New_York`).
 If `"local"`, it will extract local time zone using `Sys.timezone()`.  Must match one entry in
 `OlsonNames()`.}
 }
@@ -24,7 +24,7 @@ Determine if Dates Fall in Daylight Saving Time for the Given Time Zone(s)
 \details{
 For each element of `DT`, returns `TRUE` if that date-time is in
 daylight saving time (DST) under the specified time zone.  The
-function handles transitions by detecting the “gain” or “loss” of
+function handles transitions by detecting the "gain" or "loss" of
 hours via `DST2GL()` and flipping the DST flag on the transition day.
 }
 \examples{

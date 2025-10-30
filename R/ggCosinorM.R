@@ -23,7 +23,7 @@
 #' Create visualization of a CosinorM model fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
 #'
 #' @import stats ggplot2 ggrepel viridis
-#' @param object A fitted model of class [CosinorM()]
+#' @param object A fitted model of class \code{\link{CosinorM}}
 #' @param labels Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).
 #' @param ci Logical; Default `TRUE` computes and draws pointwise parametric confidence bands for the fitted cosinor curve using the model covariance.
 #' @param ci_level Confidence level for the pointwise bands, expressed in numeric value between 0 and 1.
@@ -35,7 +35,7 @@
 #' @examples
 #' \dontrun{
 #' # Import data
-#' FlyEast
+#' data(FlyEast)
 #'
 #' BdfList =
 #' BriefSum(df = FlyEast ,
@@ -52,7 +52,7 @@
 #'                 method = "OLS")
 #'
 #'
-#' p <- ggCosinorM(fit,
+#' p <- ggCosinorM(object = fit,
 #'                 labels = TRUE,
 #'                 ci = TRUE,
 #'                 ci_level = 0.95,
@@ -61,7 +61,7 @@
 #' }
 #'
 #' @seealso
-#' [ggplot2::ggplot()], [ggrepel::geom_label_repel()], [stats::predict()]
+#' \code{\link[ggplot2]{ggplot}}, \code{\link[ggrepel]{geom_label_repel}}, \code{\link[stats]{predict}}
 #'
 #' @export
 
@@ -81,8 +81,8 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
   phi_names <- paste0("Acrophase.", tau)
   amplitude <- as.numeric(coef_cos[amp_names])
   acrophase_rad <- as.numeric(coef_cos[phi_names])
-  acrophase_time <- (acrophase_rad * tau) / (2 * pi)
-  acrophase_time <- (acrophase_time %% tau)
+  acrophase_time <- (acrophase_rad %% (2 * pi)) / (2 * pi)
+  acrophase_time <- (acrophase_time * tau)
 
   peak_value <- mesor + amplitude
   trough_value <- mesor - amplitude
@@ -139,9 +139,16 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
     alpha <- 1 - ci_level
     tcrit <- stats::qt(1 - alpha / 2, df = stats::df.residual(object))
 
+  if (ci) {
+    ym <-  fit_pred - tcrit * se_fit
+    yM <-  fit_pred + tcrit * se_fit
 
-    ym <- ifelse(ci, fit_pred - tcrit * se_fit, NA)
-    yM <- ifelse(ci, fit_pred + tcrit * se_fit, NA)
+  } else {
+    ym <- NA
+    yM <- NA
+
+  }
+
 
 
   # annotation layers
@@ -173,15 +180,11 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
     ggplot2::geom_line(mapping = ggplot2::aes(x = newt, y = fit_pred), color = "blue", size = 0.9)
 
 
-  if (ci) {
+  if (ci)
     g <- g +
       # CI ribbon (parametric) if requested
-      ggplot2::geom_ribbon(mapping = ggplot2::aes(x = t_obs, ymin = ym, ymax = yM), colour = "cyan", alpha = 0.18, inherit.aes = FALSE)
-  } else {
+      ggplot2::geom_ribbon(mapping = ggplot2::aes(x = newt, ymin = ym, ymax = yM), colour = "cyan", alpha = 0.18, inherit.aes = FALSE)
 
-
-
-  }
 
     # horizontal MESOR
   g <- g +

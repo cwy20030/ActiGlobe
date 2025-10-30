@@ -2,6 +2,7 @@
 ^.*\.pptx$
 ^.*\.png$
 ^Build\.Rmd$
+^README\.Rmd$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^ReadMe\.txt$
@@ -15,3 +16,8 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.$
 ^\.github$
+^FETCH_HEAD$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^vignettes$

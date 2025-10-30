@@ -56,7 +56,7 @@ GuessTZ = function(aOF, DT = NULL, iTZ = NULL, All = TRUE) {
     cl <- parallel::makeCluster(4)  # Use all but one core
 
     # Step 2: Export variables and functions to cluster
-    parallel::clusterExport(cl, varlist = c("DT"))
+    parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
 
     # Step 3: Run the parallelized task
     Toffs <- parallel::parLapply(cl, oTZs, function(tz) {

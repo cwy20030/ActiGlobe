@@ -16,7 +16,7 @@ ggCosinorM(
 )
 }
 \arguments{
-\item{object}{A fitted model of class [CosinorM()]}
+\item{object}{A fitted model of class \code{\link{CosinorM}}}
 
 \item{labels}{Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).}
 
@@ -38,7 +38,7 @@ Create visualization of a CosinorM model fit using ggplot2. The plot shows the p
 \examples{
 \dontrun{
 # Import data
-FlyEast
+data(FlyEast)
 
 BdfList =
 BriefSum(df = FlyEast ,
@@ -55,7 +55,7 @@ fit <- CosinorM(time = df$Time,
                 method = "OLS")
 
 
-p <- ggCosinorM(fit,
+p <- ggCosinorM(object = fit,
                 labels = TRUE,
                 ci = TRUE,
                 ci_level = 0.95,
@@ -65,5 +65,5 @@ print(p)
 
 }
 \seealso{
-[ggplot2::ggplot()], [ggrepel::geom_label_repel()], [stats::predict()]
+\code{\link[ggplot2]{ggplot}}, \code{\link[ggrepel]{geom_label_repel}}, \code{\link[stats]{predict}}
 }

@@ -21,9 +21,10 @@ data(TLog)
 A modified travel log documenting the dates when the wearer departs for long-distance travel.
 }
 \seealso{
-[TravelLog()], [IANA]
+\code{\link{TravelLog}}, \code{\link{IANA}}
 }
-\keyword{daylight_saving,}
+\keyword{`daylight}
 \keyword{diary}
-\keyword{timezone,}
-\keyword{travel,}
+\keyword{saving`}
+\keyword{timezone}
+\keyword{travel}
