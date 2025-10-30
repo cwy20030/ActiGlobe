@@ -36,6 +36,7 @@ R2P = function(Bdf, D, U){
 
   ## Extract Date info from summary
   DT = Bdf$Date ## All Recording Dates
+  DT <- DateFormat(DT)
   MinDate = min(DT) ## First Date
   MaxDate = max(DT) ## Last Date
 
