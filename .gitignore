@@ -7,8 +7,15 @@ Test.nb.html
 .Rhistory
 .RData
 .Ruserdata
+.Rbuildignore
+.Renviron
+.Rprofile
+.Rprofile.site
+.README.Rmd
+
 # Office files
 *.pptx
+
 # Folders (ignore directory and contents)
 Ref/
 Resources/
@@ -18,4 +25,4 @@ Undone/
 .DS_Store
 .quarto
 docs
-inst/doc
+pkgdown/
