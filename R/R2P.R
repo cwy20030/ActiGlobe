@@ -58,8 +58,6 @@ R2P = function(Bdf, D, U){
 
   for (d in 1:length(D)){
 
-    if (D[d] %in% DT) { ### Check if the travel dates in the log existed in recording
-
       if (d < length(D)){
 
         Period = as.Date(D[d]:(D[d+1]-1))
@@ -72,7 +70,7 @@ R2P = function(Bdf, D, U){
 
       Bdf$Recording_Period[DT %in% Period] = d
       Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
-    }
+
 
   }
 
