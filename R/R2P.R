@@ -73,6 +73,7 @@ R2P = function(Bdf, D, U){
       Bdf$Recording_Period[DT %in% Period] = d
       Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
     }
+
   }
 
   ### Compute Changes in Hours -------------
