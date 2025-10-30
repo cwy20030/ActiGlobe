@@ -76,7 +76,9 @@ BriefSum = function(df, SR, Start, TZ = "local") {
   T = as.numeric(as.POSIXct(Start)) + (0:(nrow(df)-1) * Epc)
 
   ### Convert date time
-  AllT = as.POSIXct(x = T, tz = TZ)
+  AllT <- if (is.numeric(T)) as.POSIXct(x = T, origin = "1970-01-01", tz = TZ) else as.POSIXct(x = T, tz = TZ)
+
+
 
   ##### Extract date
   Ds = format(AllT,"%Y-%m-%d")
