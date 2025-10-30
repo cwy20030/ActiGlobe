@@ -175,7 +175,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
 
   ################### Check the Last Day ###################
   Idxl = length(DT)
-  Nl = N[Idxl] #### Last number of data
+  Nl = as.numeric(N[Idxl]) #### Last number of data
   Dl = DT[Idxl] #### Last date of the recording
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
 
@@ -183,6 +183,8 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   Timel = sequence(nvec = Nl,
                    from = Tl,
                    by = Epl) #### All time points on the last day.
+
+
   HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])
   Datel = suppressWarnings(DateFormat(HMSl)) ### Extract all the dates
   uniDl = unique(Datel) #### Check the numbers of the unique date spanning for the last day.
