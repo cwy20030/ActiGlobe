@@ -81,8 +81,9 @@ R2P = function(Bdf, D, U){
 
 
   ## Update Recording Period
-  if (!MinDate %in% D)
+  if (!MinDate %in% D) {
     Bdf$Recording_Period = ifelse( is.na(Bdf$Recording_Period), 1,  Bdf$Recording_Period + 1)
+  }
 
 
 

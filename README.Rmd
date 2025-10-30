@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 ![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![AGPLv3 license](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal actigraphy recordings, especially for the recordings affected by time shift due to daylight saving changes and or cross-continental travel. It streamlines the process from end-to-end, to simplify the process of pre-processing, analyzing, and exporting daily actigraphy data and visual reports, making it an essential tool for researchers and professionals in the field. 

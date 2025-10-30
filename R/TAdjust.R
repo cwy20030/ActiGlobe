@@ -175,7 +175,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
 
   ################### Check the Last Day ###################
   Idxl = length(DT)
-  Nl = N[Idxl] #### Last number of data
+  Nl = as.numeric(N[Idxl]) #### Last number of data
   Dl = DT[Idxl] #### Last date of the recording
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
 
