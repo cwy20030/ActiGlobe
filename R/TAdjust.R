@@ -183,6 +183,8 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   Timel = sequence(nvec = Nl,
                    from = Tl,
                    by = Epl) #### All time points on the last day.
+
+
   HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])
   Datel = suppressWarnings(DateFormat(HMSl)) ### Extract all the dates
   uniDl = unique(Datel) #### Check the numbers of the unique date spanning for the last day.
