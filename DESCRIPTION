@@ -7,7 +7,7 @@ Authors@R: c(person("C. William", "Yao", email = "chun.william.yao.cnmtl@ssss.go
              person("Guido", "Simonelli", email = "guido.simonelli@umontreal.ca", role = c("aut","ctb","fnd"), comment = c(ORCID="0000-0002-5400-319X")))
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
 Description: A library specifically designed to process longitudinal wearable recordings affected by mid-to-long range travelling. To harmonize recordings, the affected epochs will be adjusted based on the travel log or journal. Along with a graphic and a tabular summary report, the harmonized recordings will be split by day and saved locally (with or without the affected recordings). Besides visual inspection, each report also comes with a summary of time adjusted and several daily rest-activity pattern estimates.
-License: GPL (>= 3)
+License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
