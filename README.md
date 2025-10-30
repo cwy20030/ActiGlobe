@@ -30,15 +30,15 @@ The pre-released version of ActiGlobe can installed from
 devtools::install_github("cwy20030/ActiGlobe")
 ```
 
-:::
 
-Coming soon… ::: .ActiGlobe-release
+
+Coming soon…
+.ActiGlobe-release
 
 ``` r
 install.packages("ActiGlobe")
 ```
 
-:::
 
 <br>
 
