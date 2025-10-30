@@ -83,6 +83,13 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   D = DateFormat(TLog$date_Start)
 
   ## Convert Travel Log to Parameters ------------
+  if(any(!D %in% DT)){
+
+    D2k = which(D %in% DT)
+    TLog = TLog[D2k,]
+    D = DateFormat(TLog$date_Start)
+  }
+
   P = R2P(Bdf = Bdf,
           D = D,
           U = TLog$UTC_Offset)
