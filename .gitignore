@@ -8,6 +8,7 @@ Test.nb.html
 .RData
 .Ruserdata
 
+
 # Office files
 *.pptx
 
@@ -20,3 +21,6 @@ Undone/
 .httr-oauth
 .DS_Store
 .quarto
+vignettes/*.html
+/vignettes/*.R
+
