@@ -60,18 +60,41 @@ R2P = function(Bdf, D, U){
 
   if (D[d] %in% DT) { ### Check if the travel dates in the log existed in recording
 
-    if (d < length(D)){
+    if (d < length(D)) {
+      # create explicit Date sequence from D[d] to one day before D[d+1]
+      start_date <- as.Date(D[d])
+      end_date   <- as.Date(D[d+1]) - 1
 
-      Period = as.Date(D[d]:(D[d+1]-1))
+      if (start_date <= end_date) {
+        Period <- seq.Date(from = start_date, to = end_date, by = "day")
+
+      } else {
+
+        Period <- as.Date(character(0))
+      }
 
     } else {
-      fD <- which(DT == D[d])
+
+      fD <- which(DT == as.Date(D[d]))
       eD <- which(DT == MaxDate)
-      Period = as.Date(DT[c(fD:eD)])
+
+      if (length(fD) > 0 && length(eD) > 0 && fD <= eD) {
+
+        Period <- as.Date(DT[fD:eD])
+
+      } else {
+
+        Period <- as.Date(character(0))
+      }
     }
 
-    Bdf$Recording_Period[DT %in% Period] = d
-    Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
+
+    idx <- which(DT %in% Period)
+    if (length(idx) > 0) {
+      Bdf$Recording_Period[idx] <- d
+      Bdf$UTC[idx] <- Num2UTC(U[d])
+    }
+
    }
   }
 
