@@ -106,16 +106,33 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
 
   Nt <- df$Note
 
+
+
+
   ## Identify midnight boundaries
   MdN <- as.factor(ifelse(grepl("00:00:00", T) | !grepl(":",T), "1", "0"))
 
 
-
   ##### X Tick Control -----------------
+  if (length(unique(D)) > 1) { #### Multiple Days
   NTicks = 0.2
   Ds <- c(D[[1]],D[MdN == "1"])
-  NTicks = floor(length(Ds)*NTicks)
 
+  LabX = "Date"
+
+  } else {   #### Same Day
+
+  NTicks = 0.2
+  D <- C2T(T)
+  Ds <- unique(ceiling(D))
+  D <- floor(D)
+
+  LabX = "Time of the Day"
+  }
+
+
+
+  NTicks = floor(length(Ds)*NTicks)
 
   Idx <- which(!duplicated(D))
 
@@ -133,7 +150,7 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
   E <- as.factor(ifelse(Nt != "", "1", "0"))
 
   ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
-    ggplot2::geom_point(alpha = 0.05) +
+    ggplot2::geom_point(alpha = 0.5, shape = 16) +
     ggplot2::geom_vline(
       xintercept = as.numeric(NR[MdN == "1"]),
       linetype   = "dashed",
@@ -145,12 +162,13 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
       breaks =  Xcrd,                    # numeric positions on the NR axis
       labels = Xtx          # text to show at those positions
     ) +
-    ggplot2::labs(x = "Date", y = "Activity Count") +
+    ggplot2::labs(x = LabX, y = "Activity Count") +
     ggplot2::theme_classic() +
     ggplot2::theme(
       plot.margin     = ggplot2::margin(0, 0, 0, 0),
       axis.line       = ggplot2::element_line(size = 0.8),
       axis.text       = ggplot2::element_text(color = "black", face = "bold"),
+      axis.title      = ggplot2::element_text(color = "black", face = "bold"),
       legend.position = "none"
     )
 
