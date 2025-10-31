@@ -67,7 +67,12 @@ R2P = function(Bdf, D, U){
         fD <- as.integer(which(DT == D[d]))
         eD <- as.integer(which(DT == MaxDate))
 
-        idx <- seq(from = fD, to = eD, by = 1)
+        nD <- (eD - fD) + 1
+
+        idx <- seq(from = fD,
+                   to = eD,
+                   length.out = nD)
+
         subDT <- DT[idx]
       }
 
