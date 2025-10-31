@@ -25,3 +25,6 @@ vignettes/*.html
 /vignettes/*.R
 
 docs
+/doc/
+/Meta/
+inst/doc

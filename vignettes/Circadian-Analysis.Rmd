@@ -1,15 +1,12 @@
 ---
-title: "Analysis"
+title: "Circadian Analysis"
 subtitle: "Cosinor Analysis and Circularized Kernel Density Estimation"
 author: "C. William Yao"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysis}
+  %\VignetteIndexEntry{Circadian-Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-pkgdown:
-  as_is: true
 ---
 
 ```{r, include = FALSE}

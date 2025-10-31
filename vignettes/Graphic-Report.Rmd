@@ -1,17 +1,17 @@
 ---
 title: "Data Extraction and Graphic Report"
-subtitle: "How to extract daily recording summaries and cosinor parameters"
+subtitle: "Extract Daily Recording Summaries and Cosinor Parameters"
 author: "C. William Yao"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Extraction and Graphic Report}
+  %\VignetteIndexEntry{Graphic-Report}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
+  - ./images/Adjusted_Overview.png
+  - ./images/Day11.png
+  - ./images/Day12.png
   - ./images/write_act_example.png
-pkgdown:
-  as_is: true
 ---
 
 ## What will be covered in this tutorial?

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="120" alt="ActiGlobe website" /></a>
+# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
 
@@ -28,8 +28,14 @@ The pre-released version of ActiGlobe can installed from
 #### ActiGlobe-dev
 
 ``` r
+# If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code. 
 # install.packages("devtools")
 devtools::install_github("cwy20030/ActiGlobe")
+
+
+# To properly install tutorial, please, use the following code
+devtools::install_github("cwy20030/ActiGlobe",
+                         build_vignettes = TRUE)
 ```
 
 Coming soon… \#### ActiGlobe-release
@@ -49,17 +55,17 @@ citation("ActiGlobe")
 #> To cite package 'ActiGlobe' in publications use:
 #> 
 #>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-continental Travel_. R package version 0.1.9,
-#>   <https://cwy20030.github.io/ActiGlobe/>.
+#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
+#>   <https://github.com/cwy20030/ActiGlobe>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {ActiGlobe: Wearable Recording Processor for Cross-continental Travel},
+#>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
 #>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
 #>     year = {2025},
 #>     note = {R package version 0.1.9},
-#>     url = {https://cwy20030.github.io/ActiGlobe/},
+#>     url = {https://github.com/cwy20030/ActiGlobe},
 #>   }
 ```
 
@@ -97,7 +103,7 @@ Bdf.adj = TAdjust(Bdf = Bdf,
 ```
 
 Take a coffee break if needed because ActiGlobe will adjust time shift
-and anonymize the travel destination to keep the privacy of the participant.
+and anonymize the travel destination to keep participants’ privacy.
 
 ``` r
 dfList = Act2Daily(df = df,
@@ -111,5 +117,5 @@ dfList = Act2Daily(df = df,
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/cwy20030/ActiGlobe/CODE_OF_CONDUCT.md). By
-participating in this project you agree to abide by its terms.
+Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
