@@ -64,10 +64,10 @@ R2P = function(Bdf, D, U){
         Period = as.Date(D[d]:(D[d+1]-1))
 
       } else {
-        fD <- which(DT == D[d])
-        eD <- which(DT == MaxDate)
+        fD <- as.integer(which(DT == D[d]))
+        eD <- as.integer(which(DT == MaxDate))
 
-        idx <- seq.int(from = as.integer(fD), to = as.integer(eD))
+        idx <- seq(from = fD, to = eD, by = 1)
         subDT <- DT[idx]
 
       }

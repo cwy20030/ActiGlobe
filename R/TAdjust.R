@@ -123,7 +123,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   })
 
 
-  ### Step 1 Change NDPs
+   ### Step 1 Change NDPs
   #### Based on the new daylight saving, we will change the NDPs and cumulative time...
   A1 = ifelse(nuUDST & GL0 == 0, 0, -1 * GL0) ### Adjusting factor for incorrect initial GL guesses
   GL = GL0 + A1 ### Update GL....
