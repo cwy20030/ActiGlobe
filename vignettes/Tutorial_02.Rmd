@@ -113,7 +113,7 @@ head(IANA)
 
 Before `ActiGlobe` directly modify information stored in the enriched longitudinal recording - `df`, we will need to adjust the brief summary stored in `Bdf`. This design allows us to quickly scan through the summary file just in case any adjustment is not properly addressed.
 
-```{r TAdjust, message=FALSE, warning=FALSE}
+```{r TAdjust}
 Bdf.adj = TAdjust(Bdf, TLog)
 
 head(Bdf.adj)

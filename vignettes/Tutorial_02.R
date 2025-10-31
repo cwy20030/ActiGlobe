@@ -47,7 +47,7 @@ head(TLog)
 ## ----IANA header, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE----
 head(IANA)
 
-## ----TAdjust, message=FALSE, warning=FALSE------------------------------------
+## ----TAdjust------------------------------------------------------------------
 Bdf.adj = TAdjust(Bdf, TLog)
 
 head(Bdf.adj)
