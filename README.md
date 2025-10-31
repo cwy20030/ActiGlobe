@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
+# ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="120" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
 
@@ -97,7 +97,7 @@ Bdf.adj = TAdjust(Bdf = Bdf,
 ```
 
 Take a coffee break if needed because ActiGlobe will adjust time shift
-and anonymize the travel destination to keep participants’ privacy.
+and anonymize the travel destination to keep the privacy of the participant.
 
 ``` r
 dfList = Act2Daily(df = df,
