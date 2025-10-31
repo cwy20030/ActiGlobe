@@ -2,13 +2,22 @@ Package: ActiGlobe
 Type: Package
 Title: Wearable Recording Processor for Cross-Continental Travel
 Version: 0.2.0
-Authors@R: c(
-	person("C. William", "Yao", , email = "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut","cre","cph"), 
-		comment = c(ORCID="0000-0002-7234-7375")),
-	person("Giorgio", "Varesco", email = "giorgio.varesco@umontreal.ca", role = c("aut","ctb"), 
-		comment = c(ORCID="0000-0001-9385-6972")),
-	person("Guido", "Simonelli", email = "guido.simonelli@umontreal.ca", role = c("aut","ctb","fnd"), 
-		comment = c(ORCID="0000-0002-5400-319X"))
+Authors@R: 
+  c(person(given = "C. William", 
+		   family = "Yao", 
+		   role = c("aut","cre","cph"), 
+		   email = "chun.william.yao.cnmtl@ssss.gouv.qc.ca",
+		   comment = c(ORCID = "0000-0002-7234-7375")),
+	person(given = "Giorgio",
+		   family = "Varesco",
+		   role = c("aut"), 
+		   email = "giorgio.varesco@umontreal.ca", 
+		   comment = c(ORCID = "0000-0001-9385-6972")),
+	person(given = "Guido", 
+		   family = "Simonelli", 
+		   role = c("aut","fnd")
+		   email = "guido.simonelli@umontreal.ca",
+		   comment = c(ORCID = "0000-0002-5400-319X"))
 	)
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
 Description: A package specifically designed to process longitudinal wearable recordings affected by mid-to-long range travelling and daylight saving time. To harmonize recordings, the affected epochs will be adjusted based on the travel log and the Internet Assigned Numbers Authority protocol for time zone. Along with a graphic and a tabular summary report, the harmonized recordings will be split by day and saved locally (with or without the affected recordings). Besides visual inspection, each report also comes with a summary of time adjusted and several daily rest-activity pattern estimates. To learn how to use it, check the vignettes for a quick tutorial.\n The package is developed based on the methodology described in : Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
