@@ -1,11 +1,10 @@
 ---
 title: "Advanced Data Harmonization"
-subtitle: "Stream Lining Pre-processing from Daylight Saving to Travel-induced Time Shift"
+subtitle: "Pre-process Data Affected by Daylight Saving and Travel-induced Time Shift"
 author: "C. William Yao"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Advanced Data Harmonization}
+  %\VignetteIndexEntry{Time-Shift}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
@@ -14,8 +13,6 @@ resource_files:
   - ./images/Bdf.adj_demo.png
   - ./images/Unadjusted_Overview.png
   - ./images/Adjusted_Overview.png
-pkgdown:
-  as_is: true
 ---
 
 ## What will be covered in this tutorial?
@@ -35,7 +32,7 @@ knitr::opts_chunk$set(
 library(ActiGlobe)
 
 ### Optional Library
-library(zeallot)
+# library(zeallot)
 ```
 If any of the packages has yet been installed, we can always install them using the function ["install.packages()"]. 
 

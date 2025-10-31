@@ -20,9 +20,8 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-ActiGlobe is designed to make it easy to pre-process longitudinal actigraphy recordings, especially for the recordings affected by time shift due to daylight saving changes and or cross-continental travel. It streamlines the process from end-to-end, to simplify the process of pre-processing, analyzing, and exporting daily actigraphy data and visual reports, making it an essential tool for researchers and professionals in the field. 
+ActiGlobe is designed to make it easy to pre-process longitudinal actigraphy recordings, especially for the recordings affected by time shift due to daylight saving changes and or cross-continental travel. It streamlines the process from end-to-end, to simplify the process of pre-processing, analyzing, and exporting daily actigraphy data and visual reports, making it an essential tool for researchers and professionals in the field. To learn how to use it, check the vignettes for a quick tutorial.
 
-Learn more about how to use ActiGlobe at <https://cwy20030.github.io/ActiGlobe/>.
 
 ## Installation
 
@@ -31,8 +30,14 @@ The pre-released version of ActiGlobe can installed from
 
 #### ActiGlobe-dev
 ```{r eval = FALSE}
+# If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code. 
 # install.packages("devtools")
 devtools::install_github("cwy20030/ActiGlobe")
+
+
+# To properly install tutorial, please, use the following code
+devtools::install_github("cwy20030/ActiGlobe",
+                         build_vignettes = TRUE)
 ```
 
 
@@ -100,4 +105,4 @@ dfList = Act2Daily(df = df,
 
 ## Code of conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cwy20030/ActiGlobe/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
