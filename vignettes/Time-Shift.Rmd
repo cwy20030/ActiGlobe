@@ -1,5 +1,5 @@
 ---
-title: "Advanced Data Harmonization"
+title: "Time-Shift"
 subtitle: "Pre-process Data Affected by Daylight Saving and Travel-induced Time Shift"
 author: "C. William Yao"
 output: rmarkdown::html_vignette
