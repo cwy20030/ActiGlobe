@@ -7,14 +7,12 @@ Test.nb.html
 .Rhistory
 .RData
 .Ruserdata
-.Rbuildignore
-.Renviron
-.Rprofile
-.Rprofile.site
-.README.Rmd
+cran-comments.Rmd
+
 
 # Office files
 *.pptx
+
 
 # Folders (ignore directory and contents)
 Ref/
@@ -24,5 +22,10 @@ Undone/
 .httr-oauth
 .DS_Store
 .quarto
+vignettes/*.html
+/vignettes/*.R
+
 docs
-pkgdown/
+/doc/
+/Meta/
+inst/doc

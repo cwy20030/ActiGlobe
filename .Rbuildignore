@@ -6,6 +6,8 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^ReadMe\.txt$
+^cran-comments\.Rmd$
+^cran-comments\.md$
 ^\.Rhistory$
 ^Test.nb\.html$
 ^Test\.Rmd$
@@ -20,4 +22,5 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^vignettes$
+^doc$
+^Meta$
