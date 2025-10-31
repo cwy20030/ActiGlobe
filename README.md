@@ -17,9 +17,6 @@ pre-processing, analyzing, and exporting daily actigraphy data and
 visual reports, making it an essential tool for researchers and
 professionals in the field.
 
-Learn more about how to use ActiGlobe at
-<https://cwy20030.github.io/ActiGlobe/>.
-
 ## Installation
 
 The pre-released version of ActiGlobe can installed from
