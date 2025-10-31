@@ -6,8 +6,7 @@
 <!-- badges: start -->
 
 ![version](https://img.shields.io/badge/version-0.1.9-green)
-[![R-CMD-check.yaml](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
-[![AGPLv3 license](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
@@ -24,22 +23,26 @@ Learn more about how to use ActiGlobe at
 ## Installation
 
 The pre-released version of ActiGlobe can installed from
-[GitHub](https://github.com/) with: ::: .ActiGlobe-devel
+[GitHub](https://github.com/) with:
+
+#### ActiGlobe-dev
 
 ``` r
+# If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code. 
 # install.packages("devtools")
 devtools::install_github("cwy20030/ActiGlobe")
+
+
+# To properly install tutorial, please, use the following code
+devtools::install_github("cwy20030/ActiGlobe",
+                         build_vignettes = TRUE)
 ```
 
-
-
-Coming soon…
-.ActiGlobe-release
+Coming soon… \#### ActiGlobe-release
 
 ``` r
 install.packages("ActiGlobe")
 ```
-
 
 <br>
 
@@ -52,13 +55,13 @@ citation("ActiGlobe")
 #> To cite package 'ActiGlobe' in publications use:
 #> 
 #>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-continental Travel_. R package version 0.1.9,
+#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
 #>   <https://github.com/cwy20030/ActiGlobe>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {ActiGlobe: Wearable Recording Processor for Cross-continental Travel},
+#>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
 #>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
 #>     year = {2025},
 #>     note = {R package version 0.1.9},
@@ -114,5 +117,5 @@ dfList = Act2Daily(df = df,
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/cwy20030/ActiGlobe/CODE_OF_CONDUCT.html). By
-participating in this project you agree to abide by its terms.
+Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
