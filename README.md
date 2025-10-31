@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-![version](https://img.shields.io/badge/version-0.2.0-green)
+![version](https://img.shields.io/badge/version-0.1.9-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -15,7 +15,8 @@ shift due to daylight saving changes and or cross-continental travel. It
 streamlines the process from end-to-end, to simplify the process of
 pre-processing, analyzing, and exporting daily actigraphy data and
 visual reports, making it an essential tool for researchers and
-professionals in the field.
+professionals in the field. To learn how to use it, check the vignettes
+for a quick tutorial.
 
 ## Installation
 
@@ -52,7 +53,7 @@ citation("ActiGlobe")
 #> To cite package 'ActiGlobe' in publications use:
 #> 
 #>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
+#>   Processor for Cross-Continental Travel_. R package version 0.2.0,
 #>   <https://github.com/cwy20030/ActiGlobe>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -61,7 +62,7 @@ citation("ActiGlobe")
 #>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
 #>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
 #>     year = {2025},
-#>     note = {R package version 0.1.9},
+#>     note = {R package version 0.2.0},
 #>     url = {https://github.com/cwy20030/ActiGlobe},
 #>   }
 ```

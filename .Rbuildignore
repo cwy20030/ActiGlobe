@@ -1,11 +1,9 @@
 ^.*\.Rproj$
 ^.*\.pptx$
-^.*\.png$
 ^Build\.Rmd$
 ^README\.Rmd$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^ReadMe\.txt$
 ^cran-comments\.Rmd$
 ^cran-comments\.md$
 ^\.Rhistory$
