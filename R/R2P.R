@@ -69,7 +69,6 @@ R2P = function(Bdf, D, U){
 
         idx <- seq(from = fD, to = eD, by = 1)
         subDT <- DT[idx]
-
       }
 
       Bdf$Recording_Period[DT %in% Period] = d
