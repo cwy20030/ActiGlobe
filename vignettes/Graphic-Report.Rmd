@@ -1,5 +1,5 @@
 ---
-title: "Data Extraction and Graphic Report"
+title: "Graphic-Report"
 subtitle: "Extract Daily Recording Summaries and Cosinor Parameters"
 author: "C. William Yao"
 output: rmarkdown::html_vignette

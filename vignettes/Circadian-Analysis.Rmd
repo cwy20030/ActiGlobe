@@ -1,5 +1,5 @@
 ---
-title: "Circadian Analysis"
+title: "Circadian-Analysis"
 subtitle: "Cosinor Analysis and Circularized Kernel Density Estimation"
 author: "C. William Yao"
 output: rmarkdown::html_vignette
