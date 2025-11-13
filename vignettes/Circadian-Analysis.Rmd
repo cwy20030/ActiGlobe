@@ -46,7 +46,7 @@ library(ggplot2)
 
 # data: df with columns time_hour (0-24) and activity (nonnegative)
 # convert hours to radians
-df$theta <- C2T(df$Time) / 24 * 2 * pi
+df$theta <- (C2T(df$Time)%% 24) * 2 * pi / 24
 
 # simple weighted kernel density on a linear grid with wrapping
 wrap_kde <- function(theta, w, bw = 0.3, grid = 200) {
@@ -120,9 +120,9 @@ list(MESOR = MESOR,
 ```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
 fit.ols <- 
 CosinorM(time = df$Time,
-activity = df$Activity,
-tau = 24,
-method = "OLS")
+         activity = df$Activity,
+         tau = 24,
+         method = "OLS")
 
 ### Look at the parameters
 fit.ols$coef.cosinor
@@ -130,6 +130,23 @@ fit.ols$coef.cosinor
 ### Plot 
 ggCosinorM(fit.ols)
 ``` 
+
+```{r}
+df$hour <- C2T(df$Time)
+
+Model <- card::cosinor(Activity ~ hour, data = df, tau = 24)
+Model
+
+card::ggcosinor(Model)
+```
+
+
+
+```{r}
+cosinor2::correct.acrophase(cosinor::cosinor.lm(Activity ~ time(hour),data = df, period = 24))
+```
+
+
 
 #### Note 
 If we process \code{\link{FlyEast}} using the \code{\link[cosinor]{cosinor.lm}}, we will notice that the results look a bit different. This is because ActiGlobe treats the first time point of the day as \eqn{\text{00:00:00}}, whereas it is often treated as the first time point due to the specification in the sequence generator. 
@@ -150,7 +167,7 @@ points(df$Activity, pch = 19, cex = 0.6, col = "#7570b3")
 fit.fgls <- 
 CosinorM(time = df$Time,
 activity = df$Activity,
-tau = 24,
+tau = 6,
 method = "FGLS")
 
 ### Look at the parameters
@@ -173,30 +190,59 @@ In cosinor model, acrophase in time is counting backwards since it is traditiona
 fit.ols2 <- 
 CosinorM(time = df$Time,
 activity = df$Activity,
-tau = c(12,24),
+tau = c(6,12,24),
 method = "OLS")
 
 
-
-
 Coefs <- fit.ols2$coef.cosinor
+Coefs
+
+for(i in fit.ols2$tau) {
+  
+  bta <- Coefs[grep(paste0("Beta.",i), names(Coefs))]
+  gamma <- Coefs[grep(paste0("Gamma.",i), names(Coefs))]
+  
+  phi <- atan2(gamma, bta)
+  phi_time <- (phi * i / (2*pi)) %% i
+  names(phi_time) <- paste0("phi.",i)
+  
+  print(c(bta, gamma, phi_time))
+  
+}
+
 Coefs[grepl("Acrophase|12",names(Coefs))]
+
+
+
+Model$fitted.values
+plot(fit.ols2$fitted.values)
 
 
 ### Plot 
 ggCosinorM(fit.ols2)
-
 ```
 
 
-```{r eval=FALSE, include=FALSE}
+```{r 6 12 hour OLS, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
+for (i in c(6,12)){
+  
 
-plot(fit.ols2$fitted.values, ylim = c(0,2000), main = "Dual-phase OLS Cosinor Model",ylab = "Activity (counts)", cex = 0.6, font.lab = 2, col = "#1b9e77")
-abline(v =   60 * (24 - (fit.ols2$coef.cosinor[4] %% (2 * pi))*24 / (2*pi) ), lwd = 4, col = "black") ### Plot the vertical line to identify the peak of the activity.
-abline(v =   60 * (12 - (fit.ols2$coef.cosinor[5] %% (2 * pi))*12 / (2*pi) ), lwd = 4, col = "brown") ### Plot the vertical line to identify the peak of the activity.
-abline(v = which.max(fit.ols2$fitted.values), col = "orange", lty = "dotted", lwd = 4) ### Plot the vertical line to identify the TRUE peak of the activity.
-points(df$Activity, pch = 19, cex = 0.6, col = "#7570b3")
+fit.ols6 <- 
+CosinorM(time = df$Time,
+activity = df$Activity,
+tau = i,
+method = "OLS")
+
+
+
+### Plot 
+print(ggCosinorM(fit.ols6,
+                 title_extra = i))
+  
+  
+}
 ```
+
 
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
@@ -205,7 +251,7 @@ points(df$Activity, pch = 19, cex = 0.6, col = "#7570b3")
 fit.fgls2 <- 
 CosinorM(time = df$Time,
 activity = df$Activity,
-tau = c(12,24),
+tau = c(6,12,24),
 method = "FGLS")
 
 
@@ -218,6 +264,25 @@ ggCosinorM(fit.fgls2)
 
 
 
+```{r 6 12 hour OLS, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
+for (i in c(6,12)){
+  
+
+fit.fgls6 <- 
+CosinorM(time = df$Time,
+activity = df$Activity,
+tau = i,
+method = "FGLS")
+
+
+
+### Plot 
+print(ggCosinorM(fit.fgls6,
+                 title_extra = i))
+  
+  
+}
+```
 
 
 

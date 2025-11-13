@@ -2,18 +2,19 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 #
 #' @title KDE-based circadian cosinor summary
 #'
@@ -110,9 +111,15 @@
 #'   (radians). Controls smoothing of the wrapped Gaussian kernel. Default 0.4.
 #' @param grid Integer. Number of evaluation points for the circular KDE grid.
 #'   Default 360 (i.e., one-degree resolution on the \eqn{ 0.2\pi } circle).
+#' @param dilute Logical scalar; whether to use the function as a inner function.
+#' \itemize{
+#'   \item "TRUE": All essential parameters would be produced. (default)
+#'   \item "FALSE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap (default)
+#' }
 #'
 #' @return A list of class c("CosinorM.KDE") with elements:
 #' \itemize{
+#'   \item parm: Parameters specified in the model
 #'   \item tau: Period in hours
 #'   \item kdf: A data.frame with the following columns:
 #'     \itemize{
@@ -164,12 +171,21 @@
 #' @export
 
 
-CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
+CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360, dilute = FALSE) {
   if (!inherits(activity, "numeric")) activity <- as.numeric(as.character(activity))
   if (!inherits(time, "numeric")) time <- C2T(time)
   if (any(time < 0 | time >= 24)) {
     stop("time must be in [0,24). If you have midnight-to-midnight, ensure times are in that range.")
   }
+
+  # Extract parameter settings
+  parm <- list(time = time,
+               activity = activity,
+               bw = bw,
+               grid = grid)
+
+
+  tau <- 24
 
   # Predefined function
   # helper: difference wrapped into (-pi,pi]
@@ -181,10 +197,11 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
 
   trap_int <- function(x, y) sum((y[-1] + y[-length(y)]) * diff(x)) / 2
 
-  # convert hours -> radians in [0,2*pi)
-  theta <- (time %% 24) / 24 * 2 * pi
+  # convert hours to radian in [0,2*pi)
+  ### tau is 24
+  theta <- (time %% tau) * 2 * pi / tau
 
-  # wrapped gaussian KDE on grid
+  # wrapped Gaussian KDE on grid
   grid_theta <- seq(0, 2 * pi, length.out = grid)
 
   # simple weighted kernel density on a linear grid with wrapping
@@ -195,7 +212,7 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
   })
 
   kdf <- data.frame(theta = grid_theta, density = dens)
-  kdf$hour <- kdf$theta * 24 / (2 * pi)
+  kdf$hour <- kdf$theta * tau / (2 * pi)
 
   # Numerical trapezoid integration on circular grid
   ord <- order(kdf$theta)
@@ -229,26 +246,37 @@ CosinorM.KDE <- function(time, activity, bw = 0.4, grid = 360) {
                                           ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA))))
 
 
-  Acrophase_hour <- acrophase * 24 / (2 * pi)
+  Acrophase_hour <- acrophase * tau / (2 * pi)
 
 
-  coef_cos <- c(
-    MESOR = mesor,
-    Amplitude = amplitude,
-    Acrophase = acrophase,
-    Acrophase.hr = Acrophase_hour,
-    Beta = beta,
-    Gamma = gamma
-  )
+  coef.cosinor <- c(MESOR = mesor,
+                    Amplitude = amplitude,
+                    Acrophase = acrophase,
+                    Beta = beta,
+                    Gamma = gamma
+                    )
+
+
+  ## Inherit the output from lm
+  if (dilute) {
+    ### for bootstrap
+    fit <- list(coef.cosinor = coef.cosinor)
+
+    ## Assign Class
+    class(fit) <- c("CosinorM")
+
+  } else {
 
   # Store Output
   fit <- list()
-
-  fit$tau <- 24
+  fit$parm <- parm
+  fit$tau <- tau
   fit$kdf <- kdf
-  fit$coef.cosinor <- coef_cos
+  fit$coef.cosinor <- coef.cosinor
 
+  }
 
+  ## Assign Class
   class(fit) <- c("CosinorM.KDE")
   return(fit)
 }

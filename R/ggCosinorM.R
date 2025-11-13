@@ -2,18 +2,18 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #
 #
@@ -69,23 +69,74 @@
 ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 400, point_size = 0.5, title_extra = NULL,...) {
   if (!inherits(object, "CosinorM")) stop("ggcosinor: object must be a CosinorM fit (class c('CosinorM','lm')).", call. = FALSE)
 
+  day = 24
+  y_h <- object$fitted.values
+  Epc <- (day*3600)/length(y_h)
 
   tau <- object$tau
-  p <- length(tau)
+  factor <- day/tau
+  nT <- length(tau)
+
+  ### Check for any non-integral factor that may be associated with ultraradian or infradian
+  if (any(!factor == round(factor))) message("One or more tau specified is not an integer factor of 24.")
 
   coef_cos <- object$coef.cosinor
   if (is.null(coef_cos)) stop("CosinorM object missing coef.cosinor element.", call. = FALSE)
 
   mesor <- as.numeric(coef_cos["MESOR"])
-  amp_names <- paste0("Amplitude.", tau)
-  phi_names <- paste0("Acrophase.", tau)
-  amplitude <- as.numeric(coef_cos[amp_names])
-  acrophase_rad <- as.numeric(coef_cos[phi_names])
-  acrophase_time <- (acrophase_rad %% (2 * pi)) / (2 * pi)
-  acrophase_time <- (acrophase_time * tau)
 
-  peak_value <- mesor + amplitude
-  trough_value <- mesor - amplitude
+
+
+  if (nT == 1) { ### For single phase cosinor -------------------
+
+    ### Set cosinor coefficients names
+    amp_names <- paste0("Amplitude.", tau)
+    phi_names <- paste0("Acrophase.", tau)
+    amplitude <- as.numeric(coef_cos[amp_names])
+
+
+    acrophase_rad <- as.numeric(coef_cos[phi_names])
+    acrophase_time <- ((acrophase_rad *  tau / (2*pi)) %% tau)
+
+    # troughs
+    bathy = (acrophase_time - tau / 2) %% day
+
+    peak_value <- mesor + amplitude
+    trough_value <- mesor - amplitude
+
+
+  } else { ### For multicomponent cosinor-------------------
+
+
+    ### Set cosinor coefficients names
+    amp_names <- "Amplitude.post-hoc"
+    phi_names <- "Acrophase.post-hoc"
+
+    ### Compute the factor from day
+    factor <- day/tau
+
+    ### Initial process
+    M1 <- which.max(y_h)
+    m1 <- which.min(y_h)
+
+    ortho <- M1 / Epc
+    bathy <- m1 / Epc
+
+    ### Acrophase Clock Time
+    ### While acrophase is technically computed from the refernce timepoint (i.e., bathyphase)
+    ### we need to compute the acrophase_time properly later, as acrophase_time <- ortho - bathy
+    ### For now, it will remain as orthophase to allow the plot to put a dot on the peak time
+    acrophase_time <- ortho
+
+    peak_value <- y_h[M1]
+    trough_value <- y_h[m1]
+
+    ### Amplitude - post-hoc
+
+    amplitude <- (peak_value - trough_value)/2
+
+  }
+
 
   # observed data
   t_obs <- object$time
@@ -102,7 +153,8 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
   newt <- seq(t_min, t_max, length.out = n)
   # construct design matrix columns matching CosinorM (C1,S1,C2,S2,...)
   newdata <- data.frame(t_obs = newt)
-  for (i in seq_len(p)) {
+
+  for (i in seq_len(nT)) {
     newdata[[paste0("C", i)]] <- cos(2 * pi * newt / tau[i])
     newdata[[paste0("S", i)]] <- sin(2 * pi * newt / tau[i])
   }
@@ -131,13 +183,12 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
   } else {
     vcov_mat <- vcov_mat[names(coef_vec), names(coef_vec)]
   }
+
+
   se_fit <- sqrt(rowSums((X_new %*% vcov_mat) * X_new))
 
-
-
-
-    alpha <- 1 - ci_level
-    tcrit <- stats::qt(1 - alpha / 2, df = stats::df.residual(object))
+  alpha <- 1 - ci_level
+  tcrit <- stats::qt(1 - alpha / 2, df = stats::df.residual(object))
 
   if (ci) {
     ym <-  fit_pred - tcrit * se_fit
@@ -152,7 +203,7 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
 
 
   # annotation layers
-  amp_layers <- lapply(seq_len(p), function(i) {
+  amp_layers <- lapply(seq_len(nT), function(i) {
     ggplot2::geom_segment(
       mapping = ggplot2::aes(x = acrophase_time[i],
                              xend = acrophase_time[i],
@@ -161,7 +212,7 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
       linetype = "twodash", lineend = "butt", linejoin = "mitre"
     )
   })
-  acro_horiz <- lapply(seq_len(p), function(i) {
+  acro_horiz <- lapply(seq_len(nT), function(i) {
     ggplot2::geom_segment(
       mapping = ggplot2::aes(x = 0,
                              xend = acrophase_time[i],
@@ -182,18 +233,18 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
 
   if (ci)
     g <- g +
-      # CI ribbon (parametric) if requested
-      ggplot2::geom_ribbon(mapping = ggplot2::aes(x = newt, ymin = ym, ymax = yM), colour = "cyan", alpha = 0.18, inherit.aes = FALSE)
+    # CI ribbon (parametric) if requested
+    ggplot2::geom_ribbon(mapping = ggplot2::aes(x = newt, ymin = ym, ymax = yM), colour = "cyan", alpha = 0.18, inherit.aes = FALSE)
 
 
-    # horizontal MESOR
+  # horizontal MESOR
   g <- g +
     ggplot2::geom_hline(yintercept = mesor, color = "red", size = 0.9)
-    # verticals for acrophases
+  # verticals for acrophases
   g <- g +
     ggplot2::geom_vline(xintercept = acrophase_time, color = "purple", size = 0.9)
 
-    # observed points: fixed size, not encoded by residual
+  # observed points: fixed size, not encoded by residual
   g <- g +
     ggplot2::geom_point(data = aug, mapping = ggplot2::aes(x = t_obs, y = y_obs), alpha = 0.5, size = point_size) +
     viridis::scale_color_viridis(option = "magma") # kept for compatibility if user adds color aesthetic
@@ -206,11 +257,13 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
   for (l in amp_layers) g <- g + l
   for (l in acro_horiz) g <- g + l
 
+
   # peaks
   Atp = acrophase_time
   pVp = peak_value
+
   # troughs
-  Att = (acrophase_time + tau / 2) %% tau
+  Att = bathy
   pVt = trough_value
 
   g <- g +
@@ -220,10 +273,18 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
     ggplot2::geom_point(mapping = ggplot2::aes(x = Att, y = pVt), shape = 18, size = 3)
 
   if (labels) {
-    Cof.Names = c("MESOR", paste0("Amplitude.", tau), paste0("Acrophase.", tau))
+    Tl <- tau
+    Tphi <- acrophase_time
+
+    if (nT > 1){
+      Tl <- "post.hoc"
+      # Tphi <- Atp - Att
+    }
+
+    Cof.Names = c("MESOR", paste0("Amplitude.", Tl), paste0("Acrophase.", Tl))
     Value = c(mesor, amplitude, acrophase_time)
     xAxis = c(t_min, acrophase_time, acrophase_time)
-    yAxis = c(mesor, mesor + amplitude / 2, mesor + amplitude)
+    yAxis = c(mesor, (mesor + amplitude) * 4 / 5, mesor + amplitude)
 
     g <- g + ggrepel::geom_label_repel(
       mapping = ggplot2::aes(x = xAxis, y = yAxis, label = paste0(Cof.Names, " = ", round(Value, 1))),
@@ -235,7 +296,7 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
 
   # Build title: essential = paste0(tau, "Hr - ", method)
   essential_tau <- if (length(tau) == 1) as.character(tau) else paste(tau, collapse = ",")
-  essential <- paste0(essential_tau, "Hr - ", if (!is.null(object$method)) object$method else "")
+  essential <- paste0("(",essential_tau, "Hour) - ", if (!is.null(object$method)) object$method else "")
   parts <- c(class(object)[1])
   if (!is.null(title_extra) && nzchar(title_extra)) {
     parts <- c(parts, title_extra)
@@ -246,8 +307,16 @@ ggCosinorM <- function(object, labels = TRUE, ci = TRUE, ci_level = 0.95, n = 40
   g <- g + ggplot2::theme_minimal() +
     ggplot2::theme(legend.position = "none",
                    panel.grid.major = ggplot2::element_blank(),
-                   panel.grid.minor = ggplot2::element_blank()) +
-    ggplot2::labs(x = "time", y = "activity", title = plot_title)
+                   panel.grid.minor = ggplot2::element_blank(),
+                   plot.title = ggplot2::element_text(hjust = 0.5, face = "bold")) +    # center title
+    ggplot2::labs(x = "Time", y = "Activity", title = plot_title) +
+    ggplot2::scale_x_continuous(
+      breaks = seq(0, 24, by = 6),
+      labels = scales::number_format(accuracy = 1),
+      expand = c(0, 0)
+    ) +
+    ggplot2::coord_cartesian(xlim = c(0, 24))
+
 
   return(g)
 }
