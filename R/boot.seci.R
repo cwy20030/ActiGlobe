@@ -22,6 +22,7 @@
 #' @param object a fitted `CosinorM` or `CosinorM.KDE` model object.
 #' @param level Numeric scaler. the confidence level.
 #' @param N Numeric scaler. Numbers of bootstraps required to estimate the standard errors and confidence intervals. Default: 500
+#' @param digits Numeric scaler. Integer indicating the number of decimal places (round) to be used. Default: 2
 #'
 #'
 #' @returns
@@ -80,7 +81,7 @@
 #' @export
 #'
 
-boot.seci <- function(object, level = 0.95, N = 500){
+boot.seci <- function(object, level = 0.95, N = 500, digits = 2){
 
   ## Checkpoint -----------------------
   if ("param" %in% names(object)) stop("Object cannot be a diluted model structure.")
@@ -99,7 +100,7 @@ boot.seci <- function(object, level = 0.95, N = 500){
   activity <- object$model$activity
   time     <- object$model$time
   arctan2  <- object$arctan2
-  Coefs    <- object$coef.cosinor
+  Coefs    <- c(object$coef.cosinor, object$post.hoc)
 
   ## Output data.frame -----------------------
   boot.df <- data.frame(matrix(nrow = N, ncol = length(Coefs)))
@@ -124,7 +125,7 @@ boot.seci <- function(object, level = 0.95, N = 500){
                              arctan2 = arctan2,
                              dilute = TRUE)
 
-      boot.df[b,] <- object$coef.cosinor
+      boot.df[b,] <- mdl$coef.cosinor
     }
   }
 
@@ -140,14 +141,14 @@ boot.seci <- function(object, level = 0.95, N = 500){
     for (b in seq_len(N)) {
       idx <- sample.int(length(time), size = length(time), replace = TRUE)
       idx <- idx[order(idx)]
-      object <- CosinorM(time = time[idx],
+      mdl <- CosinorM(time = time[idx],
                          activity = activity[idx],
                          tau = tau,
                          method = method,
                          type = type,
                          dilute = TRUE)
 
-      boot.df[b,] <- object$coef.cosinor
+      boot.df[b,] <- mdl$coef.cosinor
     }
   }
 
@@ -173,6 +174,8 @@ boot.seci <- function(object, level = 0.95, N = 500){
   )
   names(Out) <- c("Estimate", "Std. Error", "t value",  CIs)
 
+  Out <- round(x = Out,
+               digits = digits)
 
   return(Out)
 
