@@ -1,6 +1,6 @@
 Package: ActiGlobe
 Type: Package
-Title: Wearable Recording Processor for Cross-Continental Travel
+Title: Wearable Recording Processor for Time Shift Adjustment and Data Analysis
 Version: 0.2.0
 Authors@R: 
   c(person(given = "C. William", 
