@@ -9,9 +9,9 @@ Revision history for the R/ActiGlobe package
 
 ## Version Update: 0.2.0, 2025-10-31
 
-- New master and class functions added: NA
+- New master and class functions added: boot.seci
 
-- Version update and debugged: Description, README
+- Version update and debugged: Description, README, CosinorM.KDE, ggCosinorM
 
 ## Version Update: 0.1.9, 2025-10-27
 

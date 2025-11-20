@@ -132,13 +132,20 @@ ggCosinorM(fit.fgls2)
 
 It is worth noting that we cannot individually interpret each cosinor parameters alone when fitting a multicomponent model, This is because the rest-activity patterns estimated by general linear regression is the cumulative sum of all the fitted cosinor components (i.e. both 12 and 24hour waves). As such, it is better to use the parameters extracted post hoc for analysis.
 ```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7}
-
 Coefs <- fit.ols2$coef.cosinor
 
 for(i in fit.ols2$tau) {
-  
+  mesor <- Coefs[grep("MESOR", names(Coefs))]
   bta <- Coefs[grep(paste0("Beta.",i), names(Coefs))]
   gamma <- Coefs[grep(paste0("Gamma.",i), names(Coefs))]
+  
+  if (i == 12)
+  fit.ols2$model$y_12 <- mesor + (bta * fit.ols2$model$C1 + gamma * fit.ols2$model$S1)
+  
+  
+  if (i == 24)
+  fit.ols2$model$y_24 <- mesor + (bta * fit.ols2$model$C2 + gamma * fit.ols2$model$S2)
+  
   
   phi <- atan2(gamma, bta)
   phi_time <- (phi * i / (2*pi)) %% i
@@ -147,6 +154,53 @@ for(i in fit.ols2$tau) {
   print(c(bta, gamma, phi_time))
   
 }
+
+
+
+
+
+# assume time is numeric and length matches fitted values
+time <- fit.ols2$model$time
+y_all  <- fit.ols2$fitted.values   # combined 12+24
+y_24   <- fit.ols2$model$y_24    # 24h component
+y_12   <- fit.ols2$model$y_12   # 12h component
+
+# color / style palette (adjust to taste)
+cols <- c(combined = "#1b9e77", h24 = "#d95f02", h12 = "#7570b3")
+ltys <- c(combined = 1, h24 = 2, h12 = 3)
+pw   <- c(combined = 2, h24 = 1, h12 = 1)    # line widths
+pch  <- c(combined = NA, h24 = 19, h12 = 17) # point symbols (NA hides points)
+
+# main plotting area: show combined fit first
+plot(time, y_all,
+     type = "l", col = cols["combined"], lwd = pw["combined"],
+     xlab = "Time", ylab = "Fitted value",
+     main = "Cosinor fits: combined (12+24), 24h, and 12h components",
+     ylim = range(c(y_all, y_24, y_12), na.rm = TRUE))
+
+# add the other fits: lines + points for clarity
+lines(time, y_24, col = cols["h24"], lwd = pw["h24"], lty = ltys["h24"])
+points(time, y_24,   col = cols["h24"], pch = pch["h24"])
+
+lines(time, y_12, col = cols["h12"], lwd = pw["h12"], lty = ltys["h12"])
+points(time, y_12,   col = cols["h12"], pch = pch["h12"])
+
+# optional: add a transparent ribbon showing spread (if you have se)
+# polygon(c(time, rev(time)), c(y_all + se, rev(y_all - se)), col = rgb(0.11,0.62,0.47,0.15), border = NA)
+
+# legend placed at topright outside plotting area if space; try 'topright' first
+legend("topright",
+       legend = c("Combined 12+24h", "24h component", "12h component"),
+       col = cols,
+       lty = ltys,
+       lwd = pw,
+       pch = c(NA, pch["h24"], pch["h12"]),
+       pt.cex = 0.9,
+       bg = "white",
+       inset = 0.02)
+
+
+
 ```
 
 
@@ -171,14 +225,15 @@ ggCosinorM(fit.KDE)
 
 
 
-<<<<<<< HEAD
-It is worth noting that while \code{\link{CosinorM.KDE}} does provide a variance and standard error of the fitted rest-activity pattern, this is a density‑based signal‑processing strategy not a regression model. As a signal‑processing technique, \code{\link{CosinorM.KDE}} lacks the ability to directly provide standard errors or confidence intervals for cosinor parameters and related post hoc estimates (e.g., bathyphase). Thankfully, we can take the advantage of bootstrap resampling to empirically estimate confidence intervals and standard errors for these post‑hoc parameters.Note that \code{\link{CosinorM.KDE}} is designed to stabilize estimates when data are irregularly spaced or limited to short recording intervals.
+It is worth noting that while \code{\link{CosinorM.KDE}} does provide a variance and standard error of the fitted rest-activity pattern, this is a density‑based signal‑processing strategy not a regression model. As a signal‑processing technique, \code{\link{CosinorM.KDE}} lacks the ability to directly provide standard errors or confidence intervals for cosinor parameters and related post hoc estimates (e.g., bathyphase). Thankfully, we can take the advantage of bootstrap resampling to empirically estimate confidence intervals and standard errors for these post‑hoc parameters. Note that \code{\link{CosinorM.KDE}} is designed to stabilize estimates when data are irregularly spaced or limited to short recording intervals. 
 
 
-```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE, eval=FALSE}
-boot.seci(fit.KDE)
+```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE}
+boot.seci(object = fit.KDE,
+          level = 0.95,
+          N = 100) ### for demonstration, the number of bootstrap was limited to 100.
 ```
-Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation.
+Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation. 
 
 #### Visualized Model Comparisons
 ```{r import ggplot}
