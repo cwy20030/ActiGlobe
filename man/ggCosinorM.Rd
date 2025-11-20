@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggCosinorM.R
 \name{ggCosinorM}
 \alias{ggCosinorM}
-\title{Plot `CosinorM` Fit with `ggplot2`}
+\title{Plot `CosinorM` and `CosinorM.KDE` Fit with `ggplot2`}
 \usage{
 ggCosinorM(
   object,
@@ -33,7 +33,7 @@ ggCosinorM(
 \item{...}{Additional arguments (currently ignored) kept for generic compatibility.}
 }
 \description{
-Create visualization of a CosinorM model fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
+Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
 }
 \examples{
 \dontrun{

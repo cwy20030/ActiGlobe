@@ -40,77 +40,10 @@ data("FlyEast")
 
 
 
-```{r Manual kdf,message=FALSE, warning=FALSE, eval=FALSE, include=FALSE, results='asis'}
-library(circular)
-library(ggplot2)
-
-# data: df with columns time_hour (0-24) and activity (nonnegative)
-# convert hours to radians
-df$theta <- (C2T(df$Time)%% 24) * 2 * pi / 24
-
-# simple weighted kernel density on a linear grid with wrapping
-wrap_kde <- function(theta, w, bw = 0.3, grid = 200) {
-  grid_theta <- seq(0, 2*pi, length.out = grid)
-  dens <- sapply(grid_theta, function(tg) {
-    # wrapped gaussian kernel sum with weights
-    sum(w * dnorm(circular::conversion.circular(tg - theta), mean = 0, sd = bw))
-  })
-  data.frame(theta = grid_theta, density = dens)
-}
-
-kdf <- wrap_kde(df$theta, df$Activity, bw = 0.4)
-kdf$hour <- kdf$theta * 24 / (2 * pi)
-
-ggplot(kdf, aes(x = hour, y = density)) +
-  geom_line(size = 1) +
-  scale_x_continuous(breaks = seq(0,24,by=3), limits = c(0,24)) +
-  labs(x = "Clock hour", y = "Weighted density (activity × frequency)") +
-  theme_minimal()
-
-```
 
 
 
 
-
-
-```{r Manual plot kdf, message=FALSE, warning=FALSE, eval=FALSE, include=FALSE, results='asis'}
-# assume kdf has columns theta in [0,2*pi] and density
-# numerical integrals via trapezoid rule on an ordered grid
-theta <- kdf$theta
-f <- kdf$density
-n <- length(theta)
-
-# ensure theta sorted and grid spacing consistent
-ord <- order(theta)
-theta <- theta[ord]
-f <- f[ord]
-# wrap endpoint so integration over [0,2pi]
-theta_ext <- c(theta, theta[1] + 2*pi)
-f_ext <- c(f, f[1])
-
-# trapezoid integration helper
-trap_int <- function(x, y) sum( (y[-1] + y[-length(y)]) * diff(x) ) / 2
-
-I0 <- trap_int(theta_ext, f_ext)               # integral of f over 0..2pi
-Icos <- trap_int(theta_ext, f_ext * cos(theta_ext))
-Isin <- trap_int(theta_ext, f_ext * sin(theta_ext))
-
-MESOR <- I0 / (2 * pi)
-a1 <- Icos / pi
-b1 <- Isin / pi
-Amplitude <- sqrt(a1^2 + b1^2)
-Acrophase <- (atan2(-b1, a1) %% (2*pi))
-Acrophase_hour <- Acrophase * 24 / (2*pi)
-
-list(MESOR = MESOR,
-     a1 = a1,
-     b1 = b1,
-     Amplitude = Amplitude,
-     Acrophase_rad = Acrophase,
-     Acrophase_hour = Acrophase_hour)
-
-```
 
 
 
@@ -131,20 +64,6 @@ fit.ols$coef.cosinor
 ggCosinorM(fit.ols)
 ``` 
 
-```{r}
-df$hour <- C2T(df$Time)
-
-Model <- card::cosinor(Activity ~ hour, data = df, tau = 24)
-Model
-
-card::ggcosinor(Model)
-```
-
-
-
-```{r}
-cosinor2::correct.acrophase(cosinor::cosinor.lm(Activity ~ time(hour),data = df, period = 24))
-```
 
 
 
@@ -152,22 +71,14 @@ cosinor2::correct.acrophase(cosinor::cosinor.lm(Activity ~ time(hour),data = df,
 If we process \code{\link{FlyEast}} using the \code{\link[cosinor]{cosinor.lm}}, we will notice that the results look a bit different. This is because ActiGlobe treats the first time point of the day as \eqn{\text{00:00:00}}, whereas it is often treated as the first time point due to the specification in the sequence generator. 
 
 
-```{r eval=FALSE, include=FALSE}
-### A Single Plot
-plot(fit.ols$fitted.values, ylim = c(0,2000), main = "Single-phase OLS Cosinor Model",ylab = "Activity (counts)", cex = 0.6, font.lab = 2, col = "#1b9e77")
-abline(v = 60 * (24 - (fit.ols$coef.cosinor[3] %% (2 * pi))*24 / (2*pi) ), lwd = 4) ### Plot the vertical line to identify the peak of the activity.
-abline(v = which.max(fit.ols$fitted.values), col = "orange", lty = "dotted", lwd = 4) ### Plot the vertical line to identify the TRUE peak of the activity.
-points(df$Activity, pch = 19, cex = 0.6, col = "#7570b3")
-```
-
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
-
+Besides, the traditioanl OLS-based cosinor model, \code{\link{CosinorM}} also allows user to estimate model using FGLS-based method. In ActiGlobe, the FGLS was implemented via a weighted residual least square approximation. This two-step process often produces a better representation of the "boarder" between sleep and awake activity than otherwise from the traditional OLS. Nevertheless, neither methods can offer realistic few of our activity pattern given they are simply single-phase cosinor models.
 ```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
 fit.fgls <- 
 CosinorM(time = df$Time,
 activity = df$Activity,
-tau = 6,
+tau = 24,
 method = "FGLS")
 
 ### Look at the parameters
@@ -179,23 +90,50 @@ ggCosinorM(fit.fgls)
 
 
 
-::: note
-In cosinor model, acrophase in time is counting backwards since it is traditionally estimated as radian to reflect the clock face.
-:::
-
-
 ### Dual-phase Model (i.e., 12 + 24hour rhythms)
+
+While certain circadian measures, such as melatonin, often follow a roughly 24-hour single-phase, human activity pattern is generally fragmented. To capture the non-linearity in our activity pattern, it is possible to add additional phase components when using \code{\link{CosinorM}}. Here, we provided two examples of cosinor models with two phase components, each fitted using OLS or FGLS-based methods. 
+
 #### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
 ```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
 fit.ols2 <- 
 CosinorM(time = df$Time,
 activity = df$Activity,
-tau = c(6,12,24),
+tau = c(12,24),
 method = "OLS")
 
 
+fit.ols2$coef.cosinor
+fit.ols2$post.hoc
+
+
+### Plot 
+ggCosinorM(fit.ols2)
+```
+
+
+#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
+
+fit.fgls2 <- 
+CosinorM(time = df$Time,
+activity = df$Activity,
+tau = c(12,24),
+method = "FGLS")
+
+
+fit.fgls2$coef.cosinor
+fit.fgls2$post.hoc
+
+### Plot 
+ggCosinorM(fit.fgls2)
+```
+
+
+It is worth noting that we cannot individually interpret each cosinor parameters alone when fitting a multicomponent model, This is because the rest-activity patterns estimated by general linear regression is the cumulative sum of all the fitted cosinor components (i.e. both 12 and 24hour waves). As such, it is better to use the parameters extracted post hoc for analysis.
+```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7}
+
 Coefs <- fit.ols2$coef.cosinor
-Coefs
 
 for(i in fit.ols2$tau) {
   
@@ -209,95 +147,39 @@ for(i in fit.ols2$tau) {
   print(c(bta, gamma, phi_time))
   
 }
-
-Coefs[grepl("Acrophase|12",names(Coefs))]
-
-
-
-Model$fitted.values
-plot(fit.ols2$fitted.values)
-
-
-### Plot 
-ggCosinorM(fit.ols2)
-```
-
-
-```{r 6 12 hour OLS, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
-for (i in c(6,12)){
-  
-
-fit.ols6 <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = i,
-method = "OLS")
-
-
-
-### Plot 
-print(ggCosinorM(fit.ols6,
-                 title_extra = i))
-  
-  
-}
 ```
 
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
-```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-
-fit.fgls2 <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = c(6,12,24),
-method = "FGLS")
-
-
-fit.fgls2$coef.cosinor
-
-
-### Plot 
-ggCosinorM(fit.fgls2)
-```
-
-
-
-```{r 6 12 hour OLS, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
-for (i in c(6,12)){
-  
-
-fit.fgls6 <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = i,
-method = "FGLS")
-
-
-
-### Plot 
-print(ggCosinorM(fit.fgls6,
-                 title_extra = i))
-  
-  
-}
-```
 
 
 
 ### Circularized Gaussian Kernel Density Estimation (KDE)
-Besides the traditional cosinor-based methodology, ActiGlobe also offers circularized Gaussian kernel density estimation. In contrast to the traditional cosinor method, KDE is nonparametric apporach allowing the model to better respect the intensity and the duration of the underlying rest-activity patterns, without forcing a sinusoidal shape. To facilitate transition from cosinor model, we designed \code{\link{CosinorM.KDE}} to generate cosinor-like parameters by projecting the model onto an imaginary cosinor plane. 
+Besides the traditional cosinor-based methodology, ActiGlobe also offers circularized Gaussian kernel density estimation. In contrast to the traditional cosinor method, \code{\link{CosinrM.KDE}} uses nonparametric kernel smoothing to map the activity pattern on a circularized time-domain. This strategy allows it to better respect the intensity and the duration of the underlying rest-activity patterns, without forcing a sinusoidal shape. To facilitate transition from cosinor model, we designed \code{\link{CosinorM.KDE}} to generate cosinor-like parameters by projecting the model onto an imaginary cosinor plane. 
 
-```{r Model 1 KDE, message=FALSE, warning=FALSE}
+```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
 fit.KDE <- 
   CosinorM.KDE(time = df$Time,
              activity = df$Activity)
 
 ### Look at the parameters
 fit.KDE$coef.cosinor
+fit.KDE$post.hoc
 
+ggCosinorM(fit.KDE)
 ```
+
+
+
+It is worth noting that while \code{\link{CosinorM.KDE}} does provide a variance and standard error of the fitted rest-activity pattern, this is a density‑based signal‑processing strategy not a regression model. As a signal‑processing technique, \code{\link{CosinorM.KDE}} lacks the ability to directly provide standard errors or confidence intervals for cosinor parameters and related post hoc estimates (e.g., bathyphase). Thankfully, we can take the advantage of bootstrap resampling to empirically estimate confidence intervals and standard errors for these post‑hoc parameters.
+
+```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE,}
+boot.seci(fit.KDE)
+```
+
+Note that \code{\link{CosinorM.KDE}} is designed to stabilize estimates when data are irregularly spaced or limited to short recording intervals.
+
+
 
 
 #### Visualized Model Comparisons
@@ -310,7 +192,7 @@ library(ggplot2)
 
 ##### OLS-Cosinor vs. Kernel Density Estimation
 When we plot the KDE alongside the cosinor we can immediately see skew, broad or narrow peaks, and multiple active periods that the single‑harmonic cosinor cannot represent.
-```{r Model 1 OLS vs KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
+```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
 
 # Prepare data
 n <- length(fit.ols$fitted.values)
@@ -326,12 +208,12 @@ cosinor_peak_hour <- (24 - (phi %% (2 * pi)) * 24 / (2 * pi)) %% 24
 true_peak_hour <- plot_df$hour[which.max(df$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
-kdf_plot <- data.frame(hour = fit.KDE$kdf$hour, density = fit.KDE$kdf$density)
-y_primary_max <- 3000
+kdf_plot <- data.frame(hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
+y_primary_max <- 2000
 kdf_plot$density_scaled <- kdf_plot$density / max(kdf_plot$density) * y_primary_max
 
 # KDE vline location
-kde_vline_hour <- fit.KDE$coef.cosinor["Acrophase.hr"]
+kde_vline_hour <- fit.KDE$post.hoc["Acrophase.ph.time"]
 
 # Named colours for mapping
 my_cols <- c(
@@ -365,7 +247,7 @@ ggplot() +
     sec.axis = sec_axis(~ . / y_primary_max * max(kdf_plot$density), name = "Circularized Gaussian Kernel Density")
   ) +
   scale_color_manual(name = NULL, values = my_cols) +
- ggtitle("Overlay of Fitting of Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
+ ggtitle("Overlay of Fitting of OLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
 
   theme_minimal(base_size = 12) +
   theme(
@@ -388,81 +270,79 @@ ggplot() +
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, eval=FALSE, include=FALSE, fig.height=7, fig.width=7}
-##### FGLS-Cosinor vs. Kernel Density Estimation
-plot(fit.fgls$fitted.values,
-     type = "l",
-     lwd = 3,
-     ylim = c(0, 1000),
-     xlim = c(1, length(fit.fgls$fitted.values)),
-     xlab = "Time (minutes)",
-     ylab = "Activity (Halfed Amplitude)",
-     main = "FGSL-based Cosinor Model vs. Kernel Density Estimation")
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, echo=FALSE, fig.height=7, fig.width=7}
 
-# Cosinor peak line
-abline(v = 60 * (24 - (fit.fgls$coef.cosinor[3] %% (2 * pi)) * 24 / (2 * pi)), 
-       lwd = 4) #### trough_time <- (acrophase - pi) %% (2 * pi) * 60
+# Prepare data
+n <- length(fit.fgls$fitted.values)
+plot_df <- data.frame(
+  hour = seq(0, 24, length.out = n),
+  fitted = as.numeric(fit.fgls$fitted.values),
+  activity = df$Activity
+)
 
-# True peak line
-abline(v = which.max(fit.fgls$fitted.values),
-       col = "orange",
-       lty = "dotted",
-       lwd = 4)
+# Cosinor and true-peak hours
+phi <- fit.fgls$coef.cosinor[3]
+cosinor_peak_hour <- ((phi * 24 / (2*pi)) %% 24)
+true_peak_hour <- plot_df$hour[which.max(df$Activity)]
 
-# Raw activity points
-points(df$Activity/2,
-       cex = 0.5)
+# Kernel density (assumes kdf$hour in hours)
+kdf_plot <- data.frame(hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
+y_primary_max <- 2000
+kdf_plot$density_scaled <- kdf_plot$density / max(kdf_plot$density) * y_primary_max
 
-# Overlay kernel density
-par(new = TRUE)
-plot(fit.KDE$kdf$hour * 60,
-     fit.KDE$kdf$density / 100,
-     type = "l",
-     lwd = 3,
-     col = "grey",
-     axes = FALSE,
-     xlab = "",
-     ylab = "",
-     xlim = c(1, length(fit.fgls$fitted.values)),
-     ylim = c(0, 2000))
+# KDE vline location
+kde_vline_hour <- fit.KDE$post.hoc["Acrophase.ph.time"]
 
-```
+# Named colours for mapping
+my_cfgls <- c(
+  "Raw Activity"     = "#7570b3",
+  "Cosinor (24Hr)"   = "#1b9e77",
+  "KDE"   = "#999999",
+  "Cosinor Peak"     = "black",
+  "Maximum Activity" = "#e7298a",
+  "KDE Peak"         = "#e41a1c"
+)
+
+ggplot() +
+  # Lines/points with color mapped to a fixed name so they appear in legend
+  geom_line(data = plot_df, aes(x = hour, y = fitted, color = "Cosinor (24Hr)"), size = 0.9) +
+  geom_point(data = plot_df, aes(x = hour, y = activity, color = "Raw Activity"), size = 1.0, alpha = 0.6) +
+  geom_line(data = kdf_plot, aes(x = hour, y = density_scaled, color = "KDE"), size = 1) +
+  # vertical lines mapped to colour names so they appear in the legend
+  geom_vline(aes(xintercept = cosinor_peak_hour, color = "Cosinor Peak"), linetype = "solid", size = 1) +
+  geom_vline(aes(xintercept = true_peak_hour, color = "Maximum Activity"), linetype = "dotted", size = 1) +
+  geom_vline(aes(xintercept = kde_vline_hour, color = "KDE Peak"), linetype = "longdash", size = 1) +
+  # scales and labels
+  scale_x_continuous(
+    name = "Hour",
+    limits = c(0, 24),
+    breaks = c(0, 4, 8, 12, 16, 20, 24),
+    labels = c(0, 4, 8, 12, 16, 20, 24)
+  ) +
+  scale_y_continuous(
+    name = "Activity",
+    limits = c(0, y_primary_max),
+    sec.axis = sec_axis(~ . / y_primary_max * max(kdf_plot$density), name = "Circularized Gaussian Kernel Density")
+  ) +
+  scale_color_manual(name = NULL, values = my_cfgls) +
+ ggtitle("Overlay of Fitting of FGLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    text = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(face = "bold"),
+    legend.title = element_text(face = "bold"),
+    legend.text = element_text(face = "bold"),
+    strip.text = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    legend.position = "top",
+    axis.ticks = element_line(size = 0.4)
+  )
 
 
-```{r message=FALSE, warning=FALSE, eval=FALSE, include=FALSE}
-# Base plot: OLS fitted values
-plot(fit.ols$fitted.values,
-     type = "l",
-     ylim = c(0, 2000),
-     xlab = "Time (minutes)",
-     ylab = "Activity",
-     main = "Traditional Cosinor Model vs. Kernel Density Estimation")
 
-# Cosinor peak line
-abline(v = 60 * (24 - (fit.ols$coef.cosinor[3] %% (2 * pi)) * 24 / (2 * pi)),
-       lwd = 4) #### trough_time <- (acrophase - pi) %% (2 * pi) * 60
-
-# True peak line
-abline(v = which.max(fit.ols$fitted.values),
-       col = "orange",
-       lty = "dotted",
-       lwd = 4)
-
-# Raw activity points (smaller)
-points(df$Activity,
-       cex = 0.5)
-
-# Overlay kernel density
-par(new = TRUE)
-plot(fit.KDE$kdf$hour * 60,
-     fit.KDE$kdf$density / 100,
-     type = "l",
-     lwd = 3,
-     col = "grey",
-     axes = FALSE,
-     xlab = "",
-     ylab = "",
-     xlim = c(1, length(fit.ols$fitted.values)),
-     ylim = c(0, 2000))
 
 ```
+

@@ -9,14 +9,7 @@
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-ActiGlobe is designed to make it easy to pre-process longitudinal
-actigraphy recordings, especially for the recordings affected by time
-shift due to daylight saving changes and or cross-continental travel. It
-streamlines the process from end-to-end, to simplify the process of
-pre-processing, analyzing, and exporting daily actigraphy data and
-visual reports, making it an essential tool for researchers and
-professionals in the field. To learn how to use it, check the vignettes
-for a quick tutorial.
+ActiGlobe is the world first tool specifically designed to harmonize actigrpahy recordings affected by time shift due to daylight saving changes and/or cross-continental travel. This R package also streamlines the process from end-to-end, simplifying data pre-processing, quantitative analysis (e.g., cosinor rhythmetry), and documentation (i.e., visual reports and database summary), making it a multifunctional tool for researchers and professionals. To learn how to use it, check the vignettes for a quick tutorial.
 
 ## Installation
 

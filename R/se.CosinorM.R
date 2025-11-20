@@ -89,6 +89,8 @@
 #'
 #'
 #' @examples
+#'
+#' \dontrun{
 #' # Import data
 #' data(FlyEast)
 #'
@@ -115,7 +117,7 @@
 #' }
 #'
 #' @seealso \code{\link{vcov}}, Delta method references
-#' @export
+#' @noRd
 
 
 se.CosinorM <- function(object, method = "delta") {

@@ -46,9 +46,9 @@
 #'      \deqn{ \hat{y} = M + \beta x + \gamma z + \epsilon }
 #' \itemize{
 #'   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
-#'   \item \eqn{x = cos(\frac{2\pi t} {\tau})}, cosine-transformed time
+#'   \item \eqn{x = cos(\frac{2 * \pi * t} {\tau})}, cosine-transformed time
 #'   \item \eqn{\gamma = A * sin(\phi)}, estimated coefficient for the sine term
-#'   \item \eqn{z = sin(\frac{2\pi t} {\tau})}, sine-transformed time
+#'   \item \eqn{z = sin(\frac{2 * \pi * t} {\tau})}, sine-transformed time
 #'   \item \eqn{ \epsilon }: error term
 #' }
 #'
@@ -82,12 +82,17 @@
 #'   \item "OLS": Ordinary least squares via \code{\link[stats]{lm}} (default)
 #'   \item "FGLS": Feasible generalized least squares; models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares
 #' }
-#' @param arctan2 Logical scale; whether to set the interval between \eqn{-\pi} and \eqn{\pi} ("TRUE", default) or \eqn{-\frac{\pi}{2}} and \eqn{\frac{\pi}{2}} ("FALSE").
+#' @param arctan2 Logical; if TRUE (default) acrophase is computed with
+#'   \code{atan2(gamma, beta)}, resulting in the quadrant interval between
+#'   \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
+#'   quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
+#'   and \eqn{\frac{\pi}{2}}.
+#'
 #' @param type Character string passed to \code{\link[sandwich]{vcovHC}} for robust standard error computation
-#' @param dilute Logical scalar; whether to use the function as a inner function.
+#' @param dilute Logical;
 #' \itemize{
-#'   \item "FALSE": All essential parameters would be produced.
-#'   \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap (default)
+#'   \item "FALSE": All essential parameters would be produced.  (default)
+#'   \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap
 #' }
 #'
 #'
@@ -106,7 +111,7 @@
 #'       \item Beta: the coefficient of the cosine function
 #'       \item Gamma: the coefficient of the sine function
 #'     }
-#'   \item post.hoc: Post.hoc extraction of cosinor-based coefficients.
+#'   \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
 #'   \item extra: only available for ultradian (i.e., \eqn{\tau} less than 24hour) single-component model
 #'   \item vcov: Robust variance-covariance matrix
 #'   \item se: Standard errors
@@ -165,6 +170,8 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
 
   # Check the variable class
   if (!inherits(activity,"numeric")) activity = as.numeric(as.character(activity))
+  if (all(activity == 0)) stop("all activity values are zero")
+  if (any(!is.finite(activity))) stop("activity contains NA/NaN/Inf")
   if (!inherits(time,"numeric")) time = C2T(time)
   if (any(time > 24 | time < 0)) stop("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
@@ -177,7 +184,9 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   day <- 24 ### 24 hours per-day for now
   factor <- day/tau
 
-  Epc <- (time[2] - time[1])
+  dt <- diff(time)
+  dt <- dt[dt>0]
+  Epc <- 1/min(dt)
 
 
   # Build cosine and sine columns for each period
@@ -286,12 +295,13 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
 
 
 
-    if (!tau == day) ### if day (24hrs) does not equal to tau
+    ### if day (24hrs) does not equal to tau
+    if (!tau == day)  {
       Tacro2 <- ((acrophase *  tau / (2*pi)) %% day)
     names(Tacro2) <- paste0("Acrophase.time.",day)
     extra <- Tacro2
 
-
+}
 
     if (factor == round(factor)) {
       f.list <-  seq.int(from = 1,
@@ -317,18 +327,16 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   M1  <- which.max(y_h)
   m1  <- which.min(y_h)
 
-  acro.ph    <- M1 * Epc/(24*3600)
-  bathy.ph   <- m1 * Epc/(24*3600)
+  acro.ph    <- M1 * Epc/(3600)
+  bathy.ph   <- m1 * Epc/(3600)
 
 
   peak_value   <- y_h[M1]
   trough_value <- y_h[m1]
   mesor_vlaue  <- mean(c(trough_value, peak_value))
 
-  ### Amplitude - post-hoc
   Amp        <- (peak_value - trough_value)/2
   names(Amp) <- "Amplitude.post-hoc"
-
 
   post.hoc         <- c(mesor_vlaue, bathy.ph, trough_value, acro.ph, peak_value, Amp)
   names(post.hoc) <- c("MESOR.ph", "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
@@ -343,7 +351,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   ## Inherit the output from lm
   if (dilute) {
     ### for bootstrap
-    fit <- list(coef.cosinor = coef.cosinor)
+    fit <- list(coef.cosinor = c(coef.cosinor, post.hoc))
 
     ## Assign Class
     class(fit) <- c("CosinorM")
@@ -351,9 +359,10 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   } else {
 
     fit <- model
+    fit$model$time <- time
     fit$epoch <- Epc
     fit$tau <- tau
-    fit$time <- time
+    # fit$time <- time
     fit$arctan2 <- arctan2
     fit$method <- method
     fit$type <- type
@@ -383,4 +392,3 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   return(fit)
 
 }
-

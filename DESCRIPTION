@@ -24,7 +24,8 @@ Imports:
     readr,
     sandwich,
     utils,
-    viridis
+    viridis,
+	parallel
 Suggests:
     spelling, 
     ggthemes,
