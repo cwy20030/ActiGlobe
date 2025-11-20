@@ -79,7 +79,6 @@
 #' }
 #' @keywords boot bootstrap ci se
 #' @export
-#'
 
 boot.seci <- function(object, level = 0.95, N = 500, digits = 2){
 
