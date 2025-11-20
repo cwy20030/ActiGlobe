@@ -25,7 +25,7 @@ Authors@R:
 		   comment = c(ORCID = "0000-0002-5400-319X"))
 	)
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
-Description: Cross-Continental travel and local daylight saving practice can introduce time shift, leading to biases when evaluating unadjusted wearable measures. ActiGlobe is designed to make it easy to pre-process longitudinal actigraphy recordings, especially those affected by time shifts due to daylight saving changes or cross-continental travel. It streamlines the entire process—from pre-processing and analysing to exporting daily actigraphy data and visual reports—making it an essential tool for researchers and professionals in the field. To learn how to use it, check the vignettes for a quick tutorial. The package is developed based on the methodology described in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
+Description: Cross-Continental travel and local daylight saving practice can introduce time shift, leading to biases in interpration of the wearable measures when left without adjustment. This package  streamlines data processing and analyses for longitudinal recordings. Together with additional features such as exporting daily wearable measures and visual reports, this pacakge aims to facilitate research on longitudinal wearable measures. To learn how to use it, check the vignettes for a quick tutorial. The package is developed based on the methodology described in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
 License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
