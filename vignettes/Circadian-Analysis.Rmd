@@ -171,17 +171,14 @@ ggCosinorM(fit.KDE)
 
 
 
+<<<<<<< HEAD
 It is worth noting that while \code{\link{CosinorM.KDE}} does provide a variance and standard error of the fitted rest-activity pattern, this is a density‑based signal‑processing strategy not a regression model. As a signal‑processing technique, \code{\link{CosinorM.KDE}} lacks the ability to directly provide standard errors or confidence intervals for cosinor parameters and related post hoc estimates (e.g., bathyphase). Thankfully, we can take the advantage of bootstrap resampling to empirically estimate confidence intervals and standard errors for these post‑hoc parameters.Note that \code{\link{CosinorM.KDE}} is designed to stabilize estimates when data are irregularly spaced or limited to short recording intervals.
 
 
 ```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE, eval=FALSE}
 boot.seci(fit.KDE)
 ```
-Currently, \code{\link{boot.seci}} was designed as 
-
-
-
-
+Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation.
 
 #### Visualized Model Comparisons
 ```{r import ggplot}
