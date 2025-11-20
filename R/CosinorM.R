@@ -351,7 +351,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   ## Inherit the output from lm
   if (dilute) {
     ### for bootstrap
-    fit <- list(coef.cosinor = c(coef.cosinor, post.hoc))
+    fit <-  list(coef.cosinor = c(coef.cosinor, post.hoc))
 
     ## Assign Class
     class(fit) <- c("CosinorM")

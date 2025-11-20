@@ -215,7 +215,7 @@ CosinorM.KDE <- function(time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE, 
   ### Assume tau
   tau <- 24
   dt <- diff(time)
-  dt <- dt[dt>0]
+  dt <- dt[dt > 0]
   Epc <- 1/min(dt)
 
   # Extract parameter settings
