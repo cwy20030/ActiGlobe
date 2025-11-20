@@ -21,17 +21,19 @@
 #' @description
 #' Convert `acrophase` in radian to clock time based on tau.
 #'
-#' @param x Numeric vector of phases in radian. NA permitted.
+#' @param x Numeric vector of phases in radian.
 #' @param tau Numeric scalar. Period length in the same time units you want returned (for hours use 24). Must be > 0 and <= 24.
 #' @return Numeric vector of times in [0, tau). NA values propagate.
 #' @examples
 #' Rad2Hr(pi/2, tau = 24)
+#'
 #' Rad2Hr(c(-pi/2, 0, pi, 3*pi/2), tau = 24)
 #'
 #' @keywords acrophase radian
 #' @export
 
 Rad2Hr <- function(x, tau) {
+
   # coerce x to numeric while preserving NA
   if (!is.numeric(x)) x <- as.numeric(as.character(x))
 

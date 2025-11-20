@@ -4,7 +4,7 @@
 \alias{Date2TotalT}
 \title{Compute Total Time in Each Date (Per Day)}
 \usage{
-Date2TotalT(DT, TUnit = "hour")
+Date2TotalT(DT, TUnit = "hour", TZ = "local")
 }
 \arguments{
 \item{DT}{A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending order.
@@ -16,6 +16,8 @@ covers a full 24 h until the next midnight. See \code{as.POSIXct}.}
 Must be one of `"hour"`, `"minute"`, or `"second"`.  Comparison is
 case-insensitive.  Default is `"hour"`, meaning the returned values
 are in decimal hours.}
+
+\item{TZ}{The time zone when the recording started. (default = "local", which means user's local time zone)}
 }
 \value{
 A numeric vector of the same length as `DT`.  Each element is the
@@ -30,12 +32,15 @@ following calendar day at midnight) and returns these durations in the
 requested time unit.
 }
 \examples{
+\donttest{
 # Two calendar days: returns c(24, 24) hours
 Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
+
 
 # Working in minutes
 Date2TotalT(as.POSIXct(c("2021-06-10 08:00:00",
                         "2021-06-10 14:30:00")), "minute")
+}
 
 # In seconds (case-insensitive unit name)
 Date2TotalT(as.Date("2022-12-31"), "SeCoNd")

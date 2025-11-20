@@ -36,6 +36,8 @@
 #'   case-insensitive.  Default is `"hour"`, meaning the returned values
 #'   are in decimal hours.
 #'
+#' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
+#'
 #' @return
 #'   A numeric vector of the same length as `DT`.  Each element is the
 #'   elapsed time between the corresponding entry in `DT` and the next
@@ -43,19 +45,23 @@
 #'   the last date), expressed in the units given by `TUnit`.
 #'
 #' @examples
+#' \donttest{
 #' # Two calendar days: returns c(24, 24) hours
 #' Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
+#'
 #'
 #' # Working in minutes
 #' Date2TotalT(as.POSIXct(c("2021-06-10 08:00:00",
 #'                         "2021-06-10 14:30:00")), "minute")
+#' }
 #'
 #' # In seconds (case-insensitive unit name)
 #' Date2TotalT(as.Date("2022-12-31"), "SeCoNd")
 #'
 #' @export
-Date2TotalT = function(DT, TUnit = "hour"){
+Date2TotalT = function(DT, TUnit = "hour", TZ = "local") {
 
+  TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
   ## Convert the displayed unit into a factor.
   Divider =  ifelse(tolower(TUnit) == "hour", 3600,
                     ifelse(tolower(TUnit) == "minute", 60,
@@ -67,7 +73,7 @@ Date2TotalT = function(DT, TUnit = "hour"){
   iniDs =  DT # Vector 1 for the starting date
   endDs = c(DT[-1],MxD) # Vector 2 for the next date
 
-  sTotalSec = as.numeric(as.POSIXct(endDs)) - as.numeric(as.POSIXct(iniDs)) # Supposed seconds for each day
+  sTotalSec = as.numeric(as.POSIXct(endDs, tz = TZ)) - as.numeric(as.POSIXct(iniDs, tz = TZ)) # Supposed seconds for each day
 
   Out = sTotalSec/Divider # Convert the output based on TUnit
 

@@ -7,7 +7,7 @@
 Rad2Hr(x, tau)
 }
 \arguments{
-\item{x}{Numeric vector of phases in radian. NA permitted.}
+\item{x}{Numeric vector of phases in radian.}
 
 \item{tau}{Numeric scalar. Period length in the same time units you want returned (for hours use 24). Must be > 0 and <= 24.}
 }
@@ -19,6 +19,7 @@ Convert `acrophase` in radian to clock time based on tau.
 }
 \examples{
 Rad2Hr(pi/2, tau = 24)
+
 Rad2Hr(c(-pi/2, 0, pi, 3*pi/2), tau = 24)
 
 }

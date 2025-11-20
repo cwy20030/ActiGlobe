@@ -12,18 +12,26 @@ TimeFormat(Time, as.time = FALSE)
 \item{as.time}{A binary operator indicating whether to return a converted time based on the detection or the time format. (default: FALSE, which returns time format)}
 }
 \value{
-character
+If \code{as.time = TRUE}, returns a character vector of the input times
+reformatted according to the detected format. Each element corresponds to
+the respective entry in \code{Time}.
+
+If \code{as.time = FALSE}, returns a character scalar giving the best-matching
+time format string.
+
+If no format matches, returns NA and issues a warning.
 }
 \description{
 This function will automatically detect possible time format. Users can choose to either reformat the date or report the datetime format detected.
 }
 \examples{
+\donttest{
 # Example 1: When all dates have the same format
 ## Create and store a date in a variable called Time
 Time = c("2017/05/02 23:00:01", "1970/01/02 05:10:33", "2000/02/28 07:00:00")
 
 ## Ask TimeFormat to tell us the format of the time.
-print(TimeFormat(Time))
+TimeFormat(Time, as.time = FALSE)
 
 # Example 2: When multiple formats co-exist in a variable
 ## Create and store dates and time in a variable called Time
@@ -43,10 +51,9 @@ print(TimeFormat(x))
 
 
 ### DO NOT!
-print(TimeFormat(Time))
+### print(TimeFormat(Time))
 ### Note, this process will fail because there are multiple formats
-
-
+}
 
 
 }

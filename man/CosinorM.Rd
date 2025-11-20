@@ -4,7 +4,15 @@
 \alias{CosinorM}
 \title{`Cosinor` Model}
 \usage{
-CosinorM(time, activity, tau, method = "OLS", type = "HC3")
+CosinorM(
+  time,
+  activity,
+  tau,
+  method = "OLS",
+  arctan2 = TRUE,
+  type = "HC3",
+  dilute = FALSE
+)
 }
 \arguments{
 \item{time}{Numeric vector of time coordinates for each data point}
@@ -19,11 +27,24 @@ CosinorM(time, activity, tau, method = "OLS", type = "HC3")
   \item "FGLS": Feasible generalized least squares; models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares
 }}
 
+\item{arctan2}{Logical; if TRUE (default) acrophase is computed with
+\code{atan2(gamma, beta)}, resulting in the quadrant interval between
+\eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
+quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
+and \eqn{\frac{\pi}{2}}.}
+
 \item{type}{Character string passed to \code{\link[sandwich]{vcovHC}} for robust standard error computation}
+
+\item{dilute}{Logical;
+\itemize{
+  \item "FALSE": All essential parameters would be produced.  (default)
+  \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap
+}}
 }
 \value{
 A list of class c("CosinorM", "lm") containing:
 \itemize{
+  \item parm: Parameters specified in the model
   \item tau: The assumed period length
   \item time: The time coordinates of the recording
   \item method: The estimation method used
@@ -35,6 +56,8 @@ A list of class c("CosinorM", "lm") containing:
       \item Beta: the coefficient of the cosine function
       \item Gamma: the coefficient of the sine function
     }
+  \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
+  \item extra: only available for ultradian (i.e., \eqn{\tau} less than 24hour) single-component model
   \item vcov: Robust variance-covariance matrix
   \item se: Standard errors
 }
@@ -47,7 +70,7 @@ Fit a cosine-based harmonic linear regression on circular time (hours of day)
 The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
 
 \strong{Single-phase equation}:
-      \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} + \phi\right) }
+      \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
 \itemize{
   \item \eqn{ M }: MESOR (mid-line estimating statistic of rhythm), the intercept
   \item \eqn{ A }: Amplitude, peak deviation from M
@@ -56,13 +79,21 @@ The `Cosinor` model is a cosine-based harmonic regression used to estimate circa
   \item \eqn{ \phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
 }
 
+
+Note that because the model is parameterized with a negative phase inside the
+cosine, this means the the derived peak time from acrophase corresponds to
+the peak time forward from midnight (not backward). In other words, the
+when the acrophase is positive, it means the peak activity time occurs after
+midnight and vice versa.
+
+
 \strong{Linearized form}:
      \deqn{ \hat{y} = M + \beta x + \gamma z + \epsilon }
 \itemize{
   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
-  \item \eqn{x = cos(\frac{2\pi t} {\tau})}, cosine-transformed time
-  \item \eqn{\gamma = -A * sin(\phi)}, estimated coefficient for the sine term
-  \item \eqn{z = sin(\frac{2\pi t} {\tau})}, sine-transformed time
+  \item \eqn{x = cos(\frac{2 * \pi * t} {\tau})}, cosine-transformed time
+  \item \eqn{\gamma = A * sin(\phi)}, estimated coefficient for the sine term
+  \item \eqn{z = sin(\frac{2 * \pi * t} {\tau})}, sine-transformed time
   \item \eqn{ \epsilon }: error term
 }
 
@@ -72,8 +103,14 @@ By default, \code{\link[stats]{lm}} fits this via QR decomposition.
 
 \strong{Acrophase \eqn{ (\phi) } interpretation}:
  \eqn{ \phi } is derived from
- \deqn{ \phi = \arctan(\frac{\gamma} {\beta}) }
- Note, \eqn{ \phi } is converted to clock time to identify the peak activity time.
+ \deqn{ \phi = \arctan2(\frac{\gamma} {\beta}) }
+
+ Note,
+\itemize{
+  \item \eqn{ \phi } can be converted to clock time to identify the peak activity time AFTER midnight.
+  \item if the model is not a mono-phase (i.e., more than one \eqn{ \tau }), there will be \eqn{ \frac{24 (hours)} {\tau} } number of peaks within a day.
+}
+
 
 \strong{Amplitude \eqn{ (A) } estimation}:
 Amplitude is calculated from fitted sine and cosine coefficients as:

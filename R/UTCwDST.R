@@ -95,6 +95,7 @@ UTCwDST <- function(UTCs) {
     any(wDST != sDST)
   })
 
-  names(Out) = UTCs
+  if (length(Out) == length(UTCs))   names(Out) = UTCs
+
   return(Out)
 }

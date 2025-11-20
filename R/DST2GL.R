@@ -31,6 +31,7 @@
 #'   before and after the expected shift. Note that the time zone should
 #'   be specified in the DT. See \code{as.POSIXct}.
 #'
+#' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
 #' @return
 #'   A numeric vector of the same length as \code{DT}.  Each
 #'   value is the number of hours that day is longer
@@ -44,18 +45,21 @@
 #' # On 2021-03-14 clocks jumped forward: day is 23h so output = -1
 #' DST2GL(dates)
 #'
+#' \donttest{
 #' # Example around a fall-back transition (e.g. first Sunday in November)
 #' dates <- as.Date(c("2021-10-31", "2021-11-01", "2021-11-02"))
 #'
 #' # On 2021-11-07 clocks fall back: day is 25h so output = +1
 #' DST2GL(dates)
-#'
+#' }
 #' @export
 
 
-DST2GL = function(DT){
+DST2GL = function(DT, TZ = "local"){
 
-  sFDPs = Date2TotalT(DT = DT, TUnit = "second")
+  TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
+
+  sFDPs = Date2TotalT(DT = DT, TUnit = "second", TZ = TZ)
 
   Out = (sFDPs - (86400) )/3600 ### Compute total numbers of hours in difference
 
