@@ -2,18 +2,18 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #
 #
@@ -83,11 +83,12 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   D = DateFormat(TLog$date_Start)
 
   ## Convert Travel Log to Parameters ------------
-  if(any(!D %in% DT)){
+  if (any(!D %in% DT)) {
 
     D2k = which(D %in% DT)
     TLog = TLog[D2k,]
     D = DateFormat(TLog$date_Start)
+
   }
 
   P = R2P(Bdf = Bdf,
@@ -122,7 +123,7 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
   })
 
 
-  ### Step 1 Change NDPs
+   ### Step 1 Change NDPs
   #### Based on the new daylight saving, we will change the NDPs and cumulative time...
   A1 = ifelse(nuUDST & GL0 == 0, 0, -1 * GL0) ### Adjusting factor for incorrect initial GL guesses
   GL = GL0 + A1 ### Update GL....
@@ -182,14 +183,15 @@ TAdjust = function(Bdf, TLog, TZ = NULL){
 
   ################### Check the Last Day ###################
   Idxl = length(DT)
-  Nl = as.numeric(N[Idxl]) #### Last number of data
+  Nl = as.integer(N[Idxl]) #### Last number of data
   Dl = DT[Idxl] #### Last date of the recording
   Tl = as.numeric(as.POSIXct(Dl, tz = gTZ[Idxl])) ### The starting second of the last day in number
 
   Epl <- as.numeric(Epc[[1]])
-  Timel = sequence(nvec = Nl,
-                   from = Tl,
-                   by = Epl) #### All time points on the last day.
+
+  Timel = seq(from = Tl,
+              by = Epl,
+              length.out = Nl) #### All time points on the last day.
 
 
   HMSl = as.POSIXct(Timel, tz = gTZ[Idxl])

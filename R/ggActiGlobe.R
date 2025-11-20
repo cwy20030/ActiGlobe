@@ -2,19 +2,19 @@
 #
 # Copyright (C) 2025  C. William Yao, PhD
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 #' @title Plot an Overview of an `ActiGlobe` Activity Time Series
 #'
 #' @description
@@ -106,16 +106,33 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
 
   Nt <- df$Note
 
+
+
+
   ## Identify midnight boundaries
   MdN <- as.factor(ifelse(grepl("00:00:00", T) | !grepl(":",T), "1", "0"))
 
 
-
   ##### X Tick Control -----------------
+  if (length(unique(D)) > 1) { #### Multiple Days
   NTicks = 0.2
   Ds <- c(D[[1]],D[MdN == "1"])
-  NTicks = floor(length(Ds)*NTicks)
 
+  LabX = "Date"
+
+  } else {   #### Same Day
+
+  NTicks = 0.2
+  D <- C2T(T)
+  Ds <- unique(ceiling(D))
+  D <- floor(D)
+
+  LabX = "Time of the Day"
+  }
+
+
+
+  NTicks = floor(length(Ds)*NTicks)
 
   Idx <- which(!duplicated(D))
 
@@ -133,7 +150,7 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
   E <- as.factor(ifelse(Nt != "", "1", "0"))
 
   ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
-    ggplot2::geom_point(alpha = 0.05) +
+    ggplot2::geom_point(alpha = 0.5, shape = 16) +
     ggplot2::geom_vline(
       xintercept = as.numeric(NR[MdN == "1"]),
       linetype   = "dashed",
@@ -145,12 +162,13 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
       breaks =  Xcrd,                    # numeric positions on the NR axis
       labels = Xtx          # text to show at those positions
     ) +
-    ggplot2::labs(x = "Date", y = "Activity Count") +
+    ggplot2::labs(x = LabX, y = "Activity Count") +
     ggplot2::theme_classic() +
     ggplot2::theme(
       plot.margin     = ggplot2::margin(0, 0, 0, 0),
       axis.line       = ggplot2::element_line(size = 0.8),
       axis.text       = ggplot2::element_text(color = "black", face = "bold"),
+      axis.title      = ggplot2::element_text(color = "black", face = "bold"),
       legend.position = "none"
     )
 

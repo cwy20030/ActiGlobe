@@ -86,6 +86,7 @@ ggActiGlobe(df = df2,
                VDT = "DateTime")
 ```
 
+
 ![Adjusted_Overview](./images/Adjusted_Overview.png){width=600}
 
 ## Step 1: Segment Daily Recordings

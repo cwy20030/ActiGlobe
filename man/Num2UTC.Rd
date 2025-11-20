@@ -18,7 +18,7 @@ x = c(9.5,-7)
 
 x1 = Num2UTC(x)
 
-print(x)
+print(x1)
 
 }
 \seealso{

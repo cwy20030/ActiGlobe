@@ -1,19 +1,19 @@
-#  File ActiGlobe/R/DateFormat.act.R
+#  File ActiGlobe/R/DateFormat.R
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title Detect Possible DT Format
 #'
@@ -40,16 +40,20 @@
 #'   strings may contain nonstandard separators (e.g., \code{"$"}, \code{"~"}).
 #'
 #' @return
-#' If \code{as.date = TRUE}, returns a vector of class \code{Date}. If
-#' \code{as.date = FALSE}, returns a character string representing the
+#' If \code{as.date = TRUE}, returns a vector of class \code{Date}.
+#'
+#' If \code{as.date = FALSE}, returns a character string representing the
 #' detected format. When multiple formats coexist or no valid format is
 #' detected, warnings are issued and default behavior is applied.
+#'
+#' If no format matches, returns \code{NA} and issues a warning.
 #'
 #' @examples
 #' # Consistent format across all strings
 #' DT <- c("2017/05/02", "2000/02/28", "1970/01/02")
-#' DateFormat(DT)  # returns parsed Date vector
+#' DateFormat(DT, as.date = FALSE)  # returns parsed Date vector
 #'
+#' \donttest{
 #' # Mixed formats within a vector
 #' DT <- c("2017/05/02", "2000.Feb.28", "1970-11-02",
 #'               "January 01, 2025", "December 12, 1980")
@@ -61,6 +65,7 @@
 #' # Avoid passing mixed formats as a single vector
 #' # Not recommended:
 #' # DateFormat(DT)
+#' }
 #'
 #' @export
 

@@ -2,18 +2,18 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #
 #
@@ -36,6 +36,7 @@ R2P = function(Bdf, D, U){
 
   ## Extract Date info from summary
   DT = Bdf$Date ## All Recording Dates
+  DT <- DateFormat(DT)
   MinDate = min(DT) ## First Date
   MaxDate = max(DT) ## Last Date
 
@@ -56,23 +57,29 @@ R2P = function(Bdf, D, U){
 
   Bdf$UTC.old = Bdf$UTC[[1]]
 
- for (d in 1:length(D)){
+  for (d in 1:length(D)){
 
-  if (D[d] %in% DT) { ### Check if the travel dates in the log existed in recording
+      if (d < length(D)){
 
-    if (d < length(D)){
+        Period = as.Date(D[d]:(D[d+1]-1))
 
-      Period = as.Date(D[d]:(D[d+1]-1))
+      } else {
+        fD <- as.integer(which(DT == D[d]))
+        eD <- as.integer(which(DT == MaxDate))
 
-    } else {
-      fD <- which(DT == D[d])
-      eD <- which(DT == MaxDate)
-      Period = as.Date(DT[c(fD:eD)])
-    }
+        nD <- (eD - fD) + 1
 
-    Bdf$Recording_Period[DT %in% Period] = d
-    Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
-   }
+        idx <- seq(from = fD,
+                   to = eD,
+                   length.out = nD)
+
+        subDT <- DT[idx]
+      }
+
+      Bdf$Recording_Period[DT %in% Period] = d
+      Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
+
+
   }
 
   ### Compute Changes in Hours -------------

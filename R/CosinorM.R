@@ -2,19 +2,18 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title `Cosinor` Model
 #'
@@ -26,7 +25,7 @@
 #' The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
 #'
 #' \strong{Single-phase equation}:
-#'       \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} + \phi\right) }
+#'       \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
 #' \itemize{
 #'   \item \eqn{ M }: MESOR (mid-line estimating statistic of rhythm), the intercept
 #'   \item \eqn{ A }: Amplitude, peak deviation from M
@@ -35,13 +34,21 @@
 #'   \item \eqn{ \phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
 #' }
 #'
+#'
+#' Note that because the model is parameterized with a negative phase inside the
+#' cosine, this means the the derived peak time from acrophase corresponds to
+#' the peak time forward from midnight (not backward). In other words, the
+#' when the acrophase is positive, it means the peak activity time occurs after
+#' midnight and vice versa.
+#'
+#'
 #' \strong{Linearized form}:
 #'      \deqn{ \hat{y} = M + \beta x + \gamma z + \epsilon }
 #' \itemize{
 #'   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
-#'   \item \eqn{x = cos(\frac{2\pi t} {\tau})}, cosine-transformed time
-#'   \item \eqn{\gamma = -A * sin(\phi)}, estimated coefficient for the sine term
-#'   \item \eqn{z = sin(\frac{2\pi t} {\tau})}, sine-transformed time
+#'   \item \eqn{x = cos(\frac{2 * \pi * t} {\tau})}, cosine-transformed time
+#'   \item \eqn{\gamma = A * sin(\phi)}, estimated coefficient for the sine term
+#'   \item \eqn{z = sin(\frac{2 * \pi * t} {\tau})}, sine-transformed time
 #'   \item \eqn{ \epsilon }: error term
 #' }
 #'
@@ -52,8 +59,14 @@
 #' @details
 #' \strong{Acrophase \eqn{ (\phi) } interpretation}:
 #'  \eqn{ \phi } is derived from
-#'  \deqn{ \phi = \arctan(\frac{\gamma} {\beta}) }
-#'  Note, \eqn{ \phi } is converted to clock time to identify the peak activity time.
+#'  \deqn{ \phi = \arctan2(\frac{\gamma} {\beta}) }
+#'
+#'  Note,
+#' \itemize{
+#'   \item \eqn{ \phi } can be converted to clock time to identify the peak activity time AFTER midnight.
+#'   \item if the model is not a mono-phase (i.e., more than one \eqn{ \tau }), there will be \eqn{ \frac{24 (hours)} {\tau} } number of peaks within a day.
+#' }
+#'
 #'
 #' \strong{Amplitude \eqn{ (A) } estimation}:
 #' Amplitude is calculated from fitted sine and cosine coefficients as:
@@ -69,11 +82,24 @@
 #'   \item "OLS": Ordinary least squares via \code{\link[stats]{lm}} (default)
 #'   \item "FGLS": Feasible generalized least squares; models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares
 #' }
+#' @param arctan2 Logical; if TRUE (default) acrophase is computed with
+#'   \code{atan2(gamma, beta)}, resulting in the quadrant interval between
+#'   \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
+#'   quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
+#'   and \eqn{\frac{\pi}{2}}.
 #'
 #' @param type Character string passed to \code{\link[sandwich]{vcovHC}} for robust standard error computation
+#' @param dilute Logical;
+#' \itemize{
+#'   \item "FALSE": All essential parameters would be produced.  (default)
+#'   \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap
+#' }
+#'
+#'
 #' @returns
 #' A list of class c("CosinorM", "lm") containing:
 #' \itemize{
+#'   \item parm: Parameters specified in the model
 #'   \item tau: The assumed period length
 #'   \item time: The time coordinates of the recording
 #'   \item method: The estimation method used
@@ -85,6 +111,8 @@
 #'       \item Beta: the coefficient of the cosine function
 #'       \item Gamma: the coefficient of the sine function
 #'     }
+#'   \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
+#'   \item extra: only available for ultradian (i.e., \eqn{\tau} less than 24hour) single-component model
 #'   \item vcov: Robust variance-covariance matrix
 #'   \item se: Standard errors
 #' }
@@ -138,20 +166,28 @@
 
 
 
-CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
+CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type = "HC3", dilute = FALSE) {
 
   # Check the variable class
   if (!inherits(activity,"numeric")) activity = as.numeric(as.character(activity))
-
+  if (all(activity == 0)) stop("all activity values are zero")
+  if (any(!is.finite(activity))) stop("activity contains NA/NaN/Inf")
   if (!inherits(time,"numeric")) time = C2T(time)
   if (any(time > 24 | time < 0)) stop("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
                                        Note that it is crucial to have the proper time coordinate since the model relies on it.")
 
-
   # Number of assumed rhythms
   nT <- length(tau)
   vars <- as.vector(outer(c("C", "S"), 1:nT, paste0)) ### C = x and S = z in the linear equation
+
+  day <- 24 ### 24 hours per-day for now
+  factor <- day/tau
+
+  dt <- diff(time)
+  dt <- dt[dt>0]
+  Epc <- 1/min(dt)
+
 
   # Build cosine and sine columns for each period
   ## Create a model data.frame
@@ -167,7 +203,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
   fm <- as.formula(paste("activity ~", paste0(vars, collapse = " + ")))
   df <- data.frame(activity = activity, Mdf)
 
-  # Fit linear model
+  # Fit linear model ----------------------------------------
   model <- stats::lm(fm, data = df)
 
   # Case Switch Between OLS and FGLS.
@@ -190,7 +226,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
   }
 
 
-  # Extract and Compute Parameters
+  # Extract and Compute Parameters ----------------------------------
   Coef  <- stats::coef(model)
 
   ## Extract MESOR, beta, gamma
@@ -201,19 +237,27 @@ CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
   ## Compute amplitude and acrophase
   amplitude  <- sqrt(beta^2 + gamma^2)
 
+  if (arctan2) {
 
-  acrophase <- theta <- atan(abs(gamma) / beta)
+    acrophase <- theta <- atan2(gamma , beta)
 
-  for (nl in 1:nT) {
+  } else {
 
-    Bs <- beta[[nl]]
-    Gs <- gamma[[nl]]
-    acrophase[[nl]] <- ifelse(Bs >= 0 & Gs > 0, -theta,
-                             ifelse(Bs < 0 & Gs >= 0, theta - pi,
-                                    ifelse(Bs <= 0 & Gs < 0, -theta - pi,
-                                          ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA))))
+    for (nl in 1:nT) {
+
+      Tacrophase <- acrophase <- theta <- atan(abs(gamma) / beta)
+
+      Bs <- beta[[nl]]
+      Gs <- gamma[[nl]]
+      acrophase[[nl]] <- ifelse(Bs >= 0 & Gs > 0, -theta,
+                                ifelse(Bs < 0 & Gs >= 0, theta - pi,
+                                       ifelse(Bs <= 0 & Gs < 0, -theta - pi,
+                                              ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA))))
+
+    }
 
   }
+
 
 
 
@@ -226,24 +270,125 @@ CosinorM <- function(time, activity, tau, method = "OLS", type = "HC3") {
     paste0("Beta.", tau),
     paste0("Gamma.", tau)
   )
-  coefficient <- unname(c(mesor, amplitude, acrophase, beta, gamma))
-  names(coefficient) <- coef_names
 
 
+
+  coef.cosinor <- unname(c(mesor, amplitude, acrophase, beta, gamma))
+  names(coef.cosinor) <- coef_names
+
+
+
+  ## Compute acrophase time and produce extra parameters ---------------
+
+  ### Extra parameters
+  extra <- list()
+
+  if (nT == 1) { ### For single phase cosinor -------------------
+
+    Tacrophase <- ((acrophase *  tau / (2*pi)) %% tau)
+
+    # troughs
+    bathy = Tacrophase - (tau / 2)
+
+    peak_value   <- mesor + amplitude
+    trough_value <- mesor - amplitude
+
+
+
+    ### if day (24hrs) does not equal to tau
+    if (!tau == day)  {
+      Tacro2 <- ((acrophase *  tau / (2*pi)) %% day)
+    names(Tacro2) <- paste0("Acrophase.time.",day)
+    extra <- Tacro2
+
+}
+
+    if (factor == round(factor)) {
+      f.list <-  seq.int(from = 1,
+                         to   = factor,
+                         by   = 1)
+
+      f.list <- f.list - 1
+
+      extra <- ((acrophase *  tau / (2*pi)) %% (tau * f.list))
+      names(extra) <-  paste0("Acrophase.time.",(tau * f.list))
+    }
+
+  }
+
+
+
+
+
+  ### For post-hoc and multicomponent cosinor-------------------
+
+  ### Initial process
+  y_h <- predict(model)
+  M1  <- which.max(y_h)
+  m1  <- which.min(y_h)
+
+  acro.ph    <- M1 * Epc/(3600)
+  bathy.ph   <- m1 * Epc/(3600)
+
+
+  peak_value   <- y_h[M1]
+  trough_value <- y_h[m1]
+  mesor_vlaue  <- mean(c(trough_value, peak_value))
+
+  Amp        <- (peak_value - trough_value)/2
+  names(Amp) <- "Amplitude.post-hoc"
+
+  post.hoc         <- c(mesor_vlaue, bathy.ph, trough_value, acro.ph, peak_value, Amp)
+  names(post.hoc) <- c("MESOR.ph", "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
+
+
+
+
+
+
+
+  # Generate Output ---------------
   ## Inherit the output from lm
-  fit <- model
-  fit$tau <- tau
-  fit$time <- time
-  fit$method = method
-  fit$coef.cosinor <- coefficient
-  fit$type <- type
-  fit$vcov <- sandwich::vcovHC(model, type = type)
-  fit$se <- sqrt(diag(fit$vcov))
+  if (dilute) {
+    ### for bootstrap
+    fit <- list(coef.cosinor = c(coef.cosinor, post.hoc))
 
-  ## Assign Class
-  class(fit) <- c("CosinorM","lm")
+    ## Assign Class
+    class(fit) <- c("CosinorM")
+
+  } else {
+
+    fit <- model
+    fit$model$time <- time
+    fit$epoch <- Epc
+    fit$tau <- tau
+    # fit$time <- time
+    fit$arctan2 <- arctan2
+    fit$method <- method
+    fit$type <- type
+    fit$coef.cosinor <- coef.cosinor
+    fit$extra <- extra
+    fit$post.hoc <- post.hoc
+
+    # Variance  ------------------
+    ##  model parameters
+    if (!type == "constant") {
+      fit$vcov <- sandwich::vcovHC(model, type = type)
+    } else {
+      fit$vcov <- stats::vcov(model)
+    }
+
+    ## Coefficients
+    VSEs <- se.CosinorM(fit)
+    fit$se <- VSEs$se
+
+
+    ## Assign Class
+    class(fit) <- c("CosinorM","lm")
+  }
+
+
 
   return(fit)
 
 }
-

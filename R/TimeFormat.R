@@ -2,18 +2,18 @@
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title Detect Possible Time Format
 #'
@@ -23,15 +23,25 @@
 #'
 #' @param Time A character string of time.
 #' @param as.time A binary operator indicating whether to return a converted time based on the detection or the time format. (default: FALSE, which returns time format)
-#' @return character
-#' @export
+#'
+#' @returns
+#' If \code{as.time = TRUE}, returns a character vector of the input times
+#' reformatted according to the detected format. Each element corresponds to
+#' the respective entry in \code{Time}.
+#'
+#' If \code{as.time = FALSE}, returns a character scalar giving the best-matching
+#' time format string.
+#'
+#' If no format matches, returns NA and issues a warning.
+#'
 #' @examples
+#' \donttest{
 #' # Example 1: When all dates have the same format
 #' ## Create and store a date in a variable called Time
 #' Time = c("2017/05/02 23:00:01", "1970/01/02 05:10:33", "2000/02/28 07:00:00")
 #'
 #' ## Ask TimeFormat to tell us the format of the time.
-#' print(TimeFormat(Time))
+#' TimeFormat(Time, as.time = FALSE)
 #'
 #' # Example 2: When multiple formats co-exist in a variable
 #' ## Create and store dates and time in a variable called Time
@@ -51,12 +61,12 @@
 #'
 #'
 #' ### DO NOT!
-#' print(TimeFormat(Time))
+#' ### print(TimeFormat(Time))
 #' ### Note, this process will fail because there are multiple formats
+#' }
 #'
 #'
-#'
-#'
+#' @export
 
 TimeFormat = function(Time, as.time = FALSE){
 

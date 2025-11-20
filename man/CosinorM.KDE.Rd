@@ -4,126 +4,165 @@
 \alias{CosinorM.KDE}
 \title{KDE-based circadian cosinor summary}
 \usage{
-CosinorM.KDE(time, activity, bw = 0.4, grid = 360)
+CosinorM.KDE(
+  time,
+  activity,
+  bw = 0.8,
+  grid = 360L,
+  arctan2 = TRUE,
+  dilute = FALSE
+)
 }
 \arguments{
-\item{time}{Numeric vector of event times in hours. Values are interpreted
-modulo 24 and must lie in [0, 24). If not numeric, the function will
-attempt to convert using C2T.}
+\item{time}{Numeric vector of time coordinates for each data point. Values are interpreted
+modulo 24 and must lie in [0, 24). If not numeric, an internal function will
+be used to convert it to numeric values in unit of hour.}
 
-\item{activity}{Numeric vector of non-negative weights corresponding to
-each time point. If not numeric, the function will coerce to numeric.}
+\item{activity}{Numeric vector of activity counts from an actigraphy device in correspondance to
+each time point. Non-numeric inputs will be coerced. All-zero or non-finite
+activity values produce an error.}
 
-\item{bw}{Numeric scalar. Kernel standard deviation on the circular scale
-(radians). Controls smoothing of the wrapped Gaussian kernel. Default 0.4.}
+\item{bw}{Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
+bw is interpreted in the same units as the angular scale after conversion:
+the implementation converts `bw` from hours to radians internally using
+\eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
+Note, small \code{bw} (approaching 0) can cause numerical instability, while
+large \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
+temporal resolution.}
 
-\item{grid}{Integer. Number of evaluation points for the circular KDE grid.
-Default 360 (i.e., one-degree resolution on the \eqn{ 0.2\pi } circle).}
+\item{grid}{Integer number of evaluation points used for the dense grid on
+\eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint. Default: 360.}
+
+\item{arctan2}{Logical; if TRUE (default) acrophase is computed with
+\code{atan2(gamma, beta)}, resulting in the quadrant interval between
+\eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
+quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
+and \eqn{\frac{\pi}{2}}.}
+
+\item{dilute}{Logical; if FALSE (default), all essential parameters would be
+produced. When set to TRUE, only cosinor coefficients are returned. This is
+suited for post-hoc processes, such as computing confidence interval via
+nonparametric bootstrap}
 }
 \value{
-A list of class c("CosinorM.KDE") with elements:
+A list of class \code{c("CosinorM.KDE")} with elements:
 \itemize{
-  \item tau: Period in hours
+  \item parm: Parameters specified in the model (list with \code{time}, \code{activity}, \code{bw}, \code{grid})
+  \item tau: Period in hours (default to 24hour)
   \item kdf: A data.frame with the following columns:
     \itemize{
-      \item theta: Angular grid in radians
-      \item density: KDE values
-      \item hour: Grid in hours
+      \item theta: Angular positions (radians) at the observation angles
+      \item density: Estimated PDF values at the observation angles (integrates to 1 over \eqn{[0,2\pi)} when scaled)
+      \item trapizoid.weight: Numeric vector of trapezoid integration weights at observation angles
+      \item kernel.weight: Denominator from kernel convolution (kernel mass at each observation angle)
+      \item fitted.values: Normalized fitted KDE (activity-scale) at observation angles
+      \item fitted.var: Variance estimate of the fitted values (for SE)
+      \item fitted.se: Standard error of the fitted values
+      \item hour: Corresponding clock time in hours
     }
   \item coef.cosinor: Named numeric vector with entries:
     \itemize{
       \item MESOR: the mean of activity density over 24 hours
-      \item Amplitude: the peak activity at the most active period of the day.
-      \item Acrophase: Acrophase in radian (time-of-peak) of the most active period during the day.
-      \item Acrophase.hr: the timing of the peak activity at the most active period of the day.
-      \item Beta: the coefficient of the cosine-weighted integral of the KDE,
-      \item Gamma: the coefficient of the sine-weighted integral of the KDE,
+      \item Amplitude: the first-harmonic amplitude derived from Beta and Gamma
+      \item Acrophase: Acrophase in radians (time-of-peak) of the dominant daily component
+      \item Acrophase.hr: Acrophase converted to clock hours in [0,24)
+      \item Beta: coefficient equivalent to the cosine-weighted integral of the KDE
+      \item Gamma: coefficient equivalent to the sine-weighted integral of the KDE
+    }
+  \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
+  \item grid: (when \code{dilute = FALSE}) list of grid diagnostics:
+    \itemize{
+      \item theta: evaluation angles on the dense grid (radians)
+      \item density: Grid-level PDF (integrates to 1 over theta)
+      \item trapizoid.weight: Trapezoid integration weights for the grid points
+      \item kernel.weight: Kernel mass (denominator) at each grid point
+      \item fitted.values: Normalized fitted values at grid points (activity-scale)
+      \item fitted.var: Variance propagation through fitted variances on the grid
+      \item fitted.se: Standard error of the fitted values at grid points
     }
 }
 }
 \description{
-Fit a Gaussian kernel density estimate (KDE) on circular time
-(hours of day) weighted by activity and extract cosinor summaries
+Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
+weighted by activity and extract first-harmonic cosinor summaries.
 }
 \details{
-This function builds a circularized KDE from event times (hours in [0,24))
-and non-negative weights (activity). The KDE is computed on a regular grid
-over [0, 2*pi) using a wrapped Gaussian kernel with specified bandwidth.
-Cosinor parameters are obtained by numerical integration of the KDE:
-MESOR is the mean level, \eqn{\beta} and \eqn{\gamma} are the first-harmonic
-cosine and sine coefficients, Amplitude is the magnitude of the first harmonic,
-and acrophase is the peak time expressed in radian and hour.
+This function builds a circular KDE from event times (hours in \[0,24)) and
+activity. The KDE is computed on a regular angular grid over \[0, 2*pi) using
+a wrapped Gaussian kernel with specified bandwidth. Cosinor summaries (MESOR,
+Beta, Gamma, Amplitude, Acrophase) are obtained by numerical integration of
+the KDE using trapezoid-rule quadrature.
 
- The KDE is computed for each grid angle \eqn{t_g} by summing weighted Gaussian
- densities of the wrapped angular differences \eqn{t_g - \theta_i}, where \eqn{\theta_i}
- are the input times converted to `radian`.
-
- To mimic the cosinor-style phase mapping for clock time, it integrals KDE-
- predicted density \eqn{\hat{y}(\theta)} (or \eqn{f(\theta)}for normalization) and the complex-weighted
- density \eqn{e^{i\theta }\,\hat{y}(\theta)} (for circular mean/phase)
- over one cycle of a closed circular domain using the trapezoid rule. Note,
- the circularization procedure appends the first grid point to the last after
- shifting it by \eqn{2\pi} to close the circle.
-
- Together, we can write the equation as,
- \deqn{I\theta=\int _0^{2\pi }f(\theta)\, d\theta}
- \deqn{C=\int _0^{2\pi }e^{i\theta}\, f(\theta)\, d\theta}
-
- For \eqn{C}, we can then split into linearized cosinor equation:
- \deqn{C = Icos + iIsin}
-
-where,
+Cosinor parameters are obtained by numerical integration of the KDE on the grid:
 \itemize{
-  \item \eqn{Icos}: Integral of \eqn{f(\theta) * cos(\theta)} with respect to \eqn{(\theta)}.
-\deqn{Icos = \int_{\theta}^{2\pi} f(\theta) \cos(\theta)\, d\theta}
-
-  \item \eqn{Isin}: Integral of \eqn{f(\theta) * sin(\theta)} with respect to \eqn{(\theta)}
-\deqn{Isin = \int_{\theta}^{2\pi} f(\theta) \sin(\theta)\, d\theta}
+  \item MESOR: mean level of the fitted curve, \eqn{M = I_0 / (2\pi)}.
+  \item \eqn{\beta}: cosine coefficient, \eqn{\beta = I_{cos} / \pi}.
+  \item \eqn{\gamma}: sine coefficient, \eqn{\gamma = I_{sin} / \pi}.
+  \item Amplitude: magnitude of the first harmonic, \eqn{A = \sqrt{\beta^2 + \gamma^2}}.
+  \item Acrophase: peak time, \eqn{\phi = atan2(-\gamma, \beta)}, expressed in radians and converted to hours.
 }
 
+The grid integrals are computed with trapezoid weights \eqn{w_g}:
+\deqn{I_0 = \text{area}_g \sum_g \frac{pdf_g \, w_g}{den_g}}
+\deqn{I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\, w_g}{den_g}}
+\deqn{I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\, w_g}{den_g}}
 
- Trapezoid-rule discrete forms on grid \eqn{\theta_g} with values \eqn{f_g = f(\theta_g)}:
- \deqn{N\approx \sum_g\frac{f_{g+1}+f_g}{2}\, (\theta_{g+1} - \theta_g)}
- \deqn{C\approx \sum_g\frac{e^{i\theta_{g+1}}f_{g+1}+e^{i\theta_g}f_g}{2}\, (\theta_{g+1} - \theta_g)}
-
-
-
-
-\strong{Conversion of cosinor integrals}:
-
-In a linearized single-phase cosinor model, the equation is often expressed as,
-    \deqn{ \hat{y} = M + \beta cos(\frac{2\pi t} {\tau}) + \gamma sin(\frac{2\pi t} {\tau}) + \epsilon }
-\itemize{
-  \item \eqn{ M }: MESOR (mid-line estimating statistic of rhythm), the intercept
-  \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
-  \item \eqn{\gamma = -A * sin(\phi)}, estimated coefficient for the sine term
-  \item \eqn{ A }: Amplitude, peak deviation from M
-  \item \eqn{ t }: Time coordinate within the cycle
-  \item \eqn{ \tau }: The assumed period length
-  \item \eqn{ \phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
-  \item \eqn{ \epsilon }: error term
-}
-
-\strong{For KDE},
-we can re-write these parameters since the KDE is projected onto an one cycle clock phase.
-\itemize{
-  \item \eqn{\theta}: the angular (circular) representation of clock time measured in radian.
-  \item \eqn{ M }: MESOR (the mean of the KDE over the full cycle, i.e., 24 hours), \eqn{\frac{I\theta}{2\pi}}
-  \item \eqn{\beta}: the coefficient of the cosine-weighted integral of the KDE, \eqn{\beta = \frac{Icos}{\pi}}
-  \item \eqn{\gamma}: the coefficient of the sine-weighted integral of the KDE, \eqn{\gamma = \frac{Isin}{\pi}}
-  \item \eqn{ A }: Amplitude, the peak activity at the first complex moment
-  \deqn{C=\pi A\, e^{i\phi}\quad \Rightarrow \quad A=\frac{|C|}{\pi}}
-  \item \eqn{\phi}: Acrophase (the mean circular phase), \eqn{ \phi = atan2(-\gamma, \beta) }
-}
+where \eqn{pdf_g} is the normalized KDE at grid angle \eqn{\theta_g}, \eqn{den_g}
+is the kernel denominator at that grid point, and \eqn{\text{area}_g} rescales the
+fitted density back to the activity scale.
 
 Notes:
 \itemize{
-  \item The normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from orthogonality of \eqn{\cos} and \eqn{\sin} on \eqn{[0,2\pi)} and from the usual least-squares/Fourier coefficient conventions.
+  \item Normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from the orthogonality of sine and cosine on \eqn{[0,2\pi)}.
+  \item The KDE summarizes the first harmonic of the rest–activity pattern over one cycle; higher harmonics are not extracted.
+  \item The trapezoid rule ensures numerical stability by integrating over a dense, evenly spaced grid.
+  \item The dense grid excludes the duplicate \eqn{2\pi} endpoint (grid in \eqn{[0,2\pi)}) to avoid duplicated quadrature nodes.
+  \item Grid and observation trapezoid weights correct for irregular sampling and yield stable approximations to continuous integrals.
+  \item Grid points with near-zero denominator \eqn{\sum_i K(\theta-\theta_i) w_i} are set to \code{NA} and excluded from integrals to avoid division-by-zero artifacts.
+}
 
-  \item While KDE does not assume the number of active-periods from the underlying rest-activity pattern, the algorithm can only extracts the first harmonic equivalent summary of the rest-activity pattern. This is because the time is set to be just one cycle.
 
+\strong{Residaul Variance and Effective Degree of Freedom}
+
+\itemize{
+  \item \strong{Regression (projection hat matrix):}
+
+  \deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{n - p},}
+
+  where \eqn{p} is the number of parameters (degrees of freedom used by the fit).
+
+  \item \strong{Linear kernel smoothing:}
+
+  Fitted values are given by the linear smoother
+
+  \deqn{\hat{y} = W y,}
+
+  where \eqn{W} is the hat matrix induced by the kernel weights (not a projection).
+}
+
+When defining residuals as \eqn{r = y - \hat{y}} and \eqn{\mathrm{RSS} = \sum r_i^2},
+the unbiased estimator under the Gaussian kernel smoother can be written as
+\deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W) + \mathrm{tr}(W^{\top} W)\,}.}
+
+where,
+
+\itemize{
+  \item \deqn{\mathrm{tr}(W)} is the effective degrees of freedom used by the smoother
+        (analogous to the number of parameters).
+  \item \deqn{\mathrm{tr}(W^{\top} W) = \sum_{i,j} W_{ij}^2} is a correction term because
+        \eqn{W} is not an orthogonal projection.
 }
 }
+\section{Warnings and edge cases}{
+
+ \itemize{
+      \item The function errors if \code{all(activity) == 0} or if \code{activity} contains
+  non-finite values.
+      \item Very small \code{bw} can cause near-zero denominator values (numerical
+  instability) and produce NA or an error; very large \code{bw} approaches a near-uniform kernel and will wash out temporal structure.
+}
+}
+
 \examples{
 
 \dontrun{
@@ -153,7 +192,7 @@ plot(fit$kdf$hour, fit$kdf$density, type = "l", xlab = "Hour", ylab = "KDE")
 
 }
 \seealso{
-CosinorM
+\code{\link{CosinorM}}
 }
 \keyword{KDE}
 \keyword{circadian}

@@ -38,7 +38,8 @@ Imports:
     readr,
     sandwich,
     utils,
-    viridis
+    viridis,
+	parallel
 Suggests: 
     ggthemes,
     knitr,

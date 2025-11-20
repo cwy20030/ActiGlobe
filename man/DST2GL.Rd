@@ -4,7 +4,7 @@
 \alias{DST2GL}
 \title{Compute Time Gain/Loss due to Daylight Saving Time}
 \usage{
-DST2GL(DT)
+DST2GL(DT, TZ = "local")
 }
 \arguments{
 \item{DT}{A vector of class \code{Date}, \code{POSIXct}, or \code{POSIXlt},
@@ -12,6 +12,8 @@ sorted in ascending order.  Each element marks the start of a day
 boundary.  To capture DST transitions, include at least one day
 before and after the expected shift. Note that the time zone should
 be specified in the DT. See \code{as.POSIXct}.}
+
+\item{TZ}{The time zone when the recording started. (default = "local", which means user's local time zone)}
 }
 \value{
 A numeric vector of the same length as \code{DT}.  Each
@@ -32,10 +34,11 @@ dates <- as.Date(c("2021-03-13", "2021-03-14", "2021-03-15"))
 # On 2021-03-14 clocks jumped forward: day is 23h so output = -1
 DST2GL(dates)
 
+\donttest{
 # Example around a fall-back transition (e.g. first Sunday in November)
 dates <- as.Date(c("2021-10-31", "2021-11-01", "2021-11-02"))
 
 # On 2021-11-07 clocks fall back: day is 25h so output = +1
 DST2GL(dates)
-
+}
 }
