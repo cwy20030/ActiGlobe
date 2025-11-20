@@ -4,7 +4,7 @@
 \alias{boot.seci}
 \title{Bootstrap Standard Errors and Confidence Intervals for Model Parameters}
 \usage{
-boot.seci(object, level = 0.95, N = 500)
+boot.seci(object, level = 0.95, N = 500, digits = 2)
 }
 \arguments{
 \item{object}{a fitted `CosinorM` or `CosinorM.KDE` model object.}
@@ -12,6 +12,8 @@ boot.seci(object, level = 0.95, N = 500)
 \item{level}{Numeric scaler. the confidence level.}
 
 \item{N}{Numeric scaler. Numbers of bootstraps required to estimate the standard errors and confidence intervals. Default: 500}
+
+\item{digits}{Numeric scaler. Integer indicating the number of decimal places (round) to be used. Default: 2}
 }
 \value{
 A data.frame with one row per cosinor coefficient and columns:
