@@ -111,6 +111,35 @@ dfList = Act2Daily(df = df,
                    Travel = TRUE)
 ```
 
+Generate report for reproducibility and further analysis 
+
+
+
+ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform ecnometrics-based cosinor model and circularized kernel density estimation (cKDE), please, see vignette.
+
+# Extract a single day actigraphy data 
+``` r
+ df <- BdfList$df
+ df <- subset(df, df$Date == "2017-10-27")
+```
+
+``` r
+## ----OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7-----
+fit.ols <- 
+CosinorM(time = df$Time,
+         activity = df$Activity,
+         tau = 24,  ### for multicomponent cosinor analysis, wrap the comma separated phase periods in c()
+         method = "OLS")
+
+### Look at the parameters
+fit.ols$coef.cosinor
+```
+
+Visualize the cosinor model fitting.
+``` r
+ggCosinorM(fit.ols)
+```
+
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
