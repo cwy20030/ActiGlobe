@@ -5,11 +5,17 @@
 
 <!-- badges: start -->
 
-![version](https://img.shields.io/badge/version-0.1.9-green)
+![version](https://img.shields.io/badge/version-0.2.0-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-ActiGlobe is the world first tool specifically designed to harmonize actigrpahy recordings affected by time shift due to daylight saving changes and/or cross-continental travel. This R package also streamlines the process from end-to-end, simplifying data pre-processing, quantitative analysis (e.g., cosinor rhythmetry), and documentation (i.e., visual reports and database summary), making it a multifunctional tool for researchers and professionals. To learn how to use it, check the vignettes for a quick tutorial.
+ActiGlobe is designed to make it easy to pre-process longitudinal
+actigraphy recordings, especially for the recordings affected by time
+shift due to daylight saving changes and or cross-continental travel. It
+streamlines the process from end-to-end, to simplify the process of
+pre-processing, analyzing, and exporting daily actigraphy data and
+visual reports, making it an essential tool for researchers and
+professionals in the field.
 
 ## Installation
 
@@ -46,7 +52,7 @@ citation("ActiGlobe")
 #> To cite package 'ActiGlobe' in publications use:
 #> 
 #>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-Continental Travel_. R package version 0.2.0,
+#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
 #>   <https://github.com/cwy20030/ActiGlobe>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -55,7 +61,7 @@ citation("ActiGlobe")
 #>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
 #>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
 #>     year = {2025},
-#>     note = {R package version 0.2.0},
+#>     note = {R package version 0.1.9},
 #>     url = {https://github.com/cwy20030/ActiGlobe},
 #>   }
 ```
@@ -84,11 +90,13 @@ Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
 
+
+### Adjust Travel-induced Time Shift
 ``` r
-### Import the travel log into R and give it a name
+#### Import the travel log into R and give it a name
 TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
 
-### Replace the TLog with the name of the travel log assigned
+#### Replace the TLog with the name of the travel log assigned
 Bdf.adj = TAdjust(Bdf = Bdf, 
                   TLog = TLog)
 ```
@@ -104,6 +112,22 @@ dfList = Act2Daily(df = df,
                    Incomplete = TRUE,
                    Travel = TRUE)
 ```
+
+#### Review adjustment
+```r
+df2 <- do.call(rbind, dfList$Daily_df)
+
+ggActiGlobe(df = df2, 
+            Bdf = Bdf.adj,
+            VAct = "Activity",
+            VDT = "DateTime")
+```
+
+## Other Features
+Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.
+
+ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform and visualize ecnometrics-based cosinor model and circularized kernel density estimation, please, see the package vignettes.
+
 
 ## Code of conduct
 
