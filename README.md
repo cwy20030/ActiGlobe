@@ -35,7 +35,8 @@ devtools::install_github("cwy20030/ActiGlobe",
                          build_vignettes = TRUE)
 ```
 
-Coming soon… \#### ActiGlobe-release
+Coming soon… 
+ActiGlobe-release
 
 ``` r
 install.packages("ActiGlobe")
@@ -90,11 +91,12 @@ Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
 
+### Adjust Travel-induced Time Shift
 ``` r
-### Import the travel log into R and give it a name
+#### Import the travel log into R and give it a name
 TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
 
-### Replace the TLog with the name of the travel log assigned
+#### Replace the TLog with the name of the travel log assigned
 Bdf.adj = TAdjust(Bdf = Bdf, 
                   TLog = TLog)
 ```
@@ -111,34 +113,21 @@ dfList = Act2Daily(df = df,
                    Travel = TRUE)
 ```
 
-Generate report for reproducibility and further analysis 
+#### Review adjustment
+```r
+df2 <- do.call(rbind, dfList$Daily_df)
 
-
-
-ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform ecnometrics-based cosinor model and circularized kernel density estimation (cKDE), please, see vignette.
-
-# Extract a single day actigraphy data 
-``` r
- df <- BdfList$df
- df <- subset(df, df$Date == "2017-10-27")
+ggActiGlobe(df = df2, 
+            Bdf = Bdf.adj,
+            VAct = "Activity",
+            VDT = "DateTime")
 ```
 
-``` r
-## ----OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7-----
-fit.ols <- 
-CosinorM(time = df$Time,
-         activity = df$Activity,
-         tau = 24,  ### for multicomponent cosinor analysis, wrap the comma separated phase periods in c()
-         method = "OLS")
+## Other Features
+Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.
 
-### Look at the parameters
-fit.ols$coef.cosinor
-```
+ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform and visualize ecnometrics-based cosinor model and circularized kernel density estimation, please, see the package vignettes.
 
-Visualize the cosinor model fitting.
-``` r
-ggCosinorM(fit.ols)
-```
 
 ## Code of conduct
 
