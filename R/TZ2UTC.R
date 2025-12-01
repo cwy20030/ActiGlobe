@@ -46,7 +46,7 @@
 #' @keywords UTC TZ
 #' @export
 
-TZ2UTC = function(DT, TZ = "local") {
+TZ2UTC <- function(DT, TZ = "local") {
 
   TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
 

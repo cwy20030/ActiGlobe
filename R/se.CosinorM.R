@@ -74,7 +74,7 @@
 #'
 #'
 #' @import stats
-#' @param object model of class `CosinorM`
+#' @param object A model of class `CosinorM`
 #'
 #' Standard errors are the square roots of the approximated variances.
 #'

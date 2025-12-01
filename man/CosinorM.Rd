@@ -61,7 +61,7 @@ A list of class c("CosinorM", "lm") containing:
   \item vcov: Robust variance-covariance matrix
   \item se: Standard errors
 }
-Inherits all components from stats::lm.
+Inherits all components from \code{\link[stats]{lm}}.
 }
 \description{
 Fit a cosine-based harmonic linear regression on circular time (hours of day)

@@ -26,19 +26,18 @@
 #' function handles transitions by detecting the "gain" or "loss" of
 #' hours via `DST2GL()` and flipping the DST flag on the transition day.
 #'
-#' @param DT
-#'   A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
+#' @param DT A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
 #'   the dates/times to test.  These need not be sorted.
-#'
-#' @param TZ
-#'   A single string naming an IANA time zone (e.g. `America/New_York`).
-#'   If `"local"`, it will extract local time zone using `Sys.timezone()`.  Must match one entry in
+#' @param TZ A single string naming an IANA time zone (e.g. `America/New_York`). If `"local"`, it will extract local time zone using `Sys.timezone()`.  Must match one entry in
 #'   `OlsonNames()`.
 #'
 #' @return
-#'   A logical vector of the same length as `DT`.  `TRUE` indicates
-#'   the timestamp falls in DST; `FALSE` indicates standard time.
-#'
+#'   A logical vector of the same length as `DT`. 
+#'   \itemize{
+#'     \item `TRUE` indicates the timestamp falls in DST
+#'     \item `FALSE` indicates standard time.
+#' }
+#' 
 #' @examples
 #' # Standard use: New York in summer vs. winter
 #' dates <- as.POSIXct(c("2021-06-15", "2021-12-15"), tz = "America/New_York")
@@ -52,6 +51,7 @@
 #' # Using the local system time zone
 #' DST(as.POSIXct("2023-07-01 12:00:00"), TZ = "local")
 #'}
+#' @keywords daylight dst
 #' @export
 
 DST <- function(DT, TZ = "local") {

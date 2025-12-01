@@ -7,7 +7,7 @@
 TAdjust(Bdf, TLog, TZ = NULL)
 }
 \arguments{
-\item{Bdf}{A BriefSum object in data.frame}
+\item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for the recording.}
 
 \item{TLog}{A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.}
 

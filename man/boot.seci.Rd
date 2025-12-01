@@ -7,7 +7,7 @@
 boot.seci(object, level = 0.95, N = 500, digits = 2)
 }
 \arguments{
-\item{object}{a fitted `CosinorM` or `CosinorM.KDE` model object.}
+\item{object}{A fitted `CosinorM` or `CosinorM.KDE` model object.}
 
 \item{level}{Numeric scaler. the confidence level.}
 

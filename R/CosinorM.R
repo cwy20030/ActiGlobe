@@ -73,10 +73,10 @@
 #' \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 #'
 #' @import stats sandwich
+#'
 #' @param time Numeric vector of time coordinates for each data point
 #' @param activity Numeric vector of activity counts from an actigraphy device
 #' @param tau Numeric scalar or vector for the assumed circadian period. Default is 24 for single-phase; multiple phases can be supplied via [c()]
-#'
 #' @param method Character string specifying estimation method
 #' \itemize{
 #'   \item "OLS": Ordinary least squares via \code{\link[stats]{lm}} (default)
@@ -87,14 +87,12 @@
 #'   \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
 #'   quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
 #'   and \eqn{\frac{\pi}{2}}.
-#'
 #' @param type Character string passed to \code{\link[sandwich]{vcovHC}} for robust standard error computation
 #' @param dilute Logical;
 #' \itemize{
 #'   \item "FALSE": All essential parameters would be produced.  (default)
 #'   \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap
 #' }
-#'
 #'
 #' @returns
 #' A list of class c("CosinorM", "lm") containing:
@@ -116,7 +114,7 @@
 #'   \item vcov: Robust variance-covariance matrix
 #'   \item se: Standard errors
 #' }
-#' Inherits all components from stats::lm.
+#' Inherits all components from \code{\link[stats]{lm}}.
 #'
 #' @references
 #' Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
@@ -176,9 +174,8 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE, type =
   if (any(time > 24 | time < 0)) stop("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
                                        Note that it is crucial to have the proper time coordinate since the model relies on it.")
-
-  # Number of assumed rhythms
-  nT <- length(tau)
+  ## Get Essential Info -----------------
+  nT <- length(tau)  ### Number of assumed rhythms
   vars <- as.vector(outer(c("C", "S"), 1:nT, paste0)) ### C = x and S = z in the linear equation
 
   day <- 24 ### 24 hours per-day for now

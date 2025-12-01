@@ -28,7 +28,7 @@
 #'
 
 
-TravelLog = function(Write = FALSE, Dir = NULL) {
+TravelLog <- function(Write = FALSE, Dir = NULL) {
 
  df =  data.frame(matrix(ncol = 5, nrow = 1))
 

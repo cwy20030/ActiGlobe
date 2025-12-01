@@ -21,7 +21,7 @@
 #'
 #' @description
 #' `TAdjust()` is a function that corrects data points and time-shift based on travelling log. Note that it is important to ensure that the UTC-offset value is correct. When in doubt, please use the UTC function or consult IANA table in the package. Daylight saving will not be reassessed as in BriefSum function.
-#' @param Bdf A BriefSum object in data.frame
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording.
 #' @param TLog A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.
 #' @param TZ The time zone when the recording started. (default = "NULL", which will disregard the use of the initial geographical location-based time zone indicator)
 #' @keywords Adjust Actigraphy
@@ -55,7 +55,7 @@
 #' @export
 
 
-TAdjust = function(Bdf, TLog, TZ = NULL){
+TAdjust <- function(Bdf, TLog, TZ = NULL){
 
   ## Extract Essential Parameters
   DT = Bdf$Date

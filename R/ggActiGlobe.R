@@ -21,20 +21,16 @@
 #' Creates a time-series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
 #'
 #' @import ggplot2
+#'
 #' @param df A data.frame of annotated actigraphy epochs.  Must include:
 #'   - An activity column named by `VAct`.
 #'   - A datetime column named by `VDT`.
-#'   - Optionally, a `Note` column to flag affected epochs.
-#'
-#' @param Bdf A BriefSum object containing per-day metadata for the recording.
-#'   If you have applied jet-lag or daylight-saving adjustments, pass the output
-#'   from the ActiGlobe function `TAdjust`.
-#'
-#' @param VAct Character. Name of the activity column in `df` (numeric counts).
-#'
-#' @param VDT Character. Name of the POSIXct datetime column in `df`.
-#'
-#' @param ... graphical parameters to plot
+#'   - Optionally, a `Note` column to flag affected epochs. See \code{\link{BriefSum}} and \code{\link{TAdjust}} for details.
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
+#' @param VAct Optional character. Name of the activity column in `df`. If NULL,
+#'   defaults to the second column of `df`.
+#' @param VDT Optional character. Name of the POSIXct datetime column in `df`. If NULL,
+#'   defaults to "DateTime" of `df`.
 #'
 #' @return A `ggplot` object showing:
 #'   - Activity counts vs. time.
@@ -80,10 +76,10 @@
 
 
 
-ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
+ggActiGlobe <- function(df, Bdf, VAct = NULL, VDT = "DateTime") {
 
 
-  ## Ensure Note column exists
+  ## Ensure Note column exists --------------
   if (!"Note" %in% names(df)) {
     df$Note <- ""
   }
@@ -102,11 +98,6 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
   if (!inherits(DT, c("POSIXct", "POSIXlt"))) {
     DT <- as.POSIXct(DT)
   }
-
-
-  Nt <- df$Note
-
-
 
 
   ## Identify midnight boundaries
@@ -146,9 +137,22 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
 
 
 
-  ## Flag points with any Note (e.g. travel overlap or unallocated)
+  ## Flag points with any Note (e.g. travel overlap or unallocated) -------------
+  if ("Note" %in% names(df)) {
+    Nt <- df$Note
+    E <- as.factor(ifelse(Nt != "", "1", "0"))
+  } else {
+
+    E <- as.factor(rep("0", nrow(df)))
+
+  }
+
+
+
   E <- as.factor(ifelse(Nt != "", "1", "0"))
 
+  ## Create ggplot object -------------
+  g <-
   ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
     ggplot2::geom_point(alpha = 0.5, shape = 16) +
     ggplot2::geom_vline(
@@ -172,13 +176,16 @@ ggActiGlobe <- function(df, Bdf, VAct, VDT = "DateTime", ...) {
       legend.position = "none"
     )
 
+
+
+  return(g)
 }
 
 
 
 
-# Pick Ticks
-
+#' @title Pick Ticks for ggActiGlobe
+#' @noRd
 pick_ticks <- function(Ds, NTicks) {
   n <- length(Ds)
   if (n == 0) return(integer(0))

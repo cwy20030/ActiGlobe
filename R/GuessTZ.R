@@ -24,7 +24,7 @@
 #' @param All Logical, if TRUE, as default, it will provide all possible TZ codes. If FALSE, it will retrieve the first one.
 #' @noRd
 
-GuessTZ = function(aOF, DT = NULL, iTZ = NULL, All = TRUE) {
+GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE) {
 
   # Establish initial time zone...
   TZ1 = ifelse(iTZ == "local", Sys.timezone(), iTZ)

@@ -4,23 +4,21 @@
 \alias{ggActiGlobe}
 \title{Plot an Overview of an `ActiGlobe` Activity Time Series}
 \usage{
-ggActiGlobe(df, Bdf, VAct, VDT = "DateTime", ...)
+ggActiGlobe(df, Bdf, VAct = NULL, VDT = "DateTime")
 }
 \arguments{
 \item{df}{A data.frame of annotated actigraphy epochs.  Must include:
 - An activity column named by `VAct`.
 - A datetime column named by `VDT`.
-- Optionally, a `Note` column to flag affected epochs.}
+- Optionally, a `Note` column to flag affected epochs. See \code{\link{BriefSum}} and \code{\link{TAdjust}} for details.}
 
-\item{Bdf}{A BriefSum object containing per-day metadata for the recording.
-If you have applied jet-lag or daylight-saving adjustments, pass the output
-from the ActiGlobe function `TAdjust`.}
+\item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.}
 
-\item{VAct}{Character. Name of the activity column in `df` (numeric counts).}
+\item{VAct}{Optional character. Name of the activity column in `df`. If NULL,
+defaults to the second column of `df`.}
 
-\item{VDT}{Character. Name of the POSIXct datetime column in `df`.}
-
-\item{...}{graphical parameters to plot}
+\item{VDT}{Optional character. Name of the POSIXct datetime column in `df`. If NULL,
+defaults to "DateTime" of `df`.}
 }
 \value{
 A `ggplot` object showing:

@@ -68,7 +68,7 @@
 #'
 #' @export
 
-TimeFormat = function(Time, as.time = FALSE){
+TimeFormat <- function(Time, as.time = FALSE){
 
   # Define a vector of time formats
   fmts <- c("%H:%M:%S", "%I:%M:%S %p", "%H:%M", "%I:%M %p")
@@ -106,7 +106,7 @@ TimeFormat = function(Time, as.time = FALSE){
   ## Remove Unmatched Time Formats
   Format = fmts[which(!is.na(formatedTime))]
 
-#  TFormat = unlist(lapply(formats, function(x){
+#  TFormat <- unlist(lapply(formats, function(x){
 #    # Try to convert the time string to a POSIXct object
 #    time <- strptime(Time, format = x)
 

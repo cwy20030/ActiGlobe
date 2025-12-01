@@ -25,7 +25,7 @@
 #' @description
 #' Identifies the likely date format used in character strings and
 #' optionally converts these strings to Date objects. This utility is
-#' intended to support pre-processing of time-stamp data with varied or
+#' intended to support pre-processing of timestamp data with varied or
 #' unknown formatting. When ambiguity arises (e.g., day-month versus
 #' month-day ordering), the function defaults to the first compatible format
 #' unless explicitly guided by a delimiter or by manual correction.
@@ -98,9 +98,9 @@ DateFormat <- function(DT, as.date = TRUE, Delim=NULL){
 
   ## See which time format works for this
   if(length(Format)>1){
-    Format = unlist(lapply(1:length(formatedDate),function(d){
+    Format <- unlist(lapply(1:length(formatedDate),function(d){
       temp = as.character(formatedDate[d])
-      temp = unlist(strsplit(temp,split="-"))
+      temp <- unlist(strsplit(temp,split="-"))
 
       if(all(as.numeric(temp)<1000)){
         NA

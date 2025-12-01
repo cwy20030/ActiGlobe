@@ -12,11 +12,12 @@ ggCosinorM(
   n = 400,
   point_size = 0.5,
   title_extra = NULL,
+  legend.position = "right",
   ...
 )
 }
 \arguments{
-\item{object}{A fitted model of class \code{\link{CosinorM}}}
+\item{object}{A fitted model of class \code{\link{CosinorM}} or \code{\link{CosinorM.KDE}}}
 
 \item{labels}{Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).}
 
@@ -30,7 +31,9 @@ ggCosinorM(
 
 \item{title_extra}{Optional character string appended to the plot title for extra context.}
 
-\item{...}{Additional arguments (currently ignored) kept for generic compatibility.}
+\item{legend.position}{Position of the legend on the plot; default is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`, or a numeric vector of length two specifying x and y coordinates.}
+
+\item{...}{Additional arguments (currently ignored) kept for future update}
 }
 \description{
 Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
@@ -47,7 +50,7 @@ BriefSum(df = FlyEast ,
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset(df, df$Date == "2017-10-27")
+df <- subset(df, df$Date == "2017-10-28")
 
 fit <- CosinorM(time = df$Time,
                 activity = df$Activity,
@@ -67,3 +70,7 @@ print(p)
 \seealso{
 \code{\link[ggplot2]{ggplot}}, \code{\link[ggrepel]{geom_label_repel}}, \code{\link[stats]{predict}}
 }
+\keyword{cosinor}
+\keyword{ggplot}
+\keyword{graph}
+\keyword{plot}

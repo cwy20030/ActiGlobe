@@ -323,7 +323,7 @@ ggplot() +
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, echo=FALSE, fig.height=7, fig.width=7}
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7}
 
 # Prepare data
 n <- length(fit.fgls$fitted.values)

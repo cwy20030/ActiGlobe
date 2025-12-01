@@ -22,13 +22,13 @@
 #' @description
 #' A function that exports two types of files locally. 1. A summary of the entire recording (.csv). 2. Daily activity recordings in individual files (.txt). The default deliminator is set to be space, with `.` as the decimal indicator. As such, it should be noted that some transformation may be needed when opening in EXCEL on a computer with non-English EU settings.
 #'
-#' @import readr utils
+#' @import utils
+#' @importFrom readr write_delim
 #' @param Dir The directory where the recordings to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
 #' @param ID The subject's ID which would be used to create a folder.
 #' @param df A data.frame of raw actigraphy recording. Both time and activity count
 #' should be included in the `df`. See `VAct` and `VTm` for further detail.
-#' @param Bdf A \code{\link{BriefSum}} object. If jet lag or daylight saving occurred during the recording,
-#'   please, use the updated version from \code{\link{TAdjust}}.
+#' @param Bdf A \code{\link{BriefSum}} object. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
 #' @param TUnit Character; time--unit for the x--axis of each day's timeline.
 #'   Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.
 #' @param VAct Optional character.  Name of the activity column in `df`. If NULL,
@@ -99,7 +99,7 @@
 
 
 
-write.act = function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
+write.act <- function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                      Incomplete = FALSE, Travel = TRUE, Simple = FALSE){
 
 
@@ -109,6 +109,8 @@ write.act = function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
   if (is.null(VTm))  VTm = names(df)[[1]]
   if (is.null(VAct))  VAct = names(df)[[2]]
 
+  CheckT <- unique(diff(df[[VTm]]))
+  if (any(!length(CheckT) == 1, CheckT == 0 )) stop("Time variable in 'df' must be equally spaced.")
 
 
   #### Use Act2Daily ------------------
@@ -132,7 +134,7 @@ write.act = function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
 
 
-  ## Export Simple Data
+  ## Export Simple Data ------------
   for (d in Date) {
 
   ##### Extract Segmented Daily Recording
@@ -147,7 +149,7 @@ write.act = function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
       Temp <- Temp[!VNames %in%  c("DateTime","Date","Time","UTC","DaylightSaving","nPoint","Note")]
     }
 
-    write_delim(Temp, paste0(fDir, "/", d, ".txt"))
+    readr::write_delim(Temp, paste0(fDir, "/", d, ".txt"))
   }
 }
 
