@@ -55,7 +55,7 @@
 #' @export
 
 
-DST2GL = function(DT, TZ = "local"){
+DST2GL <- function(DT, TZ = "local"){
 
   TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
 

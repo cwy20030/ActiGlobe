@@ -19,11 +19,10 @@
 #' @description Computes standard errors and confidence intervals for cosinor and post-hoc parameters via non-parametric bootstrap
 #' @import stats
 #'
-#' @param object a fitted `CosinorM` or `CosinorM.KDE` model object.
+#' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
 #' @param level Numeric scaler. the confidence level.
 #' @param N Numeric scaler. Numbers of bootstraps required to estimate the standard errors and confidence intervals. Default: 500
 #' @param digits Numeric scaler. Integer indicating the number of decimal places (round) to be used. Default: 2
-#'
 #'
 #' @returns
 #' A data.frame with one row per cosinor coefficient and columns:
@@ -163,7 +162,7 @@ boot.seci <- function(object, level = 0.95, N = 500, digits = 2){
   t_vals <- Coefs / SEs
 
 
-  ## Combine results
+  ## Combine results -----------------
   Out <- data.frame(
     Estimate = Est,
     SE = SEs,

@@ -18,13 +18,12 @@ Act2Daily(
 \item{df}{A data.frame of raw actigraphy recording. Both time and activity count
 should be included in the `df`. See `VAct` and `VTm` for further detail.}
 
-\item{Bdf}{A BriefSum object. If jet lag or daylight saving occurred during the recording,
-please, use the updated version from \code{\link{TAdjust}}.}
+\item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.}
 
 \item{TUnit}{Character; time--unit for the x--axis of each day's timeline.
 Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.}
 
-\item{VAct}{Optional character.  Name of the activity column in `df`. If NULL,
+\item{VAct}{Optional character. Name of the activity column in `df`. If NULL,
 defaults to the second column of `df`.}
 
 \item{VTm}{Optional character.  Name of the time index column in `df`. If NULL,
@@ -83,14 +82,14 @@ Bdf <- BdfList$Bdf
 
 ## To avoid time shift due to travelling, we will keep only the first 8 days.
 Bdf <- Bdf[1:8,]
-
+df <- BdfList$df
 
 # Segment Data by Day
 dfList =
- Act2Daily(df = FlyEast,
+ Act2Daily(df = df,
            Bdf = Bdf,
            VAct = "Activity",
-           VTm = "X2",
+           VTm = "Time",
            Incomplete = TRUE,
            Travel = TRUE)
 

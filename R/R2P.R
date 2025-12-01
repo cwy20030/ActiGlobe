@@ -19,20 +19,15 @@
 #
 #' @title
 #' Convert Travelling Log to Parameters for TAdjust
-#' @param Bdf A BriefSum object
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
 #' @param D The date travelling by plane.
 #' @param U The UTC offset values <e.g., "UTC+09:30" or "UTC-07:00">
-#' @export
+#' @noRd
 #'
 
 
 
-R2P = function(Bdf, D, U){
-
-
-  # D = c("2025-04-26", "2025-07-26")
-  # U = c("UTC+09:30", "UTC-07:00")
-
+R2P <- function(Bdf, D, U){
 
   ## Extract Date info from summary
   DT = Bdf$Date ## All Recording Dates

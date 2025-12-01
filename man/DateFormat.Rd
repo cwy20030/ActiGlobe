@@ -30,7 +30,7 @@ This function will automatically detect possible date format. Users can choose t
 
 Identifies the likely date format used in character strings and
 optionally converts these strings to Date objects. This utility is
-intended to support pre-processing of time-stamp data with varied or
+intended to support pre-processing of timestamp data with varied or
 unknown formatting. When ambiguity arises (e.g., day-month versus
 month-day ordering), the function defaults to the first compatible format
 unless explicitly guided by a delimiter or by manual correction.

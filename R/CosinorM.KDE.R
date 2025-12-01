@@ -212,7 +212,10 @@ CosinorM.KDE <- function(time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE, 
     stop("time must be in [0,24). If you have midnight-to-midnight, ensure times are in that range.")
   }
 
-  ### Assume tau
+
+
+  ## Get Essential Info -----------------
+  ### Assume tau = 24 hours
   tau <- 24
   dt <- diff(time)
   dt <- dt[dt > 0]

@@ -103,6 +103,22 @@ dfList = Act2Daily(df = df,
                    Travel = TRUE)
 ```
 
+#### Review adjustment
+```{r eval=FALSE}
+df2 <- do.call(rbind, dfList$Daily_df)
+
+ggActiGlobe(df = df2, 
+            Bdf = Bdf.adj,
+            VAct = "Activity",
+            VDT = "DateTime")
+```
+
+## Other Features
+Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.
+
+ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform and visualize ecnometrics-based cosinor model and circularized kernel density estimation, please, see the package vignettes.
+
+
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

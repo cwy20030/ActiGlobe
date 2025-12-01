@@ -25,8 +25,7 @@ write.act(
 \item{df}{A data.frame of raw actigraphy recording. Both time and activity count
 should be included in the `df`. See `VAct` and `VTm` for further detail.}
 
-\item{Bdf}{A \code{\link{BriefSum}} object. If jet lag or daylight saving occurred during the recording,
-please, use the updated version from \code{\link{TAdjust}}.}
+\item{Bdf}{A \code{\link{BriefSum}} object. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.}
 
 \item{TUnit}{Character; time--unit for the x--axis of each day's timeline.
 Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.}

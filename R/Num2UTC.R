@@ -32,7 +32,7 @@
 #'
 
 
-Num2UTC = function(x) {
+Num2UTC <- function(x) {
 
   ## Get the hours
   A = ifelse(x <0, ceiling(x), floor(x)) ### Hour unit

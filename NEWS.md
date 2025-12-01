@@ -1,11 +1,19 @@
 Revision history for the R/ActiGlobe package
 
+## Next Version Update: 0.x.y
+- New master and class functions added: 
 
-## Next Version Update: 0.x.0
-- Version update and debugged: 
+- New internal function added:
 
-`CosinorM()` add MM-type esitmation
-"MM": MM-type estimation (Yohai 1987) is a two-step robust estimation procedure, via \code{MASS::rlm}. It is more resistant to outliers than the typical OLS estimation. 
+- Version update and debugged:
+
+## Version Update: 0.2.1, 2025-11-30
+
+- New master and class functions added: NA
+
+- New internal function added: Prob.Inact
+
+- Version update and debugged: ggCosinorM
 
 ## Version Update: 0.2.0, 2025-10-31
 
@@ -20,7 +28,10 @@ Revision history for the R/ActiGlobe package
 - Version update and debugged: ggActiGlobe, ggCosinorM, vignettes, TAdjust
 
 ## Version 0.1.8, 2025-09-23
-- New master and class functions added: C2T
+
+- New master and class functions added: NA
+
+- New internal function added: C2T
 
 - Version update and debugged: CosinorM, TimeFormat
 
@@ -28,11 +39,11 @@ Revision history for the R/ActiGlobe package
 
 - New master and class functions added: CosinorM
 
-- Version update and debugged: plot.ActiGlobe
+- Version update and debugged: ggActiGlobe
 
 ## Version 0.1.6, 2025-09-01
 
-- New master and class functions added: plot.ActiGlobe
+- New master and class functions added: ggActiGlobe, ggCosinorM
 
 - Version update and debugged: GuessTZ, DST2GL, TAdjust
 
@@ -40,7 +51,9 @@ Revision history for the R/ActiGlobe package
 
 ## Cumulative Version Update 0.1.1 - 0.1.5, 2025-06-01
 
-- New master and class functions added: DST, DST2GL, Date2TotalT, GuessTZ, TZ2UTC, UTCwDST
+- New master and class functions added: DST, TZ2UTC, UTCwDST
+
+- New internal function added: DST2GL, Date2TotalT, GuessTZ
 
 - Version update and debugged: BriefSum, TAdjust, R2P
 

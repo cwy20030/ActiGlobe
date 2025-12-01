@@ -257,7 +257,7 @@ plot_df <- data.frame(
 
 # Cosinor and true-peak hours
 phi <- fit.ols$coef.cosinor[3]
-cosinor_peak_hour <- (24 - (phi %% (2 * pi)) * 24 / (2 * pi)) %% 24
+cosinor_peak_hour <- (phi %% (2 * pi)) * 24 / (2 * pi) %% 24
 true_peak_hour <- plot_df$hour[which.max(df$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
@@ -323,7 +323,7 @@ ggplot() +
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, echo=FALSE, fig.height=7, fig.width=7}
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
 
 # Prepare data
 n <- length(fit.fgls$fitted.values)
