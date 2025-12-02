@@ -54,255 +54,255 @@
 #' @returns A data list that includes the adjusted recordings both in long format and as a nested list by day.
 #'
 #' @examples
-#'
 #' \dontrun{
 #'
 #' # Import data
-#' data(FlyEast)
+#' data (FlyEast)
 #'
 #'
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
-#' BriefSum(df = FlyEast ,
-#'          SR = 1/60,
-#'          Start = "2017-10-24 13:45:00")
+#'     BriefSum (
+#'         df = FlyEast,
+#'         SR = 1 / 60,
+#'         Start = "2017-10-24 13:45:00"
+#'     )
 #'
 #'
-#'  # Let's extract the quick summary of the recording
+#' # Let's extract the quick summary of the recording
 #' Bdf <- BdfList$Bdf
 #'
 #' ### Note that since the original data was affected by travel-induced time
 #' ### shift, the recordings would not be properly segmented from 2017-11-02.
 #'
 #' ## To avoid time shift due to travelling, we will keep only the first 8 days.
-#' Bdf <- Bdf[1:8,]
+#' Bdf <- Bdf [1:8, ]
 #' df <- BdfList$df
 #'
 #' # Segment Data by Day
-#' dfList =
-#'  Act2Daily(df = df,
-#'            Bdf = Bdf,
-#'            VAct = "Activity",
-#'            VTm = "Time",
-#'            Incomplete = TRUE,
-#'            Travel = TRUE)
+#' dfList <-
+#'     Act2Daily (
+#'         df = df,
+#'         Bdf = Bdf,
+#'         VAct = "Activity",
+#'         VTm = "Time",
+#'         Incomplete = TRUE,
+#'         Travel = TRUE
+#'     )
 #'
-#' str(dfList) ### Look at the output structure
-#' View(dfList)
-#'
-#'
+#' str (dfList) ### Look at the output structure
+#' View (dfList)
 #' }
 #' @seealso \code{\link{TAdjust}} \code{\link{write.act}}
 #' @keywords Daily Actigraphy Segment
 #' @export
 
-Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
-                      Incomplete = FALSE, Travel = TRUE) {
+Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
+                       Incomplete = FALSE, Travel = TRUE) {
 
-  ## Extract essential per-day metadata from Bdf -------------------
+    ## Extract essential per-day metadata from Bdf -------------------
 
-  DT    = Bdf$Date                   # Calendar date for each recording day
-  aTZ   = Bdf$TZ_code                # Time zone identifier per day
-  Epc   = Bdf$Epoch                  # Epoch length (seconds) per day
-  UTCs  = Bdf$UTC                    # UTC offset for each day
-  DSTs  = Bdf$Daylight_Saving        # Daylight saving flag per day
+    DT <- Bdf$Date # Calendar date for each recording day
+    aTZ <- Bdf$TZ_code # Time zone identifier per day
+    Epc <- Bdf$Epoch # Epoch length (seconds) per day
+    UTCs <- Bdf$UTC # UTC offset for each day
+    DSTs <- Bdf$Daylight_Saving # Daylight saving flag per day
 
-  # Cumulative recording seconds at start/end to convert to epoch indices
-  a     = Bdf$Cumulative_Start_Second  # Seconds from midnight to first data point
-  b     = Bdf$Cumulative_End_Second    # Seconds from midnight to last data point
-  iDP   = a / Epc                       # Starting epoch index (1-based)
-  eDP   = b / Epc                       # Ending epoch index (1-based)
+    # Cumulative recording seconds at start/end to convert to epoch indices
+    a <- Bdf$Cumulative_Start_Second # Seconds from midnight to first data point
+    b <- Bdf$Cumulative_End_Second # Seconds from midnight to last data point
+    iDP <- a / Epc # Starting epoch index (1-based)
+    eDP <- b / Epc # Ending epoch index (1-based)
 
-  # Recording boundary times as strings
-  RS    = Bdf$Recording_Start        # e.g. "HH:MM:SS" for day start
-  RE    = Bdf$Recording_End          # e.g. "HH:MM:SS" for day end
-  DRS   = paste0(DT, " ", RS)        # Full datetime at recording start
-  DRE   = paste0(DT, " ", RE)        # Full datetime at recording end
+    # Recording boundary times as strings
+    RS <- Bdf$Recording_Start # e.g. "HH:MM:SS" for day start
+    RE <- Bdf$Recording_End # e.g. "HH:MM:SS" for day end
+    DRS <- paste0 (DT, " ", RS) # Full datetime at recording start
+    DRE <- paste0 (DT, " ", RE) # Full datetime at recording end
 
 
-  ## Determine divider to convert seconds into requested TUnit --------------
+    ## Determine divider to convert seconds into requested TUnit --------------
 
-  TDivider = ifelse(
-    TUnit == "day",    24 * 3600,
-    ifelse(TUnit == "hour", 3600,
-           ifelse(TUnit == "minute", 60,
-                  ifelse(TUnit == "second", 1, NA)
-           )
+    TDivider <- ifelse (
+        TUnit == "day", 24 * 3600,
+        ifelse (TUnit == "hour", 3600,
+            ifelse (TUnit == "minute", 60,
+                ifelse (TUnit == "second", 1, NA)
+            )
+        )
     )
-  )
 
-  # If an invalid TUnit was provided, prompt user to choose one
-  if (is.na(TDivider)) {
-    TUnit     = Demand(c("day", "hour", "minute", "second"), "Time Unit")
-    TDivider  = ifelse(
-      TUnit == "day",    24 * 3600,
-      ifelse(TUnit == "hour", 3600,
-             ifelse(TUnit == "minute", 60,
-                    ifelse(TUnit == "second", 1, NA)
-             )
-      )
-    )
-  }
-
-
-  ## Set default variable names for activity and time columns ----------------
-
-  if (is.null(VAct)) VAct = names(df)[[2]]  # Default: second column of df
-  if (is.null(VTm))  VTm  = names(df)[[1]]  # Default: first column of df
-
-
-  if (!inherits(df[[VAct]], "numeric")) df[[VAct]] <- as.numeric(as.character(df[[VAct]]))
-  if (all(df[[VAct]] == 0)) stop("all activity values are zero")
-  if (any(!is.finite(df[[VAct]]))) stop("activity contains NA/NaN/Inf")
-  if (!inherits(df[[VTm]], "numeric")) df[[VTm]] <- C2T(df[[VTm]])
-
-
-
-  ## Build warning & exclusion masks -------------------------
-
-  W   = Bdf$Warning                      # Warning label per day
-  Ecl = Bdf$Excluded                     # Logical: exclude this day?
-  fDP = max(Bdf$nDataPoints, na.rm = TRUE)  # Max points in a full day
-
-  # Optionally keep "Incomplete Recording" days
-  if (Incomplete) {
-    Ecl[W == "Incomplete Recording"] = FALSE
-  }
-
-  # Handle travel days: keep if Travel=TRUE, else exclude
-  if (Travel) {
-    Ecl[grep("Travel", W)] = FALSE
-    warning("Due to travel, some activity counts will overlap spanning adjacent days!")
-  } else {
-    Ecl[grep("Travel", W)] = TRUE
-  }
-
-
-  ## Initialize output list structure (one element per date) ------------
-
-  Out = rep(list(list()), length(DT))
-  names(Out) = DT  # Use each date string as list element name
-
-
-  ## Identify which df columns were not generated by ActiGlobe --------------
-
-  VNames = names(df)
-  VNames = VNames[!VNames %in%
-                    c("DateTime","Date","Time","UTC","DaylightSaving","nPoint","Note") ]
-
-
-  ## Main loop: slice, align and annotate each calendar day ----------------
-
-  for (d in seq_along(DT)) {
-
-    # Convert current date to character and POSIX numeric
-    D     = as.character(DT[[d]])
-    D.num = as.numeric(as.POSIXct(D, tz = aTZ[[d]]))
-
-    # Compute start/end epoch indices for this day
-    S = a[[d]] / Epc[[d]]
-    E = b[[d]] / Epc[[d]]
-
-    # Parse full POSIXct start/end datetimes
-    rs  = as.POSIXct(DRS[d], tz = aTZ[[d]])
-    re  = as.POSIXct(DRE[d], tz = aTZ[[d]])
-    nrs = as.numeric(rs)
-    nre = as.numeric(re)
-
-    # Generate a continuous vector of epoch--timestamps
-    YMDHMS = seq(from = nrs, to = nre, by = Epc[[d]])
-    AllT   = as.POSIXct(YMDHMS, tz = aTZ[[d]])
-
-    # Compute time offset from midnight (in chosen TUnit)
-    Time = (YMDHMS - D.num) / TDivider
-
-    # Extract the raw df rows for this day's epochs
-    Temp = df[S:E, VNames]
-
-    # Add new columns for timeline and metadata
-    Temp[[VTm]]  = Time
-    Temp$YMDHMS  = AllT
-    Temp$Date    = D
-    Temp$Time    = format(AllT, "%H:%M:%S")
-    Temp$UTC     = UTCs[[d]]
-    Temp$DST     = DSTs[[d]]
-    Temp$Act_ID  = seq(S, E)           # Original epoch index
-    Temp$Note    = Bdf[d, "Warning"]   # Day's warning label
-
-    # Reorder to consistent column layout
-    Temp = Temp[c(VNames, "YMDHMS", "Date", "Time",
-                  "UTC", "DST", "Act_ID", "Note")]
-
-
-    ### If first day's recording starts after midnight, prepend empty rows
-    if (d == 1 && S > 1) {
-      # How many epochs missing before first measure?
-      ERows = fDP - (1 + (b[[d]] - a[[d]]) / Epc[[d]])
-
-      # Create blank template for missing epochs
-      TmpDf = as.data.frame(
-        matrix(NA, nrow = ERows, ncol = ncol(Temp))
-      )
-      names(TmpDf) = names(Temp)
-
-      # Generate timestamps from midnight to first epoch
-      YMDHMS2  = seq(from = D.num, to = nrs, by = Epc[[d]])
-      YMDHMS2  = YMDHMS2[-length(YMDHMS2)]  # drop overlap point
-      AllT2    = as.POSIXct(YMDHMS2, tz = aTZ[[d]])
-      Time2    = (YMDHMS2 - D.num) / TDivider
-
-      # Fill blank template with "No Measure" metadata
-      TmpDf$YMDHMS = AllT2
-      TmpDf[[VTm]] = Time2
-      TmpDf$Date   = D
-      TmpDf$Time   = format(AllT2, "%H:%M:%S")
-      TmpDf$UTC    = UTCs[[d]]
-      TmpDf$DST    = DSTs[[d]]
-      TmpDf$Note   = "No Measure"
-
-      # Prepend to daily Temp
-      Temp = rbind(TmpDf, Temp)
+    # If an invalid TUnit was provided, prompt user to choose one
+    if (is.na (TDivider)) {
+        TUnit <- Demand (c ("day", "hour", "minute", "second"), "Time Unit")
+        TDivider <- ifelse (
+            TUnit == "day", 24 * 3600,
+            ifelse (TUnit == "hour", 3600,
+                ifelse (TUnit == "minute", 60,
+                    ifelse (TUnit == "second", 1, NA)
+                )
+            )
+        )
     }
 
 
-    ### Finalize column names and store in Out (unless excluded)
+    ## Set default variable names for activity and time columns ----------------
 
-    names(Temp) = c(VNames, "DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")
-    Temp$DateTime = paste0(as.character(Temp$Date), " ", as.character(Temp$Time))
+    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
+    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
 
 
-    if (!Ecl[d]) {
-      Out[[D]] = Temp
+    if (!inherits (df [[VAct]], "numeric")) df [[VAct]] <- as.numeric (as.character (df [[VAct]]))
+    if (all (df [[VAct]] == 0)) stop ("all activity values are zero")
+    if (any (!is.finite (df [[VAct]]))) stop ("activity contains NA/NaN/Inf")
+    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]])
+
+
+    ## Build warning & exclusion masks -------------------------
+
+    W <- Bdf$Warning # Warning label per day
+    Ecl <- Bdf$Excluded # Logical: exclude this day?
+    fDP <- max (Bdf$nDataPoints, na.rm = TRUE) # Max points in a full day
+
+    # Optionally keep "Incomplete Recording" days
+    if (Incomplete) {
+        Ecl [W == "Incomplete Recording"] <- FALSE
+    }
+
+    # Handle travel days: keep if Travel=TRUE, else exclude
+    if (Travel) {
+        Ecl [grep ("Travel", W)] <- FALSE
+        warning ("Due to travel, some activity counts will overlap spanning adjacent days!")
     } else {
-      Out[[D]] = list()   # keep empty for excluded days
+        Ecl [grep ("Travel", W)] <- TRUE
     }
-  }
-
-  ##  Recombine, remove overlap, and flag unallocated epochs -----------------
-
-  df3    = do.call(rbind, Out)
-  df3.5  = df3[!duplicated(df3$nPoint), ]
-  df3.5  = subset(df3.5, !is.na(df3.5$nPoint))
-
-  oNP    = df$nPoint
-  nNP    = df3.5$nPoint
-  mNP    = oNP[!oNP %in% nNP]  # original points never reassigned
-
-  ndf          = df
-  # ndf[[VTm]]   = C2T(ndf[[VTm]])  ### Will crash R Studio
-  ndf$Note     = ""
-
-  VNames2 <- names(df)[names(df) %in%  names(Temp)]
-  ndf[ndf$nPoint %in% nNP, VNames2]   = df3.5[VNames2]
-  ndf[ndf$nPoint %in% mNP, "Note"]   = "Unallocated"
 
 
+    ## Initialize output list structure (one element per date) ------------
 
-  ## Return a list: per-day data and the full annotated df -----------------
+    Out <- rep (list (list ()), length (DT))
+    names (Out) <- DT # Use each date string as list element name
 
-  return(list(
-    "Daily_df" = Out,
-    "df"       = ndf
-  ))
+
+    ## Identify which df columns were not generated by ActiGlobe --------------
+
+    VNames <- names (df)
+    VNames <- VNames [!VNames %in%
+        c ("DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")]
+
+
+    ## Main loop: slice, align and annotate each calendar day ----------------
+
+    for (d in seq_along (DT)) {
+
+        # Convert current date to character and POSIX numeric
+        D <- as.character (DT [[d]])
+        D.num <- as.numeric (as.POSIXct (D, tz = aTZ [[d]]))
+
+        # Compute start/end epoch indices for this day
+        S <- a [[d]] / Epc [[d]]
+        E <- b [[d]] / Epc [[d]]
+
+        # Parse full POSIXct start/end datetimes
+        rs <- as.POSIXct (DRS [d], tz = aTZ [[d]])
+        re <- as.POSIXct (DRE [d], tz = aTZ [[d]])
+        nrs <- as.numeric (rs)
+        nre <- as.numeric (re)
+
+        # Generate a continuous vector of epoch--timestamps
+        YMDHMS <- seq (from = nrs, to = nre, by = Epc [[d]])
+        AllT <- as.POSIXct (YMDHMS, tz = aTZ [[d]])
+
+        # Compute time offset from midnight (in chosen TUnit)
+        Time <- (YMDHMS - D.num) / TDivider
+
+        # Extract the raw df rows for this day's epochs
+        Temp <- df [S:E, VNames]
+
+        # Add new columns for timeline and metadata
+        Temp [[VTm]] <- Time
+        Temp$YMDHMS <- AllT
+        Temp$Date <- D
+        Temp$Time <- format (AllT, "%H:%M:%S")
+        Temp$UTC <- UTCs [[d]]
+        Temp$DST <- DSTs [[d]]
+        Temp$Act_ID <- seq (S, E) # Original epoch index
+        Temp$Note <- Bdf [d, "Warning"] # Day's warning label
+
+        # Reorder to consistent column layout
+        Temp <- Temp [c (
+            VNames, "YMDHMS", "Date", "Time",
+            "UTC", "DST", "Act_ID", "Note"
+        )]
+
+
+        ### If first day's recording starts after midnight, prepend empty rows
+        if (d == 1 && S > 1) {
+            # How many epochs missing before first measure?
+            ERows <- fDP - (1 + (b [[d]] - a [[d]]) / Epc [[d]])
+
+            # Create blank template for missing epochs
+            TmpDf <- as.data.frame (
+                matrix (NA, nrow = ERows, ncol = ncol (Temp))
+            )
+            names (TmpDf) <- names (Temp)
+
+            # Generate timestamps from midnight to first epoch
+            YMDHMS2 <- seq (from = D.num, to = nrs, by = Epc [[d]])
+            YMDHMS2 <- YMDHMS2 [-length (YMDHMS2)] # drop overlap point
+            AllT2 <- as.POSIXct (YMDHMS2, tz = aTZ [[d]])
+            Time2 <- (YMDHMS2 - D.num) / TDivider
+
+            # Fill blank template with "No Measure" metadata
+            TmpDf$YMDHMS <- AllT2
+            TmpDf [[VTm]] <- Time2
+            TmpDf$Date <- D
+            TmpDf$Time <- format (AllT2, "%H:%M:%S")
+            TmpDf$UTC <- UTCs [[d]]
+            TmpDf$DST <- DSTs [[d]]
+            TmpDf$Note <- "No Measure"
+
+            # Prepend to daily Temp
+            Temp <- rbind (TmpDf, Temp)
+        }
+
+
+        ### Finalize column names and store in Out (unless excluded)
+
+        names (Temp) <- c (VNames, "DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")
+        Temp$DateTime <- paste0 (as.character (Temp$Date), " ", as.character (Temp$Time))
+
+
+        if (!Ecl [d]) {
+            Out [[D]] <- Temp
+        } else {
+            Out [[D]] <- list () # keep empty for excluded days
+        }
+    }
+
+    ##  Recombine, remove overlap, and flag unallocated epochs -----------------
+
+    df3 <- do.call (rbind, Out)
+    df3.5 <- df3 [!duplicated (df3$nPoint), ]
+    df3.5 <- subset (df3.5, !is.na (df3.5$nPoint))
+
+    oNP <- df$nPoint
+    nNP <- df3.5$nPoint
+    mNP <- oNP [!oNP %in% nNP] # original points never reassigned
+
+    ndf <- df
+    # ndf[[VTm]]   = C2T(ndf[[VTm]])  ### Will crash R Studio
+    ndf$Note <- ""
+
+    VNames2 <- names (df) [names (df) %in% names (Temp)]
+    ndf [ndf$nPoint %in% nNP, VNames2] <- df3.5 [VNames2]
+    ndf [ndf$nPoint %in% mNP, "Note"] <- "Unallocated"
+
+
+    ## Return a list: per-day data and the full annotated df -----------------
+
+    return (list (
+        "Daily_df" = Out,
+        "df"       = ndf
+    ))
 }
-

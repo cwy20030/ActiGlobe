@@ -89,114 +89,116 @@
 #'
 #'
 #' @examples
-#'
 #' \dontrun{
 #' # Import data
-#' data(FlyEast)
+#' data (FlyEast)
 #'
 #'
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
-#' BriefSum(df = FlyEast ,
-#'          SR = 1/60,
-#'          Start = "2017-10-24 13:45:00")
+#'     BriefSum (
+#'         df = FlyEast,
+#'         SR = 1 / 60,
+#'         Start = "2017-10-24 13:45:00"
+#'     )
 #'
 #' # Let's extract actigraphy data from a single day
 #' df <- BdfList$df
-#' df <- subset(df, df$Date == "2017-10-27")
+#' df <- subset (df, df$Date == "2017-10-27")
 #'
-#' fit <- CosinorM(time = df$Time,
-#'                 activity = df$Activity,
-#'                 tau = 24,
-#'                 method = "OLS")
+#' fit <- CosinorM (
+#'     time = df$Time,
+#'     activity = df$Activity,
+#'     tau = 24,
+#'     method = "OLS"
+#' )
 #'
 #' # Compute variance and Delta SEs
-#' res <- se.CosinorM(object = fit)
-#' print(res)
-#'
+#' res <- se.CosinorM (object = fit)
+#' print (res)
 #' }
 #'
 #' @seealso \code{\link{vcov}}, Delta method references
 #' @noRd
 
 
-se.CosinorM <- function(object, method = "delta") {
+se.CosinorM <- function (object, method = "delta") {
 
 
-  VCOV <- object$vcov
-  SE <- sqrt(diag(VCOV))
-  tau <- object$tau
-  lT <- length(tau)
-  Coefs <- object$coef.cosinor
+    VCOV <- object$vcov
+    SE <- sqrt (diag (VCOV))
+    tau <- object$tau
+    lT <- length (tau)
+    Coefs <- object$coef.cosinor
 
 
-  ### Collect the betas and gammas
-  CSidx <- grep("^[CS][0-9]+$",row.names(VCOV))
+    ### Collect the betas and gammas
+    CSidx <- grep ("^[CS][0-9]+$", row.names (VCOV))
 
 
-  VARs <-
-    lapply(1:lT, function(i) {
+    VARs <-
+        lapply (1:lT, function (i) {
 
-      T <- tau[i]
-      VarB  <- VCOV[paste0("C",i),paste0("C",i)]
-      VarG  <- VCOV[paste0("S",i),paste0("S",i)]
-      CovBG <- VCOV[paste0("C",i),paste0("S",i)]
+            T <- tau [i]
+            VarB <- VCOV [paste0 ("C", i), paste0 ("C", i)]
+            VarG <- VCOV [paste0 ("S", i), paste0 ("S", i)]
+            CovBG <- VCOV [paste0 ("C", i), paste0 ("S", i)]
 
-      amp <- Coefs[grep(paste0("Amplitude.",T),names(Coefs))]
+            amp <- Coefs [grep (paste0 ("Amplitude.", T), names (Coefs))]
 
-      phi <- Coefs[grep(paste0("Acrophase.",T),names(Coefs))]
+            phi <- Coefs [grep (paste0 ("Acrophase.", T), names (Coefs))]
 
-      beta <- Coefs[grep(paste0("Beta.",T),names(Coefs))]
+            beta <- Coefs [grep (paste0 ("Beta.", T), names (Coefs))]
 
-      gamma <- Coefs[grep(paste0("Gamma.",T),names(Coefs))]
-
-
-      ## Amplitude ----------------------
-      dA_dB <- beta/amp
-      dA_dG <- gamma/amp
-
-      #### Variance
-      VarAmp <- dA_dB^2 * VarB +
-        2 * dA_dB * dA_dG * CovBG +
-        dA_dG^2 * VarG
-
-      ## Acrophase ----------------------
-      dP_dB <- beta/(amp^2)
-      dP_dG <- -gamma/(amp^2)
-
-      #### Variance
-      VarPhi <- dP_dG^2 * VarG +
-        2 * dP_dG * dP_dB * CovBG +
-        dP_dB^2 * VarB
+            gamma <- Coefs [grep (paste0 ("Gamma.", T), names (Coefs))]
 
 
+            ## Amplitude ----------------------
+            dA_dB <- beta / amp
+            dA_dG <- gamma / amp
+
+            #### Variance
+            VarAmp <- dA_dB^2 * VarB +
+                2 * dA_dB * dA_dG * CovBG +
+                dA_dG^2 * VarG
+
+            ## Acrophase ----------------------
+            dP_dB <- beta / (amp^2)
+            dP_dG <- -gamma / (amp^2)
+
+            #### Variance
+            VarPhi <- dP_dG^2 * VarG +
+                2 * dP_dG * dP_dB * CovBG +
+                dP_dB^2 * VarB
 
 
-      x <- c(VarB,VarG,VarAmp, VarPhi)
-      names(x) <- c(paste0("var.Beta.",T),
-                    paste0("var.Gamma.",T),
-                    paste0("var.Amplitude.",T),
-                    paste0("var.Acrophase.",T))
+            x <- c (VarB, VarG, VarAmp, VarPhi)
+            names (x) <- c (
+                paste0 ("var.Beta.", T),
+                paste0 ("var.Gamma.", T),
+                paste0 ("var.Amplitude.", T),
+                paste0 ("var.Acrophase.", T)
+            )
 
-      return(x)
-    })
-
-
-  ### Add MESOR
-  MESOR <- as.numeric(VCOV[1,1])
-  names(MESOR) <- "var.MESOR"
-  VARs[[lT + 1]] <- MESOR
-
-  ### Unwrap list
-  VARs <- unlist(VARs)
-  SEs  <- sqrt(VARs)
-  names(SEs) <- gsub("var","se",names(SEs))
+            return (x)
+        })
 
 
-  ### Reorder to match coef.cosinor
-  VARs <- VARs[order(match(gsub("^var\\.","",names(VARs)), names(Coefs)))]
-  SEs <- SEs[order(match(gsub("^se\\.","",names(SEs)), names(Coefs)))]
+    ### Add MESOR
+    MESOR <- as.numeric (VCOV [1, 1])
+    names (MESOR) <- "var.MESOR"
+    VARs [[lT + 1]] <- MESOR
 
-  return(list(var = VARs, se = SEs))
+    ### Unwrap list
+    VARs <- unlist (VARs)
+    SEs <- sqrt (VARs)
+    names (SEs) <- gsub ("var", "se", names (SEs))
+
+
+    ### Reorder to match coef.cosinor
+    VARs <- VARs [order (match (gsub ("^var\\.", "", names (VARs)), names (Coefs)))]
+    SEs <- SEs [order (match (gsub ("^se\\.", "", names (SEs)), names (Coefs)))]
+
+    return (list (var = VARs, se = SEs))
 
 }

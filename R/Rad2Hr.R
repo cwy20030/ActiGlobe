@@ -25,34 +25,29 @@
 #' @param tau Numeric scalar. Period length in the same time units you want returned (for hours use 24). Must be a single numeric value > 0 and <= 24.
 #' @return Numeric vector of times in [0, tau). NA values propagate.
 #' @examples
-#' Rad2Hr(pi/2, tau = 24)
+#' Rad2Hr (pi / 2, tau = 24)
 #'
-#' Rad2Hr(c(-pi/2, 0, pi, 3*pi/2), tau = 24)
+#' Rad2Hr (c (-pi / 2, 0, pi, 3 * pi / 2), tau = 24)
 #'
 #' @keywords acrophase radian
 #' @export
 
-Rad2Hr <- function(x, tau) {
+Rad2Hr <- function (x, tau) {
 
-  # coerce x to numeric while preserving NA
-  if (!is.numeric(x)) x <- as.numeric(as.character(x))
+    # coerce x to numeric while preserving NA
+    if (!is.numeric (x)) x <- as.numeric (as.character (x))
 
-  # validate tau
-  if (!is.numeric(tau) || length(tau) != 1 || is.na(tau) || !is.finite(tau)) {
-    stop("tau must be a single finite numeric value.")
-  }
-  if (!(tau > 0 && tau <= 24)) {
-    stop("tau must be greater than 0 and less than or equal to 24.")
-  }
+    # validate tau
+    if (!is.numeric (tau) || length (tau) != 1 || is.na (tau) || !is.finite (tau)) {
+        stop ("tau must be a single finite numeric value.")
+    }
+    if (!(tau > 0 && tau <= 24)) {
+        stop ("tau must be greater than 0 and less than or equal to 24.")
+    }
 
-  # conversion and wrap to [0, tau)
-  acrophase_time <- (x * tau) / (2 * pi)
-  out <- acrophase_time %% tau
+    # conversion and wrap to [0, tau)
+    acrophase_time <- (x * tau) / (2 * pi)
+    out <- acrophase_time %% tau
 
-  return(as.numeric(out))
+    return (as.numeric (out))
 }
-
-
-
-
-

@@ -55,15 +55,16 @@
 #' UTCwDST(UTCs = -5)
 #'}
 #' @seealso
-#' \code{\link{DST}}, \code{\link{UTC2Num}}, \code{\link{OlsonNames}}
+#' \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
 #'
 #' @export
+
 UTCwDST <- function(UTCs) {
 
-  OF = UTCs
+  OF <- UTCs
 
   #### Convert UTC to Hour offset if not converted....
-  if(any(grep("UTC|\\:", UTCs))) OF = UTC2Num(UTCs)
+  if(any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
 
   #### Convert offset into the POSIX format
   aOF <- sprintf("%+03d00", OF)
@@ -73,17 +74,13 @@ UTCwDST <- function(UTCs) {
 
   pTZs = GuessTZ(aOF = aOF)
 
-  ## Check points for mispecified UTC offsets.
+  ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
     TG = which(lengths(pTZs) == 0L)
-    stop(sprintf("No matching found for following time zones: %s",
-                 UTCs[TG]))
+    stop(sprintf("No matching found for following time zones: %s", UTCs[TG]))
   }
 
-
-
-
-  # Check DST status in mid‐winter vs. mid‐summer
+  # Check DST status in mid‐winter vs. mid‐summer ----------
   wDT <- as.POSIXct(JAN1, tz = "UTC") ### NO daylight saving time for the north hemispher but yes for the south
   sDT <- as.POSIXct("2021-07-15", tz = "UTC") ### Yes to daylight saving time for the north hemispher but NO for the south
 
@@ -91,11 +88,10 @@ UTCwDST <- function(UTCs) {
   Out <- sapply(pTZs, function(tzs) {
     wDST <- sapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst)
     sDST <- sapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst)
-
     any(wDST != sDST)
   })
 
-  if (length(Out) == length(UTCs))   names(Out) = UTCs
+  if (length(Out) == length(UTCs)) { names(Out) = UTCs}
 
   return(Out)
 }

@@ -1,3 +1,3 @@
-test_that("skip Act2Daily", {
-  skip('skip')
+test_that ("skip Act2Daily", {
+    skip ("skip")
 })

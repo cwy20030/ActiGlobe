@@ -1,4 +1,4 @@
-url: https://cwy20030.github.io/ActiGlobe/
+url: https://github.com/cwy20030/ActiGlobe
 template:
   bootstrap: 5
-
+  math-rendering: mathjax

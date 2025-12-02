@@ -28,83 +28,87 @@
 #' Logical vector; TRUE indicates inactive period
 #' @noRd
 
-Prob.Inact <- function(y, T, k = 12, threshold = 3, logical = TRUE) {
-  # Parameters -------------------
-  Epc <- min(diff(T), na.rm = TRUE)
+Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
+    # Parameters -------------------
+    Epc <- min (diff (T), na.rm = TRUE)
 
 
-  df <- data.frame(Act = y,
-                   Time = T)
-  df$y_log <- log(y)
-  df$y_ina <- ifelse(is.infinite(df$y_log) & df$y_log < 0, 1, 0) #Inactive is 1
+    df <- data.frame (
+        Act = y,
+        Time = T
+    )
+    df$y_log <- log (y)
+    df$y_ina <- ifelse (is.infinite (df$y_log) & df$y_log < 0, 1, 0) # Inactive is 1
 
-  fit_glm <- glm(y_ina ~ poly(Time, k), data = df, family = binomial)
+    fit_glm <- glm (y_ina ~ poly (Time, k), data = df, family = binomial)
 
-  # predict on original times (discrete epochs)
-  pred <- predict(fit_glm, newdata = data.frame(Time = T), type = "link", se.fit = TRUE)
+    # predict on original times (discrete epochs)
+    pred <- predict (fit_glm, newdata = data.frame (Time = T), type = "link", se.fit = TRUE)
 
-  # transform from logit to probability and compute approximate 95% CI
-  z <- qnorm(0.975)
-  p_hat <- plogis(pred$fit)
-  p_lo  <- plogis(pred$fit - z * pred$se.fit)
-  p_hi  <- plogis(pred$fit + z * pred$se.fit)
+    # transform from logit to probability and compute approximate 95% CI
+    z <- qnorm (0.975)
+    p_hat <- plogis (pred$fit)
+    p_lo <- plogis (pred$fit - z * pred$se.fit)
+    p_hi <- plogis (pred$fit + z * pred$se.fit)
 
-  Inactive <- ifelse(cbind(p_lo,p_hat,p_hi) >0.5,1,0)
-  inatv <- ifelse(rowSums(Inactive) >= threshold, TRUE, FALSE)
+    Inactive <- ifelse (cbind (p_lo, p_hat, p_hi) > 0.5, 1, 0)
+    inatv <- ifelse (rowSums (Inactive) >= threshold, TRUE, FALSE)
 
 
-  if (logical) {
-    return(inatv)
+    if (logical) {
+        return (inatv)
 
-  } else {
+    } else {
 
-    Out <-
-    Table.Inact(inatv = inatv,
+        Out <-
+            Table.Inact (
+                inatv = inatv,
                 T = T,
-                Epc = Epc)
+                Epc = Epc
+            )
 
-    Out <- na.omit(Out)
-    return(Out)
+        Out <- na.omit (Out)
+        return (Out)
 
-  }
+    }
 
 
 }
 
 
-
 #' @title Table for Inactive Period
 #' @noRd
-Table.Inact <- function(inatv, T, Epc){
+Table.Inact <- function (inatv, T, Epc) {
 
 
+    ### Segment s ----------------
+    x <- seq_len (length (inatv))
 
-  ### Segment s ----------------
-  x <- seq_len(length(inatv))
+    x.inatv <- x [inatv]
+    x1 <- c (1, diff (x.inatv))
 
-  x.inatv <- x[inatv]
-  x1 <- c(1,diff(x.inatv))
+    ### begining-------
+    xm <- min (x.inatv, na.rm = TRUE)
+    ini <- x.inatv [which (x1 > 1)]
+    ini <- c (xm, ini)
+    T.ini <- T [ini]
 
-  ### begining-------
-  xm <- min(x.inatv, na.rm = TRUE)
-  ini <- x.inatv[which(x1 > 1)]
-  ini <- c(xm, ini)
-  T.ini <- T[ini]
+    ### end --------
+    xM <- max (x.inatv, na.rm = TRUE)
+    end <- x.inatv [which (x1 > 1) - 1]
+    end <- c (end, xM)
+    T.end <- T [end]
 
-  ### end --------
-  xM <- max(x.inatv, na.rm = TRUE)
-  end <- x.inatv[which(x1 > 1) - 1]
-  end <- c(end,xM)
-  T.end <- T[end]
-
-  ### duration
-  duration <- (T.end - T.ini) + Epc
+    ### duration
+    duration <- (T.end - T.ini) + Epc
 
 
-  Out <-  data.frame(start = T.ini,
-                     duration = duration,
-                     end = T.end)
+    Out <- data.frame (
+        start = T.ini,
+        duration = duration,
+        end = T.end
+    )
 
-  return(Out)
+    return (Out)
 
-  }
+}

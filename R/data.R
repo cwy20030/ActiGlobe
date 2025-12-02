@@ -44,9 +44,6 @@
 "IANA"
 
 
-
-
-
 #' @title Travel East Sample Data
 #'
 #' @description
@@ -65,8 +62,6 @@
 #'
 #' @seealso \code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}
 "FlyEast"
-
-
 
 
 #' @title Adjusted Travel East Sample Data
@@ -90,7 +85,6 @@
 #'
 #' @seealso \code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{FlyEast}}
 "FlyEast_adj"
-
 
 
 #' @title Travel Log

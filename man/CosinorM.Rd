@@ -70,13 +70,13 @@ Fit a cosine-based harmonic linear regression on circular time (hours of day)
 The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.
 
 \strong{Single-phase equation}:
-      \deqn{ y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
+      \deqn{y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
 \itemize{
-  \item \eqn{ M }: MESOR (mid-line estimating statistic of rhythm), the intercept
-  \item \eqn{ A }: Amplitude, peak deviation from M
-  \item \eqn{ t }: Time coordinate within the cycle
-  \item \eqn{ \tau }: The assumed period length
-  \item \eqn{ \phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
+  \item \eqn{M }: MESOR (mid-line estimating statistic of rhythm), the intercept
+  \item \eqn{A }: Amplitude, peak deviation from M
+  \item \eqn{t }: Time coordinate within the cycle
+  \item \eqn{\tau }: The assumed period length
+  \item \eqn{\phi }: Acrophase (time-of-peak), computed from fitted sine and cosine coefficients
 }
 
 
@@ -88,58 +88,61 @@ midnight and vice versa.
 
 
 \strong{Linearized form}:
-     \deqn{ \hat{y} = M + \beta x + \gamma z + \epsilon }
+     \deqn{\hat{y} = M + \beta x + \gamma z + \epsilon }
 \itemize{
   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine term
   \item \eqn{x = cos(\frac{2 * \pi * t} {\tau})}, cosine-transformed time
   \item \eqn{\gamma = A * sin(\phi)}, estimated coefficient for the sine term
   \item \eqn{z = sin(\frac{2 * \pi * t} {\tau})}, sine-transformed time
-  \item \eqn{ \epsilon }: error term
+  \item \eqn{\epsilon }: error term
 }
 
 Model parameters are estimated by minimizing the residual sum of squares:
 \deqn{RSS = \sum_{i=1}^n (y_i - (M + \beta x_i + \gamma z_i))^2}
 By default, \code{\link[stats]{lm}} fits this via QR decomposition.
 
-\strong{Acrophase \eqn{ (\phi) } interpretation}:
- \eqn{ \phi } is derived from
- \deqn{ \phi = \arctan2(\frac{\gamma} {\beta}) }
+\strong{Acrophase \eqn{\phi} interpretation}:
+ \eqn{\phi } is derived from
+ \deqn{\phi = \arctan2(\frac{\gamma} {\beta}) }
 
  Note,
 \itemize{
-  \item \eqn{ \phi } can be converted to clock time to identify the peak activity time AFTER midnight.
-  \item if the model is not a mono-phase (i.e., more than one \eqn{ \tau }), there will be \eqn{ \frac{24 (hours)} {\tau} } number of peaks within a day.
+  \item \eqn{\phi } can be converted to clock time to identify the peak activity time AFTER midnight.
+  \item if the model is not a mono-phase (i.e., more than one \eqn{\tau }), there will be \eqn{\frac{24 (hours)} {\tau} } number of peaks within a day.
 }
 
 
-\strong{Amplitude \eqn{ (A) } estimation}:
+\strong{Amplitude \eqn{(A) } estimation}:
 Amplitude is calculated from fitted sine and cosine coefficients as:
 \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 }
 \examples{
-require(stats)
-require(graphics)
-
+require (stats)
+require (graphics)
 
 \dontrun{
 # Import data
-data(FlyEast)
+data (FlyEast)
 
 
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
-BriefSum(df = FlyEast ,
-         SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset(df, df$Date == "2017-10-27")
+df <- subset (df, df$Date == "2017-10-27")
 
-fit <- CosinorM(time = df$Time,
-                activity = df$Activity,
-                tau = 24,
-                method = "OLS")
+fit <- CosinorM (
+    time = df$Time,
+    activity = df$Activity,
+    tau = 24,
+    method = "OLS"
+)
 
 
 # inspect coefficients
@@ -147,7 +150,7 @@ fit$coef.cosinor
 
 
 # plot Cosinor in hours
-plot(fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
+plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 }
 }
 \references{

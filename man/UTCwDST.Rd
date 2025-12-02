@@ -44,5 +44,5 @@ UTCwDST(UTCs = -5)
 }
 }
 \seealso{
-\code{\link{DST}}, \code{\link{UTC2Num}}, \code{\link{OlsonNames}}
+\code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
 }

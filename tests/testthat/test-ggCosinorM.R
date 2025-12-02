@@ -1,3 +1,3 @@
-test_that("skip ggCosinorM", {
-  skip('skip')
+test_that ("skip ggCosinorM", {
+    skip ("skip")
 })
