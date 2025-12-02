@@ -152,7 +152,7 @@ head (TLog)
 ```
 
 ```{r message=FALSE, warning=FALSE,echo=FALSE, out.width="30%", paged.print=TRUE, tab.cap = "Table 4. An Example of a Standard Travel Diary Template"}
-knitr::kable (TLog, format = "html", table.attr = "style='width:800px;'") %>%
+knitr::kable (TLog, format = "html", table.attr = "style='width:800px;'") |>
     kableExtra::kable_styling (full_width = FALSE)
 ```
 
