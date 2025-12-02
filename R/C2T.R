@@ -16,29 +16,28 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-C2T <- function(Time){
+C2T <- function (Time) {
 
-  x <- suppressWarnings(as.numeric(as.character(Time)))
+    x <- suppressWarnings (as.numeric (as.character (Time)))
 
-  if (length(na.omit(x)) == 0) {
+    if (length (na.omit (x)) == 0) {
 
-    hms <- as.POSIXct(Time, format = TimeFormat(Time))
+        hms <- as.POSIXct (Time, format = TimeFormat (Time))
 
-    decimal_hours <- as.numeric(format(hms, "%H")) +
-      as.numeric(format(hms, "%M")) / 60 +
-      as.numeric(format(hms, "%S")) / 3600
+        decimal_hours <- as.numeric (format (hms, "%H")) +
+            as.numeric (format (hms, "%M")) / 60 +
+            as.numeric (format (hms, "%S")) / 3600
 
 
-    x <- as.numeric(decimal_hours)
-    x <- x - x[[1]]
-  }
+        x <- as.numeric (decimal_hours)
+        x <- x - x [[1]]
+    }
 
-  if (any(is.na(x))) warning(paste0("NAs introduced by coercion"))
+    if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
 
-  return(x)
+    return (x)
 
 }
 
 
 ### Potentially write a code to compute cosinor when both or neither the start or the end time falls are not the beginning/last time point of the recording.
-

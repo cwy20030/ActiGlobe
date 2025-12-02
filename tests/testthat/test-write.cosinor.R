@@ -1,3 +1,3 @@
-test_that("skip write.cosinor", {
-  skip('skip')
+test_that ("skip write.cosinor", {
+    skip ("skip")
 })

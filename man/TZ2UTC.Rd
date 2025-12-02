@@ -11,31 +11,33 @@ TZ2UTC(DT, TZ = "local")
 
 \item{TZ}{The time zone when the recording started. (default = "local", which means user's local time zone)}
 }
+\value{
+A character string indicating the UTC offset, e.g., "UTC-05:00"
+}
 \description{
 Compute UTC offset based on Time Zone and Date
 }
 \examples{
 
-x <- as.Date(c("2017-10-24","2017-11-20"))
-TZ2UTC(DT = x, TZ = "America/Toronto") ## Expect two different UTCs
+x <- as.Date (c ("2017-10-24", "2017-11-20"))
+TZ2UTC (DT = x, TZ = "America/Toronto") ## Expect two different UTCs
 
 \dontrun{
 # A vector of dates
-x =
-seq.Date(from = as.Date("2017-10-24"),
-           to = as.Date("2017-11-27"),
-           by = "day")
+x <-
+    seq.Date (
+        from = as.Date ("2017-10-24"),
+        to = as.Date ("2017-11-27"),
+        by = "day"
+    )
 
 # If the user resides in a country that follows daylight saving time
-TZ2UTC(DT = x, TZ = "local")
+TZ2UTC (DT = x, TZ = "local")
 
 # If not
 # TZ2UTC(DT = x, TZ = "America/Toronto")
 }
 
 }
-\keyword{Daylight}
-\keyword{Saving}
 \keyword{TZ}
-\keyword{Timezone}
 \keyword{UTC}

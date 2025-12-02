@@ -58,16 +58,17 @@ recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
 for a full day.
 }
 \examples{
-
 \dontrun{
 # Import data
-data(FlyEast)
+data (FlyEast)
 
-BdfList = BriefSum(df = FlyEast,
-               SR = 1/60,
-               Start = "2017-10-19 13:45:00")
+BdfList <- BriefSum (
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-19 13:45:00"
+)
 
-str(BdfList)
+str (BdfList)
 # View(BdfList)
 
 ## install library "zeallot"
@@ -76,7 +77,6 @@ str(BdfList)
 ## BriefSum(df = FlyEast,
 ##          SR = 1/60,
 ##          Start = "2017-10-24 13:45:00")
-
 }
 }
 \keyword{actigraphy}

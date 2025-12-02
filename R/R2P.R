@@ -26,71 +26,70 @@
 #'
 
 
+R2P <- function (Bdf, D, U) {
 
-R2P <- function(Bdf, D, U){
-
-  ## Extract Date info from summary
-  DT = Bdf$Date ## All Recording Dates
-  DT <- DateFormat(DT)
-  MinDate = min(DT) ## First Date
-  MaxDate = max(DT) ## Last Date
-
-
-  ## Check if UTC is in the Bdf
-  if (!"UTC" %in% names(Bdf)) stop("Bdf must be an object created by BriefSum.")
+    ## Extract Date info from summary
+    DT <- Bdf$Date ## All Recording Dates
+    DT <- DateFormat (DT)
+    MinDate <- min (DT) ## First Date
+    MaxDate <- max (DT) ## Last Date
 
 
-  ## Extract UTC offset
-  if (any(grepl("UTC", U))) U = UTC2Num(U)
+    ## Check if UTC is in the Bdf
+    if (!"UTC" %in% names (Bdf)) stop ("Bdf must be an object created by BriefSum.")
 
 
-  #### Double check for date coherence ---------
-  D = as.Date(D)
+    ## Extract UTC offset
+    if (any (grepl ("UTC", U))) U <- UTC2Num (U)
 
 
-  # Process UTC and Time adjustment -------------
-
-  Bdf$UTC.old = Bdf$UTC[[1]]
-
-  for (d in 1:length(D)){
-
-      if (d < length(D)){
-
-        Period = as.Date(D[d]:(D[d+1]-1))
-
-      } else {
-        fD <- as.integer(which(DT == D[d]))
-        eD <- as.integer(which(DT == MaxDate))
-
-        nD <- (eD - fD) + 1
-
-        idx <- seq(from = fD,
-                   to = eD,
-                   length.out = nD)
-
-        subDT <- DT[idx]
-      }
-
-      Bdf$Recording_Period[DT %in% Period] = d
-      Bdf$UTC[DT %in% Period] = Num2UTC(U[d])
+    #### Double check for date coherence ---------
+    D <- as.Date (D)
 
 
-  }
+    # Process UTC and Time adjustment -------------
 
-  ### Compute Changes in Hours -------------
-  Bdf$Hour_to_Adjust = UTC2Num(Bdf$UTC) - UTC2Num(Bdf$UTC.old)
+    Bdf$UTC.old <- Bdf$UTC [[1]]
+
+    for (d in 1:length (D)) {
+
+        if (d < length (D)) {
+
+            Period <- as.Date (D [d]:(D [d + 1] - 1))
+
+        } else {
+            fD <- as.integer (which (DT == D [d]))
+            eD <- as.integer (which (DT == MaxDate))
+
+            nD <- (eD - fD) + 1
+
+            idx <- seq (
+                from = fD,
+                to = eD,
+                length.out = nD
+            )
+
+            subDT <- DT [idx]
+        }
+
+        Bdf$Recording_Period [DT %in% Period] <- d
+        Bdf$UTC [DT %in% Period] <- Num2UTC (U [d])
 
 
+    }
 
-  ## Update Recording Period
-  if (!MinDate %in% D)
-    Bdf$Recording_Period = ifelse( is.na(Bdf$Recording_Period), 1,  Bdf$Recording_Period + 1)
-
-
+    ### Compute Changes in Hours -------------
+    Bdf$Hour_to_Adjust <- UTC2Num (Bdf$UTC) - UTC2Num (Bdf$UTC.old)
 
 
-  # Output --------
-  Out = Bdf[c("Date","Recording_Period","UTC","Hour_to_Adjust")]
-  return(Out)
+    ## Update Recording Period
+    if (!MinDate %in% D) {
+        Bdf$Recording_Period <- ifelse (is.na (Bdf$Recording_Period), 1, Bdf$Recording_Period + 1)
+    }
+
+
+    # Output --------
+    Out <- Bdf [c ("Date", "Recording_Period", "UTC", "Hour_to_Adjust")]
+    return (Out)
 
 }

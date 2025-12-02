@@ -1,3 +1,3 @@
-test_that("skip BriefSum", {
-  skip('skip')
+test_that ("skip BriefSum", {
+    skip ("skip")
 })

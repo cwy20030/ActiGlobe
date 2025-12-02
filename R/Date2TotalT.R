@@ -47,40 +47,39 @@
 #' @examples
 #' \donttest{
 #' # Two calendar days: returns c(24, 24) hours
-#' Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
+#' Date2TotalT (as.Date (c ("2021-01-01", "2021-01-02")), "hour")
 #'
 #'
 #' # Working in minutes
-#' Date2TotalT(as.POSIXct(c("2021-06-10 08:00:00",
-#'                         "2021-06-10 14:30:00")), "minute")
+#' Date2TotalT (as.POSIXct (c (
+#'     "2021-06-10 08:00:00",
+#'     "2021-06-10 14:30:00"
+#' )), "minute")
 #' }
 #'
 #' # In seconds (case-insensitive unit name)
-#' Date2TotalT(as.Date("2022-12-31"), "SeCoNd")
+#' Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")
 #'
 #' @export
-Date2TotalT <- function(DT, TUnit = "hour", TZ = "local") {
+Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
 
-  TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
-  ## Convert the displayed unit into a factor.
-  Divider =  ifelse(tolower(TUnit) == "hour", 3600,
-                    ifelse(tolower(TUnit) == "minute", 60,
-                           ifelse(tolower(TUnit) == "second", 1, NA)))
+    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
+    ## Convert the displayed unit into a factor.
+    Divider <- ifelse (tolower (TUnit) == "hour", 3600,
+        ifelse (tolower (TUnit) == "minute", 60,
+            ifelse (tolower (TUnit) == "second", 1, NA)
+        )
+    )
 
 
-  #### Compute the supposed data points for each day ---------------
-  MxD = as.character(as.POSIXct(max(as.Date(DT)) + 1))
-  iniDs =  DT # Vector 1 for the starting date
-  endDs = c(DT[-1],MxD) # Vector 2 for the next date
+    #### Compute the supposed data points for each day ---------------
+    MxD <- as.character (as.POSIXct (max (as.Date (DT)) + 1))
+    iniDs <- DT # Vector 1 for the starting date
+    endDs <- c (DT [-1], MxD) # Vector 2 for the next date
 
-  sTotalSec = as.numeric(as.POSIXct(endDs, tz = TZ)) - as.numeric(as.POSIXct(iniDs, tz = TZ)) # Supposed seconds for each day
+    sTotalSec <- as.numeric (as.POSIXct (endDs, tz = TZ)) - as.numeric (as.POSIXct (iniDs, tz = TZ)) # Supposed seconds for each day
 
-  Out = sTotalSec/Divider # Convert the output based on TUnit
+    Out <- sTotalSec / Divider # Convert the output based on TUnit
 
-  return(Out)
+    return (Out)
 }
-
-
-
-
-

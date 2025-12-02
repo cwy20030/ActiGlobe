@@ -20,33 +20,34 @@
 #
 #' @title Convert Numbers to Standard UTC Offset
 #' @param x UTC Offsets <e.g., "UTC+09:30" or "UTC-07:00">
-#' @export
-#' @seealso \code{\link{UTC2Num}}
+#' @return A character vector of standard UTC offsets
+#'
 #' @examples
 #' # Convert UTC to numeric values
-#' x = c(9.5,-7)
+#' x <- c (9.5, -7)
 #'
-#' x1 = Num2UTC(x)
+#' x1 <- Num2UTC (x)
 #'
-#' print(x1)
+#' print (x1)
 #'
+#' @seealso \code{\link{UTC2Num}}
+#' @export
+
+Num2UTC <- function (x) {
+
+    ## Get the hours
+    A <- ifelse (x < 0, ceiling (x), floor (x)) ### Hour unit
+    B <- (abs (x) - abs (A)) * 60 ### Minute unit
 
 
-Num2UTC <- function(x) {
+    mp <- ifelse (x < 0, "-", "+") ### Check positive or negative
 
-  ## Get the hours
-  A = ifelse(x <0, ceiling(x), floor(x)) ### Hour unit
-  B = (abs(x) - abs(A)) * 60   ### Minute unit
-
-
-  mp = ifelse(x <0, "-", "+") ### Check positive or negative
-
-  C = ifelse(abs(A)<10, paste0(mp,"0",abs(A)), paste0(mp,A))
-  D = ifelse(B == 0, "00", B)
+    C <- ifelse (abs (A) < 10, paste0 (mp, "0", abs (A)), paste0 (mp, A))
+    D <- ifelse (B == 0, "00", B)
 
 
-  Out = paste0("UTC", C,":",D)
+    Out <- paste0 ("UTC", C, ":", D)
 
 
-  return(Out)
+    return (Out)
 }

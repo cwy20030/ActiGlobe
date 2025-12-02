@@ -9,16 +9,19 @@ Num2UTC(x)
 \arguments{
 \item{x}{UTC Offsets <e.g., "UTC+09:30" or "UTC-07:00">}
 }
+\value{
+A character vector of standard UTC offsets
+}
 \description{
 Convert Numbers to Standard UTC Offset
 }
 \examples{
 # Convert UTC to numeric values
-x = c(9.5,-7)
+x <- c (9.5, -7)
 
-x1 = Num2UTC(x)
+x1 <- Num2UTC (x)
 
-print(x1)
+print (x1)
 
 }
 \seealso{
