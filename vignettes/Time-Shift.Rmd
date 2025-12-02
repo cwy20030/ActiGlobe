@@ -133,8 +133,8 @@ head (df) ### This should give us the same first few lines of FlyEast dataset wi
 ```
 
 ```{r message=FALSE, warning=FALSE,echo=FALSE, out.width="30%", paged.print=TRUE,tab.cap = "Table 3. BriefSum Enriched Longitudinal Recording"}
-library (dplyr)
-knitr::kable (head (df), format = "html", table.attr = "style='width:800px;'") %>%
+
+knitr::kable (head (df), format = "html", table.attr = "style='width:800px;'") |>
     kableExtra::kable_styling (full_width = FALSE)
 ```
 For longitudinal recordings that did not involve long-distance traveling, we may simply stop here and move onto the estimating cosinor parameters for further analysis. But given that `ActiGlobe` was designed specifically to harmonize and correct recordings affected by changes in the time zone. We have to go a few steps further to clean our data.
@@ -152,7 +152,7 @@ head (TLog)
 ```
 
 ```{r message=FALSE, warning=FALSE,echo=FALSE, out.width="30%", paged.print=TRUE, tab.cap = "Table 4. An Example of a Standard Travel Diary Template"}
-knitr::kable (TLog, format = "html", table.attr = "style='width:800px;'") %>%
+knitr::kable (TLog, format = "html", table.attr = "style='width:800px;'") |>
     kableExtra::kable_styling (full_width = FALSE)
 ```
 
@@ -167,7 +167,7 @@ head (IANA)
 ```
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, out.width="30%", paged.print=TRUE, tab.cap = "Table 5. An Overview of the 2024 IANA Time Zone Database"}
-knitr::kable (head (IANA), format = "html", table.attr = "style='width:800px;'") %>%
+knitr::kable (head (IANA), format = "html", table.attr = "style='width:800px;'") |>
     kableExtra::kable_styling (full_width = FALSE)
 ```
 ## Step 2: Adjust time change based on the travel diary
