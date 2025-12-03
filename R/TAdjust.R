@@ -70,7 +70,6 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     FDP <- SR * 3600 * 24 # Total data points per 24 hours
 
     UTCs <- Bdf$UTC
-    aTZ <- Bdf$TZ_code
     aDST <- Bdf$Daylight_Saving
     RS <- Bdf$Recording_Start
     RE <- Bdf$Recording_End
@@ -82,10 +81,19 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     Exc <- Bdf$Excluded
     Wrn <- Bdf$Warning
 
+    ### aTZ-------------------
+    IANA <- get0("IANA", envir = asNamespace("ActiGlobe")) # Time zone database
+    iTZ <- IANA$Timezone_IANA
+    STD <- IANA$TZ_Code
 
-    D <- DateFormat (TLog$date_Start)
+    aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
+        iTZ [STD %in% x] [1]
+    })
+
 
     ## Convert Travel Log to Parameters ------------
+
+    D <- DateFormat (TLog$date_Start)
     if (any (!D %in% DT)) {
 
         D2k <- which (D %in% DT)
@@ -282,6 +290,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
 
     ##### Label Incomplete
+    if (length(FDP) < length(Summary$nDataPoints)) FDP <- rep(FDP[[1]],length(Summary$nDataPoints))
     Summary$Warning [Summary$nDataPoints < FDP] <- "Incomplete Recording"
     Summary$Excluded [Summary$nDataPoints < FDP] <- TRUE
 
