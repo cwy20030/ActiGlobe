@@ -1,0 +1,305 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "ActiGlobe",
+  "description": "Cross-continental travel and local practices of daylight saving time can induce a time shift. When left unadjusted, it can lead to biases in interpreting wearable measures. This research tool streamlines data processing and analysis (e.g., cosinor analysis, circularized kernel density estimation) for longitudinal recordings. Together with additional features such as exporting daily wearable measures and creating visual reports, it aims to facilitate research on longitudinal wearable measurements. To learn its application, please refer to the provided vignettes for a brief tutorial. This tool is developed based on the methodology detailed in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.",
+  "name": "ActiGlobe: Wearable Recording Processor for Time Shift Adjustment and Data Analysis",
+  "codeRepository": "https://github.com/cwy20030/ActiGlobe",
+  "issueTracker": "https://github.com/cwy20030/ActiGlobe/issues",
+  "license": "https://spdx.org/licenses/AGPL-3.0",
+  "version": "0.2.0",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.5.1 (2025-06-13 ucrt)",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "C. William",
+      "familyName": "Yao",
+      "email": "chun.william.yao.cnmtl@ssss.gouv.qc.ca",
+      "@id": "https://orcid.org/0000-0002-7234-7375"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Giorgio",
+      "familyName": "Varesco",
+      "email": "giorgio.varesco@umontreal.ca",
+      "@id": "https://orcid.org/0000-0001-9385-6972"
+    },
+    {
+      "@type": "Person",
+      "givenName": "François",
+      "familyName": "Bieuzen",
+      "email": "fbieuzen@insquebec.org",
+      "@id": "https://orcid.org/0000-0002-9690-9168"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Guido",
+      "familyName": "Simonelli",
+      "email": "guido.simonelli@umontreal.ca",
+      "@id": "https://orcid.org/0000-0002-5400-319X"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Giorgio",
+      "familyName": "Varesco",
+      "email": "giorgio.varesco@umontreal.ca",
+      "@id": "https://orcid.org/0000-0001-9385-6972"
+    },
+    {
+      "@type": "Person",
+      "givenName": "François",
+      "familyName": "Bieuzen",
+      "email": "fbieuzen@insquebec.org",
+      "@id": "https://orcid.org/0000-0002-9690-9168"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Guido",
+      "familyName": "Simonelli",
+      "email": "guido.simonelli@umontreal.ca",
+      "@id": "https://orcid.org/0000-0002-5400-319X"
+    }
+  ],
+  "copyrightHolder": [
+    {
+      "@type": "Person",
+      "givenName": "C. William",
+      "familyName": "Yao",
+      "email": "chun.william.yao.cnmtl@ssss.gouv.qc.ca",
+      "@id": "https://orcid.org/0000-0002-7234-7375"
+    }
+  ],
+  "funder": [
+    {
+      "@type": "Person",
+      "givenName": "Guido",
+      "familyName": "Simonelli",
+      "email": "guido.simonelli@umontreal.ca",
+      "@id": "https://orcid.org/0000-0002-5400-319X"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "C. William",
+      "familyName": "Yao",
+      "email": "chun.william.yao.cnmtl@ssss.gouv.qc.ca",
+      "@id": "https://orcid.org/0000-0002-7234-7375"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggthemes",
+      "name": "ggthemes",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggthemes"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 3.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "zeallot",
+      "name": "zeallot",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=zeallot"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.0.0"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "ggrepel",
+      "name": "ggrepel",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggrepel"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "grDevices",
+      "name": "grDevices"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "gridExtra",
+      "name": "gridExtra",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gridExtra"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "hms",
+      "name": "hms",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=hms"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "lubridate",
+      "name": "lubridate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=lubridate"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readr"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "sandwich",
+      "name": "sandwich",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sandwich"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "viridis",
+      "name": "viridis",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=viridis"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "scales",
+      "name": "scales",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=scales"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "9524.122KB"
+}
