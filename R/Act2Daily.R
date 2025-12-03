@@ -108,9 +108,9 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE) {
 
     # Extract essential per-day metadata from Bdf -------------------
-    IANA <- get0("IANA", envir = asNamespace("ActiGlobe")) # Time zone database
-    iTZ <- IANA$Timezone_IANA
-    STD <- IANA$TZ_Code
+    IANAi <- get0("IANAi", envir = asNamespace("ActiGlobe")) # Time zone database
+    iTZ <- IANAi$Timezone_IANA
+    STD <- IANAi$TZ_Code
 
 
     DT <- Bdf$Date # Calendar date for each recording day
