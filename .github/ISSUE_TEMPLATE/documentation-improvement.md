@@ -1,5 +1,5 @@
 ---
-name: Documentation Issue
+name: Documentation Improvement
 about: To report typo or mistake, or to offer suggestion on documentation
 title: ''
 labels: ''
@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-# Documentation Issue Report
+# Documentation Improvement Report
 
 ## Type of Issue
 - [ ] Typo
