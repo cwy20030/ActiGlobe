@@ -2,7 +2,7 @@
 % Please edit documentation in R/Rad2Hr.R
 \name{Rad2Hr}
 \alias{Rad2Hr}
-\title{Rad2Hr}
+\title{Radian to Hour}
 \usage{
 Rad2Hr(x, tau)
 }

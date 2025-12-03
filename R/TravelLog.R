@@ -15,18 +15,29 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title
-#' Generate the Travel Log Template Needed for Time Zone Correction
+#' @title Generate the Travel Log Template Needed for Time Zone Correction
+#'
 #' @import utils
+#'
 #' @param Write A binary code to indicate whether to write a .csv file containing the template needed for the travel log. (default = FLASE)
 #' When set to FALSE, the template will be returned as an object.
 #' When set to TRUE, user must provide the target directory where they wish to store the template.
 #' @param Dir The directory where the travel log template to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
-#' @return data.list
+#'
+#' @return a travel-log template as a data.frame or written as a CSV file
+#'
+#' @examples
+#' # example code
+#' \dontrun{
+#'
+#' Tlg <- TravelLog(Wirte = TRUE)
+#'
+#' print(Tlg)
+#'
+#' }
+#'
 #' @keywords Travel Log Template Timezone Shift
 #' @export
-#'
-
 
 TravelLog <- function (Write = FALSE, Dir = NULL) {
 
@@ -43,7 +54,7 @@ TravelLog <- function (Write = FALSE, Dir = NULL) {
         ### Check essential components
         if (is.null (Dir)) stop ("A directory must be provided in order to export the template.")
 
-        write.csv2 (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = F)
+        write.csv (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = F)
 
     }
 

@@ -16,13 +16,19 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title GuessTZ
+#'
 #' @description Guess possible time zone based on the UTC offset
+#'
+#'
 #' @import parallel
+#'
+#'
 #' @param aOF A converted UTC offset in the POSIX format. `e.g., "aOF <- sprintf("%+03d00", OF)"`
 #' @param DT Only one date at a time
 #' @param iTZ The time zone when the recording started. When guessing time zone, it will prioritize matching to the initial geographic location even when the time change occurs. Default is "NULL". When specified as `"local"`, user's local time zone is assumed.
 #' @param All Logical, if TRUE, as default, it will provide all possible TZ codes. If FALSE, it will retrieve the first one.
 #' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#'
 #' @return A character vector of possible time zone indicators
 #' @noRd
 

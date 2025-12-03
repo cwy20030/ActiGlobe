@@ -99,6 +99,7 @@ dfList <-
 str (dfList) ### Look at the output structure
 View (dfList)
 }
+
 }
 \seealso{
 \code{\link{TAdjust}} \code{\link{write.act}}

@@ -14,10 +14,21 @@ When set to TRUE, user must provide the target directory where they wish to stor
 \item{Dir}{The directory where the travel log template to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">}
 }
 \value{
-data.list
+a travel-log template as a data.frame or written as a CSV file
 }
 \description{
 Generate the Travel Log Template Needed for Time Zone Correction
+}
+\examples{
+# example code
+\dontrun{
+
+Tlg <- TravelLog(Wirte = TRUE)
+
+print(Tlg)
+
+}
+
 }
 \keyword{Log}
 \keyword{Shift}

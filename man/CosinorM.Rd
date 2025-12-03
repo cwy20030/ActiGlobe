@@ -111,7 +111,6 @@ By default, \code{\link[stats]{lm}} fits this via QR decomposition.
   \item if the model is not a mono-phase (i.e., more than one \eqn{\tau }), there will be \eqn{\frac{24 (hours)} {\tau} } number of peaks within a day.
 }
 
-
 \strong{Amplitude \eqn{(A) } estimation}:
 Amplitude is calculated from fitted sine and cosine coefficients as:
 \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
@@ -152,6 +151,8 @@ fit$coef.cosinor
 # plot Cosinor in hours
 plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 }
+
+
 }
 \references{
 Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.

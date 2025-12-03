@@ -24,6 +24,7 @@
 #'
 #' @import utils
 #' @importFrom readr write_delim
+#'
 #' @param Dir The directory where the recordings to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
 #' @param ID The subject's ID which would be used to create a folder.
 #' @param df A data.frame of raw actigraphy recording. Both time and activity count
@@ -44,9 +45,9 @@
 #' @param Simple Logical; if TRUE, only columns stored in the original recordings will be exported.
 #' If FALSE, all information stored in `df` will be generated. Default = FALSE
 #'
+#'
 #' @returns
 #' Text files ".txt" containing segmented recordings of each day and `Bdf` from \code{\link{BriefSum}}
-#'
 #' \itemize{
 #'   \item Text File: Recordings segmented by the recording date
 #'   \item Summary: Bdf exported as ".csv" file.

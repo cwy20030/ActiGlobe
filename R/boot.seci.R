@@ -16,7 +16,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title Bootstrap Standard Errors and Confidence Intervals for Model Parameters
+#'
 #' @description Computes standard errors and confidence intervals for cosinor and post-hoc parameters via non-parametric bootstrap
+#'
 #' @import stats
 #'
 #' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
@@ -36,8 +38,8 @@
 #'   \item upper CI label: Percentile upper bound at \eqn{1 - \frac{\alpha}{2}}.
 #' }
 #'
-#'
 #' @seealso \code{\link[boot]{boot}}
+#'
 #' @examples
 #' \dontrun{
 #' # Import data
@@ -85,9 +87,9 @@
 #'     N = 500
 #' )
 #' }
+#'
 #' @keywords boot bootstrap ci se
 #' @export
-#'
 
 boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
 

@@ -67,12 +67,13 @@
 #'   \item if the model is not a mono-phase (i.e., more than one \eqn{\tau }), there will be \eqn{\frac{24 (hours)} {\tau} } number of peaks within a day.
 #' }
 #'
-#'
 #' \strong{Amplitude \eqn{(A) } estimation}:
 #' Amplitude is calculated from fitted sine and cosine coefficients as:
 #' \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 #'
+#'
 #' @import stats sandwich
+#'
 #'
 #' @param time Numeric vector of time coordinates for each data point
 #' @param activity Numeric vector of activity counts from an actigraphy device
@@ -93,6 +94,7 @@
 #'   \item "FALSE": All essential parameters would be produced.  (default)
 #'   \item "TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap
 #' }
+#'
 #'
 #' @returns
 #' A list of class c("CosinorM", "lm") containing:
@@ -116,6 +118,7 @@
 #' }
 #' Inherits all components from \code{\link[stats]{lm}}.
 #'
+#'
 #' @references
 #' Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 #'
@@ -125,6 +128,7 @@
 #'
 #' @seealso
 #' \code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
+#'
 #'
 #' @examples
 #' require (stats)
@@ -162,13 +166,15 @@
 #' # plot Cosinor in hours
 #' plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 #' }
+#'
+#'
 #' @keywords cosinor
 #' @export
 
 
 CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type = "HC3", dilute = FALSE) {
 
-    # Check the variable class
+    # Check the variable class -----------------------------
     if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
     if (all (activity == 0)) stop ("all activity values are zero")
     if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
@@ -176,7 +182,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
                                        Note that it is crucial to have the proper time coordinate since the model relies on it.")
-    ## Get Essential Info -----------------
+    # Get Essential Info -----------------
     nT <- length (tau) ### Number of assumed rhythms
     vars <- as.vector (outer (c ("C", "S"), 1:nT, paste0)) ### C = x and S = z in the linear equation
 
@@ -188,7 +194,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     Epc <- 1 / min (dt)
 
 
-    # Build cosine and sine columns for each period
+    # Build cosine and sine columns for each period -------------------
     ## Create a model data.frame
     Mdf <- data.frame (matrix (nrow = length (time), ncol = nT * 2))
     names (Mdf) <- vars
@@ -205,7 +211,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     # Fit linear model ----------------------------------------
     model <- stats::lm (fm, data = df)
 
-    # Case Switch Between OLS and FGLS.
+    # Case Switch Between OLS and FGLS
     ## Feasible GLS via weighted least square with log-variance https://stats.stackexchange.com/questions/97437/feasible-generalized-least-square-in-r
     if (method == "FGLS") {
         #  Step 0: Keep the OLS model.
@@ -261,8 +267,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     }
 
 
-    # Prepare Output
-    ## Pack output
+    ##### Prepare Output
     coef_names <- c (
         "MESOR",
         paste0 ("Amplitude.", tau),
@@ -277,7 +282,6 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
 
 
     ## Compute acrophase time and produce extra parameters ---------------
-
     ### Extra parameters
     extra <- list ()
 
@@ -317,7 +321,6 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
 
 
     ### For post-hoc and multicomponent cosinor-------------------
-
     ### Initial process
     y_h <- predict (model)
     M1 <- which.max (y_h)
@@ -334,6 +337,8 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     Amp <- (peak_value - trough_value) / 2
     names (Amp) <- "Amplitude.post-hoc"
 
+
+    ##### Prepare Output
     post.hoc <- c (mesor_vlaue, bathy.ph, trough_value, acro.ph, peak_value, Amp)
     names (post.hoc) <- c ("MESOR.ph", "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
 
@@ -361,7 +366,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
         fit$extra <- extra
         fit$post.hoc <- post.hoc
 
-        # Variance  ------------------
+        ## Variance  ------------------
         ##  model parameters
         if (!type == "constant") {
             fit$vcov <- sandwich::vcovHC (model, type = type)
