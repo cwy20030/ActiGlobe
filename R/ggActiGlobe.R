@@ -39,34 +39,39 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(ActiGlobe)
+#' library (ActiGlobe)
 #'
 #' # Overview the Uncorrected Longitudinal Recording
-#' data(FlyEast)
+#' data (FlyEast)
 #'
-#' BdfList =
-#' BriefSum(df = FlyEast ,
-#'          SR = 1/60,
-#'          Start = "2017-10-24 13:45:00")
+#' BdfList <-
+#'     BriefSum (
+#'         df = FlyEast,
+#'         SR = 1 / 60,
+#'         Start = "2017-10-24 13:45:00"
+#'     )
 #'
-#' p <- ggActiGlobe(df   = BdfList$df,
-#'                  Bdf  = BdfList$Bdf,
-#'                  VAct = "Activity",
-#'                  VDT  = "DateTime")
+#' p <- ggActiGlobe (
+#'     df = BdfList$df,
+#'     Bdf = BdfList$Bdf,
+#'     VAct = "Activity",
+#'     VDT = "DateTime"
+#' )
 #'
-#' print(p)
-#'
+#' print (p)
 #'
 #'
 #' # Overview the Corrected Longitudinal Recording
-#' data(TLog)
+#' data (TLog)
 #'
-#' BdfList$Bdf.adj = TAdjust(BdfList$Bdf, TLog)
-#' p2 <-  ggActiGlobe(df   = BdfList$df,
-#'                  Bdf  = BdfList$Bdf,
-#'                  VAct = "Activity",
-#'                  VDT  = "DateTime")
-#' print(p2)
+#' BdfList$Bdf.adj <- TAdjust (BdfList$Bdf, TLog)
+#' p2 <- ggActiGlobe (
+#'     df = BdfList$df,
+#'     Bdf = BdfList$Bdf,
+#'     VAct = "Activity",
+#'     VDT = "DateTime"
+#' )
+#' print (p2)
 #'
 #' # Pro-tip: [`cowplot`] can help stack the time series graphs in one single plot
 #' }
@@ -75,142 +80,138 @@
 #' @export
 
 
-
-ggActiGlobe <- function(df, Bdf, VAct = NULL, VDT = "DateTime") {
-
-
-  ## Ensure Note column exists --------------
-  if (!"Note" %in% names(df)) {
-    df$Note <- ""
-  }
-
-  NR = 1:nrow(df)
-  A <- df[[VAct]]
-  Mx = round(max(A, na.rm = TRUE))
-  mn = round(min(A, na.rm = TRUE))
+ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
 
 
-  VD = "Date"
-  D <- df[[VD]]
-  DT <- df[[VDT]]
-  T <- sub("^\\S+\\s+", "", as.character(DT))
+    ## Ensure Note column exists --------------
+    if (!"Note" %in% names (df)) {
+        df$Note <- ""
+    }
 
-  if (!inherits(DT, c("POSIXct", "POSIXlt"))) {
-    DT <- as.POSIXct(DT)
-  }
-
-
-  ## Identify midnight boundaries
-  MdN <- as.factor(ifelse(grepl("00:00:00", T) | !grepl(":",T), "1", "0"))
+    NR <- 1:nrow (df)
+    A <- df [[VAct]]
+    Mx <- round (max (A, na.rm = TRUE))
+    mn <- round (min (A, na.rm = TRUE))
 
 
-  ##### X Tick Control -----------------
-  if (length(unique(D)) > 1) { #### Multiple Days
-  NTicks = 0.2
-  Ds <- c(D[[1]],D[MdN == "1"])
+    VD <- "Date"
+    D <- df [[VD]]
+    DT <- df [[VDT]]
+    T <- sub ("^\\S+\\s+", "", as.character (DT))
 
-  LabX = "Date"
-
-  } else {   #### Same Day
-
-  NTicks = 0.2
-  D <- C2T(T)
-  Ds <- unique(ceiling(D))
-  D <- floor(D)
-
-  LabX = "Time of the Day"
-  }
+    if (!inherits (DT, c ("POSIXct", "POSIXlt"))) {
+        DT <- as.POSIXct (DT)
+    }
 
 
-
-  NTicks = floor(length(Ds)*NTicks)
-
-  Idx <- which(!duplicated(D))
+    ## Identify midnight boundaries
+    MdN <- as.factor (ifelse (grepl ("00:00:00", T) | !grepl (":", T), "1", "0"))
 
 
-  XTicks <-
-    pick_ticks(Ds = Ds,
-               NTicks = NTicks)
+    ##### X Tick Control -----------------
+    if (length (unique (D)) > 1) { #### Multiple Days
+        NTicks <- 0.2
+        Ds <- c (D [[1]], D [MdN == "1"])
 
-  Xcrd <- Idx[XTicks$indices] ### X Coordinate for the selected ticks
-  Xtx <- XTicks$values ### Selected x ticks label
+        LabX <- "Date"
 
+    } else { #### Same Day
 
+        NTicks <- 0.2
+        D <- C2T (T)
+        Ds <- unique (ceiling (D))
+        D <- floor (D)
 
-  ## Flag points with any Note (e.g. travel overlap or unallocated) -------------
-  if ("Note" %in% names(df)) {
-    Nt <- df$Note
-    E <- as.factor(ifelse(Nt != "", "1", "0"))
-  } else {
-
-    E <- as.factor(rep("0", nrow(df)))
-
-  }
+        LabX <- "Time of the Day"
+    }
 
 
+    NTicks <- floor (length (Ds) * NTicks)
 
-  E <- as.factor(ifelse(Nt != "", "1", "0"))
-
-  ## Create ggplot object -------------
-  g <-
-  ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
-    ggplot2::geom_point(alpha = 0.5, shape = 16) +
-    ggplot2::geom_vline(
-      xintercept = as.numeric(NR[MdN == "1"]),
-      linetype   = "dashed",
-      color      = "blue",
-      size       = 0.8
-    ) +
-    ggplot2::scale_y_continuous(limits = c(mn, Mx)) +
-    ggplot2::scale_x_continuous(
-      breaks =  Xcrd,                    # numeric positions on the NR axis
-      labels = Xtx          # text to show at those positions
-    ) +
-    ggplot2::labs(x = LabX, y = "Activity Count") +
-    ggplot2::theme_classic() +
-    ggplot2::theme(
-      plot.margin     = ggplot2::margin(0, 0, 0, 0),
-      axis.line       = ggplot2::element_line(size = 0.8),
-      axis.text       = ggplot2::element_text(color = "black", face = "bold"),
-      axis.title      = ggplot2::element_text(color = "black", face = "bold"),
-      legend.position = "none"
-    )
+    Idx <- which (!duplicated (D))
 
 
+    XTicks <-
+        pick_ticks (
+            Ds = Ds,
+            NTicks = NTicks
+        )
 
-  return(g)
+    Xcrd <- Idx [XTicks$indices] ### X Coordinate for the selected ticks
+    Xtx <- XTicks$values ### Selected x ticks label
+
+
+    ## Flag points with any Note (e.g. travel overlap or unallocated) -------------
+    if ("Note" %in% names (df)) {
+        Nt <- df$Note
+        E <- as.factor (ifelse (Nt != "", "1", "0"))
+    } else {
+
+        E <- as.factor (rep ("0", nrow (df)))
+
+    }
+
+
+    E <- as.factor (ifelse (Nt != "", "1", "0"))
+
+    ## Create ggplot object -------------
+    g <-
+        ggplot2::ggplot (mapping = ggplot2::aes (x = NR, y = A, colour = E)) +
+        ggplot2::geom_point (alpha = 0.5, shape = 16) +
+        ggplot2::geom_vline (
+            xintercept = as.numeric (NR [MdN == "1"]),
+            linetype   = "dashed",
+            color      = "blue",
+            size       = 0.8
+        ) +
+        ggplot2::scale_y_continuous (limits = c (mn, Mx)) +
+        ggplot2::scale_x_continuous (
+            breaks = Xcrd, # numeric positions on the NR axis
+            labels = Xtx # text to show at those positions
+        ) +
+        ggplot2::labs (x = LabX, y = "Activity Count") +
+        ggplot2::theme_classic () +
+        ggplot2::theme (
+            plot.margin     = ggplot2::margin (0, 0, 0, 0),
+            axis.line       = ggplot2::element_line (size = 0.8),
+            axis.text       = ggplot2::element_text (color = "black", face = "bold"),
+            axis.title      = ggplot2::element_text (color = "black", face = "bold"),
+            legend.position = "none"
+        )
+
+
+    return (g)
 }
-
-
 
 
 #' @title Pick Ticks for ggActiGlobe
 #' @noRd
-pick_ticks <- function(Ds, NTicks) {
-  n <- length(Ds)
-  if (n == 0) return(integer(0))
+pick_ticks <- function (Ds, NTicks) {
+    n <- length (Ds)
+    if (n == 0) {
+        return (integer (0))
+    }
 
-  # Interpret NTicks: if <=1 treat as fraction of length, otherwise treat as count
-  if (NTicks <= 1) {
-    k <- floor(n * NTicks)
-  } else {
-    k <- floor(NTicks)
-  }
+    # Interpret NTicks: if <=1 treat as fraction of length, otherwise treat as count
+    if (NTicks <= 1) {
+        k <- floor (n * NTicks)
+    } else {
+        k <- floor (NTicks)
+    }
 
-  # Ensure at least one tick
-  k <- max(k, 1)
-  # Do not request more ticks than available
-  k <- min(k, n)
+    # Ensure at least one tick
+    k <- max (k, 1)
+    # Do not request more ticks than available
+    k <- min (k, n)
 
-  # Generate k roughly-equal spaced indices, include first and last when possible
-  idx <- unique(round(seq(1, n, length.out = k)))
-  # In rare rounding cases ensure correct length by adjusting with seq.int
-  if (length(idx) < k) {
-    idx <- seq.int(1, n, length.out = k)
-    idx <- unique(round(idx))
-  }
-  idx <- as.integer(idx)
+    # Generate k roughly-equal spaced indices, include first and last when possible
+    idx <- unique (round (seq (1, n, length.out = k)))
+    # In rare rounding cases ensure correct length by adjusting with seq.int
+    if (length (idx) < k) {
+        idx <- seq.int (1, n, length.out = k)
+        idx <- unique (round (idx))
+    }
+    idx <- as.integer (idx)
 
-  list(indices = idx, values = Ds[idx])
+    list (indices = idx, values = Ds [idx])
 }
-

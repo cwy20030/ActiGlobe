@@ -60,43 +60,44 @@ when you move into a time zone with a smaller UTC offset, a brief gap appears
 on "Travel Day", with labeling - "Unallocated", which represents "time lose".
 }
 \examples{
-
 \dontrun{
 
 # Import data
-data(FlyEast)
+data (FlyEast)
 
 
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
-BriefSum(df = FlyEast ,
-         SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 
- # Let's extract the quick summary of the recording
+# Lets extract the quick summary of the recording
 Bdf <- BdfList$Bdf
 
 ### Note that since the original data was affected by travel-induced time
 ### shift, the recordings would not be properly segmented from 2017-11-02.
 
 ## To avoid time shift due to travelling, we will keep only the first 8 days.
-Bdf <- Bdf[1:8,]
+Bdf <- Bdf [1:8, ]
 df <- BdfList$df
 
 # Segment Data by Day
-dfList =
- Act2Daily(df = df,
-           Bdf = Bdf,
-           VAct = "Activity",
-           VTm = "Time",
-           Incomplete = TRUE,
-           Travel = TRUE)
+dfList <-
+    Act2Daily (
+        df = df,
+        Bdf = Bdf,
+        VAct = "Activity",
+        VTm = "Time",
+        Incomplete = TRUE,
+        Travel = TRUE
+    )
 
-str(dfList) ### Look at the output structure
-View(dfList)
-
-
+str (dfList) ### Look at the output structure
+View (dfList)
 }
 }
 \seealso{

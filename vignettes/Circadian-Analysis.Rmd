@@ -10,14 +10,14 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+knitr::opts_chunk$set (
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
 ```{r setup, include = FALSE}
-library(ActiGlobe)
+library (ActiGlobe)
 ```
 
 
@@ -25,17 +25,19 @@ library(ActiGlobe)
 After we segmented the data by dates, we can now move on to model the circadian rhythm based on the activity scores. For this, we are going to use the pre-travel recording on the 27<sup>th</sup> of October. Since the recording was not affected by time change. We can simply export it to a new variable, called \code{df}, which is short for data frame.
 ```{r Import 20171027, message=FALSE, warning=FALSE, results='asis'}
 # Import data
-data("FlyEast")
+data ("FlyEast")
 
- BdfList =
- BriefSum(df = FlyEast,
-          SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+BdfList <-
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 
 # Let's extract actigraphy data from a single day
- df <- BdfList$df
- df <- subset(df, df$Date == "2017-10-27")
+df <- BdfList$df
+df <- subset (df, df$Date == "2017-10-27")
 ```
 
 
@@ -50,18 +52,20 @@ data("FlyEast")
 ### Single-phase Model (i.e., single phase circadian rhythm)
 #### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
 
-```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-fit.ols <- 
-CosinorM(time = df$Time,
-         activity = df$Activity,
-         tau = 24,
-         method = "OLS")
+```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 1: Fitting of OLS-based Cosinor Model"}
+fit.ols <-
+    CosinorM (
+        time = df$Time,
+        activity = df$Activity,
+        tau = 24,
+        method = "OLS"
+    )
 
 ### Look at the parameters
 fit.ols$coef.cosinor
 
-### Plot 
-ggCosinorM(fit.ols)
+### Plot
+ggCosinorM (fit.ols)
 ``` 
 
 
@@ -74,18 +78,20 @@ If we process \code{\link{FlyEast}} using the \code{\link[cosinor]{cosinor.lm}},
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
 Besides, the traditioanl OLS-based cosinor model, \code{\link{CosinorM}} also allows user to estimate model using FGLS-based method. In ActiGlobe, the FGLS was implemented via a weighted residual least square approximation. This two-step process often produces a better representation of the "boarder" between sleep and awake activity than otherwise from the traditional OLS. Nevertheless, neither methods can offer realistic few of our activity pattern given they are simply single-phase cosinor models.
-```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-fit.fgls <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = 24,
-method = "FGLS")
+```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 2: Fitting of FGLS-based Cosinor Model"}
+fit.fgls <-
+    CosinorM (
+        time = df$Time,
+        activity = df$Activity,
+        tau = 24,
+        method = "FGLS"
+    )
 
 ### Look at the parameters
 fit.fgls$coef.cosinor
 
-### Plot 
-ggCosinorM(fit.fgls)
+### Plot
+ggCosinorM (fit.fgls)
 ```
 
 
@@ -95,112 +101,113 @@ ggCosinorM(fit.fgls)
 While certain circadian measures, such as melatonin, often follow a roughly 24-hour single-phase, human activity pattern is generally fragmented. To capture the non-linearity in our activity pattern, it is possible to add additional phase components when using \code{\link{CosinorM}}. Here, we provided two examples of cosinor models with two phase components, each fitted using OLS or FGLS-based methods. 
 
 #### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
-```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-fit.ols2 <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = c(12,24),
-method = "OLS")
+```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model"}
+fit.ols2 <-
+    CosinorM (
+        time = df$Time,
+        activity = df$Activity,
+        tau = c (12, 24),
+        method = "OLS"
+    )
 
 
 fit.ols2$coef.cosinor
 fit.ols2$post.hoc
 
 
-### Plot 
-ggCosinorM(fit.ols2)
+### Plot
+ggCosinorM (fit.ols2)
 ```
 
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
-```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-
-fit.fgls2 <- 
-CosinorM(time = df$Time,
-activity = df$Activity,
-tau = c(12,24),
-method = "FGLS")
+```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model"}
+fit.fgls2 <-
+    CosinorM (
+        time = df$Time,
+        activity = df$Activity,
+        tau = c (12, 24),
+        method = "FGLS"
+    )
 
 
 fit.fgls2$coef.cosinor
 fit.fgls2$post.hoc
 
-### Plot 
-ggCosinorM(fit.fgls2)
+### Plot
+ggCosinorM (fit.fgls2)
 ```
 
 
 It is worth noting that we cannot individually interpret each cosinor parameters alone when fitting a multicomponent model, This is because the rest-activity patterns estimated by general linear regression is the cumulative sum of all the fitted cosinor components (i.e. both 12 and 24hour waves). As such, it is better to use the parameters extracted post hoc for analysis.
-```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7}
+```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 5 Opening the Dual-phase OLS-based Cosinor Model into 12 and 24hour components"}
 Coefs <- fit.ols2$coef.cosinor
 
-for(i in fit.ols2$tau) {
-  mesor <- Coefs[grep("MESOR", names(Coefs))]
-  bta <- Coefs[grep(paste0("Beta.",i), names(Coefs))]
-  gamma <- Coefs[grep(paste0("Gamma.",i), names(Coefs))]
-  
-  if (i == 12)
-  fit.ols2$model$y_12 <- mesor + (bta * fit.ols2$model$C1 + gamma * fit.ols2$model$S1)
-  
-  
-  if (i == 24)
-  fit.ols2$model$y_24 <- mesor + (bta * fit.ols2$model$C2 + gamma * fit.ols2$model$S2)
-  
-  
-  phi <- atan2(gamma, bta)
-  phi_time <- (phi * i / (2*pi)) %% i
-  names(phi_time) <- paste0("phi.",i)
-  
-  print(c(bta, gamma, phi_time))
-  
+for (i in fit.ols2$tau) {
+    mesor <- Coefs [grep ("MESOR", names (Coefs))]
+    bta <- Coefs [grep (paste0 ("Beta.", i), names (Coefs))]
+    gamma <- Coefs [grep (paste0 ("Gamma.", i), names (Coefs))]
+
+    if (i == 12) {
+        fit.ols2$model$y_12 <- mesor + (bta * fit.ols2$model$C1 + gamma * fit.ols2$model$S1)
+    }
+
+
+    if (i == 24) {
+        fit.ols2$model$y_24 <- mesor + (bta * fit.ols2$model$C2 + gamma * fit.ols2$model$S2)
+    }
+
+
+    phi <- atan2 (gamma, bta)
+    phi_time <- (phi * i / (2 * pi)) %% i
+    names (phi_time) <- paste0 ("phi.", i)
+
+    print (c (bta, gamma, phi_time))
+
 }
-
-
-
 
 
 # assume time is numeric and length matches fitted values
 time <- fit.ols2$model$time
-y_all  <- fit.ols2$fitted.values   # combined 12+24
-y_24   <- fit.ols2$model$y_24    # 24h component
-y_12   <- fit.ols2$model$y_12   # 12h component
+y_all <- fit.ols2$fitted.values # combined 12+24
+y_24 <- fit.ols2$model$y_24 # 24h component
+y_12 <- fit.ols2$model$y_12 # 12h component
 
 # color / style palette (adjust to taste)
-cols <- c(combined = "#1b9e77", h24 = "#d95f02", h12 = "#7570b3")
-ltys <- c(combined = 1, h24 = 2, h12 = 3)
-pw   <- c(combined = 2, h24 = 1, h12 = 1)    # line widths
-pch  <- c(combined = NA, h24 = 19, h12 = 17) # point symbols (NA hides points)
+cols <- c (combined = "#1b9e77", h24 = "#d95f02", h12 = "#7570b3")
+ltys <- c (combined = 1, h24 = 2, h12 = 3)
+pw <- c (combined = 2, h24 = 1, h12 = 1) # line widths
+pch <- c (combined = NA, h24 = 19, h12 = 17) # point symbols (NA hides points)
 
 # main plotting area: show combined fit first
-plot(time, y_all,
-     type = "l", col = cols["combined"], lwd = pw["combined"],
-     xlab = "Time", ylab = "Fitted value",
-     main = "Cosinor fits: combined (12+24), 24h, and 12h components",
-     ylim = range(c(y_all, y_24, y_12), na.rm = TRUE))
+plot (time, y_all,
+    type = "l", col = cols ["combined"], lwd = pw ["combined"],
+    xlab = "Time", ylab = "Fitted value",
+    main = "Cosinor fits: combined (12+24), 24h, and 12h components",
+    ylim = range (c (y_all, y_24, y_12), na.rm = TRUE)
+)
 
 # add the other fits: lines + points for clarity
-lines(time, y_24, col = cols["h24"], lwd = pw["h24"], lty = ltys["h24"])
-points(time, y_24,   col = cols["h24"], pch = pch["h24"])
+lines (time, y_24, col = cols ["h24"], lwd = pw ["h24"], lty = ltys ["h24"])
+points (time, y_24, col = cols ["h24"], pch = pch ["h24"])
 
-lines(time, y_12, col = cols["h12"], lwd = pw["h12"], lty = ltys["h12"])
-points(time, y_12,   col = cols["h12"], pch = pch["h12"])
+lines (time, y_12, col = cols ["h12"], lwd = pw ["h12"], lty = ltys ["h12"])
+points (time, y_12, col = cols ["h12"], pch = pch ["h12"])
 
 # optional: add a transparent ribbon showing spread (if you have se)
 # polygon(c(time, rev(time)), c(y_all + se, rev(y_all - se)), col = rgb(0.11,0.62,0.47,0.15), border = NA)
 
 # legend placed at topright outside plotting area if space; try 'topright' first
-legend("topright",
-       legend = c("Combined 12+24h", "24h component", "12h component"),
-       col = cols,
-       lty = ltys,
-       lwd = pw,
-       pch = c(NA, pch["h24"], pch["h12"]),
-       pt.cex = 0.9,
-       bg = "white",
-       inset = 0.02)
-
-
-
+legend ("topright",
+    legend = c ("Combined 12+24h", "24h component", "12h component"),
+    col = cols,
+    lty = ltys,
+    lwd = pw,
+    pch = c (NA, pch ["h24"], pch ["h12"]),
+    pt.cex = 0.9,
+    bg = "white",
+    inset = 0.02
+)
 ```
 
 
@@ -211,16 +218,18 @@ legend("topright",
 ### Circularized Gaussian Kernel Density Estimation (KDE)
 Besides the traditional cosinor-based methodology, ActiGlobe also offers circularized Gaussian kernel density estimation. In contrast to the traditional cosinor method, \code{\link{CosinrM.KDE}} uses nonparametric kernel smoothing to map the activity pattern on a circularized time-domain. This strategy allows it to better respect the intensity and the duration of the underlying rest-activity patterns, without forcing a sinusoidal shape. To facilitate transition from cosinor model, we designed \code{\link{CosinorM.KDE}} to generate cosinor-like parameters by projecting the model onto an imaginary cosinor plane. 
 
-```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7}
-fit.KDE <- 
-  CosinorM.KDE(time = df$Time,
-             activity = df$Activity)
+```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 6: Fitting of Circularized Gaussian Kernel Density Estimation"}
+fit.KDE <-
+    CosinorM.KDE (
+        time = df$Time,
+        activity = df$Activity
+    )
 
 ### Look at the parameters
 fit.KDE$coef.cosinor
 fit.KDE$post.hoc
 
-ggCosinorM(fit.KDE)
+ggCosinorM (fit.KDE)
 ```
 
 
@@ -229,173 +238,164 @@ It is worth noting that while \code{\link{CosinorM.KDE}} does provide a variance
 
 
 ```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE}
-boot.seci(object = fit.KDE,
-          level = 0.95,
-          N = 100) ### for demonstration, the number of bootstrap was limited to 100.
+boot.seci (
+    object = fit.KDE,
+    level = 0.95,
+    N = 100
+) ### for demonstration, the number of bootstrap was limited to 100.
 ```
 Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation. 
 
 #### Visualized Model Comparisons
 ```{r import ggplot}
-### For external graphic plot. 
-library(ggplot2)
+### For external graphic plot.
+library (ggplot2)
 ```
 
 
 
 ##### OLS-Cosinor vs. Kernel Density Estimation
 When we plot the KDE alongside the cosinor we can immediately see skew, broad or narrow peaks, and multiple active periods that the single‑harmonic cosinor cannot represent.
-```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
-
+```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE , fig.alt=  "Figure 7: Overlay of Fitting of OLS-based Cosinor and Circularized Gaussian Kernel Density Estimation"}
 # Prepare data
-n <- length(fit.ols$fitted.values)
-plot_df <- data.frame(
-  hour = seq(0, 24, length.out = n),
-  fitted = as.numeric(fit.ols$fitted.values),
-  activity = df$Activity
+n <- length (fit.ols$fitted.values)
+plot_df <- data.frame (
+    hour = seq (0, 24, length.out = n),
+    fitted = as.numeric (fit.ols$fitted.values),
+    activity = df$Activity
 )
 
 # Cosinor and true-peak hours
-phi <- fit.ols$coef.cosinor[3]
-cosinor_peak_hour <- (24 - (phi %% (2 * pi)) * 24 / (2 * pi)) %% 24
-true_peak_hour <- plot_df$hour[which.max(df$Activity)]
+phi <- fit.ols$coef.cosinor [3]
+cosinor_peak_hour <- (phi %% (2 * pi)) * 24 / (2 * pi) %% 24
+true_peak_hour <- plot_df$hour [which.max (df$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
-kdf_plot <- data.frame(hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
+kdf_plot <- data.frame (hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
 y_primary_max <- 2000
-kdf_plot$density_scaled <- kdf_plot$density / max(kdf_plot$density) * y_primary_max
+kdf_plot$density_scaled <- kdf_plot$density / max (kdf_plot$density) * y_primary_max
 
 # KDE vline location
-kde_vline_hour <- fit.KDE$post.hoc["Acrophase.ph.time"]
+kde_vline_hour <- fit.KDE$post.hoc ["Acrophase.ph.time"]
 
 # Named colours for mapping
-my_cols <- c(
-  "Raw Activity"     = "#7570b3",
-  "Cosinor (24Hr)"   = "#1b9e77",
-  "KDE"   = "#999999",
-  "Cosinor Peak"     = "black",
-  "Maximum Activity" = "#e7298a",
-  "KDE Peak"         = "#e41a1c"
+my_cols <- c (
+    "Raw Activity" = "#7570b3",
+    "Cosinor (24Hr)" = "#1b9e77",
+    "KDE" = "#999999",
+    "Cosinor Peak" = "black",
+    "Maximum Activity" = "#e7298a",
+    "KDE Peak" = "#e41a1c"
 )
 
-ggplot() +
-  # Lines/points with color mapped to a fixed name so they appear in legend
-  geom_line(data = plot_df, aes(x = hour, y = fitted, color = "Cosinor (24Hr)"), size = 0.9) +
-  geom_point(data = plot_df, aes(x = hour, y = activity, color = "Raw Activity"), size = 1.0, alpha = 0.6) +
-  geom_line(data = kdf_plot, aes(x = hour, y = density_scaled, color = "KDE"), size = 1) +
-  # vertical lines mapped to colour names so they appear in the legend
-  geom_vline(aes(xintercept = cosinor_peak_hour, color = "Cosinor Peak"), linetype = "solid", size = 1) +
-  geom_vline(aes(xintercept = true_peak_hour, color = "Maximum Activity"), linetype = "dotted", size = 1) +
-  geom_vline(aes(xintercept = kde_vline_hour, color = "KDE Peak"), linetype = "longdash", size = 1) +
-  # scales and labels
-  scale_x_continuous(
-    name = "Hour",
-    limits = c(0, 24),
-    breaks = c(0, 4, 8, 12, 16, 20, 24),
-    labels = c(0, 4, 8, 12, 16, 20, 24)
-  ) +
-  scale_y_continuous(
-    name = "Activity",
-    limits = c(0, y_primary_max),
-    sec.axis = sec_axis(~ . / y_primary_max * max(kdf_plot$density), name = "Circularized Gaussian Kernel Density")
-  ) +
-  scale_color_manual(name = NULL, values = my_cols) +
- ggtitle("Overlay of Fitting of OLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
-
-  theme_minimal(base_size = 12) +
-  theme(
-    text = element_text(face = "bold"),
-    plot.title = element_text(hjust = 0.5, face = "bold"),
-    axis.title = element_text(face = "bold"),
-    axis.text = element_text(face = "bold"),
-    legend.title = element_text(face = "bold"),
-    legend.text = element_text(face = "bold"),
-    strip.text = element_text(face = "bold"),
-    panel.grid.minor = element_blank(),
-    legend.position = "top",
-    axis.ticks = element_line(size = 0.4)
-  )
-
-
-
+ggplot () +
+    # Lines/points with color mapped to a fixed name so they appear in legend
+    geom_line (data = plot_df, aes (x = hour, y = fitted, color = "Cosinor (24Hr)"), size = 0.9) +
+    geom_point (data = plot_df, aes (x = hour, y = activity, color = "Raw Activity"), size = 1.0, alpha = 0.6) +
+    geom_line (data = kdf_plot, aes (x = hour, y = density_scaled, color = "KDE"), size = 1) +
+    # vertical lines mapped to colour names so they appear in the legend
+    geom_vline (aes (xintercept = cosinor_peak_hour, color = "Cosinor Peak"), linetype = "solid", size = 1) +
+    geom_vline (aes (xintercept = true_peak_hour, color = "Maximum Activity"), linetype = "dotted", size = 1) +
+    geom_vline (aes (xintercept = kde_vline_hour, color = "KDE Peak"), linetype = "longdash", size = 1) +
+    # scales and labels
+    scale_x_continuous (
+        name = "Hour",
+        limits = c (0, 24),
+        breaks = c (0, 4, 8, 12, 16, 20, 24),
+        labels = c (0, 4, 8, 12, 16, 20, 24)
+    ) +
+    scale_y_continuous (
+        name = "Activity",
+        limits = c (0, y_primary_max),
+        sec.axis = sec_axis (~ . / y_primary_max * max (kdf_plot$density), name = "Circularized Gaussian Kernel Density")
+    ) +
+    scale_color_manual (name = NULL, values = my_cols) +
+    ggtitle ("Overlay of Fitting of OLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
+    theme_minimal (base_size = 12) +
+    theme (
+        text = element_text (face = "bold"),
+        plot.title = element_text (hjust = 0.5, face = "bold"),
+        axis.title = element_text (face = "bold"),
+        axis.text = element_text (face = "bold"),
+        legend.title = element_text (face = "bold"),
+        legend.text = element_text (face = "bold"),
+        strip.text = element_text (face = "bold"),
+        panel.grid.minor = element_blank (),
+        legend.position = "top",
+        axis.ticks = element_line (size = 0.4)
+    )
 ```
 
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7}
-
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
 # Prepare data
-n <- length(fit.fgls$fitted.values)
-plot_df <- data.frame(
-  hour = seq(0, 24, length.out = n),
-  fitted = as.numeric(fit.fgls$fitted.values),
-  activity = df$Activity
+n <- length (fit.fgls$fitted.values)
+plot_df <- data.frame (
+    hour = seq (0, 24, length.out = n),
+    fitted = as.numeric (fit.fgls$fitted.values),
+    activity = df$Activity
 )
 
 # Cosinor and true-peak hours
-phi <- fit.fgls$coef.cosinor[3]
-cosinor_peak_hour <- ((phi * 24 / (2*pi)) %% 24)
-true_peak_hour <- plot_df$hour[which.max(df$Activity)]
+phi <- fit.fgls$coef.cosinor [3]
+cosinor_peak_hour <- ((phi * 24 / (2 * pi)) %% 24)
+true_peak_hour <- plot_df$hour [which.max (df$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
-kdf_plot <- data.frame(hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
+kdf_plot <- data.frame (hour = fit.KDE$model$time, density = fit.KDE$kdf$density)
 y_primary_max <- 2000
-kdf_plot$density_scaled <- kdf_plot$density / max(kdf_plot$density) * y_primary_max
+kdf_plot$density_scaled <- kdf_plot$density / max (kdf_plot$density) * y_primary_max
 
 # KDE vline location
-kde_vline_hour <- fit.KDE$post.hoc["Acrophase.ph.time"]
+kde_vline_hour <- fit.KDE$post.hoc ["Acrophase.ph.time"]
 
 # Named colours for mapping
-my_cfgls <- c(
-  "Raw Activity"     = "#7570b3",
-  "Cosinor (24Hr)"   = "#1b9e77",
-  "KDE"   = "#999999",
-  "Cosinor Peak"     = "black",
-  "Maximum Activity" = "#e7298a",
-  "KDE Peak"         = "#e41a1c"
+my_cfgls <- c (
+    "Raw Activity" = "#7570b3",
+    "Cosinor (24Hr)" = "#1b9e77",
+    "KDE" = "#999999",
+    "Cosinor Peak" = "black",
+    "Maximum Activity" = "#e7298a",
+    "KDE Peak" = "#e41a1c"
 )
 
-ggplot() +
-  # Lines/points with color mapped to a fixed name so they appear in legend
-  geom_line(data = plot_df, aes(x = hour, y = fitted, color = "Cosinor (24Hr)"), size = 0.9) +
-  geom_point(data = plot_df, aes(x = hour, y = activity, color = "Raw Activity"), size = 1.0, alpha = 0.6) +
-  geom_line(data = kdf_plot, aes(x = hour, y = density_scaled, color = "KDE"), size = 1) +
-  # vertical lines mapped to colour names so they appear in the legend
-  geom_vline(aes(xintercept = cosinor_peak_hour, color = "Cosinor Peak"), linetype = "solid", size = 1) +
-  geom_vline(aes(xintercept = true_peak_hour, color = "Maximum Activity"), linetype = "dotted", size = 1) +
-  geom_vline(aes(xintercept = kde_vline_hour, color = "KDE Peak"), linetype = "longdash", size = 1) +
-  # scales and labels
-  scale_x_continuous(
-    name = "Hour",
-    limits = c(0, 24),
-    breaks = c(0, 4, 8, 12, 16, 20, 24),
-    labels = c(0, 4, 8, 12, 16, 20, 24)
-  ) +
-  scale_y_continuous(
-    name = "Activity",
-    limits = c(0, y_primary_max),
-    sec.axis = sec_axis(~ . / y_primary_max * max(kdf_plot$density), name = "Circularized Gaussian Kernel Density")
-  ) +
-  scale_color_manual(name = NULL, values = my_cfgls) +
- ggtitle("Overlay of Fitting of FGLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
-
-  theme_minimal(base_size = 12) +
-  theme(
-    text = element_text(face = "bold"),
-    plot.title = element_text(hjust = 0.5, face = "bold"),
-    axis.title = element_text(face = "bold"),
-    axis.text = element_text(face = "bold"),
-    legend.title = element_text(face = "bold"),
-    legend.text = element_text(face = "bold"),
-    strip.text = element_text(face = "bold"),
-    panel.grid.minor = element_blank(),
-    legend.position = "top",
-    axis.ticks = element_line(size = 0.4)
-  )
-
-
-
-
+ggplot () +
+    # Lines/points with color mapped to a fixed name so they appear in legend
+    geom_line (data = plot_df, aes (x = hour, y = fitted, color = "Cosinor (24Hr)"), size = 0.9) +
+    geom_point (data = plot_df, aes (x = hour, y = activity, color = "Raw Activity"), size = 1.0, alpha = 0.6) +
+    geom_line (data = kdf_plot, aes (x = hour, y = density_scaled, color = "KDE"), size = 1) +
+    # vertical lines mapped to colour names so they appear in the legend
+    geom_vline (aes (xintercept = cosinor_peak_hour, color = "Cosinor Peak"), linetype = "solid", size = 1) +
+    geom_vline (aes (xintercept = true_peak_hour, color = "Maximum Activity"), linetype = "dotted", size = 1) +
+    geom_vline (aes (xintercept = kde_vline_hour, color = "KDE Peak"), linetype = "longdash", size = 1) +
+    # scales and labels
+    scale_x_continuous (
+        name = "Hour",
+        limits = c (0, 24),
+        breaks = c (0, 4, 8, 12, 16, 20, 24),
+        labels = c (0, 4, 8, 12, 16, 20, 24)
+    ) +
+    scale_y_continuous (
+        name = "Activity",
+        limits = c (0, y_primary_max),
+        sec.axis = sec_axis (~ . / y_primary_max * max (kdf_plot$density), name = "Circularized Gaussian Kernel Density")
+    ) +
+    scale_color_manual (name = NULL, values = my_cfgls) +
+    ggtitle ("Overlay of Fitting of FGLS-based Cosinor \n and Circularized Gaussian Kernel Density Estimation") +
+    theme_minimal (base_size = 12) +
+    theme (
+        text = element_text (face = "bold"),
+        plot.title = element_text (hjust = 0.5, face = "bold"),
+        axis.title = element_text (face = "bold"),
+        axis.text = element_text (face = "bold"),
+        legend.title = element_text (face = "bold"),
+        legend.text = element_text (face = "bold"),
+        strip.text = element_text (face = "bold"),
+        panel.grid.minor = element_blank (),
+        legend.position = "top",
+        axis.ticks = element_line (size = 0.4)
+    )
 ```
 

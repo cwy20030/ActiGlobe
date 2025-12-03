@@ -35,35 +35,44 @@ ggCosinorM(
 
 \item{...}{Additional arguments (currently ignored) kept for future update}
 }
+\value{
+A `ggplot` object representing the cosinor model fit visualization.
+}
 \description{
 Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
 }
 \examples{
 \dontrun{
 # Import data
-data(FlyEast)
+data (FlyEast)
 
-BdfList =
-BriefSum(df = FlyEast ,
-         SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+BdfList <-
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset(df, df$Date == "2017-10-28")
+df <- subset (df, df$Date == "2017-10-28")
 
-fit <- CosinorM(time = df$Time,
-                activity = df$Activity,
-                tau = 24,
-                method = "OLS")
+fit <- CosinorM (
+    time = df$Time,
+    activity = df$Activity,
+    tau = 24,
+    method = "OLS"
+)
 
 
-p <- ggCosinorM(object = fit,
-                labels = TRUE,
-                ci = TRUE,
-                ci_level = 0.95,
-                title_extra = "2017-10-24")
-print(p)
+p <- ggCosinorM (
+    object = fit,
+    labels = TRUE,
+    ci = TRUE,
+    ci_level = 0.95,
+    title_extra = "2017-10-24"
+)
+print (p)
 }
 
 }

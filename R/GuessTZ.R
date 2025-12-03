@@ -22,95 +22,97 @@
 #' @param DT Only one date at a time
 #' @param iTZ The time zone when the recording started. When guessing time zone, it will prioritize matching to the initial geographic location even when the time change occurs. Default is "NULL". When specified as `"local"`, user's local time zone is assumed.
 #' @param All Logical, if TRUE, as default, it will provide all possible TZ codes. If FALSE, it will retrieve the first one.
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#' @return A character vector of possible time zone indicators
 #' @noRd
 
-GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE) {
+GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
-  # Establish initial time zone...
-  TZ1 = ifelse(iTZ == "local", Sys.timezone(), iTZ)
+    # Establish initial time zone ----------------
+    TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
-  if (is.null(iTZ)) TZ1 = NULL
-
-
-
-  # Extract all known time zones
-  oTZs <- OlsonNames()
-
-  ## Process DT
-  if (is.null(DT)) {
-
-    # Determine if DST exists using time offset on January 1st of 2021
-    DT <- as.POSIXct("2021-01-01", tz = "UTC")
-
-  }
-
-  if (!length(DT) == 1)  DT = DT[[1]]
+    if (is.null (iTZ)) TZ1 <- NULL
 
 
+    # Extract all known time zones ----------------
+    oTZs <- OlsonNames ()
 
-  # Extract
-  ## Check number of cores available...
-  NCore = parallel::detectCores()
+    ## Process DT
+    if (is.null (DT)) {
 
-  if (NCore > 6) {
-    # Step 1: Create a cluster
-    cl <- parallel::makeCluster(4)  # Use all but one core
+        # Determine if DST exists using time offset on January 1st of 2021
+        DT <- as.POSIXct ("2021-01-01", tz = "UTC")
 
-    # Step 2: Export variables and functions to cluster
-    parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
+    }
 
-    # Step 3: Run the parallelized task
-    Toffs <- parallel::parLapply(cl, oTZs, function(tz) {
-      format(as.POSIXct(DT, tz = tz), "%z")
-    })
-
-    # Step 4: Clean up
-    parallel::stopCluster(cl)
-
-    # Optional: Convert result to character vector (like vapply would produce)
-    Toffs <- unlist(Toffs)
-
-  } else {
-
-    Toffs <- vapply(oTZs,
-                    function(tz) format(as.POSIXct(DT, tz = tz), "%z"),
-                    character(1))
-
-  }
+    if (!length (DT) == 1) DT <- DT [[1]]
 
 
-  #### Step 1 Guess all possible TZ indicators
-  pTZs <- sapply(aOF,
-                 function(x) oTZs[Toffs %in% x])
+    # Extract time offsets for all time zones ----------------
+    if (fork) {
+        # Step 1: Create a cluster
+        NCore <- parallel::detectCores()
+        cl <- parallel::makeCluster(max(1, NCore - 2))  # leave a couple cores free
 
-  #### Step 2 Check if the initial time zone is included
-  if (!is.null(TZ1))
-    if (length(aOF) == 1) {
+        # Step 2: Export variables
+        parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
 
-      pTZs <-ifelse(TZ1 %in% pTZs, TZ1, pTZs)
+        # Step 3: Run parallelized task
+        Toffs <- parallel::parLapply(cl, oTZs, function(tz) {
+            format(as.POSIXct(DT, tz = tz), "%z")
+        })
+
+        # Step 4: Clean up
+        parallel::stopCluster(cl)
+
+        Toffs <- unlist(Toffs)
 
     } else {
-
-      pTZs <- sapply(pTZs,
-                     function(x) ifelse(TZ1 %in% x, TZ1, x))
+        ## Sequential version
+        Toffs <- vapply(
+            oTZs,
+            function(tz) format(as.POSIXct(DT, tz = tz), "%z"),
+            character(1)
+        )
     }
 
 
-  #### Step 3 Keep only the first one if the All is set to FALSE
-  if (!All)
-    if (length(aOF) > 1){
+    #### Step 1 Guess all possible TZ indicators -----------
+    pTZs <- sapply (
+        aOF,
+        function (x) oTZs [Toffs %in% x]
+    )
 
-      pTZs <- sapply(pTZs,
-                     function(x) x[[1]])
-    } else {
-      pTZs = pTZs[[1]]
+    #### Step 2 Check if the initial time zone is included
+    if (!is.null (TZ1)) {
+        if (length (aOF) == 1) {
+
+            pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
+
+        } else {
+
+            pTZs <- sapply (
+                pTZs,
+                function (x) ifelse (TZ1 %in% x, TZ1, x)
+            )
+        }
     }
 
 
+    #### Step 3 Keep only the first one if the All is set to FALSE
+    if (!All) {
+        if (length (aOF) > 1) {
+
+            pTZs <- sapply (
+                pTZs,
+                function (x) x [[1]]
+            )
+        } else {
+            pTZs <- pTZs [[1]]
+        }
+    }
 
 
-
-  return(pTZs)
+    return (pTZs)
 
 }
-

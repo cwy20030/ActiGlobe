@@ -37,21 +37,31 @@ unless explicitly guided by a delimiter or by manual correction.
 }
 \examples{
 # Consistent format across all strings
-DT <- c("2017/05/02", "2000/02/28", "1970/01/02")
-DateFormat(DT, as.date = FALSE)  # returns parsed Date vector
+DT <- c ("2017/05/02", "2000/02/28", "1970/01/02")
+DateFormat (DT, as.date = FALSE) # returns parsed Date vector
 
-\donttest{
+\dontrun{
 # Mixed formats within a vector
-DT <- c("2017/05/02", "2000.Feb.28", "1970-11-02",
-              "January 01, 2025", "December 12, 1980")
+DT <- c (
+    "2017/05/02", "2000.Feb.28", "1970-11-02",
+    "January 01, 2025", "December 12, 1980"
+)
+lapply (DT, DateFormat) # element-wise parsing
+### We expect that many of these format will not work because they contain text
+
+
+DT <- c (
+    "2017/05/02", "2000.02.28", "1970-11-02",
+    "01, 01, 2025", "12, 12, 1980"
+)
 
 # Recommended usage for mixed formats:
-lapply(DT, DateFormat)          # element-wise parsing
-for (x in DT) print(DateFormat(x))  # displays format/warning per entry
+lapply (DT, DateFormat, Delim = ",") # element-wise parsing
 
-# Avoid passing mixed formats as a single vector
-# Not recommended:
-# DateFormat(DT)
+for (x in DT) print (DateFormat (x, Delim = ",")) # displays format/warning per entry
+
+# Avoid using sapply, because it will convert them into numeric form
+sapply (DT, DateFormat)
 }
 
 }

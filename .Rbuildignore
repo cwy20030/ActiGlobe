@@ -1,16 +1,16 @@
 ^.*\.Rproj$
 ^.*\.pptx$
-^.*\.png$
 ^Build\.Rmd$
 ^README\.Rmd$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^ReadMe\.txt$
 ^cran-comments\.Rmd$
 ^cran-comments\.md$
 ^\.Rhistory$
 ^Test.nb\.html$
 ^Test\.Rmd$
+^contributing\.Rmd$
+^contributing\.md$
 ^Ref$
 ^Resources$
 ^old$
@@ -24,3 +24,6 @@
 ^pkgdown$
 ^doc$
 ^Meta$
+^CRAN-SUBMISSION$
+^_pkgdown\.yml$
+^([^/]+)\.png$

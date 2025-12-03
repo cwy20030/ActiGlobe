@@ -31,42 +31,51 @@ A data.frame with one row per cosinor coefficient and columns:
 Computes standard errors and confidence intervals for cosinor and post-hoc parameters via non-parametric bootstrap
 }
 \examples{
-
 \dontrun{
 # Import data
 FlyEast
 
-BdfList =
-BriefSum(df = FlyEast ,
-         SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+BdfList <-
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset(df, df$Date == "2017-10-27")
+df <- subset (df, df$Date == "2017-10-27")
 
 # Multicomponent Cosinor Model
-fit <- Cosinor(time = df$Time,
-               activity = df$Activity,
-               tau = c(12,24),
-               method = "OLS")
+fit <- Cosinor (
+    time = df$Time,
+    activity = df$Activity,
+    tau = c (12, 24),
+    method = "OLS"
+)
 
 # inspect coefficients
 
-boot.seci(object = fit,
-          level = 0.95,
-          N = 500)
+boot.seci (
+    object = fit,
+    level = 0.95,
+    N = 500
+)
 
 
 # Gaussian Kernel Density Estimation
-fit2 <- CosinorM.KDE(time = df$Time,
-                     activity = df$Activity)
+fit2 <- CosinorM.KDE (
+    time = df$Time,
+    activity = df$Activity
+)
 
 # inspect coefficients
 
-boot.seci(object = fit2,
-          level = 0.95,
-          N = 500)
+boot.seci (
+    object = fit2,
+    level = 0.95,
+    N = 500
+)
 }
 }
 \seealso{

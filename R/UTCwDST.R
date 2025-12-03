@@ -36,7 +36,7 @@
 #'   Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 #'   like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 #'   offsets using `UTC2Num()`.
-#'
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
 #' @return
 #'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at least
 #'   one time zone at the specified offset undergoes a DST transition, `FALSE`
@@ -55,15 +55,16 @@
 #' UTCwDST(UTCs = -5)
 #'}
 #' @seealso
-#' \code{\link{DST}}, \code{\link{UTC2Num}}, \code{\link{OlsonNames}}
+#' \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
 #'
 #' @export
-UTCwDST <- function(UTCs) {
 
-  OF = UTCs
+UTCwDST <- function(UTCs, fork = FALSE) {
+
+  OF <- UTCs
 
   #### Convert UTC to Hour offset if not converted....
-  if(any(grep("UTC|\\:", UTCs))) OF = UTC2Num(UTCs)
+  if(any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
 
   #### Convert offset into the POSIX format
   aOF <- sprintf("%+03d00", OF)
@@ -71,19 +72,15 @@ UTCwDST <- function(UTCs) {
   # Determine if DST exists using time offset on January 1st of 2021
   JAN1 <- as.POSIXct("2021-01-01", tz = "UTC")
 
-  pTZs = GuessTZ(aOF = aOF)
+  pTZs = GuessTZ(aOF = aOF, fork = fork)
 
-  ## Check points for mispecified UTC offsets.
+  ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
     TG = which(lengths(pTZs) == 0L)
-    stop(sprintf("No matching found for following time zones: %s",
-                 UTCs[TG]))
+    stop(sprintf("No matching found for following time zones: %s", UTCs[TG]))
   }
 
-
-
-
-  # Check DST status in mid‐winter vs. mid‐summer
+  # Check DST status in mid‐winter vs. mid‐summer ----------
   wDT <- as.POSIXct(JAN1, tz = "UTC") ### NO daylight saving time for the north hemispher but yes for the south
   sDT <- as.POSIXct("2021-07-15", tz = "UTC") ### Yes to daylight saving time for the north hemispher but NO for the south
 
@@ -91,11 +88,10 @@ UTCwDST <- function(UTCs) {
   Out <- sapply(pTZs, function(tzs) {
     wDST <- sapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst)
     sDST <- sapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst)
-
     any(wDST != sDST)
   })
 
-  if (length(Out) == length(UTCs))   names(Out) = UTCs
+  if (length(Out) == length(UTCs)) { names(Out) = UTCs}
 
   return(Out)
 }

@@ -22,22 +22,25 @@
 #' @importFrom lubridate ymd_hms with_tz
 #' @param DT The date in the format as "2021-03-05"
 #' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
-#' @keywords Daylight Saving Timezone
-#' @export
+#'
+#' @return A character string indicating the UTC offset, e.g., "UTC-05:00"
+#'
 #' @examples
 #'
-#' x <- as.Date(c("2017-10-24","2017-11-20"))
-#' TZ2UTC(DT = x, TZ = "America/Toronto") ## Expect two different UTCs
+#' x <- as.Date (c ("2017-10-24", "2017-11-20"))
+#' TZ2UTC (DT = x, TZ = "America/Toronto") ## Expect two different UTCs
 #'
 #' \dontrun{
 #' # A vector of dates
-#' x =
-#' seq.Date(from = as.Date("2017-10-24"),
-#'            to = as.Date("2017-11-27"),
-#'            by = "day")
+#' x <-
+#'     seq.Date (
+#'         from = as.Date ("2017-10-24"),
+#'         to = as.Date ("2017-11-27"),
+#'         by = "day"
+#'     )
 #'
 #' # If the user resides in a country that follows daylight saving time
-#' TZ2UTC(DT = x, TZ = "local")
+#' TZ2UTC (DT = x, TZ = "local")
 #'
 #' # If not
 #' # TZ2UTC(DT = x, TZ = "America/Toronto")
@@ -46,33 +49,33 @@
 #' @keywords UTC TZ
 #' @export
 
-TZ2UTC <- function(DT, TZ = "local") {
+TZ2UTC <- function (DT, TZ = "local") {
 
-  TZ = ifelse(TZ == "local", Sys.timezone(), TZ)
+    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
-  DT = as.Date(DT)
-  x = lubridate::ymd_hms(paste0(DT," 12:00:00"), tz = TZ)
-  y = lubridate::with_tz(x, tzone = "UTC")
+    DT <- as.Date (DT)
+    x <- lubridate::ymd_hms (paste0 (DT, " 12:00:00"), tz = TZ)
+    y <- lubridate::with_tz (x, tzone = "UTC")
 
-  a = as.POSIXct(format(x, format = "%H:%M"), format = "%H:%M")
-  b = as.POSIXct(format(y, format = "%H:%M"), format = "%H:%M")
+    a <- as.POSIXct (format (x, format = "%H:%M"), format = "%H:%M")
+    b <- as.POSIXct (format (y, format = "%H:%M"), format = "%H:%M")
 
-  ab = a - b ### Compute time difference
-  ab = as.numeric(ab, units = "hours") ### Convert to numeric
-
-
-  ## Get the hours
-  c = ifelse(ab <0, ceiling(ab), floor(ab)) ### Hour unit
-  d2 = (abs(ab) - abs(c)) * 60   ### Minute unit
-
-  mp = ifelse(ab <0, "-", "+") ### Check positive or negative
-
-  e = ifelse(abs(c)<10, paste0(mp,"0",abs(c)), paste0(mp,c))
-  f = ifelse(d2 == 0, "00", d2)
+    ab <- a - b ### Compute time difference
+    ab <- as.numeric (ab, units = "hours") ### Convert to numeric
 
 
-  Out = paste0("UTC", e,":",f)
+    ## Get the hours
+    c <- ifelse (ab < 0, ceiling (ab), floor (ab)) ### Hour unit
+    d2 <- (abs (ab) - abs (c)) * 60 ### Minute unit
+
+    mp <- ifelse (ab < 0, "-", "+") ### Check positive or negative
+
+    e <- ifelse (abs (c) < 10, paste0 (mp, "0", abs (c)), paste0 (mp, c))
+    f <- ifelse (d2 == 0, "00", d2)
 
 
-    return(Out)
+    Out <- paste0 ("UTC", e, ":", f)
+
+
+    return (Out)
 }

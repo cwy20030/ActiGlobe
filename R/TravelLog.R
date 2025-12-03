@@ -28,26 +28,28 @@
 #'
 
 
-TravelLog <- function(Write = FALSE, Dir = NULL) {
+TravelLog <- function (Write = FALSE, Dir = NULL) {
 
- df =  data.frame(matrix(ncol = 5, nrow = 1))
+    df <- data.frame (matrix (ncol = 5, nrow = 1))
 
- names(df) = c("ID", "UTC_Offset", "Country_with_Daylight_Saving", "date_Start", "date_End")
+    names (df) <- c ("ID", "UTC_Offset", "Country_with_Daylight_Saving", "date_Start", "date_End")
 
- df[1,] = c("ExampleID", "+05:00", "TRUE" ,as.character(Sys.Date()), as.character(Sys.Date() + 1))
-
-
- ## Write option
- if (Write) { ### When TRUE
-
-   ### Check essential components
-   if (is.null(Dir)) stop ("A directory must be provided in order to export the template.")
-
-   write.csv2(df, paste0(Dir,"/TravelLog_Template.csv"),row.names = F)
-
- }
+    df [1, ] <- c ("ExampleID", "+05:00", "TRUE", as.character (Sys.Date ()), as.character (Sys.Date () + 1))
 
 
- if (!Write) return(df)
+    ## Write option
+    if (Write) { ### When TRUE
+
+        ### Check essential components
+        if (is.null (Dir)) stop ("A directory must be provided in order to export the template.")
+
+        write.csv2 (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = F)
+
+    }
+
+
+    if (!Write) {
+        return (df)
+    }
 
 }
