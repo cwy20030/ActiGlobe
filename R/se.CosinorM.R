@@ -74,9 +74,12 @@
 #'
 #'
 #' @import stats
-#' @param object A model of class `CosinorM`
 #'
+#'
+#' @param object A model of class `CosinorM`
+#' @param method Only supports delta for now
 #' Standard errors are the square roots of the approximated variances.
+#'
 #'
 #' @return A named list with components:
 #' \itemize{
@@ -86,6 +89,8 @@
 #'   \item \code{se.Acrophase}: Delta‑method standard error for acrophase.
 #' }
 #'
+#'
+#' @seealso \code{\link{vcov}}
 #'
 #'
 #' @examples
@@ -118,13 +123,13 @@
 #' print (res)
 #' }
 #'
-#' @seealso \code{\link{vcov}}, Delta method references
+#'
 #' @noRd
 
 
 se.CosinorM <- function (object, method = "delta") {
 
-
+    # Extract Essential Parameters ------------------
     VCOV <- object$vcov
     SE <- sqrt (diag (VCOV))
     tau <- object$tau
@@ -135,7 +140,7 @@ se.CosinorM <- function (object, method = "delta") {
     ### Collect the betas and gammas
     CSidx <- grep ("^[CS][0-9]+$", row.names (VCOV))
 
-
+    # Compute Variance for Acrophase and Amplitude  --------------
     VARs <-
         lapply (1:lT, function (i) {
 
@@ -184,6 +189,7 @@ se.CosinorM <- function (object, method = "delta") {
         })
 
 
+    # Prepare for Output --------------------
     ### Add MESOR
     MESOR <- as.numeric (VCOV [1, 1])
     names (MESOR) <- "var.MESOR"

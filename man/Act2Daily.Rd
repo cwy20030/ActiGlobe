@@ -75,7 +75,7 @@ BdfList <-
     )
 
 
-# Let's extract the quick summary of the recording
+# Lets extract the quick summary of the recording
 Bdf <- BdfList$Bdf
 
 ### Note that since the original data was affected by travel-induced time
@@ -99,6 +99,7 @@ dfList <-
 str (dfList) ### Look at the output structure
 View (dfList)
 }
+
 }
 \seealso{
 \code{\link{TAdjust}} \code{\link{write.act}}

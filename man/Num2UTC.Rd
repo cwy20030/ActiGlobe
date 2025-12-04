@@ -13,7 +13,10 @@ Num2UTC(x)
 A character vector of standard UTC offsets
 }
 \description{
-Convert Numbers to Standard UTC Offset
+Convert numeric values representing UTC offsets (in hours, with optional fractional
+parts for minutes) into standardized character strings of the form
+`"UTC+HH:MM"` or `"UTC-HH:MM"`. This is useful for translating numeric
+time zone offsets into human-readable UTC offset notation.
 }
 \examples{
 # Convert UTC to numeric values

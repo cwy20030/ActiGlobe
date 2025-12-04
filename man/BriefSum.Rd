@@ -78,6 +78,7 @@ str (BdfList)
 ##          SR = 1/60,
 ##          Start = "2017-10-24 13:45:00")
 }
+
 }
 \keyword{actigraphy}
 \keyword{summary}

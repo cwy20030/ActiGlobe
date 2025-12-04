@@ -15,6 +15,36 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+#' @title Convert Time Values to Numeric (Decimal Hours)
+#'
+#' @description
+#' Convert character or factor representations of time into numeric values
+#' expressed in decimal hours. If the input is already numeric, it is coerced
+#' directly. If the input is a time string, it is parsed into hours, minutes,
+#' and seconds, then converted to decimal hours relative to the first entry.
+#'
+#' @param Time A vector of time values. Can be numeric, character, or factor.
+#'   Examples include `"13:45:00"` or `"01:30:15"`. If numeric, values are
+#'   returned as-is (after coercion). If character/factor, values are parsed
+#'   using \code{\link{TimeFormat}}.
+#'
+#' @returns
+#' A numeric vector of time values expressed in decimal hours. If the input
+#' is character/factor, the values are converted relative to the first entry
+#' (i.e., the first element is set to 0 and subsequent values are offsets in
+#' hours). If coercion fails, `NA` values are introduced and a warning is
+#' issued.
+#'
+#' @seealso \code{\link{TimeFormat}}
+#'
+#' @examples
+#'
+#' # Character input
+#' times <- c("01:00:00", "02:30:00", "03:15:00")
+#' C2T(times)
+#'
+#'
+#' @noRd
 
 C2T <- function (Time) {
 

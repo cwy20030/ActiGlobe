@@ -4,13 +4,15 @@
 \alias{UTCwDST}
 \title{Determine if Daylight Saving Transitions may occur in an UTC Offset}
 \usage{
-UTCwDST(UTCs)
+UTCwDST(UTCs, fork = FALSE)
 }
 \arguments{
 \item{UTCs}{A character vector or numeric vector representing UTC offsets.
 Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 offsets using `UTC2Num()`.}
+
+\item{fork}{Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.}
 }
 \value{
 A logical vector the same length as `UTCs`. Each entry is `TRUE` if at least
@@ -42,6 +44,8 @@ UTCwDST(UTCs = c(1, 8))
 # UTC-5 commonly includes DST zones (e.g., New York)
 UTCwDST(UTCs = -5)
 }
+
+
 }
 \seealso{
 \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}

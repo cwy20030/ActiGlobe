@@ -24,7 +24,8 @@
 #' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording.
 #' @param TLog A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.
 #' @param TZ The time zone when the recording started. (default = "NULL", which will disregard the use of the initial geographical location-based time zone indicator)
-#'
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+
 #' @return A \code{\link{BriefSum}} object with adjusted data points and time shift based on travel log.
 #'
 #' @examples
@@ -59,9 +60,9 @@
 #' @export
 
 
-TAdjust <- function (Bdf, TLog, TZ = NULL) {
+TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
-    ## Extract Essential Parameters
+    ## Extract Essential Parameters ----------------
     DT <- Bdf$Date
 
     Epc <- Bdf$Epoch
@@ -69,7 +70,6 @@ TAdjust <- function (Bdf, TLog, TZ = NULL) {
     FDP <- SR * 3600 * 24 # Total data points per 24 hours
 
     UTCs <- Bdf$UTC
-    aTZ <- Bdf$TZ_code
     aDST <- Bdf$Daylight_Saving
     RS <- Bdf$Recording_Start
     RE <- Bdf$Recording_End
@@ -81,10 +81,19 @@ TAdjust <- function (Bdf, TLog, TZ = NULL) {
     Exc <- Bdf$Excluded
     Wrn <- Bdf$Warning
 
+    ### aTZ-------------------
+    sIANA <- mIANA() # Time zone database
+    iTZ <- sIANA$Timezone_IANA
+    STD <- sIANA$TZ_Code
 
-    D <- DateFormat (TLog$date_Start)
+    aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
+        iTZ [STD %in% x] [1]
+    })
+
 
     ## Convert Travel Log to Parameters ------------
+
+    D <- DateFormat (TLog$date_Start)
     if (any (!D %in% DT)) {
 
         D2k <- which (D %in% DT)
@@ -120,7 +129,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL) {
             aOF = sprintf ("%+03d00", UTC2Num (U [[x]])),
             DT = DT [[x]],
             iTZ = TZ,
-            All = FALSE
+            All = FALSE,
+            fork = fork
         )
     })
 
@@ -280,6 +290,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL) {
 
 
     ##### Label Incomplete
+    if (length(FDP) < length(Summary$nDataPoints)) FDP <- rep(FDP[[1]],length(Summary$nDataPoints))
     Summary$Warning [Summary$nDataPoints < FDP] <- "Incomplete Recording"
     Summary$Excluded [Summary$nDataPoints < FDP] <- TRUE
 

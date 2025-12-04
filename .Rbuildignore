@@ -9,6 +9,8 @@
 ^\.Rhistory$
 ^Test.nb\.html$
 ^Test\.Rmd$
+^contributing\.Rmd$
+^contributing\.md$
 ^Ref$
 ^Resources$
 ^old$
@@ -23,3 +25,5 @@
 ^doc$
 ^Meta$
 ^CRAN-SUBMISSION$
+^_pkgdown\.yml$
+^([^/]+)\.png$

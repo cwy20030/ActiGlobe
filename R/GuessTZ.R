@@ -16,23 +16,31 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title GuessTZ
+#'
 #' @description Guess possible time zone based on the UTC offset
+#'
+#'
 #' @import parallel
+#'
+#'
 #' @param aOF A converted UTC offset in the POSIX format. `e.g., "aOF <- sprintf("%+03d00", OF)"`
 #' @param DT Only one date at a time
 #' @param iTZ The time zone when the recording started. When guessing time zone, it will prioritize matching to the initial geographic location even when the time change occurs. Default is "NULL". When specified as `"local"`, user's local time zone is assumed.
 #' @param All Logical, if TRUE, as default, it will provide all possible TZ codes. If FALSE, it will retrieve the first one.
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#'
+#' @return A character vector of possible time zone indicators
 #' @noRd
 
-GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE) {
+GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
-    # Establish initial time zone...
+    # Establish initial time zone ----------------
     TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
     if (is.null (iTZ)) TZ1 <- NULL
 
 
-    # Extract all known time zones
+    # Extract all known time zones ----------------
     oTZs <- OlsonNames ()
 
     ## Process DT
@@ -46,40 +54,36 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE) {
     if (!length (DT) == 1) DT <- DT [[1]]
 
 
-    # Extract
-    ## Check number of cores available...
-    NCore <- parallel::detectCores ()
-
-    if (NCore > 6) {
+    # Extract time offsets for all time zones ----------------
+    if (fork) {
         # Step 1: Create a cluster
-        cl <- parallel::makeCluster (4) # Use all but one core
+        NCore <- parallel::detectCores()
+        cl <- parallel::makeCluster(max(1, NCore - 2))  # leave a couple cores free
 
-        # Step 2: Export variables and functions to cluster
-        parallel::clusterExport (cl, varlist = c ("DT"), envir = environment ())
+        # Step 2: Export variables
+        parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
 
-        # Step 3: Run the parallelized task
-        Toffs <- parallel::parLapply (cl, oTZs, function (tz) {
-            format (as.POSIXct (DT, tz = tz), "%z")
+        # Step 3: Run parallelized task
+        Toffs <- parallel::parLapply(cl, oTZs, function(tz) {
+            format(as.POSIXct(DT, tz = tz), "%z")
         })
 
         # Step 4: Clean up
-        parallel::stopCluster (cl)
+        parallel::stopCluster(cl)
 
-        # Optional: Convert result to character vector (like vapply would produce)
-        Toffs <- unlist (Toffs)
+        Toffs <- unlist(Toffs)
 
     } else {
-
-        Toffs <- vapply (
+        ## Sequential version
+        Toffs <- vapply(
             oTZs,
-            function (tz) format (as.POSIXct (DT, tz = tz), "%z"),
-            character (1)
+            function(tz) format(as.POSIXct(DT, tz = tz), "%z"),
+            character(1)
         )
-
     }
 
 
-    #### Step 1 Guess all possible TZ indicators
+    #### Step 1 Guess all possible TZ indicators -----------
     pTZs <- sapply (
         aOF,
         function (x) oTZs [Toffs %in% x]
