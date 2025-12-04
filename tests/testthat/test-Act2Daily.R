@@ -4,8 +4,7 @@ test_that ("Act2Daily Test Completed", {
   BdfList <- BriefSum(
     df = FlyEast,
     SR = 1 / 60,
-    Start = "2017-10-24 13:45:00",
-    TZ = "America/Toronto"
+    Start = "2017-10-24 13:45:00"
   )
 
   # Extract actigraphy data for a single day
