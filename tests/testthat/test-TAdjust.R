@@ -31,6 +31,9 @@ test_that ("TAdjust Test Completed", {
   )
 
 
+  print(Bdf$TZ_code)
+  print(tz_db)
+
   Nadj <- TAdjust (Bdf = Bdf,
                    TLog = tz_db,
                    TZ = "America/Toronto")
