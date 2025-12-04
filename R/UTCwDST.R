@@ -32,19 +32,20 @@
 #' the function returns `TRUE` for that offset.
 #'
 #' @param UTCs A character vector or numeric vector representing UTC offsets.
-#' Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
-#' like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
-#' offsets using `UTC2Num()`.
-#' @param fork Logical, if TRUE, it will use parallel processing to speed up the
-#' computation. Default is FALSE.
+#'   Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
+#'   like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
+#'   offsets using `UTC2Num()`.
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
 #'
 #' @return
-#'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
-#'   least one time zone at the specified offset undergoes a DST transition,
-#'   `FALSE` otherwise.
+#'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at least
+#'   one time zone at the specified offset undergoes a DST transition, `FALSE`
+#'   otherwise.
+#'
 #'
 #' @seealso
 #' \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
+#'
 #'
 #' @examples
 #'
@@ -59,11 +60,19 @@
 #' UTCwDST(UTCs = -5)
 #'}
 #'
+#'
 #' @export
 
 UTCwDST <- function(UTCs, fork = FALSE) {
 
+  # Extract Essential -------------------
   OF <- UTCs
+
+  ### Call mIANA-------------------
+  sIANA <- mIANA() # Time zone database
+  iTZ <- sIANA$Timezone_IANA
+  STD <- sIANA$TZ_Code
+
 
   #### Convert UTC to Hour offset if not converted....
   if(any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
@@ -79,7 +88,10 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
     TG = which(lengths(pTZs) == 0L)
-    stop(sprintf("No matching found for following time zones: %s", UTCs[TG]))
+    message(sprintf("No matching found for following time zones: %s", UTCs[TG], " using OlsonNames.
+                    Try mIANA..."))
+
+    pTZs[TG] <-  iTZ [STD %in% UTCs[TG]]
   }
 
   # Check DST status in mid‐winter vs. mid‐summer ----------
