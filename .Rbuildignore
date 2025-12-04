@@ -27,3 +27,4 @@
 ^CRAN-SUBMISSION$
 ^_pkgdown\.yml$
 ^([^/]+)\.png$
+^Clone$
