@@ -11,16 +11,18 @@ Revision history for the R/ActiGlobe package
 
 - New master and class functions added: NA
 
-- New internal function added: Prob.Inact, globals
+- New internal function added: Prob.Inact, mIANA
 
-- Version update and debugged: ggCosinorM, Act2Daily, GuessTZ
+- Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ
 
 - Brief Detail: 
     - piecewise binomial estimation of inactive period using Prob.Inact
-    - enable internal call function for data through global setting
+    - enable internal call function for data through mIANA setting
     - augment ggCosinorM legend
     - modify internal uses of IANA in Act2Daily
     - enable switches for paralelle process for GuessTZ 
+
+Anxel 
 
 ## Version Update: 0.2.0, 2025-10-31
 

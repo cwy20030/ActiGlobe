@@ -35,7 +35,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     zeallot
-URL: https://github.com/cwy20030/ActiGlobe
+URL: https://github.com/cwy20030/ActiGlobe, https://cwy20030.github.io/ActiGlobe/
 BugReports: https://github.com/cwy20030/ActiGlobe/issues
 ByteCompile: true
 Config/testthat/edition: 3
