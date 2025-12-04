@@ -108,6 +108,7 @@ write.cosinor (
 ## paste it as an url in a web browser or the file explorer.
 getwd ()
 }
+
 }
 \seealso{
 \code{\link{Act2Daily}} \code{\link{CosinorM}} \code{\link{CosinorM.KDE}}

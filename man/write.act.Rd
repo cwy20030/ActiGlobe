@@ -49,7 +49,6 @@ If FALSE, all information stored in `df` will be generated. Default = FALSE}
 }
 \value{
 Text files ".txt" containing segmented recordings of each day and `Bdf` from \code{\link{BriefSum}}
-
 \itemize{
   \item Text File: Recordings segmented by the recording date
   \item Summary: Bdf exported as ".csv" file.

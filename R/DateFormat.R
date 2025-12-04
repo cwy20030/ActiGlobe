@@ -53,20 +53,28 @@
 #' DT <- c ("2017/05/02", "2000/02/28", "1970/01/02")
 #' DateFormat (DT, as.date = FALSE) # returns parsed Date vector
 #'
-#' \donttest{
+#' \dontrun{
 #' # Mixed formats within a vector
 #' DT <- c (
 #'     "2017/05/02", "2000.Feb.28", "1970-11-02",
 #'     "January 01, 2025", "December 12, 1980"
 #' )
+#' lapply (DT, DateFormat) # element-wise parsing
+#' ### We expect that many of these format will not work because they contain text
+#'
+#'
+#' DT <- c (
+#'     "2017/05/02", "2000.02.28", "1970-11-02",
+#'     "01, 01, 2025", "12, 12, 1980"
+#' )
 #'
 #' # Recommended usage for mixed formats:
-#' lapply (DT, DateFormat) # element-wise parsing
-#' for (x in DT) print (DateFormat (x)) # displays format/warning per entry
+#' lapply (DT, DateFormat, Delim = ",") # element-wise parsing
 #'
-#' # Avoid passing mixed formats as a single vector
-#' # Not recommended:
-#' # DateFormat(DT)
+#' for (x in DT) print (DateFormat (x, Delim = ",")) # displays format/warning per entry
+#'
+#' # Avoid using sapply, because it will convert them into numeric form
+#' sapply (DT, DateFormat)
 #' }
 #'
 #' @export
@@ -116,7 +124,7 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
         Format <- Format [!is.na (Format)]
     }
 
-
+ if (!as.date) {
     # Post-process Check...
     if (length (Format) == 0) {
         warning (paste0 ("Possible illegal datetime format detected in ", DT, ". Please, ensure that...
@@ -129,15 +137,16 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
         Format <- ""
     }
 
-    if (length (Format) > 1) {
+    if (length (unique(Format)) > 1) {
         warning ("Unable to recognize the difference between date and month. Only the first detected format would be used! Please, manually set it using as.Date function if it is incorrect or convert the month number to name.")
 
-        Format <- Format [1]
     }
+ }
 
 
+    Format <- Format [1]
     if (as.date) {
-        return (as.Date (DT, format = Format))
+        return (as.Date(DT, format = Format))
     } else {
         return (Format)
     }

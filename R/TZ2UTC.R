@@ -20,6 +20,8 @@
 #' Compute UTC offset based on Time Zone and Date
 #'
 #' @importFrom lubridate ymd_hms with_tz
+#'
+#'
 #' @param DT The date in the format as "2021-03-05"
 #' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
 #'

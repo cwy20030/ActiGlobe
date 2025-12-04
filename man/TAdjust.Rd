@@ -4,7 +4,7 @@
 \alias{TAdjust}
 \title{Adjust Time Shift based on Travel Log}
 \usage{
-TAdjust(Bdf, TLog, TZ = NULL)
+TAdjust(Bdf, TLog, TZ = NULL, fork = FALSE)
 }
 \arguments{
 \item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for the recording.}
@@ -12,6 +12,8 @@ TAdjust(Bdf, TLog, TZ = NULL)
 \item{TLog}{A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.}
 
 \item{TZ}{The time zone when the recording started. (default = "NULL", which will disregard the use of the initial geographical location-based time zone indicator)}
+
+\item{fork}{Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.}
 }
 \value{
 A \code{\link{BriefSum}} object with adjusted data points and time shift based on travel log.

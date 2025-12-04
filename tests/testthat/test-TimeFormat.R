@@ -10,5 +10,5 @@ test_that("TimeFormat returns HH:MM:SS strings", {
   expect_length (res, 1)
 
   # Each element should match HH:MM:SS format
-  expect_equal (res == "%H:%M:%S")
+  expect_equal (res, "%H:%M:%S")
 })

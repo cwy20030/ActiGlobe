@@ -16,16 +16,20 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #
-#' Fit a GLM to estimate inactive periods based on observed data
+#' @title Fit a GLM to estimate inactive periods based on observed data
+#'
 #' @import stats
+#'
 #' @param y Numeric vector of observed activity counts
 #' @param T Numeric vector of time indices corresponding to `y`
 #' @param k Integer; degree of polynomial for time in the GLM. Default = 12
 #' @param threshold Integer; number of times the predicted probability of inactivity
 #'  must exceed 0.5 to classify the period as inactive. Default = 3
 #' @param logical Logical scaler; TRUE will return logical vector. FALSE will return a summary table.
+#'
 #' @returns
 #' Logical vector; TRUE indicates inactive period
+#'
 #' @noRd
 
 Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {

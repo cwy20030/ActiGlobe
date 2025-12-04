@@ -75,14 +75,14 @@ BdfList <-
     )
 
 
-# Let's extract the quick summary of the recording
+# Lets extract the quick summary of the recording
 Bdf <- BdfList$Bdf
 
 ### Note that since the original data was affected by travel-induced time
 ### shift, the recordings would not be properly segmented from 2017-11-02.
 
 ## To avoid time shift due to travelling, we will keep only the first 8 days.
-Bdf <- Bdf [1:8, ]
+Bdf <- Bdf[1:8, ]
 df <- BdfList$df
 
 # Segment Data by Day
@@ -99,6 +99,7 @@ dfList <-
 str (dfList) ### Look at the output structure
 View (dfList)
 }
+
 }
 \seealso{
 \code{\link{TAdjust}} \code{\link{write.act}}

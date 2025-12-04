@@ -22,39 +22,6 @@
 #' Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
 #' weighted by activity and extract first-harmonic cosinor summaries.
 #'
-#' @param time Numeric vector of time coordinates for each data point. Values are interpreted
-#'   modulo 24 and must lie in [0, 24). If not numeric, an internal function will
-#'   be used to convert it to numeric values in unit of hour.
-#'
-#' @param activity Numeric vector of activity counts from an actigraphy device in correspondance to
-#'   each time point. Non-numeric inputs will be coerced. All-zero or non-finite
-#'   activity values produce an error.
-#'
-#' @param bw Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
-#'   bw is interpreted in the same units as the angular scale after conversion:
-#'   the implementation converts `bw` from hours to radians internally using
-#'   \eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
-#'   Note, small \code{bw} (approaching 0) can cause numerical instability, while
-#'   large \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
-#'   temporal resolution.
-#'
-#' @param grid Integer number of evaluation points used for the dense grid on
-#'   \eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint. Default: 360.
-#'
-#' @param arctan2 Logical; if TRUE (default) acrophase is computed with
-#'   \code{atan2(gamma, beta)}, resulting in the quadrant interval between
-#'   \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
-#'   quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
-#'   and \eqn{\frac{\pi}{2}}.
-#'
-#' @param dilute Logical; if FALSE (default), all essential parameters would be
-#' produced. When set to TRUE, only cosinor coefficients are returned. This is
-#' suited for post-hoc processes, such as computing confidence interval via
-#' nonparametric bootstrap
-#'
-#'
-#'
-#'
 #' @details
 #' This function builds a circular KDE from event times (hours in \[0,24)) and
 #' activity. The KDE is computed on a regular angular grid over \[0, 2*pi) using
@@ -90,9 +57,7 @@
 #'   \item Grid points with near-zero denominator \eqn{\sum_i K(\theta-\theta_i) w_i} are set to \code{NA} and excluded from integrals to avoid division-by-zero artifacts.
 #' }
 #'
-#'
 #' \strong{Residaul Variance and Effective Degree of Freedom}
-#'
 #' \itemize{
 #'   \item \strong{Regression (projection hat matrix):}
 #'
@@ -114,7 +79,6 @@
 #' \deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W) + \mathrm{tr}(W^{\top} W)\,}.}
 #'
 #' where,
-#'
 #' \itemize{
 #'   \item \deqn{\mathrm{tr}(W)} is the effective degrees of freedom used by the smoother
 #'         (analogous to the number of parameters).
@@ -122,8 +86,30 @@
 #'         \eqn{W} is not an orthogonal projection.
 #' }
 #'
-#'
-#'
+#' @param time Numeric vector of time coordinates for each data point. Values are interpreted
+#'   modulo 24 and must lie in [0, 24). If not numeric, an internal function will
+#'   be used to convert it to numeric values in unit of hour.
+#' @param activity Numeric vector of activity counts from an actigraphy device in correspondance to
+#'   each time point. Non-numeric inputs will be coerced. All-zero or non-finite
+#'   activity values produce an error.
+#' @param bw Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
+#'   bw is interpreted in the same units as the angular scale after conversion:
+#'   the implementation converts `bw` from hours to radians internally using
+#'   \eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
+#'   Note, small \code{bw} (approaching 0) can cause numerical instability, while
+#'   large \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
+#'   temporal resolution.
+#' @param grid Integer number of evaluation points used for the dense grid on
+#'   \eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint. Default: 360.
+#' @param arctan2 Logical; if TRUE (default) acrophase is computed with
+#'   \code{atan2(gamma, beta)}, resulting in the quadrant interval between
+#'   \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
+#'   quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
+#'   and \eqn{\frac{\pi}{2}}.
+#' @param dilute Logical; if FALSE (default), all essential parameters would be
+#' produced. When set to TRUE, only cosinor coefficients are returned. This is
+#' suited for post-hoc processes, such as computing confidence interval via
+#' nonparametric bootstrap
 #'
 #' @return A list of class \code{c("CosinorM.KDE")} with elements:
 #' \itemize{
@@ -133,9 +119,12 @@
 #'     \itemize{
 #'       \item theta: Angular positions (radians) at the observation angles
 #'       \item density: Estimated PDF values at the observation angles (integrates to 1 over \eqn{[0,2\pi)} when scaled)
-#'       \item trapizoid.weight: Numeric vector of trapezoid integration weights at observation angles
-#'       \item kernel.weight: Denominator from kernel convolution (kernel mass at each observation angle)
-#'       \item fitted.values: Normalized fitted KDE (activity-scale) at observation angles
+#'       \item trapizoid.weight: Numeric vector of trapezoid integration weights
+#'       at observation angles
+#'       \item kernel.weight: Denominator from kernel convolution (kernel mass
+#'       at each observation angle)
+#'       \item fitted.values: Normalized fitted KDE (activity-scale) at
+#'       observation angles
 #'       \item fitted.var: Variance estimate of the fitted values (for SE)
 #'       \item fitted.se: Standard error of the fitted values
 #'       \item hour: Corresponding clock time in hours
@@ -149,7 +138,9 @@
 #'       \item Beta: coefficient equivalent to the cosine-weighted integral of the KDE
 #'       \item Gamma: coefficient equivalent to the sine-weighted integral of the KDE
 #'     }
-#'   \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
+#'   \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values
+#'   at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph,
+#'   Acrophase.ph.time, Peak.ph, Amplitude.ph)
 #'   \item grid: (when \code{dilute = FALSE}) list of grid diagnostics:
 #'     \itemize{
 #'       \item theta: evaluation angles on the dense grid (radians)
@@ -163,13 +154,13 @@
 #' }
 #'
 #'
-#'
 #' @section Warnings and edge cases:
 #'  \itemize{
 #'       \item The function errors if \code{all(activity) == 0} or if \code{activity} contains
 #'   non-finite values.
 #'       \item Very small \code{bw} can cause near-zero denominator values (numerical
-#'   instability) and produce NA or an error; very large \code{bw} approaches a near-uniform kernel and will wash out temporal structure.
+#'   instability) and produce NA or an error; very large \code{bw} approaches a
+#'   near-uniform kernel and will wash out temporal structure.
 #' }
 #' @seealso \code{\link{CosinorM}}
 #'
@@ -187,19 +178,23 @@
 #'
 #' # Let's extract actigraphy data from a single day
 #' df <- BdfList$df
-#' df <- subset (df, df$Date == "2017-10-27")
+#' df <- subset (x = df,
+#'               subset = df$Date == "2017-10-27")
 #'
 #'
-#' fit <- CosinorM.KDE (
-#'     time = df$Time,
-#'     activity = df$Activity
-#' )
+#' fit <- CosinorM.KDE (time = df$Time,
+#'                      activity = df$Activity
+#'                      )
 #'
 #' # inspect coefficients
 #' fit$coef.cosinor
 #'
 #' # plot KDE in hours
-#' plot (fit$kdf$hour, fit$kdf$density, type = "l", xlab = "Hour", ylab = "KDE")
+#' plot (x = fit$kdf$hour,
+#'       y = fit$kdf$density,
+#'       type = "l",
+#'       xlab = "Hour",
+#'       ylab = "KDE")
 #' }
 #'
 #' @keywords circular cosinor KDE circadian
@@ -301,7 +296,7 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
         y.g <- dens.g.num / den.g
     }
 
-    # integrate on the grid
+    # integrate on the grid-
     area.g <- trap_int (gtheta, y.g)
     if (!is.finite (area.g) || area.g <= .Machine$double.eps) stop ("area.g is zero or invalid; check activity and bw / grid")
 
@@ -349,7 +344,7 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 
     }
 
-    # Prepare Output
+    #### Prepare Output
     coef_names <- c (
         "MESOR",
         paste0 ("Amplitude.", 24),

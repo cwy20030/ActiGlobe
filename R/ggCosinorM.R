@@ -79,7 +79,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                         n = 400, point_size = 0.5, title_extra = NULL, legend.position = "right",
                         ...) {
 
-    # Accept both parametric CosinorM and KDE-based CosinorM.KDE
+    # Accept both parametric CosinorM and KDE-based CosinorM.KDE ----------
     if (!inherits (object, c ("CosinorM", "CosinorM.KDE"))) {
         stop ("ggCosinorM: object must be a CosinorM or CosinorM.KDE fit.", call. = FALSE)
     }
@@ -87,7 +87,6 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 
     # Check Essential Parameters ----------------------
     day <- 24
-
 
     tau <- if (!is.null (object$tau)) object$tau else 24
     nT <- length (tau)

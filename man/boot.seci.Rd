@@ -77,6 +77,7 @@ boot.seci (
     N = 500
 )
 }
+
 }
 \seealso{
 \code{\link[boot]{boot}}
