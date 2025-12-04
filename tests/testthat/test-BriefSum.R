@@ -4,7 +4,8 @@ test_that("BriefSum returns expected structure and TZ_code values", {
   BdfList <- BriefSum(
     df = FlyEast,
     SR = 1 / 60,
-    Start = "2017-10-19 13:45:00"
+    Start = "2017-10-19 13:45:00",
+    TZ = "America/Toronto"
   )
 
   # Structure: should be a list with two elements

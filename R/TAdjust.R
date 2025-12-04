@@ -82,9 +82,9 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     Wrn <- Bdf$Warning
 
     ### aTZ-------------------
-    IANAi <- get0("IANAi", envir = asNamespace("ActiGlobe")) # Time zone database
-    iTZ <- IANAi$Timezone_IANA
-    STD <- IANAi$TZ_Code
+    sIANA <- mIANA() # Time zone database
+    iTZ <- sIANA$Timezone_IANA
+    STD <- sIANA$TZ_Code
 
     aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
         iTZ [STD %in% x] [1]
