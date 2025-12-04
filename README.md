@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 ![version](https://img.shields.io/badge/version-0.2.0-green)
-[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg?branch=Test)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
