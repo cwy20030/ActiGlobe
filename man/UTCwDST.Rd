@@ -12,12 +12,13 @@ Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 offsets using `UTC2Num()`.}
 
-\item{fork}{Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.}
+\item{fork}{Logical, if TRUE, it will use parallel processing to speed up the
+computation. Default is FALSE.}
 }
 \value{
-A logical vector the same length as `UTCs`. Each entry is `TRUE` if at least
-  one time zone at the specified offset undergoes a DST transition, `FALSE`
-  otherwise.
+A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
+  least one time zone at the specified offset undergoes a DST transition,
+  `FALSE` otherwise.
 }
 \description{
 Tests whether any IANA time zone associated with a given UTC offset
@@ -44,7 +45,6 @@ UTCwDST(UTCs = c(1, 8))
 # UTC-5 commonly includes DST zones (e.g., New York)
 UTCwDST(UTCs = -5)
 }
-
 
 }
 \seealso{

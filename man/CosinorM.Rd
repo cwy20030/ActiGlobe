@@ -152,7 +152,6 @@ fit$coef.cosinor
 plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 }
 
-
 }
 \references{
 Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.

@@ -60,15 +60,15 @@ for a full day.
 \examples{
 \dontrun{
 # Import data
-data(FlyEast)
+data (FlyEast)
 
-BdfList <- BriefSum(
-  df = FlyEast,
-  SR = 1 / 60,
-  Start = "2017-10-19 13:45:00"
+BdfList <- BriefSum (
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-19 13:45:00"
 )
 
-str(BdfList)
+str (BdfList)
 # View(BdfList)
 
 ## install library "zeallot"
