@@ -88,7 +88,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
     TG = which(lengths(pTZs) == 0L)
     message(sprintf("No matching found for following time zones: %s", UTCs[TG], " using OlsonNames.
                     Try mIANA..."))
-print(UTCs[TG])
+
     pTZs[TG] <-  iTZ [Soff %in% UTCs[TG]]
   }
 
