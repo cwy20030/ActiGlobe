@@ -48,7 +48,7 @@
 #'
 "IANA"
 
-utils::globalVariables(c("IANA"))
+utils::globalVariables (c ("IANA"))
 
 
 #' @title Travel East Sample Data

@@ -61,7 +61,6 @@
 
 
 TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
-
     ## Extract Essential Parameters ----------------
     DT <- Bdf$Date
 
@@ -75,14 +74,14 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     RE <- Bdf$Recording_End
     GL0 <- Bdf$GL_Offset
     nDP <- Bdf$nDataPoints
-    a <- Bdf$Cumulative_Start_Second
+    # a <- Bdf$Cumulative_Start_Second
     b <- Bdf$Cumulative_End_Second
     LstP <- max (b)
-    Exc <- Bdf$Excluded
-    Wrn <- Bdf$Warning
+    # Exc <- Bdf$Excluded
+    # Wrn <- Bdf$Warning
 
     ### aTZ-------------------
-    sIANA <- mIANA() # Time zone database
+    sIANA <- mIANA () # Time zone database
     iTZ <- sIANA$Timezone_IANA
     STD <- sIANA$TZ_Code
 
@@ -95,11 +94,9 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     D <- DateFormat (TLog$date_Start)
     if (any (!D %in% DT)) {
-
         D2k <- which (D %in% DT)
         TLog <- TLog [D2k, ]
         D <- DateFormat (TLog$date_Start)
-
     }
 
     P <- R2P (
@@ -123,8 +120,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     ### If TZ is not specified, guess it.
 
-    gTZ <- sapply (1:length (DT), function (x) {
-
+    gTZ <- sapply (seq_len (length (DT)), function (x) {
         GuessTZ (
             aOF = sprintf ("%+03d00", UTC2Num (U [[x]])),
             DT = DT [[x]],
@@ -213,7 +209,6 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     ##### In the rare event when there is more data points on the last day than allowed....
     if (length (uniDl) > 1) {
-
         Nl2 <- Nl - FDP [Idxl] ### Additional Date Points to be relocated
 
 
@@ -242,10 +237,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
             y [Idxl + 1] <- yMax ### Cumulative end second on the NEW last day
             Prd [Idxl + 1] <- Prd [Idxl] ### Assume the same recording period as the last
             H2J [Idxl + 1] <- H2J [Idxl] ### Assume the same hour to adjust as the last
-
         }
-
-
     }
 
 
@@ -290,7 +282,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
 
     ##### Label Incomplete
-    if (length(FDP) < length(Summary$nDataPoints)) FDP <- rep(FDP[[1]],length(Summary$nDataPoints))
+    if (length (FDP) < length (Summary$nDataPoints)) FDP <- rep (FDP [[1]], length (Summary$nDataPoints))
     Summary$Warning [Summary$nDataPoints < FDP] <- "Incomplete Recording"
     Summary$Excluded [Summary$nDataPoints < FDP] <- TRUE
 
@@ -311,6 +303,4 @@ Time change due to daylight saving occured at the local time zone.")
 
     class (Summary) <- c ("ActiGlobe", "data.frame")
     return (Summary)
-
-
 }

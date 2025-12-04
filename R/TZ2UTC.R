@@ -30,7 +30,7 @@
 #' @examples
 #'
 #' x <- as.Date (c ("2017-10-24", "2017-11-20"))
-#' TZ2UTC (DT = x, TZ = "America/Toronto") ## Expect two different UTCs
+#' TZ2UTC (DT = x, TZ = "America/New_York") ## Expect two different UTCs
 #'
 #' \dontrun{
 #' # A vector of dates
@@ -45,14 +45,13 @@
 #' TZ2UTC (DT = x, TZ = "local")
 #'
 #' # If not
-#' # TZ2UTC(DT = x, TZ = "America/Toronto")
+#' # TZ2UTC(DT = x, TZ = "America/New_York")
 #' }
 #'
 #' @keywords UTC TZ
 #' @export
 
 TZ2UTC <- function (DT, TZ = "local") {
-
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
     DT <- as.Date (DT)

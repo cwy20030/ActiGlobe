@@ -30,17 +30,15 @@
 #' # example code
 #' \dontrun{
 #'
-#' Tlg <- TravelLog(Wirte = TRUE)
+#' Tlg <- TravelLog (Wirte = TRUE)
 #'
-#' print(Tlg)
-#'
+#' print (Tlg)
 #' }
 #'
 #' @keywords Travel Log Template Timezone Shift
 #' @export
 
 TravelLog <- function (Write = FALSE, Dir = NULL) {
-
     df <- data.frame (matrix (ncol = 5, nrow = 1))
 
     names (df) <- c ("ID", "UTC_Offset", "Country_with_Daylight_Saving", "date_Start", "date_End")
@@ -55,12 +53,10 @@ TravelLog <- function (Write = FALSE, Dir = NULL) {
         if (is.null (Dir)) stop ("A directory must be provided in order to export the template.")
 
         write.csv (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = F)
-
     }
 
 
     if (!Write) {
         return (df)
     }
-
 }

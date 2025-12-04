@@ -19,13 +19,16 @@
 #' @title Split and Annotate Actigraphy Data into Daily Records
 #'
 #' @description
-#' `Act2Daily` is used to split the actigraphy recording by the recording dates stored in Bdf (a BriefSum object).
+#' `Act2Daily` is used to split the actigraphy recording by the recording dates
+#' stored in Bdf (a BriefSum object).
 #'
 #' @note
-#' When you cross into a time zone with a larger UTC offset (e.g., Montreal \eqn{UTC-5} to Taipei \eqn{UTC+8}), it will generate a small overlap of epochs between the day
-#' before travel and the day labeled "Travel Day" in the "Daily_df". Conversely,
-#' when you move into a time zone with a smaller UTC offset, a brief gap appears
-#' on "Travel Day", with labeling - "Unallocated", which represents "time lose".
+#' When you cross into a time zone with a larger UTC offset (e.g., Montreal
+#' \eqn{UTC-5} to Taipei \eqn{UTC+8}), it will generate a small overlap of
+#' epochs between the day before travel and the day labeled "Travel Day" in the
+#' "Daily_df". Conversely,when you move into a time zone with a smaller UTC
+#' offset, a brief gap appears on "Travel Day", with labeling - "Unallocated",
+#' which represents "time lose".
 #'
 #'
 #' @details Transforms a continuous actigraphy time-series into a day-by-day list
@@ -106,9 +109,8 @@
 
 Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE) {
-
     # Extract essential per-day metadata from Bdf -------------------
-    sIANA <- mIANA()
+    sIANA <- mIANA ()
     iTZ <- sIANA$Timezone_IANA
     STD <- sIANA$TZ_Code
 
@@ -116,7 +118,7 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     DT <- Bdf$Date # Calendar date for each recording day
 
     aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
-       iTZ [STD %in% x] [1]
+        iTZ [STD %in% x] [1]
     })
 
 
@@ -127,8 +129,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     # Cumulative recording seconds at start/end to convert to epoch indices
     a <- Bdf$Cumulative_Start_Second # Seconds from midnight to first data point
     b <- Bdf$Cumulative_End_Second # Seconds from midnight to last data point
-    iDP <- a / Epc # Starting epoch index (1-based)
-    eDP <- b / Epc # Ending epoch index (1-based)
+    # iDP <- a / Epc # Starting epoch index (1-based)
+    # eDP <- b / Epc # Ending epoch index (1-based)
 
     # Recording boundary times as strings
     RS <- Bdf$Recording_Start # e.g. "HH:MM:SS" for day start
@@ -210,7 +212,6 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     ## Main loop: slice, align and annotate each calendar day ----------------
 
     for (d in seq_along (DT)) {
-
         # Convert current date to character and POSIX numeric
         D <- as.character (DT [[d]])
         D.num <- as.numeric (as.POSIXct (D, tz = aTZ [[d]]))

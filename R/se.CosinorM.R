@@ -123,12 +123,10 @@
 #' print (res)
 #' }
 #'
-#'
 #' @noRd
 
 
 se.CosinorM <- function (object, method = "delta") {
-
     # Extract Essential Parameters ------------------
     VCOV <- object$vcov
     SE <- sqrt (diag (VCOV))
@@ -143,7 +141,6 @@ se.CosinorM <- function (object, method = "delta") {
     # Compute Variance for Acrophase and Amplitude  --------------
     VARs <-
         lapply (1:lT, function (i) {
-
             T <- tau [i]
             VarB <- VCOV [paste0 ("C", i), paste0 ("C", i)]
             VarG <- VCOV [paste0 ("S", i), paste0 ("S", i)]
@@ -206,5 +203,4 @@ se.CosinorM <- function (object, method = "delta") {
     SEs <- SEs [order (match (gsub ("^se\\.", "", names (SEs)), names (Coefs)))]
 
     return (list (var = VARs, se = SEs))
-
 }

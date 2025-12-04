@@ -17,21 +17,26 @@
 #
 #' @title Bootstrap Standard Errors and Confidence Intervals for Model Parameters
 #'
-#' @description Computes standard errors and confidence intervals for cosinor and post-hoc parameters via non-parametric bootstrap
+#' @description Computes standard errors and confidence intervals for cosinor
+#' and post-hoc parameters via non-parametric bootstrap
 #'
 #' @import stats
 #'
 #' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
 #' @param level Numeric scaler. the confidence level.
-#' @param N Numeric scaler. Numbers of bootstraps required to estimate the standard errors and confidence intervals. Default: 500
-#' @param digits Numeric scaler. Integer indicating the number of decimal places (round) to be used. Default: 2
+#' @param N Numeric scaler. Numbers of bootstraps required to estimate the
+#' standard errors and confidence intervals. Default: 500
+#' @param digits Numeric scaler. Integer indicating the number of decimal places
+#' (round) to be used. Default: 2
 #'
 #' @returns
 #' A data.frame with one row per cosinor coefficient and columns:
 #' \itemize{
 #'   \item Estimate: Mean of bootstrap coefficient values.
-#'   \item Std Error: Bootstrap standard deviation of each coefficient across N resamples.
-#'   \item t value: Ratio of the observed estimate to its bootstrap standard error, analogous to a
+#'   \item Std Error: Bootstrap standard deviation of each coefficient across N
+#'   resamples.
+#'   \item t value: Ratio of the observed estimate to its bootstrap standard
+#'   error, analogous to a
 #'     signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
 #'   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
 #'      where \eqn{\alpha = 1 - level}.
@@ -92,7 +97,6 @@
 #' @export
 
 boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
-
     ## Checkpoint -----------------------
     if ("param" %in% names (object)) stop ("Object cannot be a diluted model structure.")
 
@@ -124,7 +128,6 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
         grid <- object$grid.size
 
         for (b in seq_len (N)) {
-
             idx <- sample.int (length (time), size = length (time), replace = TRUE)
             idx <- idx [order (idx)]
             Time <- as.numeric (time [idx])
@@ -193,5 +196,4 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
     )
 
     return (Out)
-
 }

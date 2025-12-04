@@ -17,10 +17,8 @@
 #
 
 Demand <- function (options, MESSAGE) {
-
-
     # Print the options for the user
-    for (i in 1:length (options)) {
+    for (i in seq_len (length (options))) {
         cat (paste (i, ": ", options [i], "\n", sep = ""))
     }
 
@@ -28,7 +26,7 @@ Demand <- function (options, MESSAGE) {
     selected_option <- readline (prompt = paste0 ("Please select the ", MESSAGE, " by entering its number: "))
 
     # Check if the input is a number and within the range of options
-    if (!grepl ("^[0-9]+$", selected_option) | as.numeric (selected_option) > length (options) | as.numeric (selected_option) < 1) {
+    if (!grepl ("^[0-9]+$", selected_option) || as.numeric (selected_option) > length (options) || as.numeric (selected_option) < 1) {
         cat ("Invalid selection. Please try again.\n")
         return (Demand (options, MESSAGE))
     }

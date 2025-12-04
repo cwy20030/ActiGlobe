@@ -81,14 +81,12 @@
 
 
 ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
-
-
     ## Ensure Note column exists --------------
     if (!"Note" %in% names (df)) {
         df$Note <- ""
     }
 
-    NR <- 1:nrow (df)
+    NR <- seq_len (nrow (df))
     A <- df [[VAct]]
     Mx <- round (max (A, na.rm = TRUE))
     mn <- round (min (A, na.rm = TRUE))
@@ -97,7 +95,7 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
     VD <- "Date"
     D <- df [[VD]]
     DT <- df [[VDT]]
-    T <- sub ("^\\S+\\s+", "", as.character (DT))
+    Tc <- sub ("^\\S+\\s+", "", as.character (DT))
 
     if (!inherits (DT, c ("POSIXct", "POSIXlt"))) {
         DT <- as.POSIXct (DT)
@@ -105,7 +103,7 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
 
 
     ## Identify midnight boundaries
-    MdN <- as.factor (ifelse (grepl ("00:00:00", T) | !grepl (":", T), "1", "0"))
+    MdN <- as.factor (ifelse (grepl ("00:00:00", Tc) | !grepl (":", Tc), "1", "0"))
 
 
     ##### X Tick Control -----------------
@@ -114,11 +112,10 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
         Ds <- c (D [[1]], D [MdN == "1"])
 
         LabX <- "Date"
-
     } else { #### Same Day
 
         NTicks <- 0.2
-        D <- C2T (T)
+        D <- C2T (Tc)
         Ds <- unique (ceiling (D))
         D <- floor (D)
 
@@ -146,9 +143,7 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
         Nt <- df$Note
         E <- as.factor (ifelse (Nt != "", "1", "0"))
     } else {
-
         E <- as.factor (rep ("0", nrow (df)))
-
     }
 
 

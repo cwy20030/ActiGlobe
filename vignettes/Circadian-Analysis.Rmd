@@ -163,7 +163,6 @@ for (i in fit.ols2$tau) {
     names (phi_time) <- paste0 ("phi.", i)
 
     print (c (bta, gamma, phi_time))
-
 }
 
 

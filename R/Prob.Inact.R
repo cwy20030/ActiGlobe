@@ -61,9 +61,7 @@ Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
 
     if (logical) {
         return (inatv)
-
     } else {
-
         Out <-
             Table.Inact (
                 inatv = inatv,
@@ -73,18 +71,13 @@ Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
 
         Out <- na.omit (Out)
         return (Out)
-
     }
-
-
 }
 
 
 #' @title Table for Inactive Period
 #' @noRd
 Table.Inact <- function (inatv, T, Epc) {
-
-
     ### Segment s ----------------
     x <- seq_len (length (inatv))
 
@@ -114,5 +107,4 @@ Table.Inact <- function (inatv, T, Epc) {
     )
 
     return (Out)
-
 }

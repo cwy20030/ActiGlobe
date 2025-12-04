@@ -62,7 +62,6 @@
 #'
 #' @export
 Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
-
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
     ## Convert the displayed unit into a factor.
     Divider <- ifelse (tolower (TUnit) == "hour", 3600,

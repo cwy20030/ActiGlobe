@@ -33,7 +33,6 @@
 #' @noRd
 
 GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
-
     # Establish initial time zone ----------------
     TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
@@ -45,10 +44,8 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
     ## Process DT
     if (is.null (DT)) {
-
         # Determine if DST exists using time offset on January 1st of 2021
         DT <- as.POSIXct ("2021-01-01", tz = "UTC")
-
     }
 
     if (!length (DT) == 1) DT <- DT [[1]]
@@ -57,28 +54,27 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     # Extract time offsets for all time zones ----------------
     if (fork) {
         # Step 1: Create a cluster
-        NCore <- parallel::detectCores()
-        cl <- parallel::makeCluster(max(1, NCore - 2))  # leave a couple cores free
+        NCore <- parallel::detectCores ()
+        cl <- parallel::makeCluster (max (1, NCore - 2)) # leave a couple cores free
 
         # Step 2: Export variables
-        parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
+        parallel::clusterExport (cl, varlist = c ("DT"), envir = environment ())
 
         # Step 3: Run parallelized task
-        Toffs <- parallel::parLapply(cl, oTZs, function(tz) {
-            format(as.POSIXct(DT, tz = tz), "%z")
+        Toffs <- parallel::parLapply (cl, oTZs, function (tz) {
+            format (as.POSIXct (DT, tz = tz), "%z")
         })
 
         # Step 4: Clean up
-        parallel::stopCluster(cl)
+        parallel::stopCluster (cl)
 
-        Toffs <- unlist(Toffs)
-
+        Toffs <- unlist (Toffs)
     } else {
         ## Sequential version
-        Toffs <- vapply(
+        Toffs <- vapply (
             oTZs,
-            function(tz) format(as.POSIXct(DT, tz = tz), "%z"),
-            character(1)
+            function (tz) format (as.POSIXct (DT, tz = tz), "%z"),
+            character (1)
         )
     }
 
@@ -92,11 +88,8 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     #### Step 2 Check if the initial time zone is included
     if (!is.null (TZ1)) {
         if (length (aOF) == 1) {
-
             pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
-
         } else {
-
             pTZs <- sapply (
                 pTZs,
                 function (x) ifelse (TZ1 %in% x, TZ1, x)
@@ -108,7 +101,6 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     #### Step 3 Keep only the first one if the All is set to FALSE
     if (!All) {
         if (length (aOF) > 1) {
-
             pTZs <- sapply (
                 pTZs,
                 function (x) x [[1]]
@@ -120,5 +112,4 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
 
     return (pTZs)
-
 }

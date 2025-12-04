@@ -178,23 +178,28 @@
 #'
 #' # Let's extract actigraphy data from a single day
 #' df <- BdfList$df
-#' df <- subset (x = df,
-#'               subset = df$Date == "2017-10-27")
+#' df <- subset (
+#'     x = df,
+#'     subset = df$Date == "2017-10-27"
+#' )
 #'
 #'
-#' fit <- CosinorM.KDE (time = df$Time,
-#'                      activity = df$Activity
-#'                      )
+#' fit <- CosinorM.KDE (
+#'     time = df$Time,
+#'     activity = df$Activity
+#' )
 #'
 #' # inspect coefficients
 #' fit$coef.cosinor
 #'
 #' # plot KDE in hours
-#' plot (x = fit$kdf$hour,
-#'       y = fit$kdf$density,
-#'       type = "l",
-#'       xlab = "Hour",
-#'       ylab = "KDE")
+#' plot (
+#'     x = fit$kdf$hour,
+#'     y = fit$kdf$density,
+#'     type = "l",
+#'     xlab = "Hour",
+#'     ylab = "KDE"
+#' )
 #' }
 #'
 #' @keywords circular cosinor KDE circadian
@@ -324,11 +329,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 
 
     if (arctan2) {
-
         acrophase <- theta <- atan2 (gamma, beta)
-
     } else {
-
         acrophase <- theta <- atan (abs (gamma) / beta)
 
         Bs <- beta
@@ -340,8 +342,6 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
                 )
             )
         )
-
-
     }
 
     #### Prepare Output
@@ -380,14 +380,10 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     # Generate Output ---------------
     ## Inherit the output from lm
     if (dilute) {
-
         fit <- list (coef.cosinor = c (coef.cosinor, post.hoc))
 
         class (fit) <- c ("CosinorM.KDE")
-
     } else {
-
-
         # prepare kdf for output (fitted at observation angles)
         kdf <- data.frame (
             theta = theta,
@@ -432,7 +428,9 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 # Pre-defined helper functions -------------------------------
 #' @title mapping angular differences into the principal interval (-pi, pi]
 #' @noRd
-wrap_diff <- function (a) { (a + pi) %% (2 * pi) - pi }
+wrap_diff <- function (a) {
+    (a + pi) %% (2 * pi) - pi
+}
 
 #' @title trapizoid integeral
 #' @noRd

@@ -36,7 +36,6 @@
 #' @export
 
 Rad2Hr <- function (x, tau) {
-
     # coerce x to numeric while preserving NA -------------
     if (!is.numeric (x)) x <- as.numeric (as.character (x))
 

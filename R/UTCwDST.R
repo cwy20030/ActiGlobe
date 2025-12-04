@@ -32,20 +32,19 @@
 #' the function returns `TRUE` for that offset.
 #'
 #' @param UTCs A character vector or numeric vector representing UTC offsets.
-#'   Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
-#'   like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
-#'   offsets using `UTC2Num()`.
-#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#' Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
+#' like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
+#' offsets using `UTC2Num()`.
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up the
+#' computation. Default is FALSE.
 #'
 #' @return
-#'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at least
-#'   one time zone at the specified offset undergoes a DST transition, `FALSE`
-#'   otherwise.
-#'
+#'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
+#'   least one time zone at the specified offset undergoes a DST transition,
+#'   `FALSE` otherwise.
 #'
 #' @seealso
 #' \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
-#'
 #'
 #' @examples
 #'
@@ -59,7 +58,6 @@
 #' # UTC-5 commonly includes DST zones (e.g., New York)
 #' UTCwDST(UTCs = -5)
 #'}
-#'
 #'
 #' @export
 

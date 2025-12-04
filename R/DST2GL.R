@@ -53,13 +53,12 @@
 #' DST2GL (dates)
 #'
 #' # Multiple Dates
-#' sapply(c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
+#' sapply (c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
 #'
 #' @export
 
 
 DST2GL <- function (DT, TZ = "local") {
-
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
     sFDPs <- Date2TotalT (DT = DT, TUnit = "second", TZ = TZ)

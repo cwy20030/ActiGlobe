@@ -54,9 +54,7 @@
 #'
 #' #### Option 2. To match the warning message to the items
 #' for (x in Time) {
-#'
 #'     print (TimeFormat (x))
-#'
 #' }
 #'
 #'
@@ -68,7 +66,6 @@
 #' @export
 
 TimeFormat <- function (Time, as.time = FALSE) {
-
     # Define a vector of time formats
     fmts <- c ("%H:%M:%S", "%I:%M:%S %p", "%H:%M", "%I:%M %p")
 
@@ -79,7 +76,6 @@ TimeFormat <- function (Time, as.time = FALSE) {
 
     #### If the string contains date, remove it.
     if (!DateF == "") {
-
         #### Extract DateFormat
         D <- tryCatch (
             format (as.POSIXct (Time), DateF)
@@ -87,11 +83,8 @@ TimeFormat <- function (Time, as.time = FALSE) {
 
         # Remove the date part from the time string
         T <- gsub (paste0 (unique (D), collapse = "|"), "", Time)
-
     } else {
-
         T <- Time
-
     }
 
 
@@ -126,26 +119,19 @@ TimeFormat <- function (Time, as.time = FALSE) {
         TFormat <- NA
         warning ("No time format matched! Please, specify the time format.")
         # Add a function to allow users to add/update new format.
-
     } else {
-
         TFormat <- Format [which.max (Length)]
-
     }
 
 
     if (!as.time) {
-
         ### Return time format
         return (TFormat)
-
     } else {
         # Test Time Formats
 
         for (i in 1:length (T)) {
-
             if (!T [[i]] == "") {
-
                 x <- TimeFormat (T [[i]], as.time = F)
 
 
@@ -153,15 +139,9 @@ TimeFormat <- function (Time, as.time = FALSE) {
                     invisible (
                         format (strptime (T [[i]], x), TFormat)
                     )
-
             }
-
         }
 
         return (T)
-
-
     }
-
-
 }
