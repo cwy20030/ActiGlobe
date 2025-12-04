@@ -1,5 +1,5 @@
 test_that("UTCwDST correctly detects DST presence", {
-  res <- UTCwDST(UTCs = c(1, 8))
+  res <- sapply(c(1, 8), UTCwDST)
 
   # Expect a logical vector of length 2
   expect_type(res, "logical")
