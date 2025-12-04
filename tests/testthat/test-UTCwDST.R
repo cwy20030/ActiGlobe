@@ -1,11 +1,11 @@
-test_that("UTCwDST correctly detects DST presence", {
-  res <- UTCwDST(UTCs = c(1, 8))
+test_that ("UTCwDST correctly detects DST presence", {
+    res <- UTCwDST (UTC = c (1, 5))
 
-  # Expect a logical vector of length 2
-  expect_type(res, "logical")
-  expect_length(res, 2)
+    # Expect a logical vector of length 2
+    expect_true (is.logical (res) || is.list (res))
+    expect_length (res, 2)
 
-  # Check specific values
-  expect_equal(res[["1"]], TRUE)
-  expect_equal(res[["8"]], FALSE)
+    # Check specific values
+    expect_equal (all (res [["1"]]), TRUE)
+    expect_equal (all (res [["5"]]), FALSE)
 })

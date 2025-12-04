@@ -100,8 +100,6 @@
 
 write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE, Simple = FALSE) {
-
-
     #### Process ------------------
 
     ##### Get Variable Names -------------
@@ -135,12 +133,10 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
 
     ## Export Simple Data ------------
     for (d in Date) {
-
         ##### Extract Segmented Daily Recording
         Temp <- Daily_df [[d]]
 
         if (!is.null (nrow (Temp))) {
-
             ####### For simplified version of recording
             if (Simple) {
                 VNames <- names (Temp)
@@ -155,6 +151,4 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
 
     ### Write Report --------------
     write.csv (Bdf, paste0 (fDir, "/Summary.csv"), row.names = FALSE)
-
-
 }

@@ -35,11 +35,12 @@
 #' @export
 
 UTC2Num <- function (x) {
-
     x <- gsub ("UTC", "", x)
     x <- trimws (x) # Remove white space
 
-    mp <- unlist (sapply (x, function (i) {ifelse (grepl ("-", i), -1, 1)}))
+    mp <- unlist (sapply (x, function (i) {
+        ifelse (grepl ("-", i), -1, 1)
+    }))
     a <- gsub ("\\+|\\-", "", x) #### Remove plus minus sign
 
     b <- as.numeric (gsub (":.*", "", a))

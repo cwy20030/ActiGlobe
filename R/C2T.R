@@ -40,18 +40,15 @@
 #' @examples
 #'
 #' # Character input
-#' times <- c("01:00:00", "02:30:00", "03:15:00")
-#' C2T(times)
-#'
+#' times <- c ("01:00:00", "02:30:00", "03:15:00")
+#' C2T (times)
 #'
 #' @noRd
 
 C2T <- function (Time) {
-
     x <- suppressWarnings (as.numeric (as.character (Time)))
 
     if (length (na.omit (x)) == 0) {
-
         hms <- as.POSIXct (Time, format = TimeFormat (Time))
 
         decimal_hours <- as.numeric (format (hms, "%H")) +
@@ -66,7 +63,6 @@ C2T <- function (Time) {
     if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
 
     return (x)
-
 }
 
 

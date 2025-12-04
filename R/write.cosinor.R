@@ -110,8 +110,6 @@
 
 
 write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, method = "OLS", tau = 24, ph = FALSE, overwrite = FALSE) {
-
-
     ## Get Essential Info -----------------
     nT <- length (tau) ### Number of assumed rhythms
     D <- names (DailyAct)
@@ -119,10 +117,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
     ## Initialize all cosinor results -----------------------
     if (all (length (tau) == 1, isFALSE (ph))) {
-
         nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
         Bdf [nVNames] <- NA
-
     } else {
         nVNames <- c ("MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time", "Peak", "Amplitude")
         Bdf [nVNames] <- NA
@@ -137,14 +133,12 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     ## Create a PDF file for the ID  ----------------
     pdfDir <- paste0 (fDir, "/", ID, ".pdf")
     if (isFALSE (overwrite)) {
-
         if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
     }
 
     grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
     ### Plot ----------------
     for (d in D) {
-
         print (d)
         df <- DailyAct [[d]]
 
@@ -169,7 +163,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
             Act [is.na (Act)] <- 0 #### Just in acse, provide a zero imputation for NA.
 
             if (all (Act == 0)) {
-
                 top.plot <-
                     ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
                     geom_point (aes (color = "Original Measure")) +
@@ -189,9 +182,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                         name = "Legend Title"
                     ) +
                     theme_bw ()
-
             } else {
-
                 top.plot <-
                     ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
                     geom_point (aes (color = "Original Measure")) +
@@ -211,32 +202,23 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                         name = "Legend Title"
                     ) +
                     theme_bw ()
-
             }
 
 
             ## Fit cosinor models with 24Hr period ---------------
             if (method == "KDE") {
-
                 m1 <- CosinorM.KDE (time = Tm, activity = Act)
-
             } else {
-
                 m1 <- CosinorM (time = Tm, activity = Act, tau = tau, method = method)
-
             }
 
 
             if (all (nT == 1, isFALSE (ph))) {
-
                 Coef <- m1$coef.cosinor [1:3] # MESOR, Amplitude, Acrophase in radians
                 Coef [[4]] <- Rad2Hr (Coef [[3]], tau = tau)
                 names (Coef) [[4]] <- paste0 (names (Coef) [[3]], ".time")
-
             } else {
-
                 Coef <- m1$post.hoc
-
             }
 
 
@@ -249,7 +231,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
             # Arrange the top and bottom plots in a grid
             grid.arrange (top.plot, bottom.plot)
-
         }
     }
 
@@ -261,10 +242,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
     BdfDir <- paste0 (fDir, "/Summary.csv")
     if (isFALSE (overwrite)) {
-
         if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
     }
     utils::write.csv (Bdf, BdfDir, row.names = F)
-
-
 }

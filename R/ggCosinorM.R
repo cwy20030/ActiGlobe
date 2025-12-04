@@ -78,7 +78,6 @@
 ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                         n = 400, point_size = 0.5, title_extra = NULL, legend.position = "right",
                         ...) {
-
     # Accept both parametric CosinorM and KDE-based CosinorM.KDE ----------
     if (!inherits (object, c ("CosinorM", "CosinorM.KDE"))) {
         stop ("ggCosinorM: object must be a CosinorM or CosinorM.KDE fit.", call. = FALSE)
@@ -436,6 +435,4 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         ggplot2::coord_cartesian (xlim = c (0, day))
 
     return (g)
-
-
 }

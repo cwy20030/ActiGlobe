@@ -41,7 +41,8 @@ Default = TRUE.}
 A data list that includes the adjusted recordings both in long format and as a nested list by day.
 }
 \description{
-`Act2Daily` is used to split the actigraphy recording by the recording dates stored in Bdf (a BriefSum object).
+`Act2Daily` is used to split the actigraphy recording by the recording dates
+stored in Bdf (a BriefSum object).
 }
 \details{
 Transforms a continuous actigraphy time-series into a day-by-day list
@@ -54,25 +55,27 @@ Transforms a continuous actigraphy time-series into a day-by-day list
  calendar date while accounts for travel--induced overlaps, and clearly documents any incomplete or unallocated points.
 }
 \note{
-When you cross into a time zone with a larger UTC offset (e.g., Montreal \eqn{UTC-5} to Taipei \eqn{UTC+8}), it will generate a small overlap of epochs between the day
-before travel and the day labeled "Travel Day" in the "Daily_df". Conversely,
-when you move into a time zone with a smaller UTC offset, a brief gap appears
-on "Travel Day", with labeling - "Unallocated", which represents "time lose".
+When you cross into a time zone with a larger UTC offset (e.g., Montreal
+\eqn{UTC-5} to Taipei \eqn{UTC+8}), it will generate a small overlap of
+epochs between the day before travel and the day labeled "Travel Day" in the
+"Daily_df". Conversely,when you move into a time zone with a smaller UTC
+offset, a brief gap appears on "Travel Day", with labeling - "Unallocated",
+which represents "time lose".
 }
 \examples{
 \dontrun{
 
 # Import data
-data (FlyEast)
+data(FlyEast)
 
 
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 
 # Lets extract the quick summary of the recording
@@ -87,17 +90,17 @@ df <- BdfList$df
 
 # Segment Data by Day
 dfList <-
-    Act2Daily (
-        df = df,
-        Bdf = Bdf,
-        VAct = "Activity",
-        VTm = "Time",
-        Incomplete = TRUE,
-        Travel = TRUE
-    )
+  Act2Daily(
+    df = df,
+    Bdf = Bdf,
+    VAct = "Activity",
+    VTm = "Time",
+    Incomplete = TRUE,
+    Travel = TRUE
+  )
 
-str (dfList) ### Look at the output structure
-View (dfList)
+str(dfList) ### Look at the output structure
+View(dfList)
 }
 
 }

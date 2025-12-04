@@ -81,8 +81,6 @@
 
 
 DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
-
-
     fmts <- c (
         "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
         "%Y-%m", "%m-%Y",
@@ -101,7 +99,7 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
         fmts <- c (fmts, Base)
     }
 
-    formatedDate <- tryCatch(as.Date (DT, format = fmts))
+    formatedDate <- tryCatch (as.Date (DT, format = fmts))
 
     Format <- fmts [which (!is.na (formatedDate))] # Extract Possible format
 
@@ -110,7 +108,7 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
 
     ## See which time format works for this
     if (length (Format) > 1) {
-        Format <- unlist (lapply (1:length (formatedDate), function (d) {
+        Format <- unlist (lapply (seq_len (length (formatedDate)), function (d) {
             temp <- as.character (formatedDate [d])
             temp <- unlist (strsplit (temp, split = "-"))
 
@@ -124,32 +122,29 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
         Format <- Format [!is.na (Format)]
     }
 
- if (!as.date) {
-    # Post-process Check...
-    if (length (Format) == 0) {
-        warning (paste0 ("Possible illegal datetime format detected in ", DT, ". Please, ensure that...
+    if (!as.date) {
+        # Post-process Check...
+        if (length (Format) == 0) {
+            warning (paste0 ("Possible illegal datetime format detected in ", DT, ". Please, ensure that...
          1. the year is recorded as full four digits (i.e., 19xx).
          ==> Please, manually correct the year and try again.
 
          2. the deliminator used to separate month and date is not commonly used.
          ==> Please, specify the proper deliminator in Delim."))
 
-        Format <- ""
-    }
+            Format <- ""
+        }
 
-    if (length (unique(Format)) > 1) {
-        warning ("Unable to recognize the difference between date and month. Only the first detected format would be used! Please, manually set it using as.Date function if it is incorrect or convert the month number to name.")
-
+        if (length (unique (Format)) > 1) {
+            warning ("Unable to recognize the difference between date and month. Only the first detected format would be used! Please, manually set it using as.Date function if it is incorrect or convert the month number to name.")
+        }
     }
- }
 
 
     Format <- Format [1]
     if (as.date) {
-        return (as.Date(DT, format = Format))
+        return (as.Date (DT, format = Format))
     } else {
         return (Format)
     }
-
-
 }

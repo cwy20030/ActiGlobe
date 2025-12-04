@@ -167,13 +167,11 @@
 #' plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
 #' }
 #'
-#'
 #' @keywords cosinor
 #' @export
 
 
 CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type = "HC3", dilute = FALSE) {
-
     # Check the variable class -----------------------------
     if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
     if (all (activity == 0)) stop ("all activity values are zero")
@@ -243,13 +241,9 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     amplitude <- sqrt (beta^2 + gamma^2)
 
     if (arctan2) {
-
         acrophase <- theta <- atan2 (gamma, beta)
-
     } else {
-
         for (nl in 1:nT) {
-
             Tacrophase <- acrophase <- theta <- atan (abs (gamma) / beta)
 
             Bs <- beta [[nl]]
@@ -261,9 +255,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
                     )
                 )
             )
-
         }
-
     }
 
 
@@ -301,7 +293,6 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
             Tacro2 <- ((acrophase * tau / (2 * pi)) %% day)
             names (Tacro2) <- paste0 ("Acrophase.time.", day)
             extra <- Tacro2
-
         }
 
         if (factor == round (factor)) {
@@ -316,7 +307,6 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
             extra <- ((acrophase * tau / (2 * pi)) %% (tau * f.list))
             names (extra) <- paste0 ("Acrophase.time.", (tau * f.list))
         }
-
     }
 
 
@@ -351,9 +341,7 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
 
         ## Assign Class
         class (fit) <- c ("CosinorM")
-
     } else {
-
         fit <- model
         fit$model$time <- time
         fit$epoch <- Epc
@@ -385,5 +373,4 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
 
 
     return (fit)
-
 }

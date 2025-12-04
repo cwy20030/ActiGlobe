@@ -56,7 +56,6 @@
 
 
 R2P <- function (Bdf, D, U) {
-
     ## Extract Date info from summary
     DT <- Bdf$Date ## All Recording Dates
     DT <- DateFormat (DT)
@@ -81,11 +80,8 @@ R2P <- function (Bdf, D, U) {
     Bdf$UTC.old <- Bdf$UTC [[1]]
 
     for (d in 1:length (D)) {
-
         if (d < length (D)) {
-
             Period <- as.Date (D [d]:(D [d + 1] - 1))
-
         } else {
             fD <- as.integer (which (DT == D [d]))
             eD <- as.integer (which (DT == MaxDate))
@@ -103,8 +99,6 @@ R2P <- function (Bdf, D, U) {
 
         Bdf$Recording_Period [DT %in% Period] <- d
         Bdf$UTC [DT %in% Period] <- Num2UTC (U [d])
-
-
     }
 
     ### Compute Changes in Hours -------------
@@ -120,5 +114,4 @@ R2P <- function (Bdf, D, U) {
     # Output --------
     Out <- Bdf [c ("Date", "Recording_Period", "UTC", "Hour_to_Adjust")]
     return (Out)
-
 }
