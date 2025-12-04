@@ -41,7 +41,7 @@
 #' }
 #'
 #' @keywords Travel Log Template Timezone Shift
-#' @Rd
+#' @noRd
 
 mIANA <- function(Write = FALSE, Dir = NULL){
 
