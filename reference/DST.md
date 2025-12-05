@@ -1,0 +1,58 @@
+# Daylight Saving Time
+
+Determine if Dates Fall in Daylight Saving Time for the Given Time
+Zone(s)
+
+## Usage
+
+``` r
+DST(DT, TZ = "local")
+```
+
+## Arguments
+
+- DT:
+
+  A vector of class \`Date\`, \`POSIXct\`, or \`POSIXlt\`, representing
+  the dates/times to test. These need not be sorted.
+
+- TZ:
+
+  A single string naming an IANA time zone (e.g. \`America/New_York\`).
+  If \`"local"\`, it will extract local time zone using
+  \`Sys.timezone()\`. Must match one entry in \`OlsonNames()\`.
+
+## Value
+
+A logical vector of the same length as \`DT\`.
+
+- \`TRUE\` indicates the timestamp falls in DST
+
+- \`FALSE\` indicates standard time.
+
+## Details
+
+For each element of \`DT\`, returns \`TRUE\` if that date-time is in
+daylight saving time (DST) under the specified time zone. The function
+handles transitions by detecting the "gain" or "loss" of hours via
+\`DST2GL()\` and flipping the DST flag on the transition day.
+
+## Examples
+
+``` r
+# Standard use: New York in summer vs. winter
+dates <- as.POSIXct (c ("2021-06-15", "2021-12-15"), tz = "America/New_York")
+DST (dates, TZ = "America/New_York")
+#> [1] FALSE FALSE
+
+# \donttest{
+# Around the spring-forward transition
+trans <- as.Date (c ("2021-03-13", "2021-03-14", "2021-03-15"))
+DST (trans, TZ = "America/New_York")
+#> [1] FALSE  TRUE FALSE
+
+# Using the local system time zone
+DST (as.POSIXct ("2023-07-01 12:00:00"), TZ = "local")
+#> [1] FALSE
+# }
+```
