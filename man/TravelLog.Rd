@@ -23,10 +23,9 @@ Generate the Travel Log Template Needed for Time Zone Correction
 # example code
 \dontrun{
 
-Tlg <- TravelLog(Wirte = TRUE)
+Tlg <- TravelLog (Wirte = TRUE)
 
-print(Tlg)
-
+print (Tlg)
 }
 
 }

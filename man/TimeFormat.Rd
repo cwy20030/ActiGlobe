@@ -44,9 +44,7 @@ print (lapply (Time, TimeFormat))
 
 #### Option 2. To match the warning message to the items
 for (x in Time) {
-
     print (TimeFormat (x))
-
 }
 
 

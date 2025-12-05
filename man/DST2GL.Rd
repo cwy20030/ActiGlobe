@@ -42,6 +42,6 @@ dates <- as.Date ("2021-11-07")
 DST2GL (dates)
 
 # Multiple Dates
-sapply(c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
+sapply (c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
 
 }

@@ -11,16 +11,20 @@ boot.seci(object, level = 0.95, N = 500, digits = 2)
 
 \item{level}{Numeric scaler. the confidence level.}
 
-\item{N}{Numeric scaler. Numbers of bootstraps required to estimate the standard errors and confidence intervals. Default: 500}
+\item{N}{Numeric scaler. Numbers of bootstraps required to estimate the
+standard errors and confidence intervals. Default: 500}
 
-\item{digits}{Numeric scaler. Integer indicating the number of decimal places (round) to be used. Default: 2}
+\item{digits}{Numeric scaler. Integer indicating the number of decimal places
+(round) to be used. Default: 2}
 }
 \value{
 A data.frame with one row per cosinor coefficient and columns:
 \itemize{
   \item Estimate: Mean of bootstrap coefficient values.
-  \item Std Error: Bootstrap standard deviation of each coefficient across N resamples.
-  \item t value: Ratio of the observed estimate to its bootstrap standard error, analogous to a
+  \item Std Error: Bootstrap standard deviation of each coefficient across N
+  resamples.
+  \item t value: Ratio of the observed estimate to its bootstrap standard
+  error, analogous to a
     signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
      where \eqn{\alpha = 1 - level}.
@@ -28,7 +32,8 @@ A data.frame with one row per cosinor coefficient and columns:
 }
 }
 \description{
-Computes standard errors and confidence intervals for cosinor and post-hoc parameters via non-parametric bootstrap
+Computes standard errors and confidence intervals for cosinor
+and post-hoc parameters via non-parametric bootstrap
 }
 \examples{
 \dontrun{
