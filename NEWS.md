@@ -1,13 +1,13 @@
 Revision history for the R/ActiGlobe package
 
-## Next Version: 0.x.y
+## Next Version 0.x.y
 - New master and class functions added: 
 
 - New internal function added:
 
 - Version update and debugged:
 
-## Version: 0.2.1, 2025-11-30
+## Version 0.2.1, 2025-11-30
 
 - New master and class functions added: NA
 
@@ -24,13 +24,13 @@ Revision history for the R/ActiGlobe package
     - add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT zones when OlsonNames lookup fails
     - augment test suits for all internal/helper functions
 
-## Version: 0.2.0, 2025-10-31
+## Version 0.2.0, 2025-10-31
 
 - New master and class functions added: boot.seci
 
 - Version update and debugged: Description, README, CosinorM.KDE, ggCosinorM
 
-## Version: 0.1.9, 2025-10-27
+## Version 0.1.9, 2025-10-27
 
 - New master and class functions added: NA
 
