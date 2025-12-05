@@ -28,7 +28,8 @@
 #'   returned as-is (after coercion). If character/factor, values are parsed
 #'   using \code{\link{TimeFormat}}.
 #' @param Discrete Logical scaler; if TRUE, each input in `Time` is converted
-#'   individually without subtraction for the prior time.
+#'   individually without subtraction for the prior time. Default FALSE will
+#'   subtract from the first time point.
 #'
 #' @returns
 #' A numeric vector of time values expressed in decimal hours. If the input

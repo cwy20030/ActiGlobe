@@ -15,6 +15,36 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+#' @title Interactive Option Selector
+#'
+#' @description
+#' The `Demand()` function presents a list of options to the user, prompts them
+#' to select one by entering its number, and returns the chosen option. If the
+#' option contains the word `"Other"`, the user is asked to provide a custom
+#' input (e.g., a path). Invalid selections trigger a retry until a valid choice
+#' is made.
+#'
+#' @details
+#' - Displays each option with its index number.
+#' - Prompts the user to select by entering the number.
+#' - Validates input: must be numeric and within the range of options.
+#' - If `"Other"` is selected, prompts for a custom string (e.g., a path).
+#' - Recursively re-prompts until a valid selection is made.
+#'
+#' @param options A character vector of options to present to the user.
+#' @param MESSAGE A descriptive string used in the prompt (e.g., `"file"`,
+#'   `"directory"`, `"method"`).
+#'
+#' @return A single character string corresponding to the selected option or
+#'   user-provided input if `"Other"` is chosen.
+#'
+#' @examples
+#'
+#' Demand(c("Option A", "Option B", "Other"), "option")
+#'
+#'
+#' @noRd
+
 
 Demand <- function (options, MESSAGE) {
     # Print the options for the user

@@ -62,7 +62,7 @@
 #' df <- subset (df, df$Date == "2017-10-27")
 #'
 #' # Multicomponent Cosinor Model
-#' fit <- Cosinor (
+#' fit <- CosinorM (
 #'     time = df$Time,
 #'     activity = df$Activity,
 #'     tau = c (12, 24),
@@ -188,7 +188,7 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
         uci = uci,
         row.names = names (Coefs)
     )
-    names (Out) <- c ("Estimate", "Std. Error", "t value", CIs)
+    names (Out) <- c ("Estimate", "Std Error", "t value", CIs)
 
     Out <- round (
         x = Out,
