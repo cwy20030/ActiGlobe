@@ -18,21 +18,96 @@
 #
 #' @title Fit a GLM to estimate inactive periods based on observed data
 #'
+#' @description
+#' This function fits a generalized linear model (GLM) to observed activity data
+#' in order to estimate periods of inactivity. A polynomial term of time is used
+#' as a predictor, and inactivity is classified based on the predicted probability
+#' exceeding a threshold multiple times.
+#'
+#' @details
+#' The GLM is fit using `stats::glm()` with a polynomial term of degree `k`
+#'   applied to the time indices. Predicted probabilities of inactivity are
+#'   compared against the threshold rule. The function is designed for
+#'   actigraphy or similar time‑series activity data where identifying inactive
+#'   bouts is important.
+#'
 #' @import stats
 #'
-#' @param y Numeric vector of observed activity counts
-#' @param T Numeric vector of time indices corresponding to `y`
-#' @param k Integer; degree of polynomial for time in the GLM. Default = 12
-#' @param threshold Integer; number of times the predicted probability of inactivity
-#'  must exceed 0.5 to classify the period as inactive. Default = 3
-#' @param logical Logical scaler; TRUE will return logical vector. FALSE will return a summary table.
+#' @param y Numeric vector of observed activity counts. Typically represents
+#'   activity levels measured over time.
+#' @param T Numeric vector of time indices corresponding to `y`. Must be the same
+#'   length as `y`.
+#' @param k Integer; degree of polynomial for time in the GLM. Higher values allow
+#'   more flexible time trends. Default = 12.
+#' @param threshold Integer; number of consecutive times the predicted probability
+#'   of inactivity must exceed 0.5 to classify the period as inactive. Default = 3.
+#' @param logical Logical scalar; if `TRUE`, the function returns a logical vector
+#'   indicating inactive periods. If `FALSE`, a summary table of inactivity
+#'   classification results is returned.
 #'
-#' @returns
-#' Logical vector; TRUE indicates inactive period
+#' @return
+#' - If `logical = TRUE`: a logical vector of the same length as `y`, where
+#'   `TRUE` indicates an inactive period.
+#' - If `logical = FALSE`: a summary table (data frame) containing classification
+#'   results, including predicted probabilities and inactivity flags.
+#'
+#' @examples
+#' data (FlyEast)
+#'
+#' # Create quick summary of the recording with adjustment for daylight saving.
+#' BdfList <-
+#'     BriefSum (
+#'         df = FlyEast,
+#'         SR = 1 / 60,
+#'         Start = "2017-10-24 13:45:00"
+#'     )
+#'
+#' # Let's extract actigraphy data from a single day
+#' Bdf <- BdfList$Bdf
+#'
+#' df <- BdfList$df
+#'
+#' # Let's extract actigraphy data from a single day
+#' ## Extract Second day -------------
+#' fnDP <- Bdf$nDataPoints [1]
+#' fDP <- fnDP + 1 ### Midnight of the second day
+#' eDP <- sum (Bdf$nDataPoints [c (1,2)])
+#'
+#'
+#' df <- df [fDP:eDP,]
+#'
+#'
+#' # return logical vector
+#' inactive_flags <- Prob.Inact(y = df$Activity,
+#'                              T = df$Time,
+#'                              k = 12,
+#'                              threshold = 3,
+#'                              logical = TRUE)
+#' print(inactive_flags)
+#'
+#'
+#' # return summary table
+#' inactive_summary <- Prob.Inact(y = df$Activity,
+#'                              T = df$Time,
+#'                              k = 12,
+#'                              threshold = 3,
+#'                              logical = FALSE)
+#' print(inactive_summary)
+#'
+#'
+#'
+#'
 #'
 #' @noRd
 
 Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
+    # Check the variable class -----------------------------
+    if (!inherits (y, "numeric")) y <- as.numeric (as.character (y))
+    if (all (y == 0)) stop ("all activity values are zero")
+    if (any (!is.finite (y))) stop ("activity contains NA/NaN/Inf")
+    if (!inherits (T, "numeric")) T <- C2T (T)
+
+
     # Parameters -------------------
     Epc <- min (diff (T), na.rm = TRUE)
 

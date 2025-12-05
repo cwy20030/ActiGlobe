@@ -36,7 +36,7 @@ resource_files:
 
 
 ## What will be covered in this tutorial?
-This specific tutorial is designed specifically to show users how to use ActiGlobe to preprocess longitudinal actigrpahy recordings affected by time shift. For analysis and generation of graphic/excel report of daily actigraphy measures, please go to other 
+This specific tutorial is designed specifically to show users how to use ActiGlobe to preprocess longitudinal actigrpahy recordings affected by time shift. For analysis and generation of graphic/excel report of daily actigraphy measures, please go to tutorial title: Graphic-Report.
 
 
 
@@ -73,8 +73,8 @@ knitr::kable(head(FlyEast))
 For more information, type `?FlyEast` or `help(FlyEast)` in your R console.
 
 < Tip for Beginner to R> 
-Type: View(FlyEast) in the R console will allow users to review the data structure of FlyEast.
-
+1. Type: View(FlyEast) in the R console will allow users to review the data structure of FlyEast.
+2. Use <b>Tab</b> button to help finish the code. Try typing: "Fly" in the Console (i.e., the window where we can see a `>`) then press the button <b>Tab</b> on the keyboard.
 
 
 ## Step 0. Create a brief summary of the recordings
