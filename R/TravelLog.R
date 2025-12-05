@@ -27,13 +27,10 @@
 #' @return a travel-log template as a data.frame or written as a CSV file
 #'
 #' @examples
-#' # example code
-#' \dontrun{
 #'
-#' Tlg <- TravelLog (Wirte = TRUE)
+#' Tlg <- TravelLog (Write = FALSE)
 #'
 #' print (Tlg)
-#' }
 #'
 #' @keywords Travel Log Template Timezone Shift
 #' @export
