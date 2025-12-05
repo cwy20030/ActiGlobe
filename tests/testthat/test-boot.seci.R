@@ -29,18 +29,18 @@ test_that("boot.seci successfully run for OLS multicosinor and KDE", {
         N = 100
     )
    # Structure checks----------------------------
-   expect_s3_class(BCI, "data.frame")
-   expect_equal(colnames(BCI), c("Estimate","Std Error","t value","2.5%","97.5%"))
+   expect_s3_class (BCI, "data.frame")
+   expect_equal (colnames (BCI), c ("Estimate","Std Error","t value","2.5%","97.5%"))
 
    # Row names check ------------------------
-   expected_rows <- c("MESOR","Amplitude.12","Amplitude.24","Acrophase.12","Acrophase.24",
+   expected_rows <- c ("MESOR","Amplitude.12","Amplitude.24","Acrophase.12","Acrophase.24",
                       "Beta.12","Beta.24","Gamma.12","Gamma.24","MESOR.ph",
                       "Bathyphase.ph.time","Trough.ph","Acrophase.ph.time",
                       "Peak.ph","Amplitude.ph")
-   expect_equal(rownames(BCI), expected_rows)
+   expect_equal (rownames (BCI), expected_rows)
 
    # Numeric check ----------------------
-   expect_true(all(sapply(BCI, is.numeric)))
+   expect_true (all (sapply (BCI, is.numeric)))
 
 
 
@@ -63,16 +63,16 @@ test_that("boot.seci successfully run for OLS multicosinor and KDE", {
     )
 
   ### Structure checks ------------------
-  expect_s3_class(BCI2, "data.frame")
-  expect_equal(colnames(BCI2), c("Estimate","Std Error","t value","2.5%","97.5%"))
+  expect_s3_class (BCI2, "data.frame")
+  expect_equal (colnames (BCI2), c ("Estimate","Std Error","t value","2.5%","97.5%"))
 
   ### Row names check --------------------
-  expected_rows <- c("MESOR","Amplitude.24","Acrophase.24","Beta.24","Gamma.24",
+  expected_rows <- c ("MESOR","Amplitude.24","Acrophase.24","Beta.24","Gamma.24",
                      "MESOR.ph","Bathyphase.ph.time","Trough.ph","Acrophase.ph.time",
                      "Peak.ph","Amplitude.ph")
-  expect_equal(rownames(BCI2), expected_rows)
+  expect_equal (rownames (BCI2), expected_rows)
 
   ### Numeric check -----------------------------
-  expect_true(all(sapply(BCI2, is.numeric)))
+  expect_true (all (sapply (BCI2, is.numeric)))
 
 })

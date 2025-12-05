@@ -8,7 +8,7 @@ test_that("mIANA returns a data frame with expected columns", {
   expect_named (sIANA, c ("Timezone_IANA", "TZ_Code", "Offset", "Standard_Offset"))
 
   # Check that it has rows
-  expect_true (nrow(sIANA) > 0)
+  expect_true (nrow (sIANA) > 0)
 
   # Spot check a known entry
   expect_true ("Europe/Amsterdam" %in% sIANA$Timezone_IANA)
