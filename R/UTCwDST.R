@@ -63,7 +63,14 @@
 
 UTCwDST <- function(UTCs, fork = FALSE) {
 
+  # Extract Essential -------------------
   OF <- UTCs
+
+  ### Call mIANA-------------------
+  sIANA <- mIANA() # Time zone database
+  iTZ <- sIANA$Timezone_IANA
+  Soff <- sIANA$Standard_Offset
+
 
   #### Convert UTC to Hour offset if not converted....
   if(any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
@@ -79,7 +86,10 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
     TG = which(lengths(pTZs) == 0L)
-    stop(sprintf("No matching found for following time zones: %s", UTCs[TG]))
+    message(sprintf("No matching found for following time zones: %s", UTCs[TG], " using OlsonNames.
+                    Try mIANA..."))
+
+    pTZs[TG] <-  iTZ[Soff %in% UTCs[TG]]
   }
 
   # Check DST status in mid‐winter vs. mid‐summer ----------
@@ -97,3 +107,4 @@ UTCwDST <- function(UTCs, fork = FALSE) {
 
   return(Out)
 }
+

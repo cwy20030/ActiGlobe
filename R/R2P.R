@@ -50,7 +50,9 @@
 #' Bdf <- BdfList$Bdf
 #'
 #' data (TLog)
-#' R2P (Bdf, D = TLog$Date, U = TLog$UTC_Offset)
+#' R2P (Bdf = Bdf,
+#'      D = TLog$date_Start,
+#'      U = TLog$UTC_Offset)
 #'
 #' @noRd
 
@@ -72,7 +74,7 @@ R2P <- function (Bdf, D, U) {
 
 
     #### Double check for date coherence ---------
-    D <- as.Date (D)
+    D <- DateFormat(D)
 
 
     # Process UTC and Time adjustment -------------
@@ -82,6 +84,7 @@ R2P <- function (Bdf, D, U) {
     for (d in 1:length (D)) {
         if (d < length (D)) {
             Period <- as.Date (D [d]:(D [d + 1] - 1))
+
         } else {
             fD <- as.integer (which (DT == D [d]))
             eD <- as.integer (which (DT == MaxDate))
@@ -94,7 +97,7 @@ R2P <- function (Bdf, D, U) {
                 length.out = nD
             )
 
-            subDT <- DT [idx]
+            Period <- as.Date (DT [idx])
         }
 
         Bdf$Recording_Period [DT %in% Period] <- d

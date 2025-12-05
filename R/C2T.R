@@ -27,13 +27,15 @@
 #'   Examples include `"13:45:00"` or `"01:30:15"`. If numeric, values are
 #'   returned as-is (after coercion). If character/factor, values are parsed
 #'   using \code{\link{TimeFormat}}.
+#' @param Discrete Logical scaler; if TRUE, each input in `Time` is converted
+#'   individually without subtraction for the prior time.
 #'
 #' @returns
 #' A numeric vector of time values expressed in decimal hours. If the input
 #' is character/factor, the values are converted relative to the first entry
-#' (i.e., the first element is set to 0 and subsequent values are offsets in
-#' hours). If coercion fails, `NA` values are introduced and a warning is
-#' issued.
+#' by default (i.e., the first element is set to 0 and subsequent values are
+#' offsets in hours). When set TRUE to discrete, raw value is returned. If
+#' coercion fails, `NA` values are introduced and a warning is issued.
 #'
 #' @seealso \code{\link{TimeFormat}}
 #'
@@ -41,11 +43,11 @@
 #'
 #' # Character input
 #' times <- c ("01:00:00", "02:30:00", "03:15:00")
-#' C2T (times)
+#' C2T (times, Discrete = TRUE)
 #'
 #' @noRd
 
-C2T <- function (Time) {
+C2T <- function (Time, Discrete = FALSE) {
     x <- suppressWarnings (as.numeric (as.character (Time)))
 
     if (length (na.omit (x)) == 0) {
@@ -57,7 +59,12 @@ C2T <- function (Time) {
 
 
         x <- as.numeric (decimal_hours)
-        x <- x - x [[1]]
+
+    }
+
+    if (!Discrete){
+
+        x <- x - x [[1]] ## For duration
     }
 
     if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
