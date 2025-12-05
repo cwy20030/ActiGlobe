@@ -15,21 +15,55 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title GuessTZ
+#' @title Guess Time Zones from Offsets
 #'
-#' @description Guess possible time zone based on the UTC offset
+#' @description
+#' The `GuessTZ()` function attempts to infer possible time zones based on
+#' observed time offsets (`aOF`) at a given reference date/time. It compares
+#' offsets against all known Olson time zones, optionally prioritizing an
+#' initial time zone (`iTZ`) and allowing parallel computation for speed.
 #'
+#' @details
+#' - Uses `OlsonNames()` to retrieve all known time zones.
+#' - Computes offsets for each zone at the reference date/time (`DT`).
+#' - Matches observed offsets (`aOF`) against computed offsets.
+#' - If `iTZ` is provided, it is prioritized when present in the matches.
+#' - Parallel computation (`fork = TRUE`) uses all but two cores by default.
 #'
 #' @import parallel
 #'
+#' @param aOF A character vector of observed time offsets (e.g., `"+0100"`,
+#'   `"-0500"`). Each element is matched against known time zone offsets.
+#' @param DT A POSIXct date/time used as the reference point for offset
+#'   comparison. Defaults to January 1, 2021 UTC if `NULL`.
+#' @param iTZ An initial time zone to prioritize. If `"local"`, the system
+#'   time zone (`Sys.timezone()`) is used. If `NULL`, no initial preference
+#'   is applied.
+#' @param All Logical. If `TRUE` (default), return all matching time zones
+#'   for each offset. If `FALSE`, return only the first match per offset.
+#' @param fork Logical. If `TRUE`, use parallel processing via the
+#'   \pkg{parallel} package to compute offsets across all Olson time zones.
+#'   Defaults to `FALSE` (sequential).
 #'
-#' @param aOF A converted UTC offset in the POSIX format. `e.g., "aOF <- sprintf("%+03d00", OF)"`
-#' @param DT Only one date at a time
-#' @param iTZ The time zone when the recording started. When guessing time zone, it will prioritize matching to the initial geographic location even when the time change occurs. Default is "NULL". When specified as `"local"`, user's local time zone is assumed.
-#' @param All Logical, if TRUE, as default, it will provide all possible TZ codes. If FALSE, it will retrieve the first one.
-#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#' @return A character vector or list of character vectors containing
+#'   candidate time zones corresponding to each offset in `aOF`. If `All = FALSE`,
+#'   only the first match is returned per offset.
 #'
-#' @return A character vector of possible time zone indicators
+#' @examples
+#'
+#' # Guess time zones for UTC-5 and UTC+1 offsets
+#' GuessTZ(c("-0500", "+0100"))
+#'
+#' # Restrict to first match per offset
+#' GuessTZ(c("-0500", "+0100"), All = FALSE)
+#'
+#' # Prioritize local system time zone
+#' GuessTZ(c("-0500"), iTZ = "local")
+#'
+#' # Use parallel processing
+#' GuessTZ(c("+0000"), fork = TRUE)
+#'
+#'
 #' @noRd
 
 GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {

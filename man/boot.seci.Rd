@@ -52,7 +52,7 @@ df <- BdfList$df
 df <- subset (df, df$Date == "2017-10-27")
 
 # Multicomponent Cosinor Model
-fit <- Cosinor (
+fit <- CosinorM (
     time = df$Time,
     activity = df$Activity,
     tau = c (12, 24),
