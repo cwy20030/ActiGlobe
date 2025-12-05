@@ -13,8 +13,6 @@ test_that ("TAdjust Test Completed", {
     # Lets extract the quick summary of the recording
     Bdf <- BdfList$Bdf
 
-    print(Bdf$TZ_code)
-
     ## Reduce the data size to only the first 8 days.
     Omit <- sum (Bdf$nDataPoints [1:7])
     Total <- sum (Bdf$nDataPoints [1:13])
