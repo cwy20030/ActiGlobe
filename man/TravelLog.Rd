@@ -20,13 +20,10 @@ a travel-log template as a data.frame or written as a CSV file
 Generate the Travel Log Template Needed for Time Zone Correction
 }
 \examples{
-# example code
-\dontrun{
 
-Tlg <- TravelLog (Wirte = TRUE)
+Tlg <- TravelLog (Write = FALSE)
 
 print (Tlg)
-}
 
 }
 \keyword{Log}

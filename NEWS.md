@@ -22,6 +22,7 @@ Revision history for the R/ActiGlobe package
     - modify internal uses of IANA in Act2Daily
     - enable switches for paralelle process for GuessTZ 
     - add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT zones when OlsonNames lookup fails
+    - augment test suits for all internal/helper functions
 
 ## Version: 0.2.0, 2025-10-31
 
