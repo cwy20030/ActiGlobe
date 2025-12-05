@@ -15,6 +15,8 @@ Revision history for the R/ActiGlobe package
 
 - Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST
 
+- Dependency update: R >= 4.2.0
+
 - Brief Detail: 
     - piecewise binomial estimation of inactive period using Prob.Inact
     - enable internal call function for data through mIANA setting
