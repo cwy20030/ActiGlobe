@@ -212,11 +212,295 @@ recording is less than 24 hours and the presence of daylight-saving time
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Bdf</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">Bdf</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="images/Bdf_head.png" class="r-plt" alt="Table 2 The Header of Bdf" width="823"><p class="caption">
+<table style="width:800px;" class="table">
+<caption>
 Table 2 The Header of Bdf
-</p>
-</div>
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017-10-24
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+13:45:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+615
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+36900
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Incomplete Recording
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-25
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+36960
+</td>
+<td style="text-align:right;">
+123300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-26
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+123360
+</td>
+<td style="text-align:right;">
+209700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-27
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+209760
+</td>
+<td style="text-align:right;">
+296100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-28
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+296160
+</td>
+<td style="text-align:right;">
+382500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-29
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+382560
+</td>
+<td style="text-align:right;">
+468900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
 <p>In the enriched data - <code>df</code>, we have both the original
 data stored in <code>FlyEast</code> and some new information, such as
 the time stamp of each data point.</p>
