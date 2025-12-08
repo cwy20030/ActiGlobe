@@ -91,7 +91,8 @@ BriefSum(df = FlyEast,
 Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
-
+![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
+<br>
 ### Adjust Travel-induced Time Shift
 ``` r
 #### Import the travel log into R and give it a name
@@ -101,7 +102,9 @@ TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.cs
 Bdf.adj = TAdjust(Bdf = Bdf, 
                   TLog = TLog)
 ```
+![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
 
+<br>
 Take a coffee break if needed because ActiGlobe will adjust time shift
 and anonymize the travel destination to keep participants’ privacy.
 
