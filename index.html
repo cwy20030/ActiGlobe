@@ -128,7 +128,7 @@
 <span><span class="co">#&gt;     note = {R package version 0.1.9},</span></span>
 <span><span class="co">#&gt;     url = {https://github.com/cwy20030/ActiGlobe},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
-<p>To convert to EndNote compatible format, paste the BibTeX entry in [online bibtex-converter] (<a href="https://asouqi.github.io/bibtex-converter/" class="external-link uri">https://asouqi.github.io/bibtex-converter/</a>)</p>
+<p>To convert to an EndNote-compatible format, paste the BibTeX entry in [online bibtex-converter] (<a href="https://asouqi.github.io/bibtex-converter/" class="external-link uri">https://asouqi.github.io/bibtex-converter/</a>)</p>
 </div>
 </div>
 <div class="section level2">
@@ -148,10 +148,19 @@
 <span><span class="co">### Extract the summary report and the enriched data</span></span>
 <span><span class="va">Bdf</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">Bdf</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">df</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">### Quick overview of the original recording</span></span>
+<span><span class="fu"><a href="reference/ggActiGlobe.html">ggActiGlobe</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, </span>
+<span>            Bdf <span class="op">=</span> <span class="va">Bdf</span>,</span>
+<span>            VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
+<span>            VDT <span class="op">=</span> <span class="st">"DateTime"</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="articles/images/Unadjusted_Overview.png" alt="Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day Epoching Misalignment"><div class="figcaption">Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day Epoching Misalignment</div>
+</div>
 <div class="section level3">
 <h3 id="adjust-travel-induced-time-shift">Adjust Travel-induced Time Shift<a class="anchor" aria-label="anchor" href="#adjust-travel-induced-time-shift"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#### Import the travel log into R and give it a name</span></span>
 <span><span class="va">TLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv"</span><span class="op">)</span></span>
 <span></span>
@@ -159,7 +168,7 @@
 <span><span class="va">Bdf.adj</span> <span class="op">=</span> <span class="fu"><a href="reference/TAdjust.html">TAdjust</a></span><span class="op">(</span>Bdf <span class="op">=</span> <span class="va">Bdf</span>, </span>
 <span>                  TLog <span class="op">=</span> <span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
 <p>Take a coffee break if needed because ActiGlobe will adjust time shift and anonymize the travel destination to keep participants’ privacy.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfList</span> <span class="op">=</span> <span class="fu"><a href="reference/Act2Daily.html">Act2Daily</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>,</span>
 <span>                   Bdf <span class="op">=</span> <span class="va">Bdf.adj</span>,</span>
 <span>                   VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
@@ -169,13 +178,16 @@
 <div class="section level4">
 <h4 id="review-adjustment">Review adjustment<a class="anchor" aria-label="anchor" href="#review-adjustment"></a>
 </h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/ggActiGlobe.html">ggActiGlobe</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">df2</span>, </span>
 <span>            Bdf <span class="op">=</span> <span class="va">Bdf.adj</span>,</span>
 <span>            VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
 <span>            VDT <span class="op">=</span> <span class="st">"DateTime"</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="articles/images/Adjusted_Overview.png" alt="Figure 2. An Overview of the Adjusted Recording"><div class="figcaption">Figure 2. An Overview of the Adjusted Recording</div>
+</div>
 </div>
 </div>
 </div>

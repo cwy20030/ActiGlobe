@@ -47,14 +47,14 @@ in your R console.
 \< Tip for Beginner to R\> 1. Type: View(FlyEast) in the R console will
 allow users to review the data structure of FlyEast. 2. Use **Tab**
 button to help finish the code. Try typing: “Fly” in the Console (i.e.,
-the window where we can see a `>`) then press the button **Tab** on the
+the window where we can see a `>`), then press the button **Tab** on the
 keyboard.
 
 ## Step 0. Create a brief summary of the recordings
 
 In general, when pre-processing or harmonizing large volumes of data,
-it’s good practice to first generate a structured summary of the dataset
-at hand.
+it’s good practice to first generate a structured summary of the
+dataset.
 
 Here, we use
 [`BriefSum()`](https://cwy20030.github.io/ActiGlobe/reference/BriefSum.md)
@@ -62,14 +62,14 @@ to generate an initial summary of the actigraphy data recorded in
 FlyEast. Based on the initial recording time, it runs through the raw
 recording file to provide a quick overview with simple summaries for
 each recording day and a newly enriched actigraphy data. This
-pre-processing step also automatically adds time-stamps to the original
+pre-processing step also automatically adds timestamps to the original
 longitudinal recording. If the original location inherits the practice
-of daylight saving,
+of daylight-saving transitioning,
 [`BriefSum()`](https://cwy20030.github.io/ActiGlobe/reference/BriefSum.md)
 would also automatically handle any gain or loss in time. By default,
 [`BriefSum()`](https://cwy20030.github.io/ActiGlobe/reference/BriefSum.md)
 would allow us to store both the summary and the newly enriched
-recording data in a data.list.
+recording data in a `data.list`.
 
 ``` r
 BdfList <-
@@ -99,9 +99,9 @@ c(Bdf, df) %<-%
 ```
 
 In the brief summary of daily recording, we would have thirteen
-parameters including the information on the beginning and the end of
+parameters, including the information on the beginning and the end of
 each daily recording period, labels warning the total time of a
-recording is less than 24 hours and the presence of daylight saving time
+recording is less than 24 hours and the presence of daylight-saving time
 (based on the initial time zone).
 
 ``` r
@@ -109,7 +109,9 @@ Bdf <- BdfList$Bdf
 head(Bdf)
 ```
 
-##### Table 2 The Header of Bdf ![Table 2 The Header of Bdf](images/Bdf_head.png)
+![Table 2 The Header of Bdf](images/Bdf_head.png)
+
+Table 2 The Header of Bdf
 
 In the enriched data - `df`, we have both the original data stored in
 `FlyEast` and some new information, such as the time stamp of each data
@@ -132,25 +134,25 @@ head(df) ### This should give us the same first few lines of FlyEast dataset wit
 
 Table 3. BriefSum Enriched Longitudinal Recording
 
-For longitudinal recordings that did not involve long-distance
-traveling, we may simply stop here and move onto the estimating cosinor
-parameters for further analysis. But given that `ActiGlobe` was designed
-specifically to harmonize and correct recordings affected by changes in
-the time zone. We have to go a few steps further to clean our data.
+For longitudinal recordings that did not involve long-distance travel,
+we may simply stop here and proceed to estimate cosinor parameters for
+further analysis. But given that `ActiGlobe` was designed specifically
+to harmonize and correct recordings affected by time zone changes. We
+have to take a few more steps to clean up the data.
 
 ## Step 1: Look into a travel diary
 
-While users born after 2YK may not be familiar with concept of a travel
-diary, it was relatively popular among young travelers to document their
-journeys while traveling. These physical notebooks generally come with
-item-wise spaces to jot down our trip itinerary, including date, time
-and destination. This information is crucial to properly sort out the
-recordings by day and correct the previously created time stamps by
-`BriefSum` to match the destination.
+While users born after 2YK may not be familiar with the concept of a
+travel diary, it was relatively popular among young travellers to
+document their journeys while travelling. These physical notebooks
+generally come with item-wise spaces to jot down our trip itinerary,
+including date, time and destination. This information is crucial for
+properly sorting the recordings by day and for correcting the previously
+created timestamps by `BriefSum` to match the destination.
 
 Fortunately, we already created something similar for this tutorial -
-TLog. In the TLog, The `TLog` was created using the standard travel
-diary template, which can be created using the function
+TLog. The `TLog` was created using the standard travel diary template,
+which can be created using the function
 [`TravelLog()`](https://cwy20030.github.io/ActiGlobe/reference/TravelLog.md).
 For more information on the standard travel diary, type
 [`?TravelLog`](https://cwy20030.github.io/ActiGlobe/reference/TravelLog.md)
@@ -178,7 +180,7 @@ data using `ActiGlobe`. The diary contains five columns to help document
 the itinerary for each trip that the wearer took. By default, the first
 row should contain the information about the original location when the
 recording started. Here, one may notice our intentional design of the
-template to record UTC_Offset by default, instead of the actual
+template to record the UTC offset by default, rather than the actual
 geological location. This strategy aims to reduce the level of
 intrusiveness that participants may feel when asked to provide details
 of their trip. Since daylight saving is not always a shared practice for
@@ -187,9 +189,9 @@ country, it is important to add this information because it can affect
 up to one hour in difference when correcting for time stamps.
 
 To facilitate the documentation of the travel log, we also include a
-copy of the standard Internet Assigned Numbers Authority (IANA) time
-table in ActiGlobe. We can simply use `View(IANA)` to pull up the 2024
-version of the time table.
+copy of the standard Internet Assigned Numbers Authority (IANA)
+timetable in ActiGlobe. We can simply use `View(IANA)` to pull up the
+2025b version of the timetable.
 
 ``` r
 data(IANA)
@@ -215,27 +217,45 @@ Table 5. An Overview of the 2024 IANA Time Zone Database
 Before `ActiGlobe` directly modify information stored in the enriched
 longitudinal recording - `df`, we will need to adjust the brief summary
 stored in `Bdf`. This design allows us to quickly scan through the
-summary file just in case any adjustment is not properly addressed.
+summary file, just in case any adjustment is not properly addressed.
 
 ``` r
 Bdf.adj <- TAdjust(Bdf, TLog)
 ```
 
-When we put it side-by-side against the initial brief summary, we can
-see clear changes in the various documentations about the recordings and
+When we put it side-by-side with the initial brief summary, we can see
+clear changes across the various documents regarding the recordings and
 their annotations.
 
 ``` r
 knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 ```
 
-##### Table 6 Initial Brief Summary of the Recording ![Table 6 Initial Brief Summary of the Recording](images/Bdf_demo.png)
+|  | Date | Epoch | UTC | TZ_code | Daylight_Saving | Recording_Start | Recording_End | GL_Offset | nDataPoints | Cumulative_Start_Second | Cumulative_End_Second | Excluded | Warning |
+|:---|:---|---:|:---|:---|:---|:---|:---|---:|---:|---:|---:|:---|:---|
+| 10 | 2017-11-02 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 728160 | 814500 | FALSE |  |
+| 11 | 2017-11-03 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 814560 | 900900 | FALSE |  |
+| 12 | 2017-11-04 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 900960 | 987300 | FALSE |  |
+| 13 | 2017-11-05 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 1 | 1500 | 987360 | 1077300 | TRUE | Time Change |
+| 14 | 2017-11-06 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1077360 | 1163700 | FALSE |  |
+| 15 | 2017-11-07 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1163760 | 1250100 | FALSE |  |
+
+Table 6 Initial Brief Summary of the Recording
 
 ``` r
 knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 ```
 
-##### Table 7. Adjusted Brief Summary of the Recording ![Table 6 Initial Brief Summary of the Recording](images/Bdf.adj_demo.png)
+|  | Date | Epoch | UTC | TZ_code | Daylight_Saving | Recording_Start | Recording_End | GL_Offset | nDataPoints | Cumulative_Start_Second | Cumulative_End_Second | Excluded | Warning | Recording_Period | Hour_Adjusted |
+|:---|:---|---:|:---|:---|:---|:---|:---|---:|---:|---:|---:|:---|:---|---:|---:|
+| 10 | 2017-11-02 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 771360 | 857700 | TRUE | Travel Day | 2 | 12 |
+| 11 | 2017-11-03 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 857760 | 944100 | FALSE |  | 2 | 12 |
+| 12 | 2017-11-04 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 944160 | 1030500 | FALSE |  | 2 | 12 |
+| 13 | 2017-11-05 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1030560 | 1116900 | FALSE |  | 2 | 12 |
+| 14 | 2017-11-06 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1116960 | 1203300 | FALSE |  | 2 | 12 |
+| 15 | 2017-11-07 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1203360 | 1289700 | FALSE |  | 2 | 12 |
+
+Table 7. Adjusted Brief Summary of the Recording
 
 When we compare the overview of the longitudinal recording, we can also
 see clear changes in the various documentations about the recordings and
@@ -251,9 +271,9 @@ ggActiGlobe(
 ```
 
 ![Figure 1. An Overview of Unadjusted
-Recording](images/Unadjusted_Overview.png)
+Recordin](images/Unadjusted_Overview.png)
 
-Figure 1. An Overview of Unadjusted Recording
+Figure 1. An Overview of Unadjusted Recordin
 
 ``` r
 ### Reconstruct the longitudinal recording with proper segmentation
@@ -276,10 +296,10 @@ ggActiGlobe(
 )
 ```
 
-![Figure 1. An Overview of Adjusted
-Recording](images/Adjusted_Overview.png)
+![Figure 2. An Overview of Adjusted
+Recordin](images/Adjusted_Overview.png)
 
-Figure 1. An Overview of Adjusted Recording
+Figure 2. An Overview of Adjusted Recordin
 
 We can also use the following code to look at each daily recording
 separately. Note that the code below was intentionally left without
@@ -315,5 +335,6 @@ for (i in names(dfList$Daily_df)) {
 }
 ```
 
-See the next tutorial for how to segment/export recordings by day and
-how to generate graphic report.
+Refer to the ‘Graphic-Report’ tutorial for instructions on how to
+segment and export recordings by day, as well as how to generate a
+graphic report.

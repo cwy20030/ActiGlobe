@@ -89,23 +89,6 @@ Yao</h4>
 
     
     
-<style>
-/* container that forces a fixed pixel width and enables scrolling */
-.fullsize-scroll {
-  width: 700px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* prevent theme CSS from shrinking the image */
-.fullsize-scroll img {
-  width: 1200px !important;
-  max-width: none !important;
-  height: auto !important;
-  display: block;
-}
-
-</style>
 <div class="section level2">
 <h2 id="what-will-be-covered-in-this-tutorial">What will be covered in this tutorial?<a class="anchor" aria-label="anchor" href="#what-will-be-covered-in-this-tutorial"></a>
 </h2>
@@ -178,26 +161,26 @@ them using the function [“install.packages()”].</p>
 <p>&lt; Tip for Beginner to R&gt; 1. Type: View(FlyEast) in the R
 console will allow users to review the data structure of FlyEast. 2. Use
 <b>Tab</b> button to help finish the code. Try typing: “Fly” in the
-Console (i.e., the window where we can see a <code>&gt;</code>) then
+Console (i.e., the window where we can see a <code>&gt;</code>), then
 press the button <b>Tab</b> on the keyboard.</p>
 </div>
 <div class="section level2">
 <h2 id="step-0--create-a-brief-summary-of-the-recordings">Step 0. Create a brief summary of the recordings<a class="anchor" aria-label="anchor" href="#step-0--create-a-brief-summary-of-the-recordings"></a>
 </h2>
 <p>In general, when pre-processing or harmonizing large volumes of data,
-it’s good practice to first generate a structured summary of the dataset
-at hand.</p>
+it’s good practice to first generate a structured summary of the
+dataset.</p>
 <p>Here, we use <code><a href="../reference/BriefSum.html">BriefSum()</a></code> to generate an initial summary
 of the actigraphy data recorded in FlyEast. Based on the initial
 recording time, it runs through the raw recording file to provide a
 quick overview with simple summaries for each recording day and a newly
 enriched actigraphy data. This pre-processing step also automatically
-adds time-stamps to the original longitudinal recording. If the original
-location inherits the practice of daylight saving,
+adds timestamps to the original longitudinal recording. If the original
+location inherits the practice of daylight-saving transitioning,
 <code><a href="../reference/BriefSum.html">BriefSum()</a></code> would also automatically handle any gain or loss
 in time. By default, <code><a href="../reference/BriefSum.html">BriefSum()</a></code> would allow us to store
 both the summary and the newly enriched recording data in a
-data.list.</p>
+<code>data.list</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">BdfList</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/BriefSum.html">BriefSum</a></span><span class="op">(</span></span>
@@ -222,24 +205,17 @@ multiple outputs at once just like in <code>Matlab</code> and
 <span>    Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>In the brief summary of daily recording, we would have thirteen
-parameters including the information on the beginning and the end of
+parameters, including the information on the beginning and the end of
 each daily recording period, labels warning the total time of a
-recording is less than 24 hours and the presence of daylight saving time
+recording is less than 24 hours and the presence of daylight-saving time
 (based on the initial time zone).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Bdf</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">Bdf</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></code></pre></div>
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
-<div class="fullsize-scroll">
-<h5 class="image-title">
+<div class="figure">
+<img src="images/Bdf_head.png" class="r-plt" alt="Table 2 The Header of Bdf" width="823"><p class="caption">
 Table 2 The Header of Bdf
-
-<img src="images/Bdf_head.png" alt="Table 2 The Header of Bdf">
-</h5>
+</p>
 </div>
 <p>In the enriched data - <code>df</code>, we have both the original
 data stored in <code>FlyEast</code> and some new information, such as
@@ -459,25 +435,26 @@ TRUE
 </tbody>
 </table>
 <p>For longitudinal recordings that did not involve long-distance
-traveling, we may simply stop here and move onto the estimating cosinor
+travel, we may simply stop here and proceed to estimate cosinor
 parameters for further analysis. But given that <code>ActiGlobe</code>
 was designed specifically to harmonize and correct recordings affected
-by changes in the time zone. We have to go a few steps further to clean
-our data.</p>
+by time zone changes. We have to take a few more steps to clean up the
+data.</p>
+</div>
 <div class="section level2">
 <h2 id="step-1-look-into-a-travel-diary">Step 1: Look into a travel diary<a class="anchor" aria-label="anchor" href="#step-1-look-into-a-travel-diary"></a>
 </h2>
-<p>While users born after 2YK may not be familiar with concept of a
-travel diary, it was relatively popular among young travelers to
-document their journeys while traveling. These physical notebooks
+<p>While users born after 2YK may not be familiar with the concept of a
+travel diary, it was relatively popular among young travellers to
+document their journeys while travelling. These physical notebooks
 generally come with item-wise spaces to jot down our trip itinerary,
-including date, time and destination. This information is crucial to
-properly sort out the recordings by day and correct the previously
-created time stamps by <code>BriefSum</code> to match the
+including date, time and destination. This information is crucial for
+properly sorting the recordings by day and for correcting the previously
+created timestamps by <code>BriefSum</code> to match the
 destination.</p>
 <p>Fortunately, we already created something similar for this tutorial -
-TLog. In the TLog, The <code>TLog</code> was created using the standard
-travel diary template, which can be created using the function
+TLog. The <code>TLog</code> was created using the standard travel diary
+template, which can be created using the function
 <code><a href="../reference/TravelLog.html">TravelLog()</a></code>. For more information on the standard travel
 diary, type <code><a href="../reference/TravelLog.html">?TravelLog</a></code> or <code><a href="../reference/TravelLog.html">help(TravelLog)</a></code> in
 the R console.</p>
@@ -582,8 +559,8 @@ actigraphy data using <code>ActiGlobe</code>. The diary contains five
 columns to help document the itinerary for each trip that the wearer
 took. By default, the first row should contain the information about the
 original location when the recording started. Here, one may notice our
-intentional design of the template to record UTC_Offset by default,
-instead of the actual geological location. This strategy aims to reduce
+intentional design of the template to record the UTC offset by default,
+rather than the actual geological location. This strategy aims to reduce
 the level of intrusiveness that participants may feel when asked to
 provide details of their trip. Since daylight saving is not always a
 shared practice for all geological locations within the same time zone
@@ -591,14 +568,14 @@ or even the same country, it is important to add this information
 because it can affect up to one hour in difference when correcting for
 time stamps.</p>
 <p>To facilitate the documentation of the travel log, we also include a
-copy of the standard Internet Assigned Numbers Authority (IANA) time
-table in ActiGlobe. We can simply use <code>View(IANA)</code> to pull up
-the 2024 version of the time table.</p>
+copy of the standard Internet Assigned Numbers Authority (IANA)
+timetable in ActiGlobe. We can simply use <code>View(IANA)</code> to
+pull up the 2025b version of the timetable.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span></code></pre></div>
-<table style="width:800px;" class="table">
+<table style="width:700px;" class="table">
 <caption>
 Table 5. An Overview of the 2024 IANA Time Zone Database
 </caption>
@@ -942,49 +919,680 @@ Pacific Standard Time
 <p>Before <code>ActiGlobe</code> directly modify information stored in
 the enriched longitudinal recording - <code>df</code>, we will need to
 adjust the brief summary stored in <code>Bdf</code>. This design allows
-us to quickly scan through the summary file just in case any adjustment
+us to quickly scan through the summary file, just in case any adjustment
 is not properly addressed.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TAdjust.html">TAdjust</a></span><span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
-<p>When we put it side-by-side against the initial brief summary, we can
-see clear changes in the various documentations about the recordings and
-their annotations.</p>
+<p>When we put it side-by-side with the initial brief summary, we can
+see clear changes across the various documents regarding the recordings
+and their annotations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
-<div class="fullsize-scroll">
-<h5 class="image-title">
+<table style="width:700px;" class="table">
+<caption>
 Table 6 Initial Brief Summary of the Recording
-
-<img src="images/Bdf_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
-</h5>
-</div>
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+2017-11-02
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+728160
+</td>
+<td style="text-align:right;">
+814500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+2017-11-03
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+814560
+</td>
+<td style="text-align:right;">
+900900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+2017-11-04
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+900960
+</td>
+<td style="text-align:right;">
+987300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+2017-11-05
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1500
+</td>
+<td style="text-align:right;">
+987360
+</td>
+<td style="text-align:right;">
+1077300
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Time Change
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+2017-11-06
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1077360
+</td>
+<td style="text-align:right;">
+1163700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+2017-11-07
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1163760
+</td>
+<td style="text-align:right;">
+1250100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Bdf.adj</span><span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
-<div class="fullsize-scroll">
-<h5 class="image-title">
+<table style="width:700px;" class="table">
+<caption>
 Table 7. Adjusted Brief Summary of the Recording
-
-<img src="images/Bdf.adj_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
-</h5>
-</div>
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+<th style="text-align:right;">
+Recording_Period
+</th>
+<th style="text-align:right;">
+Hour_Adjusted
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+2017-11-02
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+771360
+</td>
+<td style="text-align:right;">
+857700
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Travel Day
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+2017-11-03
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+857760
+</td>
+<td style="text-align:right;">
+944100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+2017-11-04
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+944160
+</td>
+<td style="text-align:right;">
+1030500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+2017-11-05
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1030560
+</td>
+<td style="text-align:right;">
+1116900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+2017-11-06
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1116960
+</td>
+<td style="text-align:right;">
+1203300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+2017-11-07
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1203360
+</td>
+<td style="text-align:right;">
+1289700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+</tbody>
+</table>
 <p>When we compare the overview of the longitudinal recording, we can
 also see clear changes in the various documentations about the
 recordings and their annotations</p>
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ggActiGlobe.html">ggActiGlobe</a></span><span class="op">(</span></span>
 <span>  df <span class="op">=</span> <span class="va">df</span>,</span>
@@ -992,9 +1600,10 @@ recordings and their annotations</p>
 <span>  VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
 <span>  VDT <span class="op">=</span> <span class="st">"DateTime"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="images/Unadjusted_Overview.png" width="800" alt="Figure 1. An Overview of Unadjusted Recording"><div class="figcaption">Figure 1. An Overview of Unadjusted
-Recording</div>
+<div class="figure">
+<img src="images/Unadjusted_Overview.png" class="r-plt" alt="Figure 1. An Overview of Unadjusted Recordin" width="819"><p class="caption">
+Figure 1. An Overview of Unadjusted Recordin
+</p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### Reconstruct the longitudinal recording with proper segmentation</span></span>
@@ -1015,9 +1624,10 @@ Recording</div>
 <span>  VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
 <span>  VDT <span class="op">=</span> <span class="st">"DateTime"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="images/Adjusted_Overview.png" width="800" alt="Figure 1. An Overview of Adjusted Recording"><div class="figcaption">Figure 1. An Overview of Adjusted
-Recording</div>
+<div class="figure">
+<img src="images/Adjusted_Overview.png" class="r-plt" alt="Figure 2. An Overview of Adjusted Recordin" width="817"><p class="caption">
+Figure 2. An Overview of Adjusted Recordin
+</p>
 </div>
 <p>We can also use the following code to look at each daily recording
 separately. Note that the code below was intentionally left without
@@ -1048,17 +1658,18 @@ generating any output plot to avoid overcrowding this tutorial.</p>
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Activity</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>See the next tutorial for how to segment/export recordings by day and
-how to generate graphic report.</p>
+<p>Refer to the ‘Graphic-Report’ tutorial for instructions on how to
+segment and export recordings by day, as well as how to generate a
+graphic report.</p>
 </div>
 </div>
-</div>
-</main>
-</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
-  <aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside><footer><div class="pkgdown-footer-left">
+
+
+    <footer><div class="pkgdown-footer-left">
   <p>Developed by C. William Yao, Giorgio Varesco, François Bieuzen, Guido Simonelli.</p>
 </div>
 
@@ -1067,5 +1678,11 @@ how to generate graphic report.</p>
 </div>
 
     </footer>
-</body>
+</div>
+
+
+
+
+
+  </body>
 </html>

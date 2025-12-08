@@ -92,11 +92,12 @@ Yao</h4>
 <div class="section level2">
 <h2 id="cosinor-analysis">Cosinor Analysis<a class="anchor" aria-label="anchor" href="#cosinor-analysis"></a>
 </h2>
-<p>After we segmented the data by dates, we can now move on to model the
-circadian rhythm based on the activity scores. For this, we are going to
-use the pre-travel recording on the 27<sup>th</sup> of October. Since
-the recording was not affected by time change. We can simply export it
-to a new variable, called , which is short for data frame.</p>
+<p>After we segmented the data by date, we can now model the circadian
+rhythm using the activity scores. For this, we will use the pre-travel
+recording on the 27<sup>th</sup> of October. Since the recording was not
+affected by the time change. We can simply store the unaffected segments
+in a new variable called <code>df</code>, which stands for data
+frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Import data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="st">"FlyEast"</span><span class="op">)</span></span>
@@ -140,22 +141,25 @@ to a new variable, called , which is short for data frame.</p>
 <div class="section level4">
 <h4 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a>
 </h4>
-<p>If we process using the , we will notice that the results look a bit
-different. This is because ActiGlobe treats the first time point of the
-day as , whereas it is often treated as the first time point due to the
-specification in the sequence generator.</p>
+<p>If we process <code>FlyEast</code> using the
+<code><a href="https://rdrr.io/pkg/cosinor/man/cosinor.lm.html" class="external-link">cosinor::cosinor.lm</a></code>, we will notice that the results look a
+bit different. This is because ActiGlobe treats the first time point of
+the day as <code>00:00:00</code>, whereas this is sometimes treated as
+<code>00:00:00</code> plus one unit of the device sampling rate due to
+the use of the sequence generator.</p>
 </div>
 <div class="section level4">
 <h4 id="ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls">Ecnometry-modified Cosinor Model with Feasible General Least Sqaure
 (FGLS)<a class="anchor" aria-label="anchor" href="#ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls"></a>
 </h4>
-<p>Besides, the traditioanl OLS-based cosinor model, also allows user to
-estimate model using FGLS-based method. In ActiGlobe, the FGLS was
-implemented via a weighted residual least square approximation. This
-two-step process often produces a better representation of the “boarder”
-between sleep and awake activity than otherwise from the traditional
-OLS. Nevertheless, neither methods can offer realistic few of our
-activity pattern given they are simply single-phase cosinor models.</p>
+<p>Besides, the traditional OLS-based cosinor
+model,<code>CosinorM</code> also allows users to estimate the model
+using the FGLS-based method. In ActiGlobe, the FGLS was implemented via
+a weighted residual least square approximation. This two-step process
+often produces a better representation of the “border” between sleep and
+wakefulness than traditional OLS. Nevertheless, neither method can
+realistically capture our activity patterns, given that they are simply
+single-phase cosinor models.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.fgls</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span> <span class="op">(</span></span>
@@ -181,9 +185,9 @@ activity pattern given they are simply single-phase cosinor models.</p>
 <p>While certain circadian measures, such as melatonin, often follow a
 roughly 24-hour single-phase, human activity pattern is generally
 fragmented. To capture the non-linearity in our activity pattern, it is
-possible to add additional phase components when using . Here, we
-provided two examples of cosinor models with two phase components, each
-fitted using OLS or FGLS-based methods.</p>
+possible to add more phase components when using <code>CosinorM</code>.
+Here, we provided two examples of cosinor models with two phase
+components, each fitted using OLS or FGLS-based methods.</p>
 <div class="section level4">
 <h4 id="traditional-cosinor-model-fitted-via-ordinary-least-sqaure-ols-1">Traditional Cosinor Model fitted via Ordinary Least Sqaure
 (OLS)<a class="anchor" aria-label="anchor" href="#traditional-cosinor-model-fitted-via-ordinary-least-sqaure-ols-1"></a>
@@ -243,11 +247,11 @@ fitted using OLS or FGLS-based methods.</p>
 <span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.fgls2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%202%20FGLS-1.png" class="r-plt" alt="Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model" width="672"></p>
 <p>It is worth noting that we cannot individually interpret each cosinor
-parameters alone when fitting a multicomponent model, This is because
-the rest-activity patterns estimated by general linear regression is the
-cumulative sum of all the fitted cosinor components (i.e. both 12 and
-24hour waves). As such, it is better to use the parameters extracted
-post hoc for analysis.</p>
+parameter alone when fitting a multicomponent model. This is because the
+rest-activity patterns estimated by general linear regression are the
+cumulative sums of all the fitted cosinor components (i.e., both 12- and
+24-hour waves). As such, it is better to use the post hoc-extracted
+parameters for analysis.</p>
 <pre><code><span><span class="co">#&gt;    Beta.12   Gamma.12     phi.12 </span></span>
 <span><span class="co">#&gt;   77.74727 -112.12098   10.15794 </span></span>
 <span><span class="co">#&gt;    Beta.24   Gamma.24     phi.24 </span></span>
@@ -256,17 +260,17 @@ post hoc for analysis.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="circularized-gaussian-kernel-density-estimation-kde">Circularized Gaussian Kernel Density Estimation (KDE)<a class="anchor" aria-label="anchor" href="#circularized-gaussian-kernel-density-estimation-kde"></a>
+<h3 id="gaussian-kernel-density-estimation-on-circularized-time">Gaussian Kernel Density Estimation on Circularized Time<a class="anchor" aria-label="anchor" href="#gaussian-kernel-density-estimation-on-circularized-time"></a>
 </h3>
-<p>Besides the traditional cosinor-based methodology, ActiGlobe also
-offers circularized Gaussian kernel density estimation. In contrast to
-the traditional cosinor method, uses nonparametric kernel smoothing to
-map the activity pattern on a circularized time-domain. This strategy
-allows it to better respect the intensity and the duration of the
-underlying rest-activity patterns, without forcing a sinusoidal shape.
-To facilitate transition from cosinor model, we designed to generate
-cosinor-like parameters by projecting the model onto an imaginary
-cosinor plane.</p>
+<p>Besides the traditional cosinor rhythmetry, ActiGlobe also offers
+Gaussian kernel density estimation (KDE). In contrast to the traditional
+cosinor method, <code>CosinrM.KDE</code> uses nonparametric kernel
+smoothing to map the activity pattern on a circularized time domain.
+This strategy allows it to better respect the intensity and the duration
+of the underlying rest-activity patterns, without forcing a sinusoidal
+shape. To ease transition from cosinor model, we designed
+<code>CosinorM.KDE</code> to generate cosinor-like parameters by
+projecting the model onto an imaginary cosinor plane.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.KDE</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="../reference/CosinorM.KDE.html">CosinorM.KDE</a></span> <span class="op">(</span></span>
@@ -286,34 +290,35 @@ cosinor plane.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.KDE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%201%20KDE-1.png" class="r-plt" alt="Figure 6: Fitting of Circularized Gaussian Kernel Density Estimation" width="672"></p>
-<p>It is worth noting that while does provide a variance and standard
-error of the fitted rest-activity pattern, this is a density‑based
-signal‑processing strategy not a regression model. As a
-signal‑processing technique, lacks the ability to directly provide
-standard errors or confidence intervals for cosinor parameters and
-related post hoc estimates (e.g., bathyphase). Thankfully, we can take
-the advantage of bootstrap resampling to empirically estimate confidence
-intervals and standard errors for these post‑hoc parameters. Note that
-is designed to stabilize estimates when data are irregularly spaced or
-limited to short recording intervals.</p>
+<p>It is worth noting that while <code>CosinorM.KDE</code> does provide
+a variance and standard error for the fitted rest-activity pattern; this
+is a density‑based signal‑processing strategy, not a regression model.
+As a signal‑processing technique, <code>CosinorM.KDE</code> lacks the
+ability to directly provide standard errors or confidence intervals for
+cosinor parameters and related post hoc estimates (e.g., bathyphase).
+Thankfully, we can use bootstrap resampling to empirically estimate
+confidence intervals and standard errors for these post‑hoc parameters.
+Note that <code>CosinorM.KDE</code> is designed to stabilize estimates
+when data are irregularly spaced or limited to short recording
+intervals.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/boot.seci.html">boot.seci</a></span> <span class="op">(</span></span>
 <span>    object <span class="op">=</span> <span class="va">fit.KDE</span>,</span>
 <span>    level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>    N <span class="op">=</span> <span class="fl">100</span></span>
-<span><span class="op">)</span> <span class="co">### for demonstration, the number of bootstrap was limited to 100.</span></span>
-<span><span class="co">#&gt;                    Estimate Std. Error t value    2.5%   97.5%</span></span>
-<span><span class="co">#&gt; MESOR                177.24       4.60   38.55  168.93  185.37</span></span>
-<span><span class="co">#&gt; Amplitude.24         157.66       7.15   22.08  145.51  171.65</span></span>
-<span><span class="co">#&gt; Acrophase.24          -2.89       0.04  -73.22   -2.96   -2.82</span></span>
-<span><span class="co">#&gt; Beta.24             -152.48       7.90  -19.39 -167.73 -138.96</span></span>
-<span><span class="co">#&gt; Gamma.24             -39.60       5.28   -7.27  -48.30  -29.41</span></span>
-<span><span class="co">#&gt; MESOR.ph             295.55      14.50   20.43  266.18  324.46</span></span>
-<span><span class="co">#&gt; Bathyphase.ph.time     4.35       1.83    2.96    0.60    6.13</span></span>
-<span><span class="co">#&gt; Trough.ph              8.12       1.84    4.93    5.09   11.66</span></span>
-<span><span class="co">#&gt; Acrophase.ph.time     10.50       0.31   33.60    9.97   11.05</span></span>
-<span><span class="co">#&gt; Peak.ph              582.97      29.10   20.04  522.64  638.85</span></span>
-<span><span class="co">#&gt; Amplitude.ph         287.43      14.66   19.58  257.36  314.75</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="co">### for demonstration, the number of bootstraps was limited to 100.</span></span>
+<span><span class="co">#&gt;                    Estimate Std Error t value    2.5%   97.5%</span></span>
+<span><span class="co">#&gt; MESOR                177.24      4.60   38.55  168.93  185.37</span></span>
+<span><span class="co">#&gt; Amplitude.24         157.66      7.15   22.08  145.51  171.65</span></span>
+<span><span class="co">#&gt; Acrophase.24          -2.89      0.04  -73.22   -2.96   -2.82</span></span>
+<span><span class="co">#&gt; Beta.24             -152.48      7.90  -19.39 -167.73 -138.96</span></span>
+<span><span class="co">#&gt; Gamma.24             -39.60      5.28   -7.27  -48.30  -29.41</span></span>
+<span><span class="co">#&gt; MESOR.ph             295.55     14.50   20.43  266.18  324.46</span></span>
+<span><span class="co">#&gt; Bathyphase.ph.time     4.35      1.83    2.96    0.60    6.13</span></span>
+<span><span class="co">#&gt; Trough.ph              8.12      1.84    4.93    5.09   11.66</span></span>
+<span><span class="co">#&gt; Acrophase.ph.time     10.50      0.31   33.60    9.97   11.05</span></span>
+<span><span class="co">#&gt; Peak.ph              582.97     29.10   20.04  522.64  638.85</span></span>
+<span><span class="co">#&gt; Amplitude.ph         287.43     14.66   19.58  257.36  314.75</span></span></code></pre></div>
 <p>Currently, was designed to compute standard errors and confidence
 intervals in serial processes, which means that it will take some time
 to finish the computation.</p>
@@ -327,9 +332,12 @@ to finish the computation.</p>
 <div class="section level5">
 <h5 id="ols-cosinor-vs--kernel-density-estimation">OLS-Cosinor vs. Kernel Density Estimation<a class="anchor" aria-label="anchor" href="#ols-cosinor-vs--kernel-density-estimation"></a>
 </h5>
-<p>When we plot the KDE alongside the cosinor we can immediately see
-skew, broad or narrow peaks, and multiple active periods that the
-single‑harmonic cosinor cannot represent.
+<p>When we compare the KDE-based estimate with the OLS-based cosinor
+model, we can immediately see that <code>CosinorM.KDE</code> better
+captures the complexity of the wearer’s activity pattern. Since
+<code>CosinorM.KDE</code> does not assume a specific pattern of
+activity, it avoids introducing bias from assumptions or model
+specifications into the rest-activity-based circadian parameters.
 <img src="Circadian-Analysis_files/figure-html/Model%201%20OLS%20vs%20KDE-1.png" class="r-plt" alt="Figure 7: Overlay of Fitting of OLS-based Cosinor and Circularized Gaussian Kernel Density Estimation" width="672"></p>
 </div>
 </div>

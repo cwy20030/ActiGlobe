@@ -57,7 +57,7 @@ citation("ActiGlobe")
 #>   }
 ```
 
-To convert to EndNote compatible format, paste the BibTeX entry in
+To convert to an EndNote-compatible format, paste the BibTeX entry in
 \[online bibtex-converter\]
 (<https://asouqi.github.io/bibtex-converter/>)
 
@@ -80,6 +80,20 @@ BriefSum(df = FlyEast,
 Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
+
+``` r
+### Quick overview of the original recording
+ggActiGlobe(df = df, 
+            Bdf = Bdf,
+            VAct = "Activity",
+            VDT = "DateTime")
+```
+
+![Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day
+Epoching Misalignment](articles/images/Unadjusted_Overview.png)
+
+Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day
+Epoching Misalignment
 
 ### Adjust Travel-induced Time Shift
 
@@ -114,6 +128,11 @@ ggActiGlobe(df = df2,
             VAct = "Activity",
             VDT = "DateTime")
 ```
+
+![Figure 2. An Overview of the Adjusted
+Recording](articles/images/Adjusted_Overview.png)
+
+Figure 2. An Overview of the Adjusted Recording
 
 ## Other Features
 

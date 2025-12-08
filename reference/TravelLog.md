@@ -35,5 +35,5 @@ Tlg <- TravelLog (Write = FALSE)
 
 print (Tlg)
 #>          ID UTC_Offset Country_with_Daylight_Saving date_Start   date_End
-#> 1 ExampleID     +05:00                         TRUE 2025-12-05 2025-12-06
+#> 1 ExampleID     +05:00                         TRUE 2025-12-08 2025-12-09
 ```
