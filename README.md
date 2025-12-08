@@ -68,7 +68,7 @@ citation("ActiGlobe")
 #>   }
 ```
 
-To convert to EndNote compatible format, paste the BibTeX entry in
+To convert to an EndNote-compatible format, paste the BibTeX entry in
 \[online bibtex-converter\]
 (<https://asouqi.github.io/bibtex-converter/>)
 
@@ -91,8 +91,18 @@ BriefSum(df = FlyEast,
 Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
+
+```r
+### Quick overview of the original recording
+ggActiGlobe(df = df, 
+            Bdf = Bdf,
+            VAct = "Activity",
+            VDT = "DateTime")
+```
 ![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
-<br>
+<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment 
+
+
 ### Adjust Travel-induced Time Shift
 ``` r
 #### Import the travel log into R and give it a name
@@ -102,9 +112,7 @@ TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.cs
 Bdf.adj = TAdjust(Bdf = Bdf, 
                   TLog = TLog)
 ```
-![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
 
-<br>
 Take a coffee break if needed because ActiGlobe will adjust time shift
 and anonymize the travel destination to keep participants’ privacy.
 
@@ -126,6 +134,9 @@ ggActiGlobe(df = df2,
             VAct = "Activity",
             VDT = "DateTime")
 ```
+
+![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
+<b> Figure 2. </b> Overview of the <u>adjusted</u> recording
 
 ## Other Features
 Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.
