@@ -97,4 +97,5 @@ ValInput <- function(x, type = c("Act", "Tm")) {
       return(x)
     }
   )
+          
 }
