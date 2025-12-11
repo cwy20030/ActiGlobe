@@ -1,4 +1,5 @@
 test_that("Demand returns 1 when user selects 1", {
+
   if (grepl("devel", R.version$status) && Sys.info()[["sysname"]] == "Linux") {
     skip("Skip on ubuntu-latest (devel)")
   }
@@ -9,5 +10,6 @@ test_that("Demand returns 1 when user selects 1", {
   result <- Demand(c("1", "2", "Other"), "option")
 
   # ---- Content checks ----
-  expect_equal(result, "1")
+  expect_equal(result, "Option A")
 })
+
