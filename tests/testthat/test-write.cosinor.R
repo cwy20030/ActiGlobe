@@ -49,7 +49,7 @@ expect_true(dir.exists(fDir))   # directory exists
 
 pdfFile <- file.path(fDir, paste0(ID, ".pdf"))
 expect_true(file.exists(pdfFile))   # PDF exists
-}
+
 csvFile <- file.path(fDir, "Summary.csv")
 expect_true(file.exists(csvFile))   # CSV exists
 })
