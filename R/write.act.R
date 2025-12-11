@@ -114,6 +114,8 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
         df = df,
         Bdf = Bdf,
         TUnit = TUnit,
+        VAct = VAct,
+        VTm = VTm,
         Incomplete = Incomplete,
         Travel = Travel
     )

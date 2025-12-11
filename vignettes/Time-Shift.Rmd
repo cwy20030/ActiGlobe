@@ -201,6 +201,8 @@ knitr::include_graphics("images/Unadjusted_Overview.png",dpi = 200)
 dfList <- Act2Daily(
   df = df,
   Bdf = Bdf.adj,
+  VAct = "Activity",
+  VTm = "Time",
   Incomplete = TRUE,
   Travel = TRUE
 )

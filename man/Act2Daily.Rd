@@ -8,6 +8,8 @@ Act2Daily(
   df,
   Bdf,
   TUnit = "hour",
+  VAct = NULL,
+  VTm = NULL,
   Incomplete = FALSE,
   Travel = TRUE
 )
@@ -91,6 +93,8 @@ dfList <-
     Act2Daily (
         df = df,
         Bdf = Bdf,
+        VAct = "Activity",
+        VTm = "Time",
         Incomplete = TRUE,
         Travel = TRUE
     )
