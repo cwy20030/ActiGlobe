@@ -115,7 +115,15 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
     if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
    print (100)
 
-    if (!inherits (time, "numeric")) time <- C2T (time, Discrete = TRUE)
+    if (!inherits (time, "numeric")) {
+            sys <- Sys.info()[["sysname"]]
+        if (sys %in% c("Darwin", "Linux")) {
+        # macOS reports "Darwin"
+            time <- sapply(time, function(x) C2T(x, Discrete = TRUE))
+        } else {
+            time <- C2T(time, Discrete = TRUE)
+        }
+}
     if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
                                        Note that it is crucial to have the proper time coordinate since the model relies on it.")
