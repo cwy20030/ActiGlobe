@@ -13,11 +13,12 @@ Revision history for the R/ActiGlobe package
 
 - New internal function added: Prob.Inact, mIANA
 
-- Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST, Date2TotalT, write.act, BriefSum
+- Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST, Date2TotalT, write.act, BriefSum, write.act, write.cosinor
 
 - Brief Detail: 
     - piecewise binomial estimation of inactive period using Prob.Inact
     - enable internal call function for data through mIANA setting
+    - implement OS-based switcher to execute C-based serial processing within write.* functions to avoid segfault overflow 
     - additional parameter created to identify the initial timepoint of each recording period
     - augment ggCosinorM legend
     - modify internal uses of IANA in Act2Daily

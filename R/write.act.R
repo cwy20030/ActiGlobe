@@ -102,15 +102,34 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
                        Incomplete = FALSE, Travel = TRUE, Simple = FALSE) {
     ##### Get Variable Names -------------
     if (is.null (VTm)) VTm <- names (df) [[1]]
-    if (is.null (VAct)) VAct <- names (df)
+    if (is.null (VAct)) VAct <- names (df) [[2]]
 
 
-    ## Remove Undocumented Recording Epochs ------------------
-    #### Convert and Check TimeFormate
-    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]], Discrete = TRUE)
+    # Check the variable class -----------------------------
+    Tm  <- df [[VTm]]
+    Act <- df [[VAct]]
 
-    CheckT <- unique (diff (df [[VTm]]))
 
+    if (!inherits (Act, "numeric")) Act <- as.numeric (as.character (Act))
+    if (all (Act == 0)) stop ("All activity values are zero.")
+    if (any (!is.finite (Act))) stop ("Activity contains NA/NaN/Inf.")
+    if (!inherits(Tm, "numeric")) {
+        sys <- Sys.info()[["sysname"]]
+        if (sys %in% c("Darwin", "Linux")) {
+            # macOS reports "Darwin"
+            Tm <- sapply(Tm, function(x) C2T(x, Discrete = TRUE))
+        } else {
+            Tm <- C2T(Tm, Discrete = TRUE)
+        }
+    }
+    if (any (Tm > 24 | Tm < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
+                                       Please, rescale the time coordinate to between 0 and 24.
+                                       Note that it is crucial to have the proper time coordinate since the model relies on it.")
+
+
+    ### Reassign to the dataframe ---------------------------
+    df [[VTm]] <- Tm
+    df [[VAct]] <- Act
 
     #### Use Act2Daily ------------------
     dfList <- Act2Daily (

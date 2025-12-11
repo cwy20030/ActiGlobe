@@ -1,12 +1,7 @@
 test_that("write.cosinor exports PDF and summary CSV correctly", {
 
-  if (grepl ("Linux|Darwin", Sys.info ()[["sysname"]])) {
-    skip("Skip on Linux and macOS due to segfault fail")
-  } else {
-
-
   # Create a temporary directory for testing ------------------
-  tmpdir <- getwd ()
+  tmpdir <- tempdir ()
 
   ID = "TESTED"
 
@@ -140,5 +135,5 @@ expect_true(length(out) > length(Bdf))
 expect_true(all(c ("MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time", "Peak", "Amplitude")
                  %in% names(out)))
 
-}
+
 })

@@ -1,6 +1,0 @@
-"Date","Epoch","UTC","TZ_code","Daylight_Saving","Recording_Start","Recording_End","GL_Offset","nDataPoints","Cumulative_Start_Second","Cumulative_End_Second","Excluded","Warning"
-"2017-10-24",60,"UTC-04:00","EDT",TRUE,"13:45:00","23:59:00",0,615,60,36900,TRUE,"Incomplete Recording"
-"2017-10-25",60,"UTC-04:00","EDT",TRUE,"00:00:00","23:59:00",0,1440,36960,123300,FALSE,""
-"2017-10-26",60,"UTC-04:00","EDT",TRUE,"00:00:00","23:59:00",0,1440,123360,209700,FALSE,""
-"2017-10-27",60,"UTC-04:00","EDT",TRUE,"00:00:00","23:59:00",0,1440,209760,296100,FALSE,""
-"2017-10-28",60,"UTC-04:00","EDT",TRUE,"00:00:00","23:59:00",0,1440,296160,382500,FALSE,""
