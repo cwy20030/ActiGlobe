@@ -61,29 +61,31 @@
 
 UnitFactor <- function (x, method = "Time") {
 
+  x <- tolower (x)
 
   # Functional Switcher ------------
   ## Time --------------------------------
   if (method == "Time") {
 
+
     ### Compute denominator factor based on TUnit --------
     TDivider <- ifelse (
-      tolower (x) == "day", 24 * 3600,
-      ifelse (tolower (x) == "hour",   3600,
-             ifelse (tolower (x) == "minute", 60,
-                    ifelse (tolower (x) == "second", 1, NA)
+     x == "day", 24 * 3600,
+      ifelse (x == "hour",   3600,
+             ifelse (x == "minute", 60,
+                    ifelse (x == "second", 1, NA)
              )
       )
     )
 
     ### Fallback: prompt user if invalid unit ------------------
     if (is.na(TDivider)) {
-      tolower (x)<- Demand (c ("day", "hour", "minute", "second"), "Time Unit")
+      x <- Demand (c ("day", "hour", "minute", "second"), "Time Unit")
       TDivider <- ifelse (
-        tolower (x) == "day", 24 * 3600,
-        ifelse (tolower (x) == "hour",   3600,
-               ifelse (tolower (x) == "minute", 60,
-                      ifelse (tolower (x) == "second", 1, NA)
+        x == "day", 24 * 3600,
+        ifelse (x == "hour",   3600,
+               ifelse (x == "minute", 60,
+                      ifelse (x == "second", 1, NA)
                )
         )
       )
