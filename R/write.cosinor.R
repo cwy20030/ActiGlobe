@@ -154,12 +154,11 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
         if (!is.null (df)) {
 
-            # Check the variable class -----------------------------
-            Tm <- df [[VTm]]
-            Act <- df [[VAct]]
-            if (!inherits (Act, "numeric")) Act <- as.numeric (as.character (Act))
-            if (!inherits (Tm, "numeric")) Tm <- C2T (Time = Tm, Discrete = TRUE)
+			Act <- ValInput(x = df [[VAct]], type = "Act")
+			Tm  <- ValInput(x = df [[VTm]], type = "Tm")
 
+			df [[VAct]] <- Act
+			df [[VTm]] <- Tm
 
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]

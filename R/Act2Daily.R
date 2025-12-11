@@ -162,13 +162,6 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
 
 
-    if (!inherits (df [[VAct]], "numeric")) df [[VAct]] <- as.numeric (as.character (df [[VAct]]))
-    if (all (df [[VAct]] == 0)) stop ("all activity values are zero")
-    if (any (!is.finite (df [[VAct]]))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (Time = df [[VTm]],
-															  Discrete = TRUE)
-
-
     ## Build warning & exclusion masks -------------------------
 
     W <- Bdf$Warning # Warning label per day

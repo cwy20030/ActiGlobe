@@ -102,15 +102,12 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
                        Incomplete = FALSE, Travel = TRUE, Simple = FALSE) {
     ##### Get Variable Names -------------
     if (is.null (VTm)) VTm <- names (df) [[1]]
-    if (is.null (VAct)) VAct <- names (df)
+    if (is.null (VAct)) VAct <- names (df) [[2]]
 
 
-    ## Remove Undocumented Recording Epochs ------------------
-    #### Convert and Check TimeFormate
-    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]], Discrete = TRUE)
-
-    CheckT <- unique (diff (df [[VTm]]))
-
+    # Check Point and Input Validation -------------------------
+	df [[VAct]] <- ValInput(x = df [[VAct]], type = "Act")
+	df [[VTm]]  <- ValInput(x = df [[VTm]], type = "Tm")
 
     #### Use Act2Daily ------------------
     dfList <- Act2Daily (
