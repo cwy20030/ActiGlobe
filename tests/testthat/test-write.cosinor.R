@@ -20,6 +20,7 @@ test_that("write.cosinor exports PDF and summary CSV correctly", {
 
   Bdf <- Bdf [5:8, ]
 
+  print (0)
 
 dfList <-
      Act2Daily (
@@ -30,7 +31,7 @@ dfList <-
      )
 
 
-
+print (1)
 write.cosinor (
     Dir = tmpdir, ## Export to the current working directory
     ID = ID,
@@ -42,14 +43,14 @@ write.cosinor (
 
 
 # ---- Structure checks ----
-print(tmpdir)
+  print (2)
 
 fDir <- file.path(paste0(tmpdir,"/", ID,"/"))
 expect_true(dir.exists(fDir))   # directory exists
-
+  print (3)
 pdfFile <- file.path(fDir, paste0(ID, ".pdf"))
 expect_true(file.exists(pdfFile))   # PDF exists
-
+  print (4)
 csvFile <- file.path(fDir, "Summary.csv")
 expect_true(file.exists(csvFile))   # CSV exists
 })
