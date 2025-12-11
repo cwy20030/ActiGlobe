@@ -178,7 +178,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     if (Travel) {
         Ecl [grep ("Travel", W)] <- FALSE
 
-        warning ("Due to travel, some activity counts will overlap spanning adjacent days!")
+        warning ("Due to travel, some activity counts will overlap ",
+                 "spanning adjacent days!")
 
     } else {
         Ecl [grep ("Travel", W)] <- TRUE
@@ -196,7 +197,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
     VNames <- names (df)
     VNames <- VNames [!VNames %in%
-        c ("DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")]
+        c ("DateTime", "Date", "Time", "UTC", "DaylightSaving",
+           "nPoint", "Note")]
 
 
     ## Main loop: slice, align and annotate each calendar day ----------------
@@ -276,7 +278,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
         ### Finalize column names and store in Out (unless excluded)
 
-        names (Temp) <- c (VNames, "DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")
+        names (Temp) <- c (VNames, "DateTime", "Date", "Time", "UTC",
+                           "DaylightSaving", "nPoint", "Note")
         Temp$DateTime <- paste0 (as.character (Temp$Date), " ", as.character (Temp$Time))
 
 
