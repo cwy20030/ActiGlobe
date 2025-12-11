@@ -48,5 +48,9 @@ print (1)
   summary_file <- file.path (fDir, "Summary.csv")
   expect_true (file.exists (summary_file))
 
+  # Validate contents of Summary.csv
+  summary_df <- utils::read.csv (summary_file)
+  expect_s3_class (summary_df, "data.frame")
+  expect_true ("Date" %in% names (summary_df))
 
 })
