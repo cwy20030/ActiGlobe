@@ -62,6 +62,7 @@ C2T <- function (Time, Discrete = FALSE) {
     # If All NAs, Parse as Time Strings -------------
     if (length (na.omit (x)) == 0) {
         Fmt <- TimeFormat (Time, as.time = FALSE)
+        print(5555)
         hms <- as.POSIXlt (Time, format = Fmt)
 
         decimal_hours <- as.numeric (format (hms, "%H")) +
