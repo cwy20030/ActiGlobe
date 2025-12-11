@@ -71,7 +71,7 @@ TimeFormat <- function (Time, as.time = FALSE) {
 
 
     # Unify to Date-Time format
-    DateF <- suppressWarnings (tryCatch (DateFormat (Time, as.date = F)))
+    DateF <- suppressWarnings (tryCatch (DateFormat (Time, as.date = FALSE)))
 
 
     #### If the string contains date, remove it.
@@ -132,7 +132,7 @@ TimeFormat <- function (Time, as.time = FALSE) {
 
         for (i in seq_along (T)) {
             if (!T [[i]] == "") {
-                x <- TimeFormat (T [[i]], as.time = F)
+                x <- TimeFormat (T [[i]], as.time = FALSE)
 
 
                 T [[i]] <-

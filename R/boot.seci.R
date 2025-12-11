@@ -181,8 +181,8 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
         }
     }
 
-    Est <- unlist (lapply (boot.df, mean, na.rm = T))
-    SEs <- unlist (lapply (boot.df, sd, na.rm = T))
+    Est <- unlist (lapply (boot.df, mean, na.rm = TRUE))
+    SEs <- unlist (lapply (boot.df, sd, na.rm = TRUE))
     lci <- unlist (lapply (boot.df, quantile, 0.025))
     uci <- unlist (lapply (boot.df, quantile, 0.975))
 

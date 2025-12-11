@@ -81,7 +81,7 @@ R2P <- function (Bdf, D, U) {
 
     Bdf$UTC.old <- Bdf$UTC [[1]]
 
-    for (d in 1:length (D)) {
+    for (d in seq_along(D)) {
         if (d < length (D)) {
             Period <- as.Date (D [d]:(D [d + 1] - 1))
 

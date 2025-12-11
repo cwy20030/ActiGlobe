@@ -76,8 +76,8 @@ ValInput <- function (x, type = c ("Act", "Tm")) {
       if (!inherits (x, "numeric")) {
         x <- switch (
           sys,
-          "Darwin"  = sapply (x, function (xx) C2T (xx, Discrete = TRUE)),
-          "Linux"   = sapply (x, function (xx) C2T (xx, Discrete = TRUE)),
+          "Darwin"  = vapply (x, function (xx) C2T (xx, Discrete = TRUE), FUN.VALUE = numeric(1)),
+          "Linux"   = vapply (x, function (xx) C2T (xx, Discrete = TRUE), FUN.VALUE = numeric(1)),
           "Windows" = C2T (x, Discrete = TRUE),
           C2T (x, Discrete = TRUE) # fallback
         )

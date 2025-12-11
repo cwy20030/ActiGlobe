@@ -88,7 +88,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     iTZ <- sIANA$Timezone_IANA
     STD <- sIANA$TZ_Code
 
-    aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
+    aTZ <- vapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
         if (!grepl ("/", x)) {
 
             iTZ [STD %in% x] [1]
@@ -97,7 +97,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
             x
         }
 
-    })
+    }, FUN.VALUE = character(1))
 
 
 
@@ -131,7 +131,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     ### If TZ is not specified, guess it.
 
-    gTZ <- sapply (seq_len (length (DT)), function (x) {
+    gTZ <- vapply (seq_len (length (DT)), function (x) {
         GuessTZ (
             aOF = format_offset(UTC2Num (U [[x]])),
             DT = DT [[x]],
@@ -139,7 +139,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
             All = FALSE,
             fork = fork
         )
-    })
+    }, FUN.VALUE = character(1))
 
 
     ### Step 1 Change NDPs

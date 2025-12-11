@@ -81,7 +81,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   # Determine if DST exists using time offset on January 1st of 2021
   JAN1 <- as.POSIXct("2021-01-01", tz = "UTC")
 
-  pTZs = GuessTZ(aOF = aOF, fork = fork)
+  pTZs <- GuessTZ(aOF = aOF, fork = fork)
 
   ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
