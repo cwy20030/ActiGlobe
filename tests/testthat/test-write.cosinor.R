@@ -9,7 +9,8 @@ test_that("write.cosinor exports PDF and summary CSV correctly", {
     BriefSum (
       df = FlyEast,
       SR = 1 / 60,
-      Start = "2017-10-24 13:45:00"
+      Start = "2017-10-24 13:45:00",
+      TZ = "America/New_York"
     )
 
   # Let's extract the quick summary of the recording

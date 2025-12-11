@@ -3,7 +3,8 @@ test_that("CosinorM.KDE works on FlyEast actigraphy data", {
     BdfList <- BriefSum(
         df = FlyEast,
         SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
+        Start = "2017-10-24 13:45:00",
+		TZ = "America/New_York"
     )
 
     # Extract actigraphy data for a single day

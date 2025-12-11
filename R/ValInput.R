@@ -54,8 +54,6 @@ ValInput <- function (x, type = c ("Act", "Tm")) {
 
   # Step 0 Argument matching and system info Extraction -----------------------
   type <- match.arg (type)
-  sys <- Sys.info () [["sysname"]]
-
 
   # Step 1 Switch based on type -----------------------------------------------
   switch (
@@ -74,13 +72,7 @@ ValInput <- function (x, type = c ("Act", "Tm")) {
     ## Time validation ---------------------
     "Tm" = {
       if (!inherits (x, "numeric")) {
-        x <- switch (
-          sys,
-          "Darwin"  = sapply (x, function (xx) C2T (xx, Discrete = TRUE)),
-          "Linux"   = sapply (x, function (xx) C2T (xx, Discrete = TRUE)),
-          "Windows" = C2T (x, Discrete = TRUE),
-          C2T (x, Discrete = TRUE) # fallback
-        )
+        x <- sapply (x, function (xx) C2T (xx, Discrete = TRUE))
       }
 
       if (any (x > 24 | x < 0)) {
