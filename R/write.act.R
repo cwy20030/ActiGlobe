@@ -144,6 +144,7 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
             }
 
             readr::write_delim (Temp, paste0 (fDir, "/", d, ".txt"))
+          print(d)
         }
     }
 

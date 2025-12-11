@@ -137,18 +137,19 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     fDir <- paste0 (Dir, "/", ID)
     if (!dir.exists (fDir)) dir.create (fDir)
 
-
+print (12)
     ## Create a PDF file for the ID  ----------------
     pdfDir <- paste0 (fDir, "/", ID, ".pdf")
     if (isFALSE (overwrite)) {
         if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
     }
-
+print (13)
     grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
 
 
     ### Plot ----------------
     for (d in D) {
+       print (d) 
         # print (d) ## For fail-check function purposes
         df <- DailyAct [[d]]
 

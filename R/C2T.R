@@ -54,7 +54,7 @@ C2T <- function (Time, Discrete = FALSE) {
         stop ("Input 'Time' must be a pure character time string with no timezone label.
               Please, check the input using TimeFormat().")
 
-
+    hms <- Time
 
     # First Attempt to Coerce to Numeric -------------
     x <- suppressWarnings (as.numeric (as.character (Time)))
@@ -69,7 +69,8 @@ C2T <- function (Time, Discrete = FALSE) {
             as.numeric (format (hms, "%S")) / 3600
 
 
-        x <- as.numeric (decimal_hours)
+      x <- as.numeric (decimal_hours)
+
 
     }
 
