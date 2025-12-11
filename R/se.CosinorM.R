@@ -20,15 +20,12 @@
 #' @description
 #' Delta‑method derivatives and variances for cosinor amplitude and acrophase
 #'
-#'
 #' @details
-#'
 #' Compute partial derivatives, and delta‑method variances for amplitude and
 #' acrophase from linearized cosinor coefficients for cosine (\eqn{\beta}) and
 #' sine (\eqn{\gamma}) waves, using the variance–covariance matrix. Note that
 #' the matrix is k-by-k, where \eqn{k = 2 * numbers of \tau specified}. See \code{\link{CosinorM}}
 #' The cosinor mapping is:
-#'
 #' \strong{Amplitude} (point estimate, \eqn{A = \sqrt{\beta^2 + \gamma^2}}):
 #'
 #' Partial derivatives (gradient) are:
@@ -72,14 +69,11 @@
 #' \;+\; 2\left(\frac{\partial \phi}{\partial \beta}\right)\left(\frac{\partial \phi}{\partial \gamma}\right)\operatorname{Cov}(\beta,\gamma)
 #' \;+\; \left(\frac{\partial \phi}{\partial \gamma}\right)^2 \operatorname{Var}(\gamma).}
 #'
-#'
 #' @import stats
-#'
 #'
 #' @param object A model of class `CosinorM`
 #' @param method Only supports delta for now
 #' Standard errors are the square roots of the approximated variances.
-#'
 #'
 #' @return A named list with components:
 #' \itemize{
@@ -89,9 +83,10 @@
 #'   \item \code{se.Acrophase}: Delta‑method standard error for acrophase.
 #' }
 #'
+#' @references
+#' Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
 #'
 #' @seealso \code{\link{vcov}}
-#'
 #'
 #' @examples
 #' \dontrun{
@@ -127,6 +122,12 @@
 
 
 se.CosinorM <- function (object, method = "delta") {
+    # Check Point --------------------------
+    if (method != "delta")
+        stop ("Only method = 'delta' is currently supported.")
+
+
+
     # Extract Essential Parameters ------------------
     VCOV <- object$vcov
     SE <- sqrt (diag (VCOV))

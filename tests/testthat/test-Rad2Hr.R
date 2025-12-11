@@ -8,6 +8,8 @@ test_that ("Rad2Hr converts radians to hours correctly", {
     expect_equal (Rad2Hr (input, tau = 24), expected)
 })
 
+
+
 test_that ("Rad2Hr handles numeric vector output length", {
     input <- c (-pi / 2, 0, pi, 3 * pi / 2)
     result <- Rad2Hr (input, tau = 24)
@@ -18,3 +20,14 @@ test_that ("Rad2Hr handles numeric vector output length", {
     # Output should be numeric
     expect_type (result, "double")
 })
+
+
+
+test_that("Rad2Hr errors if tau is NA, character, or out of bounds", {
+    expect_error(Rad2Hr(1, 0), "tau must be greater than 0")
+    expect_error(Rad2Hr(1, 25), "tau must be greater than 0")
+    expect_error(Rad2Hr(1, NA), "tau must be a single finite numeric value")
+
+})
+
+

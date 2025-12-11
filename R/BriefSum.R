@@ -93,6 +93,12 @@
 #' @export
 
 BriefSum <- function (df, SR, Start, TZ = "local") {
+
+    ## Checkpoint -----------------------
+    if (!is.numeric (SR) | SR <= 0) {
+        stop ("Sampling rate must be a positive numeric value")
+    }
+
     # Prepare Basic Variables ------------------
     # MN <- hms::as_hms("00:00:00")
     # MN2 <- hms::as_hms("24:00:00")

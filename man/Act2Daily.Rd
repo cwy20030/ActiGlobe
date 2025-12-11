@@ -26,7 +26,7 @@ Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.}
 \item{VAct}{Optional character. Name of the activity column in `df`. If NULL,
 defaults to the second column of `df`.}
 
-\item{VTm}{Optional character.  Name of the time index column in `df`. If NULL,
+\item{VTm}{Optional character.  Name of the date.time index column in `df`. If NULL,
 defaults to the first column of `df`.}
 
 \item{Incomplete}{Logical; if TRUE, days flagged `Incomplete Recording` (i.e. <24 h)

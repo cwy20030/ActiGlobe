@@ -42,6 +42,12 @@
 #' @export
 
 Num2UTC <- function (x) {
+    # Check Point -------------------------
+    if (any (!is.numeric (x))) x <- as.numeric (as.character (x))
+    if (any (abs (x) > 14) || any (is.na (x))) {
+        stop ("UTC offsets must be between -14 and +14 hours.")
+    }
+
     ## Get the hours
     A <- ifelse (x < 0, ceiling (x), floor (x)) ### Hour unit
     B <- (abs (x) - abs (A)) * 60 ### Minute unit

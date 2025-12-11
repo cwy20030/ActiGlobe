@@ -76,7 +76,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   if(any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
 
   #### Convert offset into the POSIX format
-  aOF <- sprintf("%+03d00", OF)
+  aOF <- format_offset(x = OF)
 
   # Determine if DST exists using time offset on January 1st of 2021
   JAN1 <- as.POSIXct("2021-01-01", tz = "UTC")
@@ -89,7 +89,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
     message(sprintf("No matching found for following time zones: %s", UTCs[TG], " using OlsonNames.
                     Try mIANA..."))
 
-    pTZs[TG] <-  iTZ [Soff %in% UTCs[TG]]
+    pTZs[TG] <-  iTZ[Soff %in% UTCs[TG]]
   }
 
   # Check DST status in mid‐winter vs. mid‐summer ----------
@@ -106,5 +106,17 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   if (length(Out) == length(UTCs)) { names(Out) = UTCs}
 
   return(Out)
+}
+
+
+
+# Helper function to format offset in ±HHMM
+format_offset <- function(x) {
+  # Separate hours and minutes
+  hours <- trunc(x)
+  minutes <- round((x - hours) * 60)
+
+  # Handle cases like 2.75 → 2h 45m
+  sprintf("%+03d%02d", hours, minutes)
 }
 

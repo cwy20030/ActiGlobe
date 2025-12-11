@@ -61,6 +61,9 @@
 
 
 TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
+    # Establish initial time zone ----------------
+    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
+
     ## Extract Essential Parameters ----------------
     DT <- Bdf$Date
 
@@ -86,8 +89,16 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     STD <- sIANA$TZ_Code
 
     aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
-        iTZ [STD %in% x] [1]
+        if (!grepl ("/", x)) {
+
+            iTZ [STD %in% x] [1]
+        } else {
+
+            x
+        }
+
     })
+
 
 
     ## Convert Travel Log to Parameters ------------
@@ -122,7 +133,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     gTZ <- sapply (seq_len (length (DT)), function (x) {
         GuessTZ (
-            aOF = sprintf ("%+03d00", UTC2Num (U [[x]])),
+            aOF = format_offset(UTC2Num (U [[x]])),
             DT = DT [[x]],
             iTZ = TZ,
             All = FALSE,

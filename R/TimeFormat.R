@@ -130,7 +130,7 @@ TimeFormat <- function (Time, as.time = FALSE) {
     } else {
         # Test Time Formats
 
-        for (i in 1:length (T)) {
+        for (i in seq_along (T)) {
             if (!T [[i]] == "") {
                 x <- TimeFormat (T [[i]], as.time = F)
 

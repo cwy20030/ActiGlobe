@@ -105,7 +105,7 @@ Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
     if (!inherits (y, "numeric")) y <- as.numeric (as.character (y))
     if (all (y == 0)) stop ("all activity values are zero")
     if (any (!is.finite (y))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (T, "numeric")) T <- C2T (T)
+    if (!inherits (T, "numeric")) T <- C2T (Time = T, Discrete = TRUE)
 
 
     # Parameters -------------------

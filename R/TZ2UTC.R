@@ -54,6 +54,17 @@
 TZ2UTC <- function (DT, TZ = "local") {
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
+
+    # Validate the time zone
+    valid_zones <- OlsonNames ()
+    if (!TZ %in% valid_zones) {
+        stop (sprintf (
+            "The provided time zone \"%s\" is not recognized.\n",
+            TZ
+        ), "Please check the spelling or consult the IANA time zone table (ActiGlobe::IANA).")
+    }
+
+
     DT <- as.Date (DT)
     x <- lubridate::ymd_hms (paste0 (DT, " 12:00:00"), tz = TZ)
     y <- lubridate::with_tz (x, tzone = "UTC")

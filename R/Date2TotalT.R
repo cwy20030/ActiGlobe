@@ -63,22 +63,31 @@
 #' @export
 Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
-    ## Convert the displayed unit into a factor.
-    Divider <- ifelse (tolower (TUnit) == "hour", 3600,
-        ifelse (tolower (TUnit) == "minute", 60,
-            ifelse (tolower (TUnit) == "second", 1, NA)
-        )
-    )
 
+    # Validate the time zone
+    valid_zones <- OlsonNames ()
+    if (!TZ %in% valid_zones) {
+        stop (sprintf (
+            "The provided time zone \"%s\" is not recognized.\n",
+            TZ
+        ), "Please check the spelling or consult the IANA time zone table (ActiGlobe::IANA).")
+    }
+
+    ## Convert the displayed unit into a factor.
+    TDivider <-
+        UnitFactor(x = TUnit,
+                   method = "Time")
 
     #### Compute the supposed data points for each day ---------------
-    MxD <- as.character (as.POSIXct (max (as.Date (DT)) + 1))
-    iniDs <- DT # Vector 1 for the starting date
-    endDs <- c (DT [-1], MxD) # Vector 2 for the next date
+sTotalSec <-
+    sapply (DT, function(D){
+    MxD <- as.character (as.POSIXct (paste(max (as.Date (D, tz = TZ)) + 1 , " 00:00:00"), tz = TZ))
+    iniDs <-  as.character (as.POSIXct (paste(as.Date (D, tz = TZ), " 00:00:00"), tz = TZ)) # Vector 1 for the starting date
+    endDs <- MxD # Vector 2 for the next date
 
-    sTotalSec <- as.numeric (as.POSIXct (endDs, tz = TZ)) - as.numeric (as.POSIXct (iniDs, tz = TZ)) # Supposed seconds for each day
-
-    Out <- sTotalSec / Divider # Convert the output based on TUnit
+ as.numeric (as.POSIXct (endDs, tz = TZ)) - as.numeric (as.POSIXct (iniDs, tz = TZ)) # Supposed seconds for each day
+})
+    Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
     return (Out)
 }

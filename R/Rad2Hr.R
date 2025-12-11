@@ -38,9 +38,10 @@
 Rad2Hr <- function (x, tau) {
     # coerce x to numeric while preserving NA -------------
     if (!is.numeric (x)) x <- as.numeric (as.character (x))
+    if (!is.numeric (tau)) tau <- as.numeric (as.character (tau))
 
     # validate tau --------------
-    if (!is.numeric (tau) || length (tau) != 1 || is.na (tau) || !is.finite (tau)) {
+    if (length (tau) != 1 || is.na (tau) || !is.finite (tau)) {
         stop ("tau must be a single finite numeric value.")
     }
     if (!(tau > 0 && tau <= 24)) {
