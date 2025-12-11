@@ -64,7 +64,7 @@ C2T <- function (Time, Discrete = FALSE) {
         Fmt <- TimeFormat (Time, as.time = FALSE)
     
  
-        hms <- as.POSIXlt (Tm, format = Fmt)
+        hms <- as.POSIXlt (Time, format = Fmt)
 
         decimal_hours <- as.numeric (format (hms, "%H")) +
             as.numeric (format (hms, "%M")) / 60 +
