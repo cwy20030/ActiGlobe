@@ -162,9 +162,25 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
             # Check the variable class -----------------------------
             Tm <- df [[VTm]]
             Act <- df [[VAct]]
-            if (!inherits (Act, "numeric")) Act <- as.numeric (as.character (Act))
-            if (!inherits (Tm, "numeric")) Tm <- C2T (Time = Tm, Discrete = TRUE)
 
+    # Check the variable class -----------------------------
+    if (!inherits (Act, "numeric")) Act <- as.numeric (as.character (Act))
+    if (all (Act == 0)) stop ("all Act values are zero")
+    if (any (!is.finite (Act))) stop ("activity contains NA/NaN/Inf")
+
+
+    if (!inherits (Tm, "numeric")) {
+            sys <- Sys.info()[["sysname"]]
+        if (sys %in% c("Darwin", "Linux")) {
+        # macOS reports "Darwin"
+            Tm <- sapply(Tm, function(x) C2T(x, Discrete = TRUE))
+        } else {
+            Tm <- C2T(Tm, Discrete = TRUE)
+        }
+}
+    if (any (Tm > 24 | Tm < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
+                                       Please, rescale the time coordinate to between 0 and 24.
+                                       Note that it is crucial to have the proper time coordinate since the model relies on it.")
 
 
             #### Get the time zone for the current ID and date
