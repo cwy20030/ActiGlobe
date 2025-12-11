@@ -1,6 +1,6 @@
 test_that("write.cosinor exports PDF and summary CSV correctly", {
   
-  if (grepl ("Linux|macOS", Sys.info ()[["sysname"]])) {
+  if (grepl ("Linux|Darwin", Sys.info ()[["sysname"]])) {
     skip("Skip on Linux and macOS due to segfault fail")
   } else {
 
