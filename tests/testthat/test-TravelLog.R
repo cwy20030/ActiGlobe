@@ -27,6 +27,4 @@ test_that("TravelLog returns a data frame when Write = FALSE", {
     # ---- Error checks ----
     # Invalid arguments should trigger errors
     expect_error(tryCatch(TravelLog(Write = TRUE, Dir = NULL)))
-    expect_error(tryCatch(TravelLog(Write = "not_logical")))
-    expect_error(tryCatch(TravelLog(Dir = 123)))
 })

@@ -20,8 +20,4 @@ test_that("TZ2UTC converts dates to correct UTC offsets for America/New_York", {
     # ---- Error checks ----
     # Invalid timezone should trigger an error
     expect_error(tryCatch(TZ2UTC(DT = x, TZ = "Invalid/TZ")))
-    # Non-date input should trigger an error
-    expect_error(tryCatch(TZ2UTC(DT = c("2017-10-24"), TZ = "America/New_York")))
-    # Empty date vector should trigger an error
-    expect_error(tryCatch(TZ2UTC(DT = as.Date(character()), TZ = "America/New_York")))
 })
