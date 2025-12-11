@@ -16,25 +16,6 @@ resource_files:
 ---
 
 
-<style>
-/* container that forces a fixed pixel width and enables scrolling */
-.fullsize-scroll {
-  width: 700px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* prevent theme CSS from shrinking the image */
-.fullsize-scroll img {
-  width: 1200px !important;
-  max-width: none !important;
-  height: auto !important;
-  display: block;
-}
-
-</style>
-
-
 ## What will be covered in this tutorial?
 This specific tutorial is designed specifically to show users how to use ActiGlobe to preprocess longitudinal actigrpahy recordings affected by time shift. For analysis and generation of graphic/excel report of daily actigraphy measures, please go to tutorial title: Graphic-Report.
 
@@ -112,17 +93,11 @@ Bdf <- BdfList$Bdf
 head(Bdf)
 ```
 
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Table 2 The Header of Bdf", fig.width=8}
+knitr::include_graphics("images/Bdf_head.png")
 
-<div class="fullsize-scroll">
-  <h5 class="image-title">Table 2 The Header of Bdf</h3>
-  <img src="images/Bdf_head.png" alt="Table 2 The Header of Bdf">
-</div>
+```
 
 In the enriched data - `df`, we have both the original data stored in `FlyEast` and some new information, such as the time stamp of each data point.
 
@@ -164,7 +139,7 @@ head(IANA)
 ```
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE, out.width="30%", paged.print=TRUE, tab.cap = "Table 5. An Overview of the 2024 IANA Time Zone Database"}
-knitr::kable(head(IANA), format = "html", table.attr = "style='width:800px;'")
+knitr::kable(head(IANA), format = "html", table.attr = "style='width:450px;'")
 ```
 ## Step 2: Adjust time change based on the travel diary
 ###  {.scrollable}
@@ -182,45 +157,28 @@ When we put it side-by-side with the initial brief summary, we can see clear cha
 knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 ```
 
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, tab.cap="Table 6 Initial Brief Summary of the Recording", fig.width=10}
+knitr::include_graphics("images/Bdf_demo.png")
 
-<div class="fullsize-scroll">
-  <h5 class="image-title">Table 6 Initial Brief Summary of the Recording</h3>
-  <img src="images/Bdf_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
-</div>
+```
 
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
 knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 ```
 
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
 
 
-<div class="fullsize-scroll">
-  <h5 class="image-title"> Table 7. Adjusted Brief Summary of the Recording</h3>
-  <img src="images/Bdf.adj_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
-</div>
+```{r echo=FALSE, message=FALSE, warning=FALSE, tab.cap="Table 7. Adjusted Brief Summary of the Recording", fig.width=12}
+knitr::include_graphics("images/Bdf.adj_demo.png")
 
+```
 
 
 
 When we compare the overview of the longitudinal recording, we can also see clear changes in the various documentations about the recordings and their annotations
 
-<style>
-.fullsize-scroll { width:700px; text-align:center; }
-.fullsize-scroll .image-title { display:inline-block; margin:8px 0; font-weight:400; font-size:14px; }
-.fullsize-scroll img { width:700px; max-width:none; display:block; margin:0 auto; }
-</style>
 
 ```{r Original_Data, eval=FALSE, message=FALSE, warning=FALSE, fig.height=3, fig.width=8}
 ggActiGlobe(
@@ -230,7 +188,13 @@ ggActiGlobe(
   VDT = "DateTime"
 )
 ```
-![Figure 1. An Overview of Unadjusted Recording](./images/Unadjusted_Overview.png){width=800}
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 1. An Overview of Unadjusted Recordin"}
+knitr::include_graphics("images/Unadjusted_Overview.png",dpi = 200)
+
+```
+
 
 ```{r Pre-processed_Data, eval=FALSE, message=FALSE, warning=FALSE}
 ### Reconstruct the longitudinal recording with proper segmentation
@@ -254,8 +218,10 @@ ggActiGlobe(
 ```
 
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 2. An Overview of Adjusted Recordin"}
+knitr::include_graphics("images/Adjusted_Overview.png",dpi = 200)
 
-![Figure 1. An Overview of Adjusted Recording](./images/Adjusted_Overview.png){width=800}
+```
 
 We can also use the following code to look at each daily recording separately. Note that the code below was intentionally left without generating any output plot to avoid overcrowding this tutorial.
 
