@@ -6,7 +6,7 @@
 # usethis::use_github_action("check-standard") will install it.
 on:
   push:
-    branches: [macOSTest]
+    branches: [macOSTest2]
   pull_request:
 
 name: R-CMD-check.yaml
