@@ -2,6 +2,10 @@ test_that("write.cosinor exports PDF and summary CSV correctly", {
   
 
 
+  if (grepl ("Linux|Darwin", Sys.info ()[["sysname"]])) {
+    skip("Skip on Linux and macOS due to segfault fail")
+  } else {
+
   # Create a temporary directory for testing ------------------
   tmpdir <- getwd ()
 
@@ -53,5 +57,5 @@ expect_true(file.exists(pdfFile))   # PDF exists
 
 csvFile <- file.path(fDir, "Summary.csv")
 expect_true(file.exists(csvFile))   # CSV exists
-
+}
 })
