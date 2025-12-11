@@ -102,14 +102,27 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
                        Incomplete = FALSE, Travel = TRUE, Simple = FALSE) {
     ##### Get Variable Names -------------
     if (is.null (VTm)) VTm <- names (df) [[1]]
-    if (is.null (VAct)) VAct <- names (df)
+    if (is.null (VAct)) VAct <- names (df) [[2]]
 
-print (99)
-    ## Remove Undocumented Recording Epochs ------------------
-    #### Convert and Check TimeFormate
-    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]], Discrete = TRUE)
+    time  <- df [[VTm]]
+    activity <- df [[VAct]]
+
+  
+    print (99)
+    # Check the variable class -----------------------------
+    if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
+    if (all (activity == 0)) stop ("all activity values are zero")
+    if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
+    if (!inherits (time, "numeric")) time <- C2T (Time = time, Discrete = TRUE)
+    if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
+                                       Please, rescale the time coordinate to between 0 and 24.
+                                       Note that it is crucial to have the proper time coordinate since the model relies on it.")
+
+
+
  print (100)
-    CheckT <- unique (diff (df [[VTm]]))
+    df [[VTm]] <- time 
+    df [[VAct]] <- activity
 
  print (101)
     #### Use Act2Daily ------------------
