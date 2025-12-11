@@ -122,8 +122,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
 
     ## Initialize all cosinor results -----------------------
-
-
+print (10)
     if (all (length (tau) == 1, isFALSE (ph))) {
         nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
         Bdf [nVNames] <- NA
@@ -137,23 +136,24 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
 
 
-
+print (11)
     ## Check Directory ----------------
     fDir <- paste0 (Dir, "/", ID)
     if (!dir.exists (fDir)) dir.create (fDir)
 
-
+print (12)
     ## Create a PDF file for the ID  ----------------
     pdfDir <- paste0 (fDir, "/", ID, ".pdf")
     if (isFALSE (overwrite)) {
         if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
     }
-
+print (13)
     grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
 
 
     ### Plot ----------------
     for (d in D) {
+       print (d) 
         # print (d) ## For fail-check function purposes
         df <- DailyAct [[d]]
 
@@ -294,7 +294,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     ## Write the merged summary report to a CSV file --------------
     message ("Updating the summary file")
 
-
+print (14)
     BdfDir <- paste0 (fDir, "/Summary.csv")
     if (isFALSE (overwrite)) {
         if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
