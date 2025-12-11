@@ -113,8 +113,6 @@ Take a coffee break if needed because ActiGlobe will adjust time shift and anony
 dfList <- Act2Daily (
     df = df,
     Bdf = Bdf.adj,
-    VAct = "Activity",
-    VTm = "Time",
     Incomplete = TRUE,
     Travel = TRUE
 )

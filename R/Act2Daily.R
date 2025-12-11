@@ -46,10 +46,6 @@
 #' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
 #' @param TUnit Character; time--unit for the x--axis of each day's timeline.
 #'   Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.
-#' @param VAct Optional character. Name of the activity column in `df`. If NULL,
-#'   defaults to the second column of `df`.
-#' @param VTm Optional character.  Name of the date.time index column in `df`. If NULL,
-#'   defaults to the first column of `df`.
 #' @param Incomplete Logical; if TRUE, days flagged `Incomplete Recording` (i.e. <24 h)
 #'   are retained in the data list with recordings segmented by day. Default = FALSE (these days are removed).
 #' @param Travel Logical; if TRUE, days flagged `Travel` are retained although
@@ -94,8 +90,6 @@
 #'     Act2Daily (
 #'         df = df,
 #'         Bdf = Bdf,
-#'         VAct = "Activity",
-#'         VTm = "Time",
 #'         Incomplete = TRUE,
 #'         Travel = TRUE
 #'     )
@@ -107,7 +101,7 @@
 #' @keywords Daily Actigraphy Segment
 #' @export
 
-Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
+Act2Daily <- function (df, Bdf, TUnit = "hour",
                        Incomplete = FALSE, Travel = TRUE) {
 
     # Extract essential per-day metadata from Bdf -------------------
@@ -155,15 +149,6 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                method = "Time")
 
 
-
-    ## Set default variable names for activity and time columns ----------------
-
-    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
-
-
-	df [[VAct]] <- ValInput(x = df [[VAct]], type = "Act")
-	df [[VTm]]  <- ValInput(x = df [[VTm]], type = "Tm")
 
     ## Build warning & exclusion masks -------------------------
 

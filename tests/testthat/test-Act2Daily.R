@@ -20,8 +20,6 @@ test_that ("Act2Daily Test Completed", {
     dfList <- Act2Daily(
         df = df,
         Bdf = Bdf,
-        VAct = "Activity",
-        VTm = "Time",
         Incomplete = FALSE,
         Travel = FALSE
     )

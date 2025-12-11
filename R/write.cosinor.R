@@ -83,8 +83,6 @@
 #'     Act2Daily (
 #'         df = df,
 #'         Bdf = Bdf,
-#'         VAct = "Activity",
-#'         VTm = "Time",
 #'         Incomplete = TRUE,
 #'         Travel = TRUE
 #'     )
@@ -154,8 +152,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
         if (!is.null (df)) {
 
-			Act <- ValInput(x = df [[VAct]], type = "Act")
-			Tm  <- ValInput(x = df [[VTm]], type = "Tm")
+            df [[VAct]] <- ValInput(x = df [[VAct]], type = "Act")
+			df [[VTm]]  <- ValInput(x = df [[VTm]], type = "Tm")
 
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]

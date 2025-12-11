@@ -68,8 +68,6 @@ For this tutorial, it is essential that the recording be properly pre-processed 
 dfList <- Act2Daily (
     df = df,
     Bdf = Bdf.adj,
-    VAct = "Activity",
-    VTm = "Time",
     Incomplete = FALSE,
     Travel = TRUE
 )
