@@ -16,7 +16,7 @@ on:
 
 jobs:
   pkgcheck:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest windows-latest macos-latest
     permissions:
       issues: write
     steps:
