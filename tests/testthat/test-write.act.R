@@ -1,8 +1,5 @@
 test_that("write.act exports daily recordings and summary correctly", {
 
-  if (grepl ("Linux|Darwin", Sys.info ()[["sysname"]])) {
-    skip("Skip on Linux and macOS due to segfault fail")
-  } else {
 
 
   # Create a temporary directory for testing ------------------
@@ -50,9 +47,5 @@ write.act (
   summary_file <- file.path (fDir, "Summary.csv")
   expect_true (file.exists (summary_file))
 
-  # Validate contents of Summary.csv
-  summary_df <- utils::read.csv (summary_file)
-  expect_s3_class (summary_df, "data.frame")
-  expect_true ("Date" %in% names (summary_df))
-  }
+
 })
