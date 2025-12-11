@@ -1,5 +1,7 @@
 test_that("write.act exports daily recordings and summary correctly", {
 
+print(dir.exists("~/Documents"))
+
 
 
   # Create a temporary directory for testing ------------------
@@ -19,7 +21,7 @@ test_that("write.act exports daily recordings and summary correctly", {
 
   Bdf <- Bdf [1:5, ]
 
-
+print("prep")
  # Call write.act ------------------
 write.act (
   Dir = tmpdir, ## Export to the current working directory
@@ -32,10 +34,10 @@ write.act (
   Travel = TRUE,
   Simple = FALSE
 )
-
+print (0)
   # Construct expected directory ----------------
   fDir <- file.path (paste0 (tmpdir, "/JD"))
-
+print (1)
   # Check that directory was created ------------------
   expect_true (dir.exists (fDir))
 
