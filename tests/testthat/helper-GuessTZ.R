@@ -4,6 +4,7 @@ test_that ("GuessTZ returns UTC for +0000 offset", {
   # ---- Structure checks ----
   # Result should be a character vector with names corresponding to offsets
   expect_true (is.character (result))
+  expect_true (length (result) == 2)
   expect_named (result, c ("-0500", "+0100"))
 
   # ---- Relationship checks ----
@@ -14,6 +15,21 @@ test_that ("GuessTZ returns UTC for +0000 offset", {
   # Specific values should match expected timezones
   expect_equal (result [["-0500"]], "America/Atikokan")
   expect_equal (result [["+0100"]], "Africa/Algiers")
+
+})
+
+
+test_that ("GuessTZ prioritizes local system time zone", {
+  result <- GuessTZ (aOF = "-0500", All = FALSE, iTZ = "America/New_York")
+
+  # ---- Structure checks ----
+  # Result should be a character vector with names corresponding to offsets
+  expect_true (is.character (result))
+  expect_true (length (result) == 1)
+
+  # ---- Content checks ----
+  # Specific values should match expected timezones
+  expect_equal (result, "America/New_York")
 
 })
 

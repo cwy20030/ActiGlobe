@@ -60,8 +60,14 @@
 #' @noRd
 
 UnitFactor <- function (x, method = "Time") {
+  # Check Point --------------------
+  if (! method %in% c ("Time"))
+    stop ("[UnitFactor] Unsupported method. Currently only 'Time' is implemented.")
 
+
+  # Preprocess input -------------
   x <- tolower (x)
+
 
   # Functional Switcher ------------
   ## Time --------------------------------

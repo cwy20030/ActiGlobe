@@ -122,8 +122,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
 
     ## Initialize all cosinor results -----------------------
-
-
     if (all (length (tau) == 1, isFALSE (ph))) {
         nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
         Bdf [nVNames] <- NA
@@ -134,9 +132,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
         Bdf [nVNames] <- NA
         KeyTerm <- "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
     }
-
-
-
 
     ## Check Directory ----------------
     fDir <- paste0 (Dir, "/", ID)
@@ -166,34 +161,26 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
             if (!inherits (Tm, "numeric")) Tm <- C2T (Time = Tm, Discrete = TRUE)
 
 
-
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
 
-
             Act [is.na (Act)] <- 0 #### Just in acse, provide a zero imputation for NA.
-
 
             if (!all (Act == 0)) {
               ### Create activity trend for the top panel ---------------
                 top.plot <-
                     ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
                     geom_point (aes (color = "Original Measure")) +
-                    geom_line (aes (color = "Smoothed Trend")) +
-                    labs (
-                        title = d,
-                        subtitle = TZ,
-                        x = "Hour",
-                        y = "Activity"
-                    ) +
+                    geom_smooth (aes (color = "Smoothed Trend")) +
+                    labs ( title = d,
+                           subtitle = TZ,
+                           x = "Hour",
+                           y = "Activity") +
                     theme (plot.title = element_text (hjust = 0.5)) +
                     scale_color_manual (
-                        values = c (
-                            "Original Measure" = "black",
-                            "Smoothed Trend" = "blue"
-                        ),
-                        name = "Legend Title"
-                    ) +
+                        values = c ("Original Measure" = "black",
+                                    "Smoothed Trend" = "blue"   ),
+                        name = "Legend Title" ) +
                     theme_bw ()
 
 
@@ -204,9 +191,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                 m1 <- CosinorM (time = Tm, activity = Act, tau = tau, method = method)
             }
 
-
             if (all (nT == 1, isFALSE (ph))) {
-
                 Cftemp <- m1$coef.cosinor
                 Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Amplitude, Acrophase in radians
 
@@ -215,20 +200,16 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                 names (Coef) [[4]] <- paste0 (VAcro, ".time")
 
             } else {
-
                 Cftemp <- m1$post.hoc
+                Cftemp <- Cftemp [match (nVNames, names (Cftemp))]
                 Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Bathyphase.time, Trough.ph, Acrophase.time, Peak, Amplitude
             }
-
-
 
             ### Update the report with cosinor model coefficients
             Bdf [Bdf$Date == d, nVNames] <- Coef
 
-
             #### Create the bottom plot for cosinor models -----------
             bottom.plot <- ggCosinorM (m1, title_extra = d)
-
             }
               else { ### If no activity recorded
 
@@ -264,8 +245,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                 scale_colour_manual(name = "", values = c("dummy" = NA), breaks = NULL) +
                 scale_fill_manual(name = "", values = c("dummy" = NA), breaks = NULL)
 
-
-
             # Arrange the top and bottom plots in a grid
             grid.arrange (top.plot, bottom.plot)
               }
@@ -277,7 +256,6 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
     ## Write the merged summary report to a CSV file --------------
     message ("Updating the summary file")
-
 
     BdfDir <- paste0 (fDir, "/Summary.csv")
     if (isFALSE (overwrite)) {
