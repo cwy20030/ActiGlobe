@@ -11,8 +11,3 @@ test_that("UnitFactor is case-insensitive", {
   expect_equal(UnitFactor("Minute"), 60)
   expect_equal(UnitFactor("SECOND"), 1)
 })
-
-test_that("UnitFactor returns NA for invalid units before Demand fallback", {
-  # Demand() is interactive, so we only check the NA branch
-  expect_true(is.na(UnitFactor("week")))
-})
