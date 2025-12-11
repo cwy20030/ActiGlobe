@@ -52,5 +52,5 @@ expect_true(file.exists(pdfFile))   # PDF exists
 }
 csvFile <- file.path(fDir, "Summary.csv")
 expect_true(file.exists(csvFile))   # CSV exists
-}
+})
 
