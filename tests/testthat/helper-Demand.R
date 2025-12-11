@@ -8,7 +8,8 @@ test_that("Demand returns proper response", {
   expect_equal(result, "Option A")
 
 
-  # mock readline to always return "3"
+# Second Test -----------------------------
+  # mock readline to always return "2"
   mockery::stub(Demand, "readline", function(prompt = "") "2")
 
   result <- Demand(c("NOOOO", "Yes", "Other"), "option")
