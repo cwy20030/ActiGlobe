@@ -1,38 +1,27 @@
-test_that("Demand returns Option A when user selects 1", {
-
-
-  if (grepl ("devel", R.version$status) && Sys.info () [["sysname"]] == "Linux") {
-    skip ("Skip on ubuntu-latest (devel)")
+test_that("Demand returns 1 when user selects 1", {
+  if (grepl("devel", R.version$status) && Sys.info()[["sysname"]] == "Linux") {
+    skip("Skip on ubuntu-latest (devel)")
   }
 
-
   # mock readline to always return "1"
-  mockery::stub (Demand, "readline", function (prompt = "") "1")
+  mockery::stub(Demand, "readline", function(prompt = "") "1")
 
-  result <- Demand (c ("Option A", "Option B", "Other"), "option")
+  result <- Demand(c("1", "2", "Other"), "option")
 
   # ---- Content checks ----
-  # ---- Relationship checks ----
-  expect_equal (result, "Option A")
-
+  expect_equal(result, "1")
 })
 
-
 test_that("Demand returns Other when user selects 3", {
-
-
-  if (grepl ("devel", R.version$status) && Sys.info () [["sysname"]] == "Linux") {
-    skip ("Skip on ubuntu-latest (devel)")
+  if (grepl("devel", R.version$status) && Sys.info()[["sysname"]] == "Linux") {
+    skip("Skip on ubuntu-latest (devel)")
   }
 
+  # mock readline to always return "3"
+  mockery::stub(Demand, "readline", function(prompt = "") "Other")
 
-  # mock readline to always return "1"
-  mockery::stub (Demand, "readline", function (prompt = "") "3")
-
-  result <- Demand (c ("NOOOO", "Yes", "Other"), "option")
+  result <- Demand(c("NOOOO", "Yes", "Other"), "option")
 
   # ---- Content checks ----
-  # ---- Relationship checks ----
-  expect_equal (result, "Other")
-
+  expect_equal(result, "Other")
 })

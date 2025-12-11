@@ -1,6 +1,6 @@
 test_that("UTCwDST correctly detects DST presence", {
     res <- UTCwDST(UTC = c(1, 13.75))
-print(res)
+
     # ---- Structure checks ----
     # Result should be a logical vector (or list) of same length as input
     expect_true(is.logical(res) || is.list(res))
