@@ -157,6 +157,9 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 			Act <- ValInput(x = df [[VAct]], type = "Act")
 			Tm  <- ValInput(x = df [[VTm]], type = "Tm")
 
+			df [[VAct]] <- Act
+			df [[VTm]] <- Tm
+
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
 
