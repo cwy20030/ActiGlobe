@@ -214,13 +214,9 @@
 #' @export
 
 CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE, dilute = FALSE) {
-    if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
-    if (all (activity == 0)) stop ("all activity values are zero")
-    if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (time, "numeric")) time <- C2T (Time = time, Discrete = TRUE)
-    if (any (time < 0 | time >= 24)) {
-        stop ("time must be in [0,24). If you have midnight-to-midnight, ensure times are in that range.")
-    }
+    # Check Point and Input Validation -------------------------
+	activity <- ValInput(x = activity, type = "Act")
+	time  <- ValInput(x = time, type = "Tm")
     if (!is.numeric (bw) || length (bw) != 1 || bw <= 0) {
         stop ("bw must be a positive numeric scalar")
     }

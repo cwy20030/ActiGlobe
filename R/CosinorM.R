@@ -174,15 +174,10 @@
 
 
 CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type = "HC3", dilute = FALSE) {
-    # Check the variable class -----------------------------
-    if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
-    if (all (activity == 0)) stop ("all activity values are zero")
-    if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (time, "numeric")) time <- C2T (Time = time, Discrete = TRUE)
-    if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
-                                       Please, rescale the time coordinate to between 0 and 24.
-                                       Note that it is crucial to have the proper time coordinate since the model relies on it.")
-    if (!method %in% c ("OLS", "FGLS")) stop ("Unsupported method specified!")
+    # Check Point and Input Validation -------------------------
+	activity <- ValInput(x = activity, type = "Act")
+	time  <- ValInput(x = time, type = "Tm")
+	if (!method %in% c ("OLS", "FGLS")) stop ("Unsupported method specified!")
 
 
 
