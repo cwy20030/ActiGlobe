@@ -1,11 +1,10 @@
 test_that("write.act exports daily recordings and summary correctly", {
 
-print(dir.exists("~/Documents"))
-
-
 
   # Create a temporary directory for testing ------------------
-  tmpdir <- getwd ()
+  tmpdir <- path.expand("~/Documents")
+
+
 
   BdfList <-
     BriefSum (
