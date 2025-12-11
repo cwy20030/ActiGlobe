@@ -260,5 +260,5 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     if (isFALSE (overwrite)) {
         if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
     }
-    utils::write.csv (Bdf, BdfDir, row.names = F)
+    utils::write.csv (Bdf, BdfDir, row.names = FALSE)
 }

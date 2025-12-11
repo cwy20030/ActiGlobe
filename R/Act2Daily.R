@@ -119,7 +119,7 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     DT <- Bdf$Date # Calendar date for each recording day
 
 
-    aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
+    aTZ <- vapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
         if (!grepl ("/", x)) {
 
             iTZ [STD %in% x] [1]
@@ -128,7 +128,7 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
             x
         }
-    })
+    }, FUN.VALUE = character(1))
 
 
     Epc <- Bdf$Epoch # Epoch length (seconds) per day

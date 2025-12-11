@@ -81,7 +81,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   # Determine if DST exists using time offset on January 1st of 2021
   JAN1 <- as.POSIXct("2021-01-01", tz = "UTC")
 
-  pTZs = GuessTZ(aOF = aOF, fork = fork)
+  pTZs <- GuessTZ(aOF = aOF, fork = fork)
 
   ## Check points for mispecified UTC offsets ------------
   if (any(lengths(pTZs) == 0L)) {
@@ -97,11 +97,11 @@ UTCwDST <- function(UTCs, fork = FALSE) {
   sDT <- as.POSIXct("2021-07-15", tz = "UTC") ### Yes to daylight saving time for the north hemispher but NO for the south
 
   ## Check if any time zone may experience time change.
-  Out <- sapply(pTZs, function(tzs) {
-    wDST <- sapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst)
-    sDST <- sapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst)
+  Out <- vapply(pTZs, function(tzs) {
+    wDST <- vapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst, FUN.VALUE = integer(1))
+    sDST <- vapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst, FUN.VALUE = integer(1))
     any(wDST != sDST)
-  })
+  }, FUN.VALUE = logical(1))
 
   if (length(Out) == length(UTCs)) { names(Out) = UTCs}
 
