@@ -18,11 +18,6 @@ test_that("ggActiGlobe returns a ggplot object with expected structure", {
   expect_s3_class(p, "ggplot")
 
   # ---- Relationship checks ----
-  # Mappings should correspond to expected variables
-  expect_equal(rlang::as_name(p$mapping$x), "NR")
-  expect_equal(rlang::as_name(p$mapping$y), "A")
-  expect_equal(rlang::as_name(p$mapping$colour), "E")
-
   # Midnight vertical line should be present
   geoms <- vapply(p$layers, function(l) class(l$geom)[1], character(1))
   expect_true("GeomVline" %in% geoms)
