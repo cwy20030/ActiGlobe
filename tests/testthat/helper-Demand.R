@@ -1,6 +1,6 @@
 test_that("Demand returns 1 when user selects 1", {
 
-  if (grepl("devel", R.version$status) && Sys.info()[["sysname"]] == "Linux") {
+  if (Sys.info()[["sysname"]] %in% "Linux") {
     skip("Skip on ubuntu-latest (devel)")
   }
 

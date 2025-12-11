@@ -1,6 +1,7 @@
 test_that("write.act exports daily recordings and summary correctly", {
   # Create a temporary directory for testing ------------------
-  tmpdir <- tempdir()
+  tmpdir <- getwd ()
+
   BdfList <-
     BriefSum (
         df = FlyEast,

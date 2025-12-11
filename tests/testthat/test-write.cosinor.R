@@ -1,6 +1,6 @@
 test_that("write.cosinor exports PDF and summary CSV correctly", {
   # Create a temporary directory for testing ------------------
-  tmpdir <- tempdir ()
+  tmpdir <- getwd ()
 
   ID = "TESTED"
 
