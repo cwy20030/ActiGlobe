@@ -103,7 +103,7 @@
 Prob.Inact <- function (y, T, k = 12, threshold = 3, logical = TRUE) {
     # Check Point and Input Validation -------------------------
 	y <- ValInput(x = y, type = "Act")
-	T  <- ValInput(x = T, type = "Tm")
+	T <- ValInput(x = T, type = "Tm")
 
 
     # Parameters -------------------
