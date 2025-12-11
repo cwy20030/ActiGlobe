@@ -18,7 +18,7 @@ test_that("Demand returns Option A when user selects 1", {
 })
 
 
-test_that("Demand returns Option A when user selects 2", {
+test_that("Demand returns Other when user selects 3", {
 
 
   if (grepl ("devel", R.version$status) && Sys.info () [["sysname"]] == "Linux") {
@@ -27,7 +27,7 @@ test_that("Demand returns Option A when user selects 2", {
 
 
   # mock readline to always return "1"
-  mockery::stub (Demand, "readline", function (prompt = "") "4")
+  mockery::stub (Demand, "readline", function (prompt = "") "3")
 
   result <- Demand (c ("NOOOO", "Yes", "Other"), "option")
 
