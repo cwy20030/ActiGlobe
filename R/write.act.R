@@ -130,11 +130,10 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
 
 
 
- print (10011)
+
     df [[VTm]] <- time 
     df [[VAct]] <- activity
 
- print (101)
     #### Use Act2Daily ------------------
     dfList <- Act2Daily (
         df = df,
@@ -145,7 +144,7 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
         Incomplete = Incomplete,
         Travel = Travel
     )
-print (102)
+
 
     Daily_df <- dfList$Daily_df
     Date <- names (Daily_df)
@@ -155,7 +154,7 @@ print (102)
     fDir <- paste0 (Dir, "/", ID)
     if (!dir.exists (fDir)) dir.create (fDir)
 
-print (103)
+
     ## Export Simple Data ------------
     for (d in Date) {
         ##### Extract Segmented Daily Recording
@@ -174,7 +173,7 @@ print (103)
         }
     }
 
-print(104)
+
     ### Write Report --------------
     write.csv (Bdf, paste0 (fDir, "/Summary.csv"), row.names = FALSE)
 }
