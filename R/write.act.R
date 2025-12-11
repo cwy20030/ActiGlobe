@@ -104,11 +104,11 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
     if (is.null (VTm)) VTm <- names (df) [[1]]
     if (is.null (VAct)) VAct <- names (df)
 
-print (100)
+print (99)
     ## Remove Undocumented Recording Epochs ------------------
     #### Convert and Check TimeFormate
     if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]], Discrete = TRUE)
-
+ print (100)
     CheckT <- unique (diff (df [[VTm]]))
 
  print (101)
