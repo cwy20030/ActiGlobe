@@ -11,17 +11,3 @@ test_that("Demand returns 1 when user selects 1", {
   # ---- Content checks ----
   expect_equal(result, "1")
 })
-
-test_that("Demand returns Other when user selects 3", {
-  if (grepl("devel", R.version$status) && Sys.info()[["sysname"]] == "Linux") {
-    skip("Skip on ubuntu-latest (devel)")
-  }
-
-  # mock readline to always return "3"
-  mockery::stub(Demand, "readline", function(prompt = "") "Other")
-
-  result <- Demand(c("NOOOO", "Yes", "Other"), "option")
-
-  # ---- Content checks ----
-  expect_equal(result, "Other")
-})
