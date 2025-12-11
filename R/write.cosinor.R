@@ -69,6 +69,7 @@
 #'
 #' # Let's extract the quick summary of the recording
 #' Bdf <- BdfList$Bdf
+#' df <- BdfList$df
 #'
 #' ### Note that since the original data was affected by travel-induced time
 #' ### shift, the recordings would not be properly segmented from 2017-11-02.
@@ -80,10 +81,10 @@
 #' ## Segment Data by Day
 #' dfList <-
 #'     Act2Daily (
-#'         df = FlyEast,
+#'         df = df,
 #'         Bdf = Bdf,
 #'         VAct = "Activity",
-#'         VTm = "X2",
+#'         VTm = "Time",
 #'         Incomplete = TRUE,
 #'         Travel = TRUE
 #'     )
@@ -94,7 +95,7 @@
 #' write.cosinor (
 #'     Dir = getwd (), ## Export to the current working directory
 #'     ID = "JD",
-#'     df = dfList$Daily_df,
+#'     DailyAct = dfList$Daily_df,
 #'     Bdf = Bdf,
 #'     VAct = "Activity",
 #'     VTm = "Time"
@@ -110,19 +111,31 @@
 
 
 write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, method = "OLS", tau = 24, ph = FALSE, overwrite = FALSE) {
+
     ## Get Essential Info -----------------
     nT <- length (tau) ### Number of assumed rhythms
     D <- names (DailyAct)
     U <- Bdf$UTC
 
+    ### Set default variable names for activity and time columns
+    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
+    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
+
     ## Initialize all cosinor results -----------------------
+
+
     if (all (length (tau) == 1, isFALSE (ph))) {
         nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
         Bdf [nVNames] <- NA
+        KeyTerm <- "MESOR|Amplitude|Acrophase"
+
     } else {
         nVNames <- c ("MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time", "Peak", "Amplitude")
         Bdf [nVNames] <- NA
+        KeyTerm <- "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
     }
+
+
 
 
     ## Check Directory ----------------
@@ -137,32 +150,32 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
     }
 
     grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
+
+
     ### Plot ----------------
     for (d in D) {
-        print (d)
+        # print (d) ## For fail-check function purposes
         df <- DailyAct [[d]]
 
         if (!is.null (df)) {
-            ### Get Variable Names -------------
 
-            ### Set default variable names for activity and time columns
-            if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-            if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
+            # Check the variable class -----------------------------
+            Tm <- df [[VTm]]
+            Act <- df [[VAct]]
+            if (!inherits (Act, "numeric")) Act <- as.numeric (as.character (Act))
+            if (!inherits (Tm, "numeric")) Tm <- C2T (Time = Tm, Discrete = TRUE)
 
 
-            names (df) <- c ("Tm", "Act")
-            Tm <- as.numeric (df [["Tm"]])
-            Act <- as.numeric (df [["Act"]])
 
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
 
 
-            #### Create activity trend for the top panel ---------------
-
             Act [is.na (Act)] <- 0 #### Just in acse, provide a zero imputation for NA.
 
-            if (all (Act == 0)) {
+
+            if (!all (Act == 0)) {
+              ### Create activity trend for the top panel ---------------
                 top.plot <-
                     ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
                     geom_point (aes (color = "Original Measure")) +
@@ -182,30 +195,9 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                         name = "Legend Title"
                     ) +
                     theme_bw ()
-            } else {
-                top.plot <-
-                    ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
-                    geom_point (aes (color = "Original Measure")) +
-                    geom_smooth (aes (color = "Smoothed Trend")) +
-                    labs (
-                        title = d,
-                        subtitle = TZ,
-                        x = "Hour",
-                        y = "Activity"
-                    ) +
-                    theme (plot.title = element_text (hjust = 0.5)) +
-                    scale_color_manual (
-                        values = c (
-                            "Original Measure" = "black",
-                            "Smoothed Trend" = "blue"
-                        ),
-                        name = "Legend Title"
-                    ) +
-                    theme_bw ()
-            }
 
 
-            ## Fit cosinor models with 24Hr period ---------------
+            ### Fit cosinor models with 24Hr period  -----------------------
             if (method == "KDE") {
                 m1 <- CosinorM.KDE (time = Tm, activity = Act)
             } else {
@@ -214,23 +206,69 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
 
             if (all (nT == 1, isFALSE (ph))) {
-                Coef <- m1$coef.cosinor [1:3] # MESOR, Amplitude, Acrophase in radians
-                Coef [[4]] <- Rad2Hr (Coef [[3]], tau = tau)
-                names (Coef) [[4]] <- paste0 (names (Coef) [[3]], ".time")
+
+                Cftemp <- m1$coef.cosinor
+                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Amplitude, Acrophase in radians
+
+                VAcro <- names (Coef) [grepl ("Acro", names (Coef))] # Extract the name of Acrophase to compute the time
+                Coef [[4]] <- Rad2Hr (Coef [VAcro], tau = tau)
+                names (Coef) [[4]] <- paste0 (VAcro, ".time")
+
             } else {
-                Coef <- m1$post.hoc
+
+                Cftemp <- m1$post.hoc
+                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Bathyphase.time, Trough.ph, Acrophase.time, Peak, Amplitude
             }
 
 
-            # Update the report with cosinor model coefficients
+
+            ### Update the report with cosinor model coefficients
             Bdf [Bdf$Date == d, nVNames] <- Coef
 
 
-            ### Create the bottom plot for cosinor models -----------
+            #### Create the bottom plot for cosinor models -----------
             bottom.plot <- ggCosinorM (m1, title_extra = d)
+
+            }
+              else { ### If no activity recorded
+
+              ### Create activity trend for the top panel ---------------
+              top.plot <- ggplot(df, aes(x = Tm, y = Act)) +
+                geom_point(color = "red") +
+                labs(
+                  title = d,
+                  subtitle = " No activity recorded",
+                  x = "Hour",
+                  y = "Activity"
+                ) +
+                theme_bw()
+
+
+              ### No update the report with cosinor model coefficients
+
+              #### Create the bottom plot for cosinor models -----------
+              bottom.plot <- ggplot() +
+                labs(
+                  title = d,
+                  subtitle = " No activity recorded",
+                  x = "Hour",
+                  y = "Activity"
+                ) +
+                theme_minimal() +
+                theme(
+                  plot.title       = element_text(hjust = 0.5),
+                  # keep legend space but show nothing
+                  legend.position  = "right"
+                ) +
+                # add empty scales so legend space is reserved
+                scale_colour_manual(name = "", values = c("dummy" = NA), breaks = NULL) +
+                scale_fill_manual(name = "", values = c("dummy" = NA), breaks = NULL)
+
+
 
             # Arrange the top and bottom plots in a grid
             grid.arrange (top.plot, bottom.plot)
+              }
         }
     }
 
@@ -239,6 +277,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
 
     ## Write the merged summary report to a CSV file --------------
     message ("Updating the summary file")
+
 
     BdfDir <- paste0 (fDir, "/Summary.csv")
     if (isFALSE (overwrite)) {

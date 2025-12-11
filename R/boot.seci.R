@@ -23,8 +23,8 @@
 #' @import stats
 #'
 #' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
-#' @param level Numeric scaler. the confidence level.
-#' @param N Numeric scaler. Numbers of bootstraps required to estimate the
+#' @param ci_level Numeric scaler. the confidence ci_level.
+#' @param n Numeric scaler. Numbers of bootstraps required to estimate the
 #' standard errors and confidence intervals. Default: 500
 #' @param digits Numeric scaler. Integer indicating the number of decimal places
 #' (round) to be used. Default: 2
@@ -33,13 +33,13 @@
 #' A data.frame with one row per cosinor coefficient and columns:
 #' \itemize{
 #'   \item Estimate: Mean of bootstrap coefficient values.
-#'   \item Std Error: Bootstrap standard deviation of each coefficient across N
+#'   \item Std Error: Bootstrap standard deviation of each coefficient across n
 #'   resamples.
 #'   \item t value: Ratio of the observed estimate to its bootstrap standard
 #'   error, analogous to a
 #'     signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
 #'   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
-#'      where \eqn{\alpha = 1 - level}.
+#'      where \eqn{\alpha = 1 - ci_level}.
 #'   \item upper CI label: Percentile upper bound at \eqn{1 - \frac{\alpha}{2}}.
 #' }
 #'
@@ -73,8 +73,8 @@
 #'
 #' boot.seci (
 #'     object = fit,
-#'     level = 0.95,
-#'     N = 500
+#'     ci_level = 0.95,
+#'     n = 500
 #' )
 #'
 #'
@@ -88,23 +88,35 @@
 #'
 #' boot.seci (
 #'     object = fit2,
-#'     level = 0.95,
-#'     N = 500
+#'     ci_level = 0.95,
+#'     n = 500
 #' )
 #' }
 #'
 #' @keywords boot bootstrap ci se
 #' @export
 
-boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
+boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
     ## Checkpoint -----------------------
     if ("param" %in% names (object)) stop ("Object cannot be a diluted model structure.")
+    if (!inherits (object, c ("CosinorM", "CosinorM.KDE"))) {
+        stop ("object must be of class 'CosinorM' or 'CosinorM.KDE'")
+    }
+    if (!is.numeric (ci_level) | ci_level <= 0 | ci_level >= 1) {
+        stop ("ci_level must be a numeric value between 0 and 1")
+    }
+    if (!is.numeric (n) | n <= 0 | n != round (n)) {
+        stop ("n must be a positive integer")
+    }
+    if (!is.numeric (digits) | digits < 0 | digits != round (digits)) {
+        stop ("digits must be a non-negative integer")
+    }
 
     ## Set seed  -----------
     set.seed (123456789)
 
     ## Alpha value ---------------
-    a <- 1 - level
+    a <- 1 - ci_level
     a.half <- (a / 2)
     da <- 1 - a.half
     CIs <- c (
@@ -119,7 +131,7 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
     Coefs <- c (object$coef.cosinor, object$post.hoc)
 
     ## Output data.frame -----------------------
-    boot.df <- data.frame (matrix (nrow = N, ncol = length (Coefs)))
+    boot.df <- data.frame (matrix (nrow = n, ncol = length (Coefs)))
     names (boot.df) <- names (Coefs)
 
 
@@ -127,7 +139,7 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
         bw <- object$bw
         grid <- object$grid.size
 
-        for (b in seq_len (N)) {
+        for (b in seq_len (n)) {
             idx <- sample.int (length (time), size = length (time), replace = TRUE)
             idx <- idx [order (idx)]
             Time <- as.numeric (time [idx])
@@ -153,7 +165,7 @@ boot.seci <- function (object, level = 0.95, N = 500, digits = 2) {
         type <- object$type
 
 
-        for (b in seq_len (N)) {
+        for (b in seq_len (n)) {
             idx <- sample.int (length (time), size = length (time), replace = TRUE)
             idx <- idx [order (idx)]
             mdl <- CosinorM (

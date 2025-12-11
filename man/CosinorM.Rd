@@ -154,6 +154,8 @@ plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Co
 
 }
 \references{
+Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+
 Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 
 Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392-399. doi:10.2307/2346786.

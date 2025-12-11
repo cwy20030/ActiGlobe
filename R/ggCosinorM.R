@@ -79,9 +79,14 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                         n = 400, point_size = 0.5, title_extra = NULL, legend.position = "right",
                         ...) {
     # Accept both parametric CosinorM and KDE-based CosinorM.KDE ----------
-    if (!inherits (object, c ("CosinorM", "CosinorM.KDE"))) {
+    if (!inherits (object, c ("CosinorM", "CosinorM.KDE")))
         stop ("ggCosinorM: object must be a CosinorM or CosinorM.KDE fit.", call. = FALSE)
-    }
+
+    if (!is.numeric (ci_level) | ci_level <= 0 | ci_level >= 1)
+        stop ("ci_level must be a numeric value between 0 and 1")
+
+    if (!is.numeric (n) | n <= 0 | n != round (n))
+        stop ("N must be a positive integer")
 
 
     # Check Essential Parameters ----------------------
@@ -256,7 +261,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         # Model fit line (mapped to legend)
         ggplot2::geom_line (
             ggplot2::aes (x = newt, y = fit_pred, colour = "Model Fit"),
-            size = 0.9,
+            linewidth = 0.9,
             inherit.aes = FALSE
         )
 
@@ -275,7 +280,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         # MESOR horizontal line mapped to legend
         ggplot2::geom_hline (
             ggplot2::aes (yintercept = mesor, colour = "MESOR"),
-            size = 0.9,
+            linewidth = 0.9,
             inherit.aes = FALSE
         ) +
         # Observed points (from aug) mapped to legend
@@ -307,7 +312,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 
     g <- g + ggplot2::geom_line (
         ggplot2::aes (x = Ax, y = Ay, colour = "Acrophase"),
-        size = 0.9,
+        linewidth = 0.9,
         inherit.aes = FALSE
     )
 
@@ -429,7 +434,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         ggplot2::labs (x = "Time", y = "Activity", title = plot_title) +
         ggplot2::theme (
             plot.title = ggplot2::element_text (size = 16, margin = ggplot2::margin (b = 15)),
-            legend.margin = unit (0, "cm")
+            legend.margin =  ggplot2::margin(0, 0, 0, 0)
+
         ) +
         ggplot2::scale_x_continuous (breaks = seq (0, day, by = 6), expand = c (0, 0)) +
         ggplot2::coord_cartesian (xlim = c (0, day))

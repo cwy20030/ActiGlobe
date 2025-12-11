@@ -35,9 +35,17 @@
 #' @export
 
 UTC2Num <- function (x) {
+    # Check Point -------------------------
+    x <- toupper (x)
+    if (any (!grepl ("UTC", x)) || any (is.na (x)) || any (is.numeric (x)))
+        stop ("Input UTC offsets must be in the format of 'UTC+HH:MM' or 'UTC-HH:MM'.")
+
+
+    # Step 1: Remove "UTC" and white space -----------------------------
     x <- gsub ("UTC", "", x)
     x <- trimws (x) # Remove white space
 
+    # Step 2: Validate the format -------------------------
     mp <- unlist (sapply (x, function (i) {
         ifelse (grepl ("-", i), -1, 1)
     }))
@@ -46,6 +54,7 @@ UTC2Num <- function (x) {
     b <- as.numeric (gsub (":.*", "", a))
     c <- as.numeric (gsub (".*:", "", a)) / 60
 
+    # Step 3: Combine to get numeric values -------------------------
     x <- mp * (b + c)
 
     return (x)

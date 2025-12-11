@@ -48,7 +48,7 @@
 #'   Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.
 #' @param VAct Optional character. Name of the activity column in `df`. If NULL,
 #'   defaults to the second column of `df`.
-#' @param VTm Optional character.  Name of the time index column in `df`. If NULL,
+#' @param VTm Optional character.  Name of the date.time index column in `df`. If NULL,
 #'   defaults to the first column of `df`.
 #' @param Incomplete Logical; if TRUE, days flagged `Incomplete Recording` (i.e. <24 h)
 #'   are retained in the data list with recordings segmented by day. Default = FALSE (these days are removed).
@@ -109,6 +109,7 @@
 
 Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE) {
+
     # Extract essential per-day metadata from Bdf -------------------
     sIANA <- mIANA ()
     iTZ <- sIANA$Timezone_IANA
@@ -117,8 +118,16 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
     DT <- Bdf$Date # Calendar date for each recording day
 
+
     aTZ <- sapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
-        iTZ [STD %in% x] [1]
+        if (!grepl ("/", x)) {
+
+            iTZ [STD %in% x] [1]
+
+        } else {
+
+            x
+        }
     })
 
 
@@ -141,27 +150,10 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
 
     ## Determine divider to convert seconds into requested TUnit --------------
 
-    TDivider <- ifelse (
-        TUnit == "day", 24 * 3600,
-        ifelse (TUnit == "hour", 3600,
-            ifelse (TUnit == "minute", 60,
-                ifelse (TUnit == "second", 1, NA)
-            )
-        )
-    )
+    TDivider <-
+        UnitFactor(x = TUnit,
+               method = "Time")
 
-    # If an invalid TUnit was provided, prompt user to choose one
-    if (is.na (TDivider)) {
-        TUnit <- Demand (c ("day", "hour", "minute", "second"), "Time Unit")
-        TDivider <- ifelse (
-            TUnit == "day", 24 * 3600,
-            ifelse (TUnit == "hour", 3600,
-                ifelse (TUnit == "minute", 60,
-                    ifelse (TUnit == "second", 1, NA)
-                )
-            )
-        )
-    }
 
 
     ## Set default variable names for activity and time columns ----------------
@@ -173,7 +165,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     if (!inherits (df [[VAct]], "numeric")) df [[VAct]] <- as.numeric (as.character (df [[VAct]]))
     if (all (df [[VAct]] == 0)) stop ("all activity values are zero")
     if (any (!is.finite (df [[VAct]]))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (df [[VTm]])
+    if (!inherits (df [[VTm]], "numeric")) df [[VTm]] <- C2T (Time = df [[VTm]],
+															  Discrete = TRUE)
 
 
     ## Build warning & exclusion masks -------------------------
@@ -188,13 +181,17 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     }
 
     # Handle travel days: keep if Travel=TRUE, else exclude
+    if (any(grepl ("Travel", W))) {
     if (Travel) {
         Ecl [grep ("Travel", W)] <- FALSE
+
         warning ("Due to travel, some activity counts will overlap spanning adjacent days!")
+
     } else {
         Ecl [grep ("Travel", W)] <- TRUE
     }
 
+    }
 
     ## Initialize output list structure (one element per date) ------------
 
@@ -253,8 +250,8 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
         )]
 
 
-        ### If first day's recording starts after midnight, prepend empty rows
-        if (d == 1 && S > 1) {
+        ### If first day's recording starts after midnight, pre-pend empty rows
+        if (d == 1 && S > 1 && !grepl("00:00:00", DRS [d])) {
             # How many epochs missing before first measure?
             ERows <- fDP - (1 + (b [[d]] - a [[d]]) / Epc [[d]])
 
@@ -308,7 +305,7 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     mNP <- oNP [!oNP %in% nNP] # original points never reassigned
 
     ndf <- df
-    # ndf[[VTm]]   = C2T(ndf[[VTm]])  ### Will crash R Studio
+    # ndf[[VTm]]   = C2T(ndf[[VTm]], Discrete = TRUE)  ### Will crash R Studio
     ndf$Note <- ""
 
     VNames2 <- names (df) [names (df) %in% names (Temp)]

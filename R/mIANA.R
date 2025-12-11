@@ -1,4 +1,4 @@
-#  File ActiGlobe/R/sIANA.R
+#  File ActiGlobe/R/mIANA.R
 #
 #  Copyright (C) 2025  C. William Yao, PhD
 #

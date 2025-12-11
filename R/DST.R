@@ -71,7 +71,7 @@ DST <- function (DT, TZ = "local") {
     mD <- as.POSIXlt (DT, tz = TZ)
 
     # Compute day length deviations (hours gained/lost) via DST2GL()
-    TCh <- DST2GL (DT = mD)
+    TCh <- DST2GL (DT = mD, TZ = TZ)
 
     # Base DST flag from POSIXlt
     Ldst <- mD$isdst != 0

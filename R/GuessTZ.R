@@ -24,6 +24,7 @@
 #' initial time zone (`iTZ`) and allowing parallel computation for speed.
 #'
 #' @details
+#' An exhaustive process was
 #' - Uses `OlsonNames()` to retrieve all known time zones.
 #' - Computes offsets for each zone at the reference date/time (`DT`).
 #' - Matches observed offsets (`aOF`) against computed offsets.
@@ -70,11 +71,21 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     # Establish initial time zone ----------------
     TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
-    if (is.null (iTZ)) TZ1 <- NULL
-
 
     # Extract all known time zones ----------------
     oTZs <- OlsonNames ()
+
+    # Check Point ----------------------
+    # Validate the time zone
+    if (is.null (iTZ)){
+        TZ1 <- NULL
+    } else if (!TZ1 %in% oTZs) {
+
+        stop (sprintf (
+            "The provided time zone \"%s\" is not recognized.\n",
+            TZ1
+        ), "Please check the spelling or consult the IANA time zone table (ActiGlobe::IANA).")
+    }
 
     ## Process DT
     if (is.null (DT)) {

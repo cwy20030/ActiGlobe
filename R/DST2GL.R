@@ -61,9 +61,20 @@
 DST2GL <- function (DT, TZ = "local") {
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
+    # Validate the time zone
+    valid_zones <- OlsonNames ()
+    if (!TZ %in% valid_zones) {
+      stop (sprintf (
+        "The provided time zone \"%s\" is not recognized.\n",
+        TZ
+      ), "Please check the spelling or consult the IANA time zone table (ActiGlobe::IANA).")
+    }
+
     sFDPs <- Date2TotalT (DT = DT, TUnit = "second", TZ = TZ)
 
+    sFDPs <- as.numeric (sFDPs)
     Out <- (sFDPs - (86400)) / 3600 ### Compute total numbers of hours in difference
 
+    names(Out) <- DT
     return (Out)
 }

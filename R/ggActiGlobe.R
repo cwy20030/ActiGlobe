@@ -115,7 +115,8 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
     } else { #### Same Day
 
         NTicks <- 0.2
-        D <- C2T (Tc)
+        D <- C2T (Time = Tc, 
+				  Discrete = TRUE)
         Ds <- unique (ceiling (D))
         D <- floor (D)
 
@@ -157,7 +158,7 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
             xintercept = as.numeric (NR [MdN == "1"]),
             linetype   = "dashed",
             color      = "blue",
-            size       = 0.8
+            linewidth  = 0.8
         ) +
         ggplot2::scale_y_continuous (limits = c (mn, Mx)) +
         ggplot2::scale_x_continuous (
@@ -168,7 +169,7 @@ ggActiGlobe <- function (df, Bdf, VAct = NULL, VDT = "DateTime") {
         ggplot2::theme_classic () +
         ggplot2::theme (
             plot.margin     = ggplot2::margin (0, 0, 0, 0),
-            axis.line       = ggplot2::element_line (size = 0.8),
+            axis.line       = ggplot2::element_line (linewidth = 0.8),
             axis.text       = ggplot2::element_text (color = "black", face = "bold"),
             axis.title      = ggplot2::element_text (color = "black", face = "bold"),
             legend.position = "none"

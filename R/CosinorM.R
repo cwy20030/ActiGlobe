@@ -120,6 +120,8 @@
 #'
 #'
 #' @references
+#' Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+#'
 #' Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 #'
 #' Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392-399. doi:10.2307/2346786.
@@ -176,10 +178,14 @@ CosinorM <- function (time, activity, tau, method = "OLS", arctan2 = TRUE, type 
     if (!inherits (activity, "numeric")) activity <- as.numeric (as.character (activity))
     if (all (activity == 0)) stop ("all activity values are zero")
     if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
-    if (!inherits (time, "numeric")) time <- C2T (time)
+    if (!inherits (time, "numeric")) time <- C2T (Time = time, Discrete = TRUE)
     if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
                                        Note that it is crucial to have the proper time coordinate since the model relies on it.")
+    if (!method %in% c ("OLS", "FGLS")) stop ("Unsupported method specified!")
+
+
+
     # Get Essential Info -----------------
     nT <- length (tau) ### Number of assumed rhythms
     vars <- as.vector (outer (c ("C", "S"), 1:nT, paste0)) ### C = x and S = z in the linear equation

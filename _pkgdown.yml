@@ -2,4 +2,14 @@ url: https://cwy20030.github.io/ActiGlobe/
 template:
   bootstrap: 5
   math-rendering: mathjax
+  light-switch: yes
+  bootswatch: sketchy
+  articles:
+  - title: "Tutorials"
+    desc: >
+      Step-by-step guides to help you learn the package.
+    contents:
+      - vignette("Time-Shift")
+      - vignette("Circadian-Analysis")
+      - vignette("Graphic-Report")
 

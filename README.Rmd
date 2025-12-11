@@ -83,6 +83,16 @@ Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
 
+<br>
+```{r eval = FALSE}
+### Quick overview of the original recording
+ggActiGlobe(df = df, 
+            Bdf = Bdf,
+            VAct = "Activity",
+            VDT = "DateTime")
+```
+![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
+<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment 
 
 
 
@@ -121,6 +131,10 @@ ggActiGlobe (
     VDT = "DateTime"
 )
 ```
+
+![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
+<b> Figure 2. </b> Overview of the <u>adjusted</u> recording
+
 
 ## Other Features
 Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.

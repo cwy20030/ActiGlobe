@@ -49,10 +49,20 @@
 #' @noRd
 
 C2T <- function (Time, Discrete = FALSE) {
+    # Check Point ------------------------
+    if (any(grepl("^[A-Za-z]+$", Time)) || any(is.numeric (Time)))
+        stop ("Input 'Time' must be a pure character time string with no timezone label.
+              Please, check the input using TimeFormat().")
+
+
+
+    # First Attempt to Coerce to Numeric -------------
     x <- suppressWarnings (as.numeric (as.character (Time)))
 
+    # If All NAs, Parse as Time Strings -------------
     if (length (na.omit (x)) == 0) {
-        hms <- as.POSIXct (Time, format = TimeFormat (Time))
+        Fmt <- TimeFormat (Time)
+        hms <- as.POSIXct (Time, format = Fmt)
 
         decimal_hours <- as.numeric (format (hms, "%H")) +
             as.numeric (format (hms, "%M")) / 60 +
@@ -63,13 +73,23 @@ C2T <- function (Time, Discrete = FALSE) {
 
     }
 
+    # Adjust for Initial Time if Needed -------------
     if (!Discrete){
 
-        x <- x - x [[1]] ## For duration
+        ini <- x [[1]]
+        x <- x - ini ## For duration
     }
+
+    if (any(x < 0) || any(x > 24))
+        stop ("Negative or uut of range (0-24) value detected.
+              Please check your input 'Time' values.")
+
+
 
     if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
 
+
+    # Return Result ------------------------
     return (x)
 }
 
