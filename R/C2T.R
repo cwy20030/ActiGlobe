@@ -63,7 +63,7 @@ C2T <- function (Time, Discrete = FALSE) {
     if (length (na.omit (x)) == 0) {
         Fmt <- TimeFormat (Time, as.time = FALSE)
     
-    x <- sapply(Time, function(Tm) {
+ 
         hms <- as.POSIXlt (Tm, format = Fmt)
 
         decimal_hours <- as.numeric (format (hms, "%H")) +
@@ -71,8 +71,8 @@ C2T <- function (Time, Discrete = FALSE) {
             as.numeric (format (hms, "%S")) / 3600
 
 
-      as.numeric (decimal_hours)
-    })
+      x <- as.numeric (decimal_hours)
+
 
     }
 
