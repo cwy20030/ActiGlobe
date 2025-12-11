@@ -1,7 +1,5 @@
 test_that("write.act exports daily recordings and summary correctly", {
 
-print (Sys.info ()[["sysname"]])
-  
   if (grepl ("Linux|Darwin", Sys.info ()[["sysname"]])) {
     skip("Skip on Linux and macOS due to segfault fail")
   } else {
