@@ -103,7 +103,7 @@ UTCwDST <- function(UTCs, fork = FALSE) {
     any(wDST != sDST)
   }, FUN.VALUE = logical(1))
 
-  if (length(Out) == length(UTCs)) { names(Out) = UTCs}
+  if (length(Out) == length(UTCs)) { names(Out) <- UTCs}
 
   return(Out)
 }
