@@ -114,6 +114,8 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL
     if (all (activity == 0)) stop ("all activity values are zero")
     if (any (!is.finite (activity))) stop ("activity contains NA/NaN/Inf")
    print (100)
+
+  print(time)
     if (!inherits (time, "numeric")) time <- C2T (Time = time, Discrete = TRUE)
     if (any (time > 24 | time < 0)) stop ("Currently, the model cannot fit actigraphy recordings lasting longer than a day.
                                        Please, rescale the time coordinate to between 0 and 24.
