@@ -2,7 +2,7 @@ test_that("write.act exports daily recordings and summary correctly", {
 
 
   # Create a temporary directory for testing ------------------
-  tmpdir <- path.expand("~/Documents")
+  tmpdir <- tempdir()
 
 
 
