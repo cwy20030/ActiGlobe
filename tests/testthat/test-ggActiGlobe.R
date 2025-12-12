@@ -1,5 +1,4 @@
 test_that("ggActiGlobe returns a ggplot object with expected structure", {
-
   BdfList <- BriefSum(
     df = FlyEast,
     SR = 1 / 60,
@@ -27,6 +26,4 @@ test_that("ggActiGlobe returns a ggplot object with expected structure", {
   # Axis labels should match expected values
   expect_equal(p$labels$y, "Activity Count")
   expect_true(p$labels$x %in% "Date")
-
-
 })

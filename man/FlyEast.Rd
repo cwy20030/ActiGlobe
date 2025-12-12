@@ -8,17 +8,23 @@
 A modified data with 40 thousands plus rows and 3 variables:
 \describe{
 \item{Activity}{The activity count measured by a tri-axis actigraphy}
-\item{X2}{The light exposure data from the light sensor. All values are zero since the function was not disabled during the recording.}
-\item{Marker}{A binary indicator generated when the wearer press the button to record onset of sleep or awake.}
+\item{X2}{The light exposure data from the light sensor. All values are zero
+ since the function was not disabled during the recording.}
+\item{Marker}{A binary indicator generated when the wearer press the button
+ to record onset of sleep or awake.}
 }
 }
 \usage{
 data(FlyEast)
 }
 \description{
-This sample data is a modified version of a continuous wrist-worn actigraphy recording (Philips `ActiWatch5`) collected over a month. The data was originally collected to monitor the influence of jetleg on professional athelets' performance during competitions.
+This sample data is a modified version of a continuous wrist-worn actigraphy
+ recording (Philips `ActiWatch5`) collected over a month. The data was
+ originally collected to monitor the influence of jetleg on professional
+ athelets' performance during competitions.
 }
 \seealso{
-\code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}
+\code{\link{BriefSum}} \code{\link{TAdjust}} \code{\link{TravelLog}}
+\code{\link{IANA}}
 }
 \keyword{FlyEast}

@@ -4,10 +4,10 @@
 \alias{TimeFormat}
 \title{Detect Possible Time Format}
 \usage{
-TimeFormat(Time, as.time = FALSE)
+TimeFormat(time, as.time = FALSE)
 }
 \arguments{
-\item{Time}{A character string of time.}
+\item{time}{A character string of time.}
 
 \item{as.time}{A binary operator indicating whether to return a converted time based on the detection or the time format. (default: FALSE, which returns time format)}
 }
@@ -28,23 +28,23 @@ This function will automatically detect possible time format. Users can choose t
 \dontrun{
 # Example 1: When all dates have the same format
 ## Create and store a date in a variable called Time
-Time <- c ("2017/05/02 23:00:01", "1970/01/02 05:10:33", "2000/02/28 07:00:00")
+Time <- c("2017/05/02 23:00:01", "1970/01/02 05:10:33", "2000/02/28 07:00:00")
 
 ## Ask TimeFormat to tell us the format of the time.
-TimeFormat (Time, as.time = FALSE)
+TimeFormat(Time, as.time = FALSE)
 
 # Example 2: When multiple formats co-exist in a variable
 ## Create and store dates and time in a variable called Time
-Time <- c ("2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02", "2022/11/28 08:35 PM")
+Time <- c("2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02", "2022/11/28 08:35 PM")
 
 ## Ask TimeFormat to tell us the format of the Time.
 ### DO This!
 #### Option 1.
-print (lapply (Time, TimeFormat))
+print(lapply(Time, TimeFormat))
 
 #### Option 2. To match the warning message to the items
 for (x in Time) {
-    print (TimeFormat (x))
+  print(TimeFormat(x))
 }
 
 

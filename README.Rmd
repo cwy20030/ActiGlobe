@@ -6,10 +6,10 @@ output: github_document
 
 ```{r}
 #| echo: false
-knitr::opts_chunk$set (
-    collapse = TRUE,
-    comment = "#>",
-    fig.path = "man/figures/"
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
 )
 ```
 
@@ -32,12 +32,12 @@ The pre-released version of ActiGlobe can installed from
 ```{r eval = FALSE}
 # If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code.
 # install.packages("devtools")
-devtools::install_github ("cwy20030/ActiGlobe")
+devtools::install_github("cwy20030/ActiGlobe")
 
 
 # To properly install tutorial, please, use the following code
-devtools::install_github ("cwy20030/ActiGlobe",
-    build_vignettes = TRUE
+devtools::install_github("cwy20030/ActiGlobe",
+  build_vignettes = TRUE
 )
 ```
 
@@ -46,7 +46,7 @@ devtools::install_github ("cwy20030/ActiGlobe",
 Coming soon...
 #### ActiGlobe-release
 ```{r eval = FALSE}
-install.packages ("ActiGlobe")
+install.packages("ActiGlobe")
 ```
 
 
@@ -55,7 +55,7 @@ install.packages ("ActiGlobe")
 ## Citation 
 ### For the pre-release package ‘ActiGlobe’ in publication:
 ```{r}
-citation ("ActiGlobe")
+citation("ActiGlobe")
 ```
 To convert to EndNote compatible format, paste the BibTeX entry in [online bibtex-converter] (https://asouqi.github.io/bibtex-converter/) 
 
@@ -64,18 +64,18 @@ To convert to EndNote compatible format, paste the BibTeX entry in [online bibte
 
 ```{r eval = FALSE}
 ### Load ActiGlobe into R
-library (ActiGlobe)
+library(ActiGlobe)
 ```
 
 
 ```{r eval = FALSE}
 ### Replace FlyEast with the dataset and specify sampling rate in SR and the start of the recording.
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 
 ### Extract the summary report and the enriched data
@@ -86,10 +86,12 @@ df <- BdfList$df
 <br>
 ```{r eval = FALSE}
 ### Quick overview of the original recording
-ggActiGlobe(df = df, 
-            Bdf = Bdf,
-            VAct = "Activity",
-            VDT = "DateTime")
+ggActiGlobe(
+  df = df,
+  Bdf = Bdf,
+  VAct = "Activity",
+  VDT = "DateTime"
+)
 ```
 ![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
 <b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment 
@@ -98,35 +100,35 @@ ggActiGlobe(df = df,
 
 ```{r eval = FALSE}
 ### Import the travel log into R and give it a name
-TLog <- read.csv ("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
+TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
 
 ### Replace the TLog with the name of the travel log assigned
-Bdf.adj <- TAdjust (
-    Bdf = Bdf,
-    TLog = TLog
+Bdf.adj <- TAdjust(
+  Bdf = Bdf,
+  TLog = TLog
 )
 ```
 Take a coffee break if needed because ActiGlobe will adjust time shift and anonymize the travel destination to keep participants' privacy.
 
 
 ```{r eval=FALSE}
-dfList <- Act2Daily (
-    df = df,
-    Bdf = Bdf.adj,
-    Incomplete = TRUE,
-    Travel = TRUE
+dfList <- Act2Daily(
+  df = df,
+  Bdf = Bdf.adj,
+  Incomplete = TRUE,
+  Travel = TRUE
 )
 ```
 
 #### Review adjustment
 ```{r eval=FALSE}
-df2 <- do.call (rbind, dfList$Daily_df)
+df2 <- do.call(rbind, dfList$Daily_df)
 
-ggActiGlobe (
-    df = df2,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VDT = "DateTime"
+ggActiGlobe(
+  df = df2,
+  Bdf = Bdf.adj,
+  VAct = "Activity",
+  VDT = "DateTime"
 )
 ```
 

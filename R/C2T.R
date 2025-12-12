@@ -23,13 +23,16 @@
 #' directly. If the input is a time string, it is parsed into hours, minutes,
 #' and seconds, then converted to decimal hours relative to the first entry.
 #'
-#' @param Time A vector of time values. Can be numeric, character, or factor.
+#' @param time A vector of time values. Can be numeric, character, or factor.
 #'   Examples include `"13:45:00"` or `"01:30:15"`. If numeric, values are
 #'   returned as-is (after coercion). If character/factor, values are parsed
 #'   using \code{\link{TimeFormat}}.
 #' @param Discrete Logical scaler; if TRUE, each input in `Time` is converted
 #'   individually without subtraction for the prior time. Default FALSE will
 #'   subtract from the first time point.
+#' @param TZ  A single string naming an IANA time zone (e.g.
+#' `"America/New_York"`). If `"local"`, it will extract local time zone using
+#' `Sys.timezone()`.  Must match one entry in `OlsonNames()`.
 #'
 #' @returns
 #' A numeric vector of time values expressed in decimal hours. If the input
@@ -43,55 +46,86 @@
 #' @examples
 #'
 #' # Character input
-#' times <- c ("01:00:00", "02:30:00", "03:15:00")
-#' C2T (times, Discrete = TRUE)
+#' times <- c("01:00:00", "02:30:00", "03:15:00")
+#' C2T(times, Discrete = TRUE)
 #'
 #' @noRd
 
-C2T <- function (Time, Discrete = FALSE) {
-    # Check Point ------------------------
-    if (any(grepl("^[A-Za-z]+$", Time)) || any(is.numeric (Time)))
-        stop ("Input 'Time' must be a pure character time string with no timezone label.
-              Please, check the input using TimeFormat().")
+C2T <- function(time, Discrete = FALSE, TZ = "UTC") {
+  # Check Point ------------------------
+  if (any(grepl("^[A-Za-z]+$", time)) || any(is.numeric(time))) {
+    stop("Input 'time' must be a pure character time string with no
+    timezone label. Please, check the input using TimeFormat().")
+  }
 
 
+  # First Attempt to Coerce to Numeric -------------
+  x <- suppressWarnings(as.numeric(as.character(time)))
 
-    # First Attempt to Coerce to Numeric -------------
-    x <- suppressWarnings (as.numeric (as.character (Time)))
+  # If All NAs, Parse as Time Strings -------------
+  if (length(na.omit(x)) == 0) {
+    Fmt <- TimeFormat(time, as.time = FALSE)
 
-    # If All NAs, Parse as Time Strings -------------
-    if (length (na.omit (x)) == 0) {
-        Fmt <- TimeFormat (Time, as.time = FALSE)
-        hms <- as.POSIXct (Time, format = Fmt)
-
-        decimal_hours <- as.numeric (format (hms, "%H")) +
-            as.numeric (format (hms, "%M")) / 60 +
-            as.numeric (format (hms, "%S")) / 3600
-
-
-        x <- as.numeric (decimal_hours)
-
-    }
-
-    # Adjust for Initial Time if Needed -------------
-    if (!Discrete){
-
-        ini <- x [[1]]
-        x <- x - ini ## For duration
-    }
-
-    if (any(x < 0) || any(x > 24))
-        stop ("Negative or uut of range (0-24) value detected.
-              Please check your input 'Time' values.")
+    decimal_hours <- vapply(time, function(Tm)
+      ParseT(time = Tm, fmt = Fmt),
+      numeric(1)
+    )
 
 
+    x <- as.numeric(decimal_hours)
+  }
 
-    if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
+  # Adjust for Initial Time if Needed -------------
+  if (!Discrete) {
+    ini <- x[[1]]
+    x <- x - ini ## For duration
+  }
+
+  if (any(x < 0) || any(x > 24)) {
+    stop("Negative or uut of range (0-24) value detected.
+              Please check your input 'time' values.")
+  }
 
 
-    # Return Result ------------------------
-    return (x)
+  if (any(is.na(x))) warning(paste0("NAs introduced by coercion"))
+
+
+  # Return Result ------------------------
+  return(x)
 }
 
 
-### Potentially write a code to compute cosinor when both or neither the start or the end time falls are not the beginning/last time point of the recording.
+#' @title Parse Time Strings into Decimal Hours
+#'
+#' @param time A character vector of time strings (e.g., "13:45:00").
+#' @param fmt A character string specifying the format of the time strings,
+#'
+#' @noRd
+
+ParseT <- function(time, fmt) {
+  # Step 1. Check if "%I" exists (12-hour clock)
+  is12 <- grepl("%I", fmt)
+  has_ampm <- grepl("AM|PM", time, ignore.case = TRUE)
+
+  # Step 2. Count how many ":" exist
+  colon_count <- lengths(regmatches(time, gregexpr(":", time)))
+
+  # Step 3. Split the time string by ":"
+  parts <- unlist(strsplit(gsub("AM|PM", "", time, ignore.case = TRUE), ":"))
+
+  # Step 4. Extract Hour, Minute, Second
+  hour   <- as.numeric(parts[1])
+  minute <- ifelse(colon_count >= 1, as.numeric(parts[2]), 0)
+  second <- ifelse(colon_count >= 2, as.numeric(parts[3]), 0)
+
+  # Adjust for 12-hour format if needed
+  if (is12 && has_ampm) {
+    if (grepl("PM", time, ignore.case = TRUE) && hour < 12) hour <- hour + 12
+    if (grepl("AM", time, ignore.case = TRUE) && hour == 12) hour <- 0
+  }
+
+  # Return decimal hours
+  Out <- hour + minute/60 + second/3600
+
+  return(Out)
+}
