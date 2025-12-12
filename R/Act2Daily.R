@@ -132,7 +132,6 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     } else {
       x
     }
-  })
 }, FUN.VALUE = character(1))
 
 
