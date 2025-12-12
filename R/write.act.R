@@ -20,34 +20,44 @@
 #' @title Export Daily Activity Score and Recording Summary
 #'
 #' @description
-#' A function that exports two types of files locally. 1. A summary of the entire recording (.csv). 2. Daily activity recordings in individual files (.txt). The default deliminator is set to be space, with `.` as the decimal indicator. As such, it should be noted that some transformation may be needed when opening in EXCEL on a computer with non-English EU settings.
+#' A function that exports two types of files locally. 1. A summary of the
+#' entire recording (.csv). 2. Daily activity recordings in individual files
+#' (.txt). The default deliminator is set to be space, with `.` as the decimal
+#' indicator. As such, it should be noted that some transformation may be
+#' needed when opening in EXCEL on a computer with non-English EU settings.
 #'
 #' @import utils
 #' @importFrom readr write_delim
 #'
-#' @param Dir The directory where the recordings to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
+#' @param Dir The directory where the recordings to be exported <e.g.
+#' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
 #' @param ID The subject's ID which would be used to create a folder.
-#' @param df A data.frame of raw actigraphy recording. Both time and activity count
-#' should be included in the `df`. See `VAct` and `VTm` for further detail.
-#' @param Bdf A \code{\link{BriefSum}} object. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
+#' @param df A data.frame of raw actigraphy recording. Both time and activity
+#' count should be included in the `df`. See `VAct` and `VTm` for further
+#' detail.
+#' @param Bdf A \code{\link{BriefSum}} object. Note, if jet lag occurred during
+#' the recording, please, update the metadata using \code{\link{TAdjust}}
+#' before passing to this function.
 #' @param TUnit Character; time--unit for the x--axis of each day's timeline.
 #'   Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.
-#' @param VAct Optional character.  Name of the activity column in `df`. If NULL,
-#'   defaults to the second column of `df`.
-#' @param VTm Optional character.  Name of the time index column in `df`. If NULL,
-#'   defaults to the first column of `df`.
-#' @param Incomplete Logical; if TRUE, days flagged `Incomplete Recording` (i.e. <24 h)
-#'   are retained in the data list with recordings segmented by day. Default = FALSE (these days are removed).
+#' @param VAct Optional character.  Name of the activity column in `df`.
+#' If NULL, defaults to the second column of `df`.
+#' @param VTm Optional character.  Name of the time index column in `df`.
+#' If NULL, defaults to the first column of `df`.
+#' @param Incomplete Logical; if TRUE, days flagged `Incomplete Recording`
+#' (i.e. <24 h) are retained in the data list with recordings segmented by day.
+#' Default = FALSE (these days are removed).
 #' @param Travel Logical; if TRUE, days flagged `Travel` are retained although
-#'   some data points from an earlier adjacent calendar day may be duplicated (a
-#'   warning is issued). If FALSE, travel days and the day before/after are excluded.
-#'   Default = TRUE.
-#' @param Simple Logical; if TRUE, only columns stored in the original recordings will be exported.
-#' If FALSE, all information stored in `df` will be generated. Default = FALSE
-#'
+#'   some data points from an earlier adjacent calendar day may be duplicated
+#'   (a warning is issued). If FALSE, travel days and the day before/after are
+#'   excluded. Default = TRUE.
+#' @param Simple Logical; if TRUE, only columns stored in the original
+#' recordings will be exported. If FALSE, all information stored in `df` will
+#' be generated. Default = FALSE
 #'
 #' @returns
-#' Text files ".txt" containing segmented recordings of each day and `Bdf` from \code{\link{BriefSum}}
+#' Text files ".txt" containing segmented recordings of each day and `Bdf` from
+#' \code{\link{BriefSum}}
 #' \itemize{
 #'   \item Text File: Recordings segmented by the recording date
 #'   \item Summary: Bdf exported as ".csv" file.
@@ -57,16 +67,16 @@
 #' \dontrun{
 #'
 #' # Import data
-#' data (FlyEast)
+#' data(FlyEast)
 #'
 #'
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
-#'     BriefSum (
-#'         df = FlyEast,
-#'         SR = 1 / 60,
-#'         Start = "2017-10-24 13:45:00"
-#'     )
+#'   BriefSum(
+#'     df = FlyEast,
+#'     SR = 1 / 60,
+#'     Start = "2017-10-24 13:45:00"
+#'   )
 #'
 #' # Let's extract the quick summary of the recording
 #' Bdf <- BdfList$Bdf
@@ -75,79 +85,81 @@
 #' ### shift, the recordings would not be properly segmented from 2017-11-02.
 #'
 #' ## To avoid time shift due to travelling, we will keep only the first 8 days.
-#' Bdf <- Bdf [1:8, ]
+#' Bdf <- Bdf[1:8, ]
 #'
 #' df <- BdfList$df
 #' # Export daily recordings and the summary report
 #'
-#' write.act (
-#'     Dir = getwd (), ## Export to the current working directory
-#'     ID = "JD",
-#'     df = df,
-#'     Bdf = Bdf,
-#'     VAct = "Activity",
-#'     VTm = "Time"
+#' write.act(
+#'   Dir = getwd(), ## Export to the current working directory
+#'   ID = "JD",
+#'   df = df,
+#'   Bdf = Bdf,
+#'   VAct = "Activity",
+#'   VTm = "Time"
 #' )
 #'
 #' ## To see what was exported copy the path generated by the code below and
 #' ## paste it as an url in a web browser or the file explorer.
-#' getwd ()
+#' getwd()
 #' }
 #'
 #' @keywords Export Actigraphy
 #' @export
 
 
-write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
-                       Incomplete = FALSE, Travel = TRUE, Simple = FALSE) {
-    ##### Get Variable Names -------------
-    if (is.null (VTm)) VTm <- names (df) [[1]]
-    if (is.null (VAct)) VAct <- names (df) [[2]]
+write.act <- function(Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL,
+                      VTm = NULL, Incomplete = FALSE, Travel = TRUE,
+                      Simple = FALSE) {
+  ##### Get Variable Names -------------
+  if (is.null(VTm)) VTm <- names(df)[[1]]
+  if (is.null(VAct)) VAct <- names(df)[[2]]
 
 
-    # Check Point and Input Validation -------------------------
-	df [[VAct]] <- ValInput(x = df [[VAct]], type = "Act")
-	df [[VTm]]  <- ValInput(x = df [[VTm]], type = "Tm")
+  # Check Point and Input Validation -------------------------
+  df[[VAct]] <- ValInput(x = df[[VAct]], type = "Act")
+  df[[VTm]] <- ValInput(x = df[[VTm]], type = "Tm")
 
-    #### Use Act2Daily ------------------
-    dfList <- Act2Daily (
-        df = df,
-        Bdf = Bdf,
-        TUnit = TUnit,
-        VAct = VAct,
-        VTm = VTm,
-        Incomplete = Incomplete,
-        Travel = Travel
-    )
-
-
-    Daily_df <- dfList$Daily_df
-    Date <- names (Daily_df)
+  #### Use Act2Daily ------------------
+  dfList <- Act2Daily(
+    df = df,
+    Bdf = Bdf,
+    TUnit = TUnit,
+    VAct = VAct,
+    VTm = VTm,
+    Incomplete = Incomplete,
+    Travel = Travel
+  )
 
 
-    ## Check Directory ----------------
-    fDir <- paste0 (Dir, "/", ID)
-    if (!dir.exists (fDir)) dir.create (fDir)
+  Daily_df <- dfList$Daily_df
+  Date <- names(Daily_df)
 
 
-    ## Export Simple Data ------------
-    for (d in Date) {
-        ##### Extract Segmented Daily Recording
-        Temp <- Daily_df [[d]]
+  ## Check Directory ----------------
+  fDir <- paste0(Dir, "/", ID)
+  if (!dir.exists(fDir)) dir.create(fDir)
 
-        if (!is.null (nrow (Temp))) {
-            ####### For simplified version of recording
-            if (Simple) {
-                VNames <- names (Temp)
 
-                Temp <- Temp [!VNames %in% c ("DateTime", "Date", "Time", "UTC", "DaylightSaving", "nPoint", "Note")]
-            }
+  ## Export Simple Data ------------
+  for (d in Date) {
+    ##### Extract Segmented Daily Recording
+    Temp <- Daily_df[[d]]
 
-            readr::write_delim (Temp, paste0 (fDir, "/", d, ".txt"))
-        }
+    if (!is.null(nrow(Temp))) {
+      ####### For simplified version of recording
+      if (Simple) {
+        VNames <- names(Temp)
+
+        Temp <- Temp[!VNames %in% c("DateTime", "Date", "Time", "UTC",
+                                    "DaylightSaving", "nPoint", "Note")]
+      }
+
+      readr::write_delim(Temp, paste0(fDir, "/", d, ".txt"))
     }
+  }
 
 
-    ### Write Report --------------
-    write.csv (Bdf, paste0 (fDir, "/Summary.csv"), row.names = FALSE)
+  ### Write Report --------------
+  write.csv(Bdf, paste0(fDir, "/Summary.csv"), row.names = FALSE)
 }
