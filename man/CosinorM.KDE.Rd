@@ -14,30 +14,32 @@ CosinorM.KDE(
 )
 }
 \arguments{
-\item{time}{Numeric vector of time coordinates for each data point. Values are interpreted
-modulo 24 and must lie in [0, 24). If not numeric, an internal function will
-be used to convert it to numeric values in unit of hour.}
+\item{time}{Numeric vector of time coordinates for each data point. Values
+are interpreted modulo 24 and must lie in \eqn{[0, 24)}. If not numeric,
+an internal function will be used to convert it to numeric values in unit
+of hour.}
 
-\item{activity}{Numeric vector of activity counts from an actigraphy device in correspondance to
-each time point. Non-numeric inputs will be coerced. All-zero or non-finite
-activity values produce an error.}
+\item{activity}{Numeric vector of activity counts from an actigraphy device
+in correspondance to each time point. Non-numeric inputs will be coerced.
+All-zero or non-finite activity values produce an error.}
 
-\item{bw}{Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
-bw is interpreted in the same units as the angular scale after conversion:
-the implementation converts `bw` from hours to radians internally using
-\eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
+\item{bw}{Numeric scalar. Kernel standard deviation (SD) controlling s
+moothing. bw is interpreted in the same units as the angular scale after
+conversion: the implementation converts `bw` from hours to radians
+internally using \eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
 Note, small \code{bw} (approaching 0) can cause numerical instability, while
-large \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
+arge \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
 temporal resolution.}
 
 \item{grid}{Integer number of evaluation points used for the dense grid on
-\eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint. Default: 360.}
+\eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint.
+Default: 360.}
 
 \item{arctan2}{Logical; if TRUE (default) acrophase is computed with
 \code{atan2(gamma, beta)}, resulting in the quadrant interval between
 \eqn{-\pi} and \eqn{\pi}. Whereas, when set to FALSE, the legacy arctangent
-quadrant is mapped. The resulting interval lies between \eqn{-\frac{\pi}{2}}
-and \eqn{\frac{\pi}{2}}.}
+quadrant is mapped. The resulting interval lies between
+\eqn{-\frac{\pi}{2}} and \eqn{\frac{\pi}{2}}.}
 
 \item{dilute}{Logical; if FALSE (default), all essential parameters would be
 produced. When set to TRUE, only cosinor coefficients are returned. This is
@@ -47,14 +49,16 @@ nonparametric bootstrap}
 \value{
 A list of class \code{c("CosinorM.KDE")} with elements:
 \itemize{
-  \item parm: Parameters specified in the model (list with \code{time}, \code{activity}, \code{bw}, \code{grid})
+  \item parm: Parameters specified in the model (list with \code{time},
+  \code{activity}, \code{bw}, \code{grid})
   \item tau: Period in hours (default to 24hour)
   \item kdf: A data.frame with the following columns:
     \itemize{
       \item theta: Angular positions (radians) at the observation angles
-      \item density: Estimated PDF values at the observation angles (integrates to 1 over \eqn{[0,2\pi)} when scaled)
-      \item trapizoid.weight: Numeric vector of trapezoid integration weights
-      at observation angles
+      \item density: Estimated PDF values at the observation angles
+      (integrates to 1 over \eqn{[0,2\pi)} when scaled)
+      \item trapizoid.weight: Numeric vector of trapezoid integration
+      weights at observation angles
       \item kernel.weight: Denominator from kernel convolution (kernel mass
       at each observation angle)
       \item fitted.values: Normalized fitted KDE (activity-scale) at
@@ -66,23 +70,30 @@ A list of class \code{c("CosinorM.KDE")} with elements:
   \item coef.cosinor: Named numeric vector with entries:
     \itemize{
       \item MESOR: the mean of activity density over 24 hours
-      \item Amplitude: the first-harmonic amplitude derived from Beta and Gamma
-      \item Acrophase: Acrophase in radians (time-of-peak) of the dominant daily component
+      \item Amplitude: the first-harmonic amplitude derived from Beta and
+      Gamma
+      \item Acrophase: Acrophase in radians (time-of-peak) of the dominant
+      daily component
       \item Acrophase.hr: Acrophase converted to clock hours in [0,24)
-      \item Beta: coefficient equivalent to the cosine-weighted integral of the KDE
-      \item Gamma: coefficient equivalent to the sine-weighted integral of the KDE
+      \item Beta: coefficient equivalent to the cosine-weighted integral of
+      the KDE
+      \item Gamma: coefficient equivalent to the sine-weighted integral of
+      the KDE
     }
-  \item post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values
-  at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph,
-  Acrophase.ph.time, Peak.ph, Amplitude.ph)
+  \item post.hoc: Post-hoc peak/trough diagnostics derived from
+  fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time,
+  Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
   \item grid: (when \code{dilute = FALSE}) list of grid diagnostics:
     \itemize{
       \item theta: evaluation angles on the dense grid (radians)
       \item density: Grid-level PDF (integrates to 1 over theta)
-      \item trapizoid.weight: Trapezoid integration weights for the grid points
+      \item trapizoid.weight: Trapezoid integration weights for the grid
+      points
       \item kernel.weight: Kernel mass (denominator) at each grid point
-      \item fitted.values: Normalized fitted values at grid points (activity-scale)
-      \item fitted.var: Variance propagation through fitted variances on the grid
+      \item fitted.values: Normalized fitted values at grid points
+      (activity-scale)
+      \item fitted.var: Variance propagation through fitted variances on
+      the grid
       \item fitted.se: Standard error of the fitted values at grid points
     }
 }
@@ -98,32 +109,45 @@ a wrapped Gaussian kernel with specified bandwidth. Cosinor summaries (MESOR,
 Beta, Gamma, Amplitude, Acrophase) are obtained by numerical integration of
 the KDE using trapezoid-rule quadrature.
 
-Cosinor parameters are obtained by numerical integration of the KDE on the grid:
+Cosinor parameters are obtained by numerical integration of the KDE on the
+grid:
 \itemize{
   \item MESOR: mean level of the fitted curve, \eqn{M = I_0 / (2\pi)}.
   \item \eqn{\beta}: cosine coefficient, \eqn{\beta = I_{cos} / \pi}.
   \item \eqn{\gamma}: sine coefficient, \eqn{\gamma = I_{sin} / \pi}.
-  \item Amplitude: magnitude of the first harmonic, \eqn{A = \sqrt{\beta^2 + \gamma^2}}.
-  \item Acrophase: peak time, \eqn{\phi = atan2(-\gamma, \beta)}, expressed in radians and converted to hours.
+  \item Amplitude: magnitude of the first harmonic, \eqn{A = \sqrt{\beta^2 +
+  \gamma^2}}.
+  \item Acrophase: peak time, \eqn{\phi = atan2(-\gamma, \beta)}, expressed
+  in radians and converted to hours.
 }
 
 The grid integrals are computed with trapezoid weights \eqn{w_g}:
 \deqn{I_0 = \text{area}_g \sum_g \frac{pdf_g \, w_g}{den_g}}
-\deqn{I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\, w_g}{den_g}}
-\deqn{I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\, w_g}{den_g}}
+\deqn{I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\,
+w_g}{den_g}}
+\deqn{I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\,
+w_g}{den_g}}
 
-where \eqn{pdf_g} is the normalized KDE at grid angle \eqn{\theta_g}, \eqn{den_g}
-is the kernel denominator at that grid point, and \eqn{\text{area}_g} rescales the
-fitted density back to the activity scale.
+where \eqn{pdf_g} is the normalized KDE at grid angle \eqn{\theta_g},
+\eqn{den_g}
+is the kernel denominator at that grid point, and \eqn{\text{area}_g}
+rescales the fitted density back to the activity scale.
 
 Notes:
 \itemize{
-  \item Normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from the orthogonality of sine and cosine on \eqn{[0,2\pi)}.
-  \item The KDE summarizes the first harmonic of the rest–activity pattern over one cycle; higher harmonics are not extracted.
-  \item The trapezoid rule ensures numerical stability by integrating over a dense, evenly spaced grid.
-  \item The dense grid excludes the duplicate \eqn{2\pi} endpoint (grid in \eqn{[0,2\pi)}) to avoid duplicated quadrature nodes.
-  \item Grid and observation trapezoid weights correct for irregular sampling and yield stable approximations to continuous integrals.
-  \item Grid points with near-zero denominator \eqn{\sum_i K(\theta-\theta_i) w_i} are set to \code{NA} and excluded from integrals to avoid division-by-zero artifacts.
+  \item Normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from the
+  orthogonality of sine and cosine on \eqn{[0,2\pi)}.
+  \item The KDE summarizes the first harmonic of the rest–activity pattern
+  over one cycle; higher harmonics are not extracted.
+  \item The trapezoid rule ensures numerical stability by integrating over
+  a dense, evenly spaced grid.
+  \item The dense grid excludes the duplicate \eqn{2\pi} endpoint (grid in
+  \eqn{[0,2\pi)}) to avoid duplicated quadrature nodes.
+  \item Grid and observation trapezoid weights correct for irregular
+  sampling and yield stable approximations to continuous integrals.
+  \item Grid points with near-zero denominator \eqn{\sum_i K(\theta-\theta_i)
+   w_i} are set to \code{NA} and excluded from integrals to avoid
+   division-by-zero artifacts.
 }
 
 \strong{Residaul Variance and Effective Degree of Freedom}
@@ -132,7 +156,8 @@ Notes:
 
   \deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{n - p},}
 
-  where \eqn{p} is the number of parameters (degrees of freedom used by the fit).
+  where \eqn{p} is the number of parameters (degrees of freedom used by the
+  fit).
 
   \item \strong{Linear kernel smoothing:}
 
@@ -140,29 +165,36 @@ Notes:
 
   \deqn{\hat{y} = W y,}
 
-  where \eqn{W} is the hat matrix induced by the kernel weights (not a projection).
+  where \eqn{W} is the hat matrix induced by the kernel weights (not a
+  projection).
 }
 
-When defining residuals as \eqn{r = y - \hat{y}} and \eqn{\mathrm{RSS} = \sum r_i^2},
+When defining residuals as \eqn{r = y - \hat{y}} and \eqn{\mathrm{RSS} =
+\sum r_i^2},
 the unbiased estimator under the Gaussian kernel smoother can be written as
-\deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W) + \mathrm{tr}(W^{\top} W)\,}.}
+\deqn{\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W) +
+\mathrm{tr}(W^{\top} W)\,}.}
 
 where,
 \itemize{
-  \item \deqn{\mathrm{tr}(W)} is the effective degrees of freedom used by the smoother
+  \item \deqn{\mathrm{tr}(W)} is the effective degrees of freedom used by
+  the smoother
         (analogous to the number of parameters).
-  \item \deqn{\mathrm{tr}(W^{\top} W) = \sum_{i,j} W_{ij}^2} is a correction term because
+  \item \deqn{\mathrm{tr}(W^{\top} W) = \sum_{i,j} W_{ij}^2} is a correction
+   term because
         \eqn{W} is not an orthogonal projection.
 }
 }
 \section{Warnings and edge cases}{
 
  \itemize{
-      \item The function errors if \code{all(activity) == 0} or if \code{activity} contains
+      \item The function errors if \code{all(activity) == 0} or if
+      \code{activity} contains
   non-finite values.
-      \item Very small \code{bw} can cause near-zero denominator values (numerical
-  instability) and produce NA or an error; very large \code{bw} approaches a
-  near-uniform kernel and will wash out temporal structure.
+      \item Very small \code{bw} can cause near-zero denominator values
+      (numerical instability) and produce NA or an error; very large
+      \code{bw} approaches a near-uniform kernel and will wash out temporal
+      structure.
 }
 }
 
@@ -172,45 +204,51 @@ where,
 FlyEast
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset (
-    x = df,
-    subset = df$Date == "2017-10-27"
+df <- subset(
+  x = df,
+  subset = df$Date == "2017-10-27"
 )
 
 
-fit <- CosinorM.KDE (
-    time = df$Time,
-    activity = df$Activity
+fit <- CosinorM.KDE(
+  time = df$Time,
+  activity = df$Activity
 )
 
 # inspect coefficients
 fit$coef.cosinor
 
 # plot KDE in hours
-plot (
-    x = fit$kdf$hour,
-    y = fit$kdf$density,
-    type = "l",
-    xlab = "Hour",
-    ylab = "KDE"
+plot(
+  x = fit$kdf$hour,
+  y = fit$kdf$density,
+  type = "l",
+  xlab = "Hour",
+  ylab = "KDE"
 )
 }
 
 }
 \references{
-Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical
+Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
 
-	On Nonparametric Density Estimation for Circular Data: An Overview , bookTitle= Directional Statistics for Innovative Applications: A Bicentennial Tribute to Florence Nightingale. Springer Nature Singapore; 2022:351--378.
+	On Nonparametric Density Estimation for Circular Data: An Overview ,
+	bookTitle= Directional Statistics for Innovative Applications: A
+	Bicentennial Tribute to Florence Nightingale. Springer Nature Singapore;
+	2022:351--378.
 
-Cremers J, Klugkist I. One Direction? A Tutorial for Circular Data Analysis Using R With Examples in Cognitive Psychology. Methods. Front Psychol. 2018-October-30 2018;9(2040):2040. doi:10.3389/fpsyg.2018.02040
+Cremers J, Klugkist I. One Direction? A Tutorial for Circular Data Analysis
+Using R With Examples in Cognitive Psychology. Methods. Front Psychol.
+2018-October-30 2018;9(2040):2040. doi:10.3389/fpsyg.2018.02040
 }
 \seealso{
 \code{\link{CosinorM}}

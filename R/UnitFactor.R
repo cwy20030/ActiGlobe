@@ -48,51 +48,51 @@
 #' @examples
 #' # Denominator for fractions of an hour
 #' TUnit <- "hour"
-#' UnitFactor (x, method = "Time")
+#' UnitFactor(x, method = "Time")
 #' # Returns: 3600
 #'
 #' # Denominator for fractions of a day
 #' TUnit <- "day"
-#' UnitFactor (x, method = "Time")
+#' UnitFactor(x, method = "Time")
 #' # Returns: 86400
 #'
 #' @keywords denominator fraction helper utility
 #' @noRd
 
-UnitFactor <- function (x, method = "Time") {
+UnitFactor <- function(x, method = "Time") {
   # Check Point --------------------
-  if (! method %in% c ("Time"))
-    stop ("[UnitFactor] Unsupported method. Currently only 'Time' is implemented.")
+  if (!method %in% c("Time")) {
+    stop("[UnitFactor] Unsupported method. Currently only 'Time' is
+         implemented.")
+  }
 
 
   # Preprocess input -------------
-  x <- tolower (x)
+  x <- tolower(x)
 
 
   # Functional Switcher ------------
   ## Time --------------------------------
   if (method == "Time") {
-
-
     ### Compute denominator factor based on TUnit --------
-    TDivider <- ifelse (
-     x == "day", 24 * 3600,
-      ifelse (x == "hour",   3600,
-             ifelse (x == "minute", 60,
-                    ifelse (x == "second", 1, NA)
-             )
+    TDivider <- ifelse(
+      x == "day", 24 * 3600,
+      ifelse(x == "hour", 3600,
+        ifelse(x == "minute", 60,
+          ifelse(x == "second", 1, NA)
+        )
       )
     )
 
     ### Fallback: prompt user if invalid unit ------------------
     if (is.na(TDivider)) {
-      x <- Demand (c ("day", "hour", "minute", "second"), "Time Unit")
-      TDivider <- ifelse (
+      x <- Demand(c("day", "hour", "minute", "second"), "Time Unit")
+      TDivider <- ifelse(
         x == "day", 24 * 3600,
-        ifelse (x == "hour",   3600,
-               ifelse (x == "minute", 60,
-                      ifelse (x == "second", 1, NA)
-               )
+        ifelse(x == "hour", 3600,
+          ifelse(x == "minute", 60,
+            ifelse(x == "second", 1, NA)
+          )
         )
       )
     }
@@ -101,5 +101,5 @@ UnitFactor <- function (x, method = "Time") {
     Out <- TDivider
   }
 
-  return (Out)
+  return(Out)
 }

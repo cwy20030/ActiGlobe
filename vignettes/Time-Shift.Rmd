@@ -71,8 +71,8 @@ BdfList <-
     Start = "2017-10-24 13:45:00"
   )
 
-
-str(BdfList, max.level = 1) ### An overview of the output structure from BriefSum()
+### An overview of the output structure from BriefSum()
+str(BdfList, max.level = 1) 
 ```
 
 We can also take the advantage of `zeallot` to store multiple outputs at once just like in `Matlab` and `Python`.
@@ -96,7 +96,6 @@ head(Bdf)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Table 2 The Header of Bdf", fig.width=8}
 knitr::include_graphics("images/Bdf_head.png")
-
 ```
 
 In the enriched data - `df`, we have both the original data stored in `FlyEast` and some new information, such as the time stamp of each data point.
@@ -104,7 +103,9 @@ In the enriched data - `df`, we have both the original data stored in `FlyEast` 
 ```{r View df, message=FALSE, warning=FALSE, results='hide'}
 df <- BdfList$df
 
-head(df) ### This should give us the same first few lines of FlyEast dataset with a few new columns created by [BrifSum()].
+head(df)
+### This should give us the same first few lines of FlyEast dataset
+### with a few new columns created by [BrifSum()].
 ```
 
 ```{r message=FALSE, warning=FALSE,echo=FALSE, out.width="30%", paged.print=TRUE,tab.cap = "Table 3. BriefSum Enriched Longitudinal Recording"}
@@ -160,7 +161,6 @@ knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, tab.cap="Table 6 Initial Brief Summary of the Recording", fig.width=10}
 knitr::include_graphics("images/Bdf_demo.png")
-
 ```
 
 
@@ -172,7 +172,6 @@ knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, tab.cap="Table 7. Adjusted Brief Summary of the Recording", fig.width=12}
 knitr::include_graphics("images/Bdf.adj_demo.png")
-
 ```
 
 
@@ -191,8 +190,7 @@ ggActiGlobe(
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 1. An Overview of Unadjusted Recordin"}
-knitr::include_graphics("images/Unadjusted_Overview.png",dpi = 200)
-
+knitr::include_graphics("images/Unadjusted_Overview.png", dpi = 200)
 ```
 
 
@@ -219,8 +217,7 @@ ggActiGlobe(
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 2. An Overview of Adjusted Recordin"}
-knitr::include_graphics("images/Adjusted_Overview.png",dpi = 200)
-
+knitr::include_graphics("images/Adjusted_Overview.png", dpi = 200)
 ```
 
 We can also use the following code to look at each daily recording separately. Note that the code below was intentionally left without generating any output plot to avoid overcrowding this tutorial.
@@ -237,7 +234,7 @@ for (i in seq_along(length(x))) {
 
 2. Time-shift Adjusted Recording
 ```{r Adjusted Daily, eval=FALSE, fig.height=5, fig.width=7}
-for (i in seq_alonglength(x))) {
+for (i in seq_along(length(x))) {
   x <- Bdf.adj$Cumulative_Start_Second
   y <- Bdf.adj$Cumulative_End_Second
   GX <- df$Activity[(x[i]:y[i]) / 60]
@@ -248,7 +245,8 @@ for (i in seq_alonglength(x))) {
 3. Time-shift Adjusted Recording
 ```{r Automated Split Data, eval=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE}
 for (i in names(dfList$Daily_df)) {
-  plot(dfList$Daily_df[[i]]$Activity, main = i, font.lab = 2, ylab = "Activity (counts)")
+  plot(dfList$Daily_df[[i]]$Activity, main = i, font.lab = 2,
+       ylab = "Activity (counts)")
 }
 ```
 

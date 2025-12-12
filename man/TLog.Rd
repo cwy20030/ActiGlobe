@@ -9,16 +9,20 @@ A data frame with over 40,000 rows and 5 variables:
 \describe{
   \item{ID}{Pseudonym of the wearer.}
   \item{UTC_Offset}{UTC offset of the wearer's location or destination.}
-  \item{Country_with_Daylight_Saving}{Binary indicator (TRUE/FALSE) for whether daylight saving time is observed at the location or destination.}
-  \item{date_Start}{Start date of the wearer's initial location or date of departure.}
-  \item{date_End}{Optional date when the wearer departs again from the initial location or previous destination.}
+  \item{Country_with_Daylight_Saving}{Binary indicator (TRUE/FALSE) for
+  whether daylight saving time is observed at the location or destination.}
+  \item{date_Start}{Start date of the wearer's initial location or date of
+   departure.}
+  \item{date_End}{Optional date when the wearer departs again from the
+  initial location or previous destination.}
 }
 }
 \usage{
 data(TLog)
 }
 \description{
-A modified travel log documenting the dates when the wearer departs for long-distance travel.
+A modified travel log documenting the dates when the wearer departs for
+long-distance travel.
 }
 \seealso{
 \code{\link{TAdjust}} \code{\link{TravelLog}} \code{\link{IANA}}

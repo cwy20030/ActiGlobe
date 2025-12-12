@@ -1,5 +1,4 @@
 test_that("ValInput handles Act, Tm correctly", {
-
   # Act as activity ------------------------------------------
   # ---- Structure checks ----
   act <- ValInput(c("1", "2", "3"), type = "Act")
@@ -10,7 +9,6 @@ test_that("ValInput handles Act, Tm correctly", {
   # ---- Content checks ----
   act <- ValInput(c("1", "2", "3"), type = "Act")
   expect_equal(unname(act), c(1, 2, 3))
-
 
 
   # ---- Error checks ----
@@ -26,7 +24,6 @@ test_that("ValInput handles Act, Tm correctly", {
   expect_error(
     tryCatch(ValInput(c(1, Inf, 3), type = "Act"))
   )
-
 
 
   # Tm as time ------------------------------------------
@@ -47,5 +44,4 @@ test_that("ValInput handles Act, Tm correctly", {
   expect_error(
     tryCatch(ValInput(c(25, 1, 2), type = "Tm"))
   )
-
 })

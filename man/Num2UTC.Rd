@@ -20,11 +20,11 @@ time zone offsets into human-readable UTC offset notation.
 }
 \examples{
 # Convert UTC to numeric values
-x <- c (9.5, -7)
+x <- c(9.5, -7)
 
-x1 <- Num2UTC (x)
+x1 <- Num2UTC(x)
 
-print (x1)
+print(x1)
 
 }
 \seealso{
