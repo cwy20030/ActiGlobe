@@ -71,7 +71,9 @@ ValInput <- function(x, type = c("Act", "Tm")) {
     ## Time validation ---------------------
     "Tm" = {
       if (!inherits(x, "numeric")) {
-        x <- vapply(x, function(xx) C2T(xx, Discrete = TRUE), FUN.VALUE = numeric(1))
+        x <- vapply(x, function(xx)
+          C2T(xx, Discrete = TRUE),
+          FUN.VALUE = numeric(1))
       }
 
       if (any(x > 24 | x < 0)) {

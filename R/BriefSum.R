@@ -133,8 +133,8 @@ BriefSum <- function(df, SR, Start, TZ = "local") {
   # LstT = hms::as_hms(LstP)
 
   ## Compute All time points for the recording.
-  Tm <- as.numeric(as.POSIXct(Start, tz = TZ)) + (0:(nrow(df) - 1) * Epc)
-
+  Tm <- as.numeric(as.POSIXct(Start, tz = TZ)) +
+    (0:(nrow(df) - 1) * Epc)
   ### Convert date time
   AllT <- if (is.numeric(Tm)) as.POSIXct(x = Tm, origin = "1970-01-01", tz = TZ)
   else as.POSIXct(x = Tm, tz = TZ)
