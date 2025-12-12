@@ -634,10 +634,11 @@
 #' @param tau Period(s) of the cosinor model.
 #' @param object A fitted model object.
 #' @param title_extra Optional extra text for title.
+#' @param day Length of day in hours (typically 24).
 #' @returns Updated ggplot object.
 #' @noRd
 .add_scales_and_theme <- function(g, legend.position, tau, object, 
-                                  title_extra) {
+                                  title_extra, day = 24) {
     legend_keys <- c (
         "Observed", "Peak", "Trough", "Model Fit",
         "MESOR", "Acrophase"
@@ -665,7 +666,6 @@
             breaks = c ("Fit CI", "Inactive Period")
         )
 
-    day <- 24
     essential_tau <- if (length (tau) == 1) as.character (tau) else 
         paste (tau, collapse = ",")
     method_lbl <- if (!is.null (object$method)) object$method else 
@@ -682,15 +682,14 @@
             legend.position = legend.position,
             panel.grid.major = ggplot2::element_blank (),
             panel.grid.minor = ggplot2::element_blank (),
-            plot.title = ggplot2::element_text (hjust = 0.5, face = "bold")
-        ) +
-        ggplot2::labs (x = "Time", y = "Activity", title = plot_title) +
-        ggplot2::theme (
             plot.title = ggplot2::element_text (
+                hjust = 0.5,
+                face = "bold",
                 size = 16,
                 margin = ggplot2::margin (b = 15)),
             legend.margin =  ggplot2::margin(0, 0, 0, 0)
         ) +
+        ggplot2::labs (x = "Time", y = "Activity", title = plot_title) +
         ggplot2::scale_x_continuous (breaks = seq (0, day, by = 6), 
                                      expand = c (0, 0)) +
         ggplot2::coord_cartesian (xlim = c (0, day))
@@ -701,7 +700,6 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                         legend.position = "right", ...) {
     # Validate inputs
     .validate_ggcosinorm_inputs(object, ci_level, n)
-
 
     # Extract basic parameters
     day <- 24
@@ -759,7 +757,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
     g <- .add_amplitude_segments(g, amplitude, acrophase_time, mesor)
     g <- .add_labels(g, labels, use_posthoc, tau, mesor, amplitude, 
                      acrophase_time, aug)
-    g <- .add_scales_and_theme(g, legend.position, tau, object, title_extra)
+    g <- .add_scales_and_theme(g, legend.position, tau, object, title_extra,
+                               day)
 
     return (g)
 }
