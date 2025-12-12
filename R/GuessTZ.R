@@ -132,7 +132,7 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     #### Step 3 Keep only the first one if the All is set to FALSE
     if (!All) {
         if (length (aOF) > 1) {
-            pTZs <- sapply (pTZs, function (x) x [[1]])
+            pTZs <- vapply (pTZs, function (x) x [[1]], FUN.VALUE = character (1))
         } else {
             pTZs <- pTZs [[1]]
         }
