@@ -109,6 +109,7 @@ TimeFormat <- function(time, as.time = FALSE) {
   DateF <- suppressWarnings(tryCatch(DateFormat(time, as.date = FALSE)))
 
 
+
   #### If the string contains date, remove it.
   if (!DateF == "") {
     #### Extract DateFormat
