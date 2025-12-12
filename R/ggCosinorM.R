@@ -362,7 +362,7 @@
         logical = FALSE
     )
 
-    if (nrow (inatv) > 0) {
+    if (!nrow (inatv) == 0) {
         Ymin <- rep (0, nrow (inatv))
         Ymax <- rep (y_sf, nrow (inatv))
         start <- inatv$start
