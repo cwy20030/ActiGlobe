@@ -9,7 +9,8 @@ Rad2Hr(x, tau)
 \arguments{
 \item{x}{Numeric vector of phases in radian.}
 
-\item{tau}{Numeric scalar. Period length in the same time units you want returned (for hours use 24). Must be a single numeric value > 0 and <= 24.}
+\item{tau}{Numeric scalar. Period length in the same time units you want
+returned (for hours use 24). Must be a single numeric value > 0 and <= 24.}
 }
 \value{
 Numeric vector of times in [0, tau). NA values propagate.

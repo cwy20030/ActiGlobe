@@ -10,8 +10,9 @@ DST(DT, TZ = "local")
 \item{DT}{A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
 the dates/times to test.  These need not be sorted.}
 
-\item{TZ}{A single string naming an IANA time zone (e.g. `America/New_York`). If `"local"`, it will extract local time zone using `Sys.timezone()`.  Must match one entry in
-`OlsonNames()`.}
+\item{TZ}{A single string naming an IANA time zone (e.g. `America/New_York`).
+If `"local"`, it will extract local time zone using `Sys.timezone()`.
+Must match one entry in `OlsonNames()`.}
 }
 \value{
 A logical vector of the same length as `DT`.

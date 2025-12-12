@@ -10,15 +10,19 @@ ggActiGlobe(df, Bdf, VAct = NULL, VDT = "DateTime")
 \item{df}{A data.frame of annotated actigraphy epochs.  Must include:
 - An activity column named by `VAct`.
 - A datetime column named by `VDT`.
-- Optionally, a `Note` column to flag affected epochs. See \code{\link{BriefSum}} and \code{\link{TAdjust}} for details.}
+- Optionally, a `Note` column to flag affected epochs. See
+\code{\link{BriefSum}} and \code{\link{TAdjust}} for details.}
 
-\item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.}
+\item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata for
+the recording. Note, if jet lag occurred during the recording, please,
+update the metadata using \code{\link{TAdjust}} before passing to this
+function.}
 
 \item{VAct}{Optional character. Name of the activity column in `df`. If NULL,
 defaults to the second column of `df`.}
 
-\item{VDT}{Optional character. Name of the POSIXct datetime column in `df`. If NULL,
-defaults to "DateTime" of `df`.}
+\item{VDT}{Optional character. Name of the POSIXct datetime column in `df`.
+If NULL, defaults to "DateTime" of `df`.}
 }
 \value{
 A `ggplot` object showing:
@@ -27,7 +31,10 @@ A `ggplot` object showing:
   - Points `colored` by whether they were flagged in `Note`.
 }
 \description{
-Creates a time-series `scatterplot` of activity counts from an `ActiGlobe` data.frame,marking each midnight boundary with a vertical dashed line and `coloring` points that were flagged (e.g. travel overlaps or unallocated epochs).
+Creates a time-series `scatterplot` of activity counts from an `ActiGlobe`
+data.frame,marking each midnight boundary with a vertical dashed line and
+`coloring` points that were flagged (e.g. travel overlaps or unallocated
+epochs).
 }
 \examples{
 \dontrun{
@@ -65,7 +72,8 @@ p2 <- ggActiGlobe(
 )
 print(p2)
 
-# Pro-tip: [`cowplot`] can help stack the time series graphs in one single plot
+# Pro-tip: [`cowplot`] can help stack the time series graphs in one
+# single plot
 }
 
 }

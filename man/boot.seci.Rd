@@ -2,7 +2,7 @@
 % Please edit documentation in R/boot.seci.R
 \name{boot.seci}
 \alias{boot.seci}
-\title{Bootstrap Standard Errors and Confidence Intervals for Model Parameters}
+\title{Bootstrap Standard Errors and Confidence Intervals for Parameters}
 \usage{
 boot.seci(object, ci_level = 0.95, n = 500, digits = 2)
 }

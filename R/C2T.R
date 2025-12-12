@@ -30,9 +30,6 @@
 #' @param Discrete Logical scaler; if TRUE, each input in `Time` is converted
 #'   individually without subtraction for the prior time. Default FALSE will
 #'   subtract from the first time point.
-#' @param TZ  A single string naming an IANA time zone (e.g.
-#' `"America/New_York"`). If `"local"`, it will extract local time zone using
-#' `Sys.timezone()`.  Must match one entry in `OlsonNames()`.
 #'
 #' @returns
 #' A numeric vector of time values expressed in decimal hours. If the input
@@ -51,7 +48,7 @@
 #'
 #' @noRd
 
-C2T <- function(time, Discrete = FALSE, TZ = "UTC") {
+C2T <- function(time, Discrete = FALSE) {
   # Check Point ------------------------
   if (any(grepl("^[A-Za-z]+$", time)) || any(is.numeric(time))) {
     stop("Input 'time' must be a pure character time string with no

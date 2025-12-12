@@ -9,7 +9,8 @@ TZ2UTC(DT, TZ = "local")
 \arguments{
 \item{DT}{The date in the format as "2021-03-05"}
 
-\item{TZ}{The time zone when the recording started. (default = "local", which means user's local time zone)}
+\item{TZ}{The time zone when the recording started. (default = "local",
+which means user's local time zone)}
 }
 \value{
 A character string indicating the UTC offset, e.g., "UTC-05:00"

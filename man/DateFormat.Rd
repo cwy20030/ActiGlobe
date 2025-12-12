@@ -26,7 +26,8 @@ detected, warnings are issued and default behavior is applied.
 If no format matches, returns \code{NA} and issues a warning.
 }
 \description{
-This function will automatically detect possible date format. Users can choose to either reformat the date or report the datetime format detected.
+This function will automatically detect possible date format. Users can
+choose to either reformat the date or report the datetime format detected.
 
 Identifies the likely date format used in character strings and
 optionally converts these strings to Date objects. This utility is
@@ -47,7 +48,8 @@ DT <- c(
   "January 01, 2025", "December 12, 1980"
 )
 lapply(DT, DateFormat) # element-wise parsing
-### We expect that many of these format will not work because they contain text
+### We expect that many of these format will not work because they contain
+### text
 
 
 DT <- c(
@@ -58,7 +60,8 @@ DT <- c(
 # Recommended usage for mixed formats:
 lapply(DT, DateFormat, Delim = ",") # element-wise parsing
 
-for (x in DT) print(DateFormat(x, Delim = ",")) # displays format/warning per entry
+for (x in DT)
+print(DateFormat(x, Delim = ",")) # displays format/warning per entry
 
 # Avoid using sapply, because it will convert them into numeric form
 sapply(DT, DateFormat)

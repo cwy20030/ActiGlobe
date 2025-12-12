@@ -13,7 +13,8 @@ boundary.  To capture DST transitions, include at least one day
 before and after the expected shift. Note that the time zone should
 be specified in the DT. See \code{as.POSIXct}.}
 
-\item{TZ}{The time zone when the recording started. (default = "local", which means user's local time zone)}
+\item{TZ}{The time zone when the recording started. (default = "local",
+which means user's local time zone)}
 }
 \value{
 A numeric vector of the same length as \code{DT}.  Each
@@ -28,7 +29,8 @@ Internally it calls \code{Date2TotalT()} in seconds, subtracts
 the 86400s of a normal day, and converts the remainder to hours.
 }
 \examples{
-# Example around a typical spring-forward transition (e.g. US second Sunday in March)
+# Example around a typical spring-forward transition (e.g. US second Sunday
+# in March)
 dates <- as.Date("2021-03-14")
 
 # On 2021-03-14 clocks jumped forward: day is 23h so output = -1

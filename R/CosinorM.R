@@ -199,7 +199,7 @@
 
 
 CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
-                     type = "HC3", dilute = FALSE, TZ = "local") {
+                     type = "HC3", dilute = FALSE) {
   # Check Point and Input Validation -------------------------
   activity <- ValInput(x = activity, type = "Act")
   time <- ValInput(x = time, type = "Tm")

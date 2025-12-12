@@ -252,7 +252,7 @@
 #' @export
 
 CosinorM.KDE <- function(time, activity, bw = 0.8, grid = 360L,
-                         arctan2 = TRUE, dilute = FALSE, TZ = "local") {
+                         arctan2 = TRUE, dilute = FALSE) {
   # Check Point and Input Validation -------------------------
   activity <- ValInput(x = activity, type = "Act")
   time <- ValInput(x = time, type = "Tm")
