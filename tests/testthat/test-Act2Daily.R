@@ -41,3 +41,87 @@ test_that("Act2Daily Test Completed", {
   # Ensure the Daily_df contains the expected date labels
   expect_equal(Dates, c("2017-10-24", "2017-10-25", "2017-10-26"))
 })
+
+test_that("Act2Daily handles Incomplete recordings when Incomplete = TRUE", {
+  # Summarize FlyEast dataset
+  BdfList <- BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
+  )
+  df <- BdfList$df
+  Bdf <- BdfList$Bdf
+
+  # Take first day which is incomplete
+  Bdf <- Bdf[1, ]
+  df <- df[1:Bdf$nDataPoints[1], ]
+  dfList <- Act2Daily(
+    df = df,
+    Bdf = Bdf,
+    VAct = "Activity",
+    VTm = "Time",
+    Incomplete = TRUE,  # Keep incomplete recordings
+    Travel = FALSE
+  )
+  # ---- Structure checks ----
+  expect_true(is.list(dfList))
+  expect_equal(names(dfList), c("Daily_df", "df"))
+
+  # ---- Content checks ----
+  # Should include the incomplete day
+  expect_true(length(dfList$Daily_df) > 0)
+})
+
+test_that("Act2Daily handles different TUnit parameters", {
+  BdfList <- BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
+  )
+  df <- BdfList$df
+  Bdf <- BdfList$Bdf
+  Bdf <- Bdf[1:2, ]
+  df <- df[1:sum(Bdf$nDataPoints), ]
+  # Test with different TUnit values
+  for (unit in c("day", "minute", "second")) {
+    dfList <- Act2Daily(
+      df = df,
+      Bdf = Bdf,
+      TUnit = unit,
+      VAct = "Activity",
+      VTm = "Time"
+    )
+
+    # ---- Structure checks ----
+    expect_true(is.list(dfList))
+    expect_equal(names(dfList), c("Daily_df", "df"))
+  }
+})
+
+test_that("Act2Daily handles custom VAct and VTm column names", {
+  BdfList <- BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
+  )
+  df <- BdfList$df
+  Bdf <- BdfList$Bdf
+  Bdf <- Bdf[1:2, ]
+  df <- df[1:sum(Bdf$nDataPoints), ]
+
+  # Rename columns
+  names(df)[1] <- "CustomTime"
+  names(df)[2] <- "CustomActivity"
+  dfList <- Act2Daily(
+    df = df,
+    Bdf = Bdf,
+    VAct = "CustomActivity",
+    VTm = "CustomTime"
+  )
+  # ---- Structure checks ----
+  expect_true(is.list(dfList))
+  expect_equal(names(dfList), c("Daily_df", "df"))
+})

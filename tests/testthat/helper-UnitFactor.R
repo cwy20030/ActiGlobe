@@ -40,3 +40,18 @@ test_that("UnitFactor returns correct denominator for valid time units", {
     )
   )
 })
+
+
+test_that("UnitFactor handles invalid unit with Demand fallback", {
+  # Mock readline to return "1" (select "day")
+  mockery::stub(UnitFactor, "Demand", function(options, MESSAGE) "day")
+
+  result <- UnitFactor("invalid_unit", method = "Time")
+
+  # ---- Structure checks ----
+  expect_true(is.numeric(result))
+
+  # ---- Content checks ----
+  # Should return day value after Demand prompt
+  expect_equal(result, 24 * 3600)
+})

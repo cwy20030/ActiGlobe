@@ -48,3 +48,34 @@ test_that("GuessTZ returns Etc/GMT+12 for -1200 offset", {
   # Specific value should match expected timezone
   expect_equal(result[["-1200"]], "Etc/GMT+12")
 })
+
+
+
+test_that("GuessTZ handles multiple offsets with All = TRUE", {
+  result <- GuessTZ(aOF = c("+0000", "-0500"), All = TRUE)
+
+  # ---- Structure checks ----
+  expect_true(is.list(result) || is.character(result))
+  expect_true(length(result) == 2)
+
+  # ---- Content checks ----
+  expect_named(result, c("+0000", "-0500"))
+})
+test_that("GuessTZ uses custom reference date", {
+  custom_date <- as.POSIXct("2021-07-01 12:00:00", tz = "UTC")
+  result <- GuessTZ(aOF = "+0000", DT = custom_date, All = FALSE)
+
+  # ---- Structure checks ----
+  expect_true(is.character(result))
+
+  # ---- Content checks ----
+  # Should return a valid timezone
+  expect_true(nchar(result) > 0)
+})
+test_that("GuessTZ handles local timezone prioritization", {
+  result <- GuessTZ(aOF = "-0500", iTZ = "local", All = FALSE)
+
+  # ---- Structure checks ----
+  expect_true(is.character(result))
+  expect_true(length(result) == 1)
+})
