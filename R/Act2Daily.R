@@ -132,8 +132,7 @@ Act2Daily <- function(df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     } else {
       x
     }
-  })
-}, FUN.VALUE = character(1))
+    }, FUN.VALUE = character(1))
 
 
   Epc <- Bdf$Epoch # Epoch length (seconds) per day

@@ -271,7 +271,7 @@ learning a completely new coding style unique to the contributor.
 
 
 
-    this <- function()
+    this <- function ()
 
 We understand that this is different from the typical `tidyverse`
 strategy. So it is not essential to follow this rule when drafting and
