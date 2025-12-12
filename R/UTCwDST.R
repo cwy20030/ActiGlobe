@@ -98,8 +98,8 @@ UTCwDST <- function(UTCs, fork = FALSE) {
 
   ## Check if any time zone may experience time change.
   Out <- vapply(pTZs, function(tzs) {
-    wDST <- vapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst, FUN.VALUE = integer(1))
-    sDST <- vapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst, FUN.VALUE = integer(1))
+    wDST <- vapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst, FUN.VALUE = numeric(1))
+    sDST <- vapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst, FUN.VALUE = numeric(1))
     any(wDST != sDST)
   }, FUN.VALUE = logical(1))
 

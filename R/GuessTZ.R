@@ -118,14 +118,14 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     }
 
     #### Step 1 Guess all possible TZ indicators -----------
-    pTZs <- lapply (aOF, function (x) oTZs [Toffs %in% x])
+    pTZs <- sapply (aOF, function (x) oTZs [Toffs %in% x])
 
     #### Step 2 Check if the initial time zone is included
     if (!is.null (TZ1)) {
         if (length (aOF) == 1) {
             pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
         } else {
-            pTZs <- lapply (pTZs, function (x) ifelse (TZ1 %in% x, TZ1, x))
+            pTZs <- sapply (pTZs, function (x) ifelse (TZ1 %in% x, TZ1, x))
         }
     }
 
