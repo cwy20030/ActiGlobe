@@ -13,7 +13,7 @@ Revision history for the R/ActiGlobe package
 
 - New internal function added: Prob.Inact, mIANA, UnitFactor, ValInput
 
-- Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST, Date2TotalT, write.act, BriefSum, write.act, write.cosinor
+- Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST, Date2TotalT, write.act, BriefSum, write.act, write.cosinor, C2T
 
 - Brief Detail: 
     - piecewise binomial estimation of inactive period using Prob.Inact
@@ -27,6 +27,7 @@ Revision history for the R/ActiGlobe package
     - add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT zones when OlsonNames lookup fails
     - augment test suits for all internal/helper functions
     - augment fail check in Date2TotalT function
+    - implement string parsing for time in C2T to avoid automatic TZ adjustment from as.POSXct
 
 ## Version: 0.2.0, 2025-10-31
 
