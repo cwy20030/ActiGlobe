@@ -20,13 +20,23 @@
 #' @title Adjust Time Shift based on Travel Log
 #'
 #' @description
-#' `TAdjust()` is a function that corrects data points and time-shift based on travelling log. Note that it is important to ensure that the UTC-offset value is correct. When in doubt, please use the UTC function or consult IANA table in the package. Daylight saving will not be reassessed as in BriefSum function.
-#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording.
-#' @param TLog A structured travel log containing date of travel and local time zone. Use `TravelLog()` to generate template.
-#' @param TZ The time zone when the recording started. (default = "NULL", which will disregard the use of the initial geographical location-based time zone indicator)
-#' @param fork Logical, if TRUE, it will use parallel processing to speed up the computation. Default is FALSE.
+#' `TAdjust()` is a function that corrects data points and
+#' time-shift based on travelling log. Note that it is important to
+#' ensure that the UTC-offset value is correct. When in doubt, please
+#' use the UTC function or consult IANA table in the package.
+#' Daylight saving will not be reassessed as in BriefSum function.
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day
+#'   metadata for the recording.
+#' @param TLog A structured travel log containing date of travel and
+#'   local time zone. Use `TravelLog()` to generate template.
+#' @param TZ The time zone when the recording started. (default =
+#'   "NULL", which will disregard the use of the initial geographical
+#'   location-based time zone indicator)
+#' @param fork Logical, if TRUE, it will use parallel processing to
+#'   speed up the computation. Default is FALSE.
 
-#' @return A \code{\link{BriefSum}} object with adjusted data points and time shift based on travel log.
+#' @return A \code{\link{BriefSum}} object with adjusted data points
+#'   and time shift based on travel log.
 #'
 #' @examples
 #' \dontrun{

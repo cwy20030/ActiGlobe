@@ -21,8 +21,8 @@
 #' @description
 #' This function fits a generalized linear model (GLM) to observed activity data
 #' in order to estimate periods of inactivity. A polynomial term of time is used
-#' as a predictor, and inactivity is classified based on the predicted probability
-#' exceeding a threshold multiple times.
+#' as a predictor, and inactivity is classified based on the
+#' predicted probability exceeding a threshold multiple times.
 #'
 #' @details
 #' The GLM is fit using `stats::glm()` with a polynomial term of degree `k`
@@ -35,21 +35,23 @@
 #'
 #' @param y Numeric vector of observed activity counts. Typically represents
 #'   activity levels measured over time.
-#' @param T Numeric vector of time indices corresponding to `y`. Must be the same
-#'   length as `y`.
-#' @param k Integer; degree of polynomial for time in the GLM. Higher values allow
-#'   more flexible time trends. Default = 12.
-#' @param threshold Integer; number of consecutive times the predicted probability
-#'   of inactivity must exceed 0.5 to classify the period as inactive. Default = 3.
-#' @param logical Logical scalar; if `TRUE`, the function returns a logical vector
-#'   indicating inactive periods. If `FALSE`, a summary table of inactivity
-#'   classification results is returned.
+#' @param T Numeric vector of time indices corresponding to `y`.
+#'   Must be the same length as `y`.
+#' @param k Integer; degree of polynomial for time in the GLM.
+#'   Higher values allow more flexible time trends. Default = 12.
+#' @param threshold Integer; number of consecutive times the predicted
+#'   probability of inactivity must exceed 0.5 to classify the period
+#'   as inactive. Default = 3.
+#' @param logical Logical scalar; if `TRUE`, the function returns a
+#'   logical vector indicating inactive periods. If `FALSE`, a summary
+#'   table of inactivity classification results is returned.
 #'
 #' @return
 #' - If `logical = TRUE`: a logical vector of the same length as `y`, where
 #'   `TRUE` indicates an inactive period.
-#' - If `logical = FALSE`: a summary table (data frame) containing classification
-#'   results, including predicted probabilities and inactivity flags.
+#' - If `logical = FALSE`: a summary table (data frame) containing
+#'   classification results, including predicted probabilities and
+#'   inactivity flags.
 #'
 #' @examples
 #' data (FlyEast)
