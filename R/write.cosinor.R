@@ -138,7 +138,9 @@
 #' @export
 
 
-write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, method = "OLS", tau = 24, ph = FALSE, overwrite = FALSE) {
+write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL,
+                           VTm = NULL, method = "OLS", tau = 24,
+                           ph = FALSE, overwrite = FALSE) {
 
     ## Get Essential Info -----------------
     nT <- length (tau) ### Number of assumed rhythms
@@ -156,9 +158,11 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
         KeyTerm <- "MESOR|Amplitude|Acrophase"
 
     } else {
-        nVNames <- c ("MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time", "Peak", "Amplitude")
+        nVNames <- c ("MESOR", "Bathyphase.time", "Trough.ph",
+                      "Acrophase.time", "Peak", "Amplitude")
         Bdf [nVNames] <- NA
-        KeyTerm <- "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
+        KeyTerm <- paste0("MESOR|Bathyphase.time|Trough.ph|",
+                          "Acrophase.time|Peak|Amplitude")
     }
 
     ## Check Directory ----------------
@@ -191,7 +195,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
 
-            Act [is.na (Act)] <- 0 #### Just in acse, provide a zero imputation for NA.
+            ### Just in case, provide zero imputation for NA
+            Act [is.na (Act)] <- 0
 
             if (!all (Act == 0)) {
               ### Create activity trend for the top panel ---------------
@@ -215,21 +220,26 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
             if (method == "KDE") {
                 m1 <- CosinorM.KDE (time = Tm, activity = Act)
             } else {
-                m1 <- CosinorM (time = Tm, activity = Act, tau = tau, method = method)
+                m1 <- CosinorM (time = Tm, activity = Act, tau = tau,
+                                method = method)
             }
 
             if (all (nT == 1, isFALSE (ph))) {
                 Cftemp <- m1$coef.cosinor
-                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Amplitude, Acrophase in radians
+                ### MESOR, Amplitude, Acrophase in radians
+                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
 
-                VAcro <- names (Coef) [grepl ("Acro", names (Coef))] # Extract the name of Acrophase to compute the time
+                ### Extract name of Acrophase to compute the time
+                VAcro <- names (Coef) [grepl ("Acro", names (Coef))]
                 Coef [[4]] <- Rad2Hr (Coef [VAcro], tau = tau)
                 names (Coef) [[4]] <- paste0 (VAcro, ".time")
 
             } else {
                 Cftemp <- m1$post.hoc
                 Cftemp <- Cftemp [match (nVNames, names (Cftemp))]
-                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))] # MESOR, Bathyphase.time, Trough.ph, Acrophase.time, Peak, Amplitude
+                ### MESOR, Bathyphase.time, Trough.ph,
+                ### Acrophase.time, Peak, Amplitude
+                Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
             }
 
             ### Update the report with cosinor model coefficients
@@ -269,8 +279,10 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL, meth
                   legend.position  = "right"
                 ) +
                 # add empty scales so legend space is reserved
-                scale_colour_manual(name = "", values = c("dummy" = NA), breaks = NULL) +
-                scale_fill_manual(name = "", values = c("dummy" = NA), breaks = NULL)
+                scale_colour_manual(name = "", values = c("dummy" = NA),
+                                   breaks = NULL) +
+                scale_fill_manual(name = "", values = c("dummy" = NA),
+                                 breaks = NULL)
 
             # Arrange the top and bottom plots in a grid
             grid.arrange (top.plot, bottom.plot)
