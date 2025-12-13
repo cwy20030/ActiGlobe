@@ -597,7 +597,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
     y_sf <- floor (max (aug$y_obs, na.rm = TRUE) * 0.8)
     inatv <- Prob.Inact (
         y = aug$y_obs,
-        T = aug$t_obs,
+        time = aug$t_obs,
         k = 12,
         threshold = 3,
         logical = FALSE
