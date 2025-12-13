@@ -18,18 +18,23 @@
 #' @title Mini IANA Table for Internal Uses
 #'
 #' @description
-#' A miniturized IANA table generator that only extract the first timezone based
-#' on the abbreviated time zone code. An internal function to resolve the internal
-#' data access issue.
+#' A miniturized IANA table generator that only extract the first
+#' timezone based on the abbreviated time zone code. An internal
+#' function to resolve the internal data access issue.
 #'
 #' @import utils
 #'
-#' @param Write A binary code to indicate whether to write a .csv file containing the template needed for the travel log. (default = FLASE)
-#' When set to FALSE, the template will be returned as an object.
-#' When set to TRUE, user must provide the target directory where they wish to store the template.
-#' @param Dir The directory where the travel log template to be exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
+#' @param Write A binary code to indicate whether to write a .csv
+#'   file containing the template needed for the travel log. (default
+#'   = FLASE) When set to FALSE, the template will be returned as an
+#'   object. When set to TRUE, user must provide the target directory
+#'   where they wish to store the template.
+#' @param Dir The directory where the travel log template to be
+#'   exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../
+#'   FOLDER NAME/">
 #'
-#' @return a miniturized IANA table template as a data.frame or written as a CSV file
+#' @return a miniturized IANA table template as a data.frame or
+#'   written as a CSV file
 #'
 #' @examples
 #' \dontrun{
