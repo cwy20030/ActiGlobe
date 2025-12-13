@@ -35,7 +35,8 @@
 #'
 #' - For `type = "Tm"`:
 #'   * Converts non-numeric input using `C2T ()` with `Discrete = TRUE`.
-#'   * Uses OS-specific dispatch (`Darwin`, `Linux`, `Windows`) via `Sys.info ()[["sysname"]]`.
+#'   * Uses OS-specific dispatch (`Darwin`, `Linux`, `Windows`) via
+#'     `Sys.info ()[["sysname"]]`.
 #'   * Stops if any values fall outside the range `[0, 24]`.
 #'
 #' @return A validated and converted numeric vector.

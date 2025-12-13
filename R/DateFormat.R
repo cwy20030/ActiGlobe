@@ -18,7 +18,9 @@
 #' @title Detect Possible DT Format
 #'
 #' @description
-#' This function will automatically detect possible date format. Users can choose to either reformat the date or report the datetime format detected.
+#' This function will automatically detect possible date format.
+#' Users can choose to either reformat the date or report the
+#' datetime format detected.
 #'
 #' @title Format Recognition and Conversion of Date-Time Strings
 #'
@@ -60,7 +62,8 @@
 #'     "January 01, 2025", "December 12, 1980"
 #' )
 #' lapply (DT, DateFormat) # element-wise parsing
-#' ### We expect that many of these format will not work because they contain text
+#' ### We expect that many of these format will not work because
+#' ### they contain text
 #'
 #'
 #' DT <- c (
@@ -71,7 +74,8 @@
 #' # Recommended usage for mixed formats:
 #' lapply (DT, DateFormat, Delim = ",") # element-wise parsing
 #'
-#' for (x in DT) print (DateFormat (x, Delim = ",")) # displays format/warning per entry
+#' for (x in DT) print (DateFormat (x, Delim = ","))
+#' # displays format/warning per entry
 #'
 #' # Avoid using sapply, because it will convert them into numeric form
 #' sapply (DT, DateFormat)

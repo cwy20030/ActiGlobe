@@ -19,7 +19,10 @@
 #
 #' @title Convert Travelling Log to Parameters for TAdjust
 #'
-#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day
+#'   metadata for the recording. Note, if jet lag occurred during the
+#'   recording, please, update the metadata using
+#'   \code{\link{TAdjust}} before passing to this function.
 #' @param D The date travelling by plane.
 #' @param U The UTC offset values <e.g., "UTC+09:30" or "UTC-07:00">
 #'
@@ -27,11 +30,12 @@
 #' A data frame containing the following columns:
 #' \itemize{
 #'   \item \code{Date} — The recording dates.
-#'   \item \code{Recording_Period} — An integer index indicating the travel period
-#'         (e.g., before/after flight segments).
+#'   \item \code{Recording_Period} — An integer index indicating the
+#'         travel period (e.g., before/after flight segments).
 #'   \item \code{UTC} — The updated UTC offset string for each date.
-#'   \item \code{Hour_to_Adjust} — Numeric values representing the difference in hours
-#'         between the old and new UTC offsets, used for time adjustment.
+#'   \item \code{Hour_to_Adjust} — Numeric values representing the
+#'         difference in hours between the old and new UTC offsets,
+#'         used for time adjustment.
 #' }
 #'
 #' @examples

@@ -46,9 +46,10 @@
 #'   \pkg{parallel} package to compute offsets across all Olson time zones.
 #'   Defaults to `FALSE` (sequential).
 #'
-#' @return A character vector or list of character vectors containing
-#'   candidate time zones corresponding to each offset in `aOF`. If `All = FALSE`,
-#'   only the first match is returned per offset.
+#' @return A character vector or list of character vectors
+#'   containing candidate time zones corresponding to each offset in
+#'   `aOF`. If `All = FALSE`, only the first match is returned per
+#'   offset.
 #'
 #' @examples
 #'

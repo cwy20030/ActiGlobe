@@ -25,7 +25,8 @@
 #' requested time unit.
 #'
 #' @param DT
-#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending order.
+#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in
+#'   ascending order.
 #'   Each entry represents the start of an interval.  Internally, the function
 #'   appends one extra day beyond the last entry so that the final interval
 #'   covers a full 24 h until the next midnight. See \code{as.POSIXct}.
@@ -36,7 +37,8 @@
 #'   case-insensitive.  Default is `"hour"`, meaning the returned values
 #'   are in decimal hours.
 #'
-#' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
+#' @param TZ The time zone when the recording started. (default =
+#'   "local", which means user's local time zone)
 #'
 #' @return
 #'   A numeric vector of the same length as `DT`.  Each element is the

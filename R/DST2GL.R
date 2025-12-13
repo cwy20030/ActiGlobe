@@ -31,7 +31,8 @@
 #'   before and after the expected shift. Note that the time zone should
 #'   be specified in the DT. See \code{as.POSIXct}.
 #'
-#' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
+#' @param TZ The time zone when the recording started. (default =
+#'   "local", which means user's local time zone)
 #' @return
 #'   A numeric vector of the same length as \code{DT}.  Each
 #'   value is the number of hours that day is longer
@@ -39,7 +40,8 @@
 #'   shift on that date.
 #'
 #' @examples
-#' # Example around a typical spring-forward transition (e.g. US second Sunday in March)
+#' # Example around a typical spring-forward transition (e.g. US
+#' # second Sunday in March)
 #' dates <- as.Date ("2021-03-14")
 #'
 #' # On 2021-03-14 clocks jumped forward: day is 23h so output = -1

@@ -15,7 +15,8 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title Bootstrap Standard Errors and Confidence Intervals for Model Parameters
+#' @title Bootstrap Standard Errors and Confidence Intervals for
+#'   Model Parameters
 #'
 #' @description Computes standard errors and confidence intervals for cosinor
 #' and post-hoc parameters via non-parametric bootstrap
