@@ -259,7 +259,8 @@
 #' @keywords circular cosinor KDE circadian
 #' @export
 
-CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE, dilute = FALSE) {
+CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
+                          arctan2 = TRUE, dilute = FALSE) {
     # Check Point and Input Validation -------------------------
 	activity <- ValInput(x = activity, type = "Act")
 	time  <- ValInput(x = time, type = "Tm")
@@ -292,7 +293,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     ### Trapzoid weight - radian on observation points
     w <- trap_weights (theta = theta)
 
-    ### Pairwise wrapped angular differences and kernel matrix (observations x observations)
+    ### Pairwise wrapped angular differences and kernel matrix
+    ### (observations x observations)
     diffs_mat <- wrap_diff (outer (theta, theta, "-")) # n x n
     bw_rad <- bw * 2 * pi / tau
     K <- dnorm (diffs_mat, mean = 0, sd = bw_rad) # kernel matrix (obs x obs)
@@ -304,14 +306,17 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 
     ### integrate area on observation angles (coarse check)
     area <- trap_int (theta, y_h)
-    if (!is.finite (area) || area <= .Machine$double.eps) stop ("area is zero or invalid; check activity and bw")
+    if (!is.finite (area) || area <= .Machine$double.eps)
+        stop ("area is zero or invalid; check activity and bw")
 
     Pdf <- dens / area
 
 
     ##  Variance / se for fitted curve -----------------------------
-    W <- K * matrix (rep (w, each = nrow (K)), nrow = nrow (K), byrow = FALSE)
-    W <- W / matrix (rep (den, times = ncol (W)), nrow = nrow (W), byrow = FALSE)
+    W <- K * matrix (rep (w, each = nrow (K)), nrow = nrow (K),
+                     byrow = FALSE)
+    W <- W / matrix (rep (den, times = ncol (W)), nrow = nrow (W),
+                     byrow = FALSE)
 
     resid <- activity - y_h
     RS <- resid^2
@@ -320,14 +325,17 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     trW <- sum (diag (W))
     trWW <- sum (W * W)
     df_denom <- n - (2 * trW) + trWW
-    if (df_denom <= 0) stop ("Nonpositive denominator for sigma^2 estimate; increase bw or check W")
+    if (df_denom <= 0)
+        stop ("Nonpositive denominator for sigma^2 estimate; ",
+              "increase bw or check W")
 
     sigma_hat <- RSS / df_denom
     var_fitted <- sigma_hat * rowSums (W^2)
     se_fitted <- sqrt (var_fitted)
 
 
-    # Evaluate on dense grid for stable integrals (grid points) --------------------
+    # Evaluate on dense grid for stable integrals (grid points)
+    # ----------
     # gtheta in radians, exclude duplicate 2*pi (2pi = 0)
     gtheta <- seq (0, 2 * pi, length.out = as.integer (grid) + 1)
     gtheta <- gtheta [-(length (gtheta))] # length = grid
@@ -336,7 +344,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     diffs.g <- wrap_diff (outer (gtheta, theta, "-")) # grid x n
     K.g <- dnorm (diffs.g, mean = 0, sd = bw_rad) # grid x n
 
-    # observation-side trap weights (same as w) and grid trap weights for integration
+    # observation-side trap weights (same as w) and grid trap
+    # weights for integration
     w.g <- trap_weights (theta = gtheta)
 
     # numerators and denominators on the grid
@@ -347,7 +356,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     eps <- .Machine$double.eps
     zero_mask <- den.g <= eps
     if (any (zero_mask)) {
-        # set fitted values at those grid points to NA and exclude them from integrals
+        # set fitted values at those grid points to NA and exclude
+        # them from integrals
         y.g <- rep (NA_real_, length (den.g))
         y.g [!zero_mask] <- dens.g.num [!zero_mask] / den.g [!zero_mask]
     } else {
@@ -356,14 +366,18 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 
     # integrate on the grid-
     area.g <- trap_int (gtheta, y.g)
-    if (!is.finite (area.g) || area.g <= .Machine$double.eps) stop ("area.g is zero or invalid; check activity and bw / grid")
+    if (!is.finite (area.g) || area.g <= .Machine$double.eps)
+        stop ("area.g is zero or invalid; check activity and ",
+              "bw / grid")
 
     # pdf on grid (integrates to 1 over theta)
     pdf.g <- dens.g.num / area.g
 
     ##  Variance / se for grid -----------------------------
-    W.g <- K.g * matrix (rep (w, each = nrow (K.g)), nrow = nrow (K.g))
-    W.g <- W.g / matrix (rep (den.g, times = ncol (W.g)), nrow = nrow (W.g), byrow = FALSE)
+    W.g <- K.g * matrix (rep (w, each = nrow (K.g)),
+                         nrow = nrow (K.g))
+    W.g <- W.g / matrix (rep (den.g, times = ncol (W.g)),
+                         nrow = nrow (W.g), byrow = FALSE)
 
     var_fitted.g <- sigma_hat * rowSums (W.g^2)
     se_fitted.g <- sqrt (var_fitted.g)
@@ -371,8 +385,10 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
 
     # compute activity-scale integrals using grid pdf (stable)
     I0_act <- area.g * sum ((pdf.g * w.g) / den.g, na.rm = TRUE)
-    Icos_act <- area.g * sum ((pdf.g * cos (gtheta) * w.g) / den.g, na.rm = TRUE)
-    Isin_act <- area.g * sum ((pdf.g * sin (gtheta) * w.g) / den.g, na.rm = TRUE)
+    Icos_act <- area.g * sum ((pdf.g * cos (gtheta) * w.g) / den.g,
+                              na.rm = TRUE)
+    Isin_act <- area.g * sum ((pdf.g * sin (gtheta) * w.g) / den.g,
+                              na.rm = TRUE)
 
     # cosinor activity-scale parameters from grid integrals
     mesor <- I0_act / (2 * pi)
@@ -426,8 +442,11 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L, arctan2 = TRUE,
     Amp <- (peak_value - trough_value) / 2
     names (Amp) <- "Amplitude.post-hoc"
 
-    post.hoc <- c (mesor_vlaue, bathy.ph, trough_value, acro.ph, peak_value, Amp)
-    names (post.hoc) <- c ("MESOR.ph", "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
+    post.hoc <- c (mesor_vlaue, bathy.ph, trough_value, acro.ph,
+                   peak_value, Amp)
+    names (post.hoc) <- c ("MESOR.ph", "Bathyphase.ph.time",
+                           "Trough.ph", "Acrophase.ph.time",
+                           "Peak.ph", "Amplitude.ph")
 
 
     # Generate Output ---------------
