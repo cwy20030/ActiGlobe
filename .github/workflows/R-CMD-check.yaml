@@ -3,7 +3,7 @@
 
 # This will cancel running jobs once a new run is triggered
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 # NOTE: This workflow is overkill for most R packages and
