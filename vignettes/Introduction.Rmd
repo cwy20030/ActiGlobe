@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 subtitle: "What is actigraphy? How do we use R?"
-author: "C. William Yao"
+author: "C. William Yao, Samuel Szocs"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction}
