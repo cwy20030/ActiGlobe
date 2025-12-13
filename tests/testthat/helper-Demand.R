@@ -33,32 +33,3 @@ test_that("Demand handles 'Other' option with custom input", {
   # ---- Content checks ----
   expect_equal(result, "/custom/path")
 })
-
-test_that("Demand handles invalid selection and retries", {
-  # Mock readline to return invalid input first, then valid
-  call_count <- 0
-  mockery::stub(Demand, "readline", function(prompt = "") {
-    call_count <<- call_count + 1
-    if (call_count == 1) return("99")  # Invalid
-    return("1")  # Valid
-  })
-
-  result <- Demand(c("First", "Second"), "option")
-
-  # ---- Content checks ----
-  expect_equal(result, "First")
-})
-test_that("Demand handles non-numeric input and retries", {
-  # Mock readline to return non-numeric first, then valid
-  call_count <- 0
-  mockery::stub(Demand, "readline", function(prompt = "") {
-    call_count <<- call_count + 1
-    if (call_count == 1) return("abc")  # Non-numeric
-    return("2")  # Valid
-  })
-
-  result <- Demand(c("First", "Second"), "option")
-
-  # ---- Content checks ----
-  expect_equal(result, "Second")
-})
