@@ -24,7 +24,8 @@
 #' Compute partial derivatives, and delta‑method variances for amplitude and
 #' acrophase from linearized cosinor coefficients for cosine (\eqn{\beta}) and
 #' sine (\eqn{\gamma}) waves, using the variance–covariance matrix. Note that
-#' the matrix is k-by-k, where \eqn{k = 2 * numbers of \tau specified}. See \code{\link{CosinorM}}
+#' the matrix is k-by-k, where \eqn{k = 2 * numbers of \tau
+#' specified}. See \code{\link{CosinorM}}
 #' The cosinor mapping is:
 #' \strong{Amplitude} (point estimate, \eqn{A = \sqrt{\beta^2 + \gamma^2}}):
 #'
@@ -33,41 +34,62 @@
 #' \eqn{\frac{\partial A}{\partial \gamma} = \frac{\gamma}{A}}
 #'
 #' Delta-method variance formulas (quadratic form) are:
-#' \deqn{\operatorname{Var}(A) \approx \left(\frac{\partial A}{\partial \beta}\right)^2 \operatorname{Var}(\beta)
-#' \;+\; 2\left(\frac{\partial A}{\partial \beta}\right)\left(\frac{\partial A}{\partial \gamma}\right)\operatorname{Cov}(\beta,\gamma)
-#' \;+\; \left(\frac{\partial A}{\partial \gamma}\right)^2 \operatorname{Var}(\gamma).}
+#' \deqn{\operatorname{Var}(A) \approx
+#'   \left(\frac{\partial A}{\partial \beta}\right)^2
+#'   \operatorname{Var}(\beta)
+#'   \;+\; 2\left(\frac{\partial A}{\partial \beta}\right)
+#'   \left(\frac{\partial A}{\partial \gamma}\right)
+#'   \operatorname{Cov}(\beta,\gamma)
+#'   \;+\; \left(\frac{\partial A}{\partial \gamma}\right)^2
+#'   \operatorname{Var}(\gamma).}
 #'
-#' \strong{Acrophase} (point estimate, \eqn{\phi = \operatorname{atan2}(\gamma,\beta)}):
+#' \strong{Acrophase} (point estimate,
+#' \eqn{\phi = \operatorname{atan2}(\gamma,\beta)}):
 #' Equivalently,
 #' \eqn{\tan(\phi)=\frac{\gamma}{\beta}.}
 #'
-#' Differentiate both sides treating \eqn{\phi} as a function of \eqn{\beta} and \eqn{\gamma}.
+#' Differentiate both sides treating \eqn{\phi} as a function of
+#' \eqn{\beta} and \eqn{\gamma}.
 #'
 #' With respect to \eqn{\beta}:
-#' \eqn{\frac{d}{d\beta}\tan(\phi)=\frac{d}{d\beta}\left(\frac{\gamma}{\beta}\right).}
+#' \eqn{\frac{d}{d\beta}\tan(\phi)=
+#'   \frac{d}{d\beta}\left(\frac{\gamma}{\beta}\right).}
 #' By the chain rule on the left:
-#' \eqn{\sec^2(\phi)\,\frac{\partial\phi}{\partial\beta} = -\frac{\gamma}{\beta^2}.}
+#' \eqn{\sec^2(\phi)\,\frac{\partial\phi}{\partial\beta} =
+#'   -\frac{\gamma}{\beta^2}.}
 #' Solve for \eqn{\partial\phi/\partial\beta}:
-#' \eqn{\frac{\partial\phi}{\partial\beta} = -\frac{\gamma}{\beta^2 \sec^2(\phi)}.}
-#' Use \eqn{\sec^2(\phi)=1+\tan^2(\phi)=1+\left(\frac{\gamma}{\beta}\right)^2=\frac{\beta^2+\gamma^2}{\beta^2}}
+#' \eqn{\frac{\partial\phi}{\partial\beta} =
+#'   -\frac{\gamma}{\beta^2 \sec^2(\phi)}.}
+#' Use \eqn{\sec^2(\phi)=1+\tan^2(\phi)=
+#'   1+\left(\frac{\gamma}{\beta}\right)^2=
+#'   \frac{\beta^2+\gamma^2}{\beta^2}}
 #' to obtain:
 #' \eqn{\frac{\partial\phi}{\partial\beta} = -\frac{\gamma}{\beta^2+\gamma^2}.}
 #'
 #' With respect to \eqn{\gamma}:
-#' \eqn{\frac{d}{d\gamma}\tan(\phi)=\frac{d}{d\gamma}\left(\frac{\gamma}{\beta}\right).}
+#' \eqn{\frac{d}{d\gamma}\tan(\phi)=
+#'   \frac{d}{d\gamma}\left(\frac{\gamma}{\beta}\right).}
 #' By the chain rule on the left:
 #' \eqn{\sec^2(\phi)\,\frac{\partial\phi}{\partial\gamma} = \frac{1}{\beta}.}
 #' Solve for \eqn{\partial\phi/\partial\gamma}:
-#' \eqn{\frac{\partial\phi}{\partial\gamma} = \frac{1}{\beta \sec^2(\phi)} = \frac{\beta}{\beta^2+\gamma^2}.}
+#' \eqn{\frac{\partial\phi}{\partial\gamma} =
+#'   \frac{1}{\beta \sec^2(\phi)} = \frac{\beta}{\beta^2+\gamma^2}.}
 #'
 #' Partial derivatives (compact form) are:
-#' \eqn{\frac{\partial \phi}{\partial \beta} = -\frac{\gamma}{\beta^2 + \gamma^2}}
-#' \eqn{\frac{\partial \phi}{\partial \gamma} =  \frac{\beta}{\beta^2 + \gamma^2}}
+#' \eqn{\frac{\partial \phi}{\partial \beta} =
+#'   -\frac{\gamma}{\beta^2 + \gamma^2}}
+#' \eqn{\frac{\partial \phi}{\partial \gamma} =
+#'   \frac{\beta}{\beta^2 + \gamma^2}}
 #'
 #' Delta-method variance formulas (quadratic form) are:
-#' \eqn{\operatorname{Var}(\phi) \approx \left(\frac{\partial \phi}{\partial \beta}\right)^2 \operatorname{Var}(\beta)
-#' \;+\; 2\left(\frac{\partial \phi}{\partial \beta}\right)\left(\frac{\partial \phi}{\partial \gamma}\right)\operatorname{Cov}(\beta,\gamma)
-#' \;+\; \left(\frac{\partial \phi}{\partial \gamma}\right)^2 \operatorname{Var}(\gamma).}
+#' \eqn{\operatorname{Var}(\phi) \approx
+#'   \left(\frac{\partial \phi}{\partial \beta}\right)^2
+#'   \operatorname{Var}(\beta)
+#'   \;+\; 2\left(\frac{\partial \phi}{\partial \beta}\right)
+#'   \left(\frac{\partial \phi}{\partial \gamma}\right)
+#'   \operatorname{Cov}(\beta,\gamma)
+#'   \;+\; \left(\frac{\partial \phi}{\partial \gamma}\right)^2
+#'   \operatorname{Var}(\gamma).}
 #'
 #' @import stats
 #'
@@ -84,7 +106,9 @@
 #' }
 #'
 #' @references
-#' Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+#' Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology
+#' and Medical Modelling. 2014-12-01 2014;11(1):16.
+#' doi:10.1186/1742-4682-11-16
 #'
 #' @seealso \code{\link{vcov}}
 #'
