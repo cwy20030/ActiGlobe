@@ -8,10 +8,10 @@ concurrency:
 on:
   # Manually trigger the Action under Actions/pkgcheck
   workflow_dispatch:
-  # Run on every push to main
+  # Run on every push to this branch
   push:
     branches:
-      - main
+      - copilot/refactor-ggcosinorm-function
 
 jobs:
   pkgcheck:

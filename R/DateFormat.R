@@ -15,13 +15,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title Detect Possible DT Format
-#'
-#' @description
-#' This function will automatically detect possible date format.
-#' Users can choose to either reformat the date or report the
-#' datetime format detected.
-#'
 #' @title Format Recognition and Conversion of Date-Time Strings
 #'
 #' @description

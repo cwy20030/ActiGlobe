@@ -133,10 +133,12 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     ################## Adjust for Daylight Saving Changes #####################
 
-    ### Guess if the UTC may experience Time Change due to daylight saving calender
+    ### Guess if the UTC may experience Time Change due to DST
     pUDST <- UTCwDST (U)
-    SameUTC <- UTCs == U ### Determine if the original UTC from BriefSum is the same as the new UTC from R2P
-    nuUDST <- ifelse (SameUTC, aDST, pUDST) ### New logical indicator of whether daylight saving occurs...
+    ### Determine if original UTC from BriefSum matches new UTC from R2P
+    SameUTC <- UTCs == U
+    ### New logical indicator of whether daylight saving occurs
+    nuUDST <- ifelse (SameUTC, aDST, pUDST)
 
 
     ### If TZ is not specified, guess it.
@@ -153,13 +155,18 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
 
     ### Step 1 Change NDPs
-    #### Based on the new daylight saving, we will change the NDPs and cumulative time...
-    A1 <- ifelse (nuUDST & GL0 == 0, 0, -1 * GL0) ### Adjusting factor for incorrect initial GL guesses
-    GL <- GL0 + A1 ### Update GL....
+    #### Based on new DST, change NDPs and cumulative time
+    ### Adjusting factor for incorrect initial GL guesses
+    A1 <- ifelse (nuUDST & GL0 == 0, 0, -1 * GL0)
+    ### Update GL
+    GL <- GL0 + A1
 
-    NDP <- ifelse (A1 == 0, nDP, nDP + (A1 * 3600 / Epc)) ### Remove the inappropriately adjusted gain or loss due to suspected time shift
-    mDP <- max (cumsum (nDP)) - max (cumsum (NDP)) ### Number of data points needed to be added.
-    NDP [length (NDP)] <- NDP [length (NDP)] + mDP ### Add the remainant to the last day. Leave the question whether it is more than one fDP to later step.
+    ### Remove inappropriately adjusted gain/loss from suspected shift
+    NDP <- ifelse (A1 == 0, nDP, nDP + (A1 * 3600 / Epc))
+    ### Number of data points needed to be added
+    mDP <- max (cumsum (nDP)) - max (cumsum (NDP))
+    ### Add the remainant to the last day
+    NDP [length (NDP)] <- NDP [length (NDP)] + mDP
 
 
     ### Step 2 Edit cumulative time based on NDPs
@@ -187,7 +194,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     y [y > LstP] <- NA
 
 
-    ### Adjust Cumulative Start DataPoint V2 will give you the same as the above------------
+    ### Adjust Cumulative Start DataPoint V2 (same as above)
+    ### ----------
     #  if ( Version == 2) {
     #    T2A = c(0,diff(H2J))
     #    x = a1
@@ -209,7 +217,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     Idxl <- length (DT)
     Nl <- as.integer (N [Idxl]) #### Last number of data
     Dl <- DT [Idxl] #### Last date of the recording
-    Tl <- as.numeric (as.POSIXct (Dl, tz = gTZ [Idxl])) ### The starting second of the last day in number
+    ### The starting second of the last day in number
+    Tl <- as.numeric (as.POSIXct (Dl, tz = gTZ [Idxl]))
 
     Epl <- as.numeric (Epc [[1]])
 
@@ -221,50 +230,70 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
 
     HMSl <- as.POSIXct (Timel, tz = gTZ [Idxl])
-    Datel <- suppressWarnings (DateFormat (HMSl)) ### Extract all the dates
-    uniDl <- unique (Datel) #### Check the numbers of the unique date spanning for the last day.
+    ### Extract all the dates
+    Datel <- suppressWarnings (DateFormat (HMSl))
+    ### Check the numbers of unique dates spanning the last day
+    uniDl <- unique (Datel)
 
-    TPl <- max (which (Datel %in% Dl)) ### Find the last time point of the last day.
+    ### Find the last time point of the last day
+    TPl <- max (which (Datel %in% Dl))
     REl <- HMSl [TPl]
     RE [Idxl] <- format (REl, "%H:%M:%S") ### Last Time point
 
-    ##### In the rare event when there is more data points on the last day than allowed....
+    ##### In rare event when more data points than allowed on last day
     if (length (uniDl) > 1) {
         Nl2 <- Nl - FDP [Idxl] ### Additional Date Points to be relocated
 
 
         #### The OCD double check flow control...
         if (Nl2 > 0) {
-            N [Idxl] <- FDP [Idxl] ### Update the total data point on the last day
+            ### Update total data point on the last day
+            N [Idxl] <- FDP [Idxl]
 
-            yMax <- y [Idxl] ### Extract the Max cumulative end second for the recording
+            ### Extract Max cumulative end second for the recording
+            yMax <- y [Idxl]
 
-            y [Idxl] <- y [Idxl] - Nl2 * Epc [Idxl] #### Update the cumulative end second on the last day
+            ### Update cumulative end second on the last day
+            y [Idxl] <- y [Idxl] - Nl2 * Epc [Idxl]
 
             #### New Last Day
             DT [Idxl + 1] <- as.character (as.Date (DT [Idxl]) + 1)
-            Epc [Idxl + 1] <- Epc [Idxl] ### Assume the same epoch length as the last
-            U [Idxl + 1] <- U [Idxl] ### Assume the same UTC as the last
-            gTZ [Idxl + 1] <- gTZ [Idxl] ### Assume the same TZ as the last
+            ### Assume the same epoch length as the last
+            Epc [Idxl + 1] <- Epc [Idxl]
+            ### Assume the same UTC as the last
+            U [Idxl + 1] <- U [Idxl]
+            ### Assume the same TZ as the last
+            gTZ [Idxl + 1] <- gTZ [Idxl]
+            ### Check if DST occur
             nuUDST [Idxl + 1] <- DST (
                 DT = DT [Idxl + 1],
                 TZ = gTZ [Idxl]
-            ) ### Check if DST occur
-            RS [Idxl + 1] <- RS [Idxl] ### Assume the same begining time as the last
-            RE [Idxl + 1] <- format (HMSl [length (HMSl)], "%H:%M:%S") ### Extract the New last time of recording
-            GL [Idxl + 1] <- DST2GL (DT = as.POSIXct (DT [Idxl + 1], tz = gTZ [Idxl])) ### Check GL due to DST
-            N [Idxl + 1] <- Nl2 ### Cumulative data points on the NEW last day
-            x [Idxl + 1] <- y [Idxl] + Epc [Idxl] ### Cumulative start second on the NEW last day
-            y [Idxl + 1] <- yMax ### Cumulative end second on the NEW last day
-            Prd [Idxl + 1] <- Prd [Idxl] ### Assume the same recording period as the last
-            H2J [Idxl + 1] <- H2J [Idxl] ### Assume the same hour to adjust as the last
+            )
+            ### Assume the same begining time as the last
+            RS [Idxl + 1] <- RS [Idxl]
+            ### Extract the New last time of recording
+            RE [Idxl + 1] <- format (HMSl [length (HMSl)], "%H:%M:%S")
+            ### Check GL due to DST
+            GL [Idxl + 1] <- DST2GL (DT = as.POSIXct (DT [Idxl + 1],
+                                                      tz = gTZ [Idxl]))
+            ### Cumulative data points on the NEW last day
+            N [Idxl + 1] <- Nl2
+            ### Cumulative start second on the NEW last day
+            x [Idxl + 1] <- y [Idxl] + Epc [Idxl]
+            ### Cumulative end second on the NEW last day
+            y [Idxl + 1] <- yMax
+            ### Assume the same recording period as the last
+            Prd [Idxl + 1] <- Prd [Idxl]
+            ### Assume the same hour to adjust as the last
+            H2J [Idxl + 1] <- H2J [Idxl]
         }
     }
 
 
     # Add it back to the report ----------------
     ##  Initialize Report ------------
-    Summary <- data.frame (matrix (nrow = length (DT), ncol = length (names (Bdf))))
+    Summary <- data.frame (matrix (nrow = length (DT),
+                                   ncol = length (names (Bdf))))
     names (Summary) <- names (Bdf)
     Summary$Date <- DT
     Summary$Epoch <- Epc
@@ -298,18 +327,22 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
     Summary$Warning [Summary$Date %in% (D - 1)] <- "Day Before Travel"
 
-    D2 <- D [grep ("Travel", Bdf$Warning [Bdf$Date %in% D])] ### To ensure only adding a proper label to the day after travelling.
+    ### Ensure only adding proper label to day after travelling
+    D2 <- D [grep ("Travel", Bdf$Warning [Bdf$Date %in% D])]
     Summary$Warning [Summary$Date %in% (D2 + 1)] <- "Day After Travel"
 
 
     ##### Label Incomplete
-    if (length (FDP) < length (Summary$nDataPoints)) FDP <- rep (FDP [[1]], length (Summary$nDataPoints))
+    if (length (FDP) < length (Summary$nDataPoints))
+        FDP <- rep (FDP [[1]], length (Summary$nDataPoints))
     Summary$Warning [Summary$nDataPoints < FDP] <- "Incomplete Recording"
     Summary$Excluded [Summary$nDataPoints < FDP] <- TRUE
 
     if (length (uniDl) > 1) {
-        Summary$Warning [Idxl] <- "Original Last Day" ### Update the warning on the last day
-        Summary$Excluded [Idxl] <- FALSE ### Update the exclusion on the last day
+        ### Update the warning on the last day
+        Summary$Warning [Idxl] <- "Original Last Day"
+        ### Update the exclusion on the last day
+        Summary$Excluded [Idxl] <- FALSE
     }
 
     Summary$Recording_Period <- Prd
