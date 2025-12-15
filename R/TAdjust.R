@@ -128,7 +128,7 @@ TAdjust <- function(Bdf, TLog, TZ = NULL, fork = FALSE) {
 
   ### If TZ is not specified, guess it.
 
-  gTZ <- sapply(seq_len(length(DT)), function(x) {
+  gTZ <- vapply(seq_len(length(DT)), function(x) {
     GuessTZ(
       aOF = format_offset(UTC2Num(U[[x]])),
       DT = DT[[x]],
@@ -136,7 +136,7 @@ TAdjust <- function(Bdf, TLog, TZ = NULL, fork = FALSE) {
       All = FALSE,
       fork = fork
     )
-  })
+  }, FUN.VALUE = character(1))
 
 
   ### Step 1 Change NDPs

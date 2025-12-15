@@ -84,7 +84,7 @@ Date2TotalT <- function(DT, TUnit = "hour", TZ = "local") {
 
   #### Compute the supposed data points for each day ---------------
   sTotalSec <-
-    sapply(DT, function(D) {
+    vapply(DT, function(D) {
       MxD <- as.character(as.POSIXct(paste(max(as.Date(D, tz = TZ)) + 1,
                                            " 00:00:00"), tz = TZ))
       # Vector 1 for the starting date
@@ -94,7 +94,7 @@ Date2TotalT <- function(DT, TUnit = "hour", TZ = "local") {
 
       as.numeric(as.POSIXct(endDs, tz = TZ)) -
         as.numeric(as.POSIXct(iniDs, tz = TZ)) # Supposed seconds for each day
-    })
+    }, FUN.VALUE = numeric(1))
   Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
   return(Out)
