@@ -149,12 +149,14 @@ for (i in fit.ols2$tau) {
     gamma <- Coefs [grep (paste0 ("Gamma.", i), names (Coefs))]
 
     if (i == 12) {
-        fit.ols2$model$y_12 <- mesor + (bta * fit.ols2$model$C1 + gamma * fit.ols2$model$S1)
+        fit.ols2$model$y_12 <- mesor + 
+            (bta * fit.ols2$model$C1 + gamma * fit.ols2$model$S1)
     }
 
 
     if (i == 24) {
-        fit.ols2$model$y_24 <- mesor + (bta * fit.ols2$model$C2 + gamma * fit.ols2$model$S2)
+        fit.ols2$model$y_24 <- mesor + 
+            (bta * fit.ols2$model$C2 + gamma * fit.ols2$model$S2)
     }
 
 

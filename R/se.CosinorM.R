@@ -85,7 +85,7 @@
 #' \;+\; \left(\frac{\partial \phi}{\partial \gamma}\right)^2
 #' \operatorname{Var}(\gamma).}
 #'
-#' @import stats
+#' @importFrom stats vcov
 #'
 #' @param object A model of class `CosinorM`
 #' @param method Only supports delta for now

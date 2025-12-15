@@ -281,9 +281,13 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
             Bs <- beta[[nl]]
             Gs <- gamma[[nl]]
             acrophase[[nl]] <- ifelse(Bs >= 0 & Gs > 0, -theta,
-                                      ifelse(Bs < 0 & Gs >= 0, theta - pi,
-                                             ifelse(Bs <= 0 & Gs < 0, -theta - pi,
-                                                    ifelse(Bs > 0 & Gs <= 0, theta - (2 * pi), NA)
+                                      ifelse(Bs < 0 & Gs >= 0,
+                                             theta - pi,
+                                             ifelse(Bs <= 0 & Gs < 0,
+                                                    -theta - pi,
+                                                    ifelse(Bs > 0 & Gs <= 0,
+                                                           theta - (2 * pi),
+                                                           NA)
                                              )
                                       )
             )

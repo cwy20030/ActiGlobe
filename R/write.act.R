@@ -26,7 +26,7 @@
 #' indicator. As such, it should be noted that some transformation may be
 #' needed when opening in EXCEL on a computer with non-English EU settings.
 #'
-#' @import utils
+#' @importFrom utils write.csv
 #' @importFrom readr write_delim
 #'
 #' @param Dir The directory where the recordings to be exported <e.g.

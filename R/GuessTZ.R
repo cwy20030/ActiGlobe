@@ -31,7 +31,7 @@
 #' - If `iTZ` is provided, it is prioritized when present in the matches.
 #' - Parallel computation (`fork = TRUE`) uses all but two cores by default.
 #'
-#' @import parallel
+#' @importFrom parallel detectCores makeCluster clusterExport parLapply stopCluster
 #'
 #' @param aOF A character vector of observed time offsets (e.g., `"+0100"`,
 #'   `"-0500"`). Each element is matched against known time zone offsets.
@@ -129,21 +129,21 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
 
     ## Step 1 Guess all possible TZ indicators -----------
-    pTZs <- sapply (aOF, function (x) oTZs [Toffs %in% x])
+    pTZs <- lapply (aOF, function (x) oTZs [Toffs %in% x])
 
     ## Step 2 Check if the initial time zone is included
     if (!is.null (TZ1)) {
         if (length (aOF) == 1) {
-            pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
+            pTZs <- if (TZ1 %in% pTZs [[1]]) TZ1 else pTZs
         } else {
-            pTZs <- sapply (pTZs, function (x) ifelse (TZ1 %in% x, TZ1, x))
+            pTZs <- lapply (pTZs, function (x) if (TZ1 %in% x) TZ1 else x)
         }
     }
 
     ## Step 3 Keep only the first one if the All is set to FALSE
     if (!All) {
         if (length (aOF) > 1) {
-            pTZs <- sapply (pTZs, function (x) x [[1]])
+            pTZs <- vapply (pTZs, function (x) x [[1]], character (1))
         } else {
             pTZs <- pTZs [[1]]
         }

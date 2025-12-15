@@ -270,7 +270,8 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
             },
             "Bathyphase" = {
                 if (use_posthoc) {
-                    if (is.null (post) || is.null (post ["Bathyphase.ph.time"])) {
+                    if (is.null (post) ||
+                        is.null (post ["Bathyphase.ph.time"])) {
                         NA_real_
                     } else {
                         rep (as.numeric (post ["Bathyphase.ph.time"]))

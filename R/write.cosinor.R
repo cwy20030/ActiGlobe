@@ -28,7 +28,10 @@
 #' also generated to update the original `Bdf` with cosinor model coefficients
 #' for each day.
 #'
-#' @import gridExtra ggplot2 grDevices utils stats
+#' @importFrom gridExtra grid.arrange
+#' @importFrom ggplot2 ggplot aes geom_point geom_smooth
+#' @importFrom grDevices pdf dev.off
+#' @importFrom utils write.csv
 #'
 #' @param Dir The directory where the recordings to be exported <e.g.
 #' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">

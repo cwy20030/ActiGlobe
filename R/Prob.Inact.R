@@ -31,7 +31,7 @@
 #'   actigraphy or similar time‑series activity data where identifying inactive
 #'   bouts is important.
 #'
-#' @import stats
+#' @importFrom stats glm binomial predict poly
 #'
 #' @param y Numeric vector of observed activity counts. Typically represents
 #'   activity levels measured over time.
