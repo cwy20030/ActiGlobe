@@ -1,81 +1,139 @@
 test_that("GuessTZ returns UTC for +0000 offset", {
-  result <- GuessTZ(c("-0500", "+0100"), All = FALSE)
+    result <- GuessTZ(c("-0500", "+0100"), All = FALSE)
 
-  # ---- Structure checks ----
-  # Result should be a character vector with names corresponding to offsets
-  expect_true(is.character(result))
-  expect_true(length(result) == 2)
-  expect_named(result, c("-0500", "+0100"))
+    # ---- Structure checks ----
+    # Result should be a character vector with names corresponding to offsets
+    expect_true(is.character(result))
+    expect_true(length(result) == 2)
+    expect_named(result, c("-0500", "+0100"))
 
-  # ---- Relationship checks ----
-  # Each offset should map to a valid timezone string
-  expect_equal(names(result), c("-0500", "+0100"))
+    # ---- Relationship checks ----
+    # Each offset should map to a valid timezone string
+    expect_equal(names(result), c("-0500", "+0100"))
 
-  # ---- Content checks ----
-  # Specific values should match expected timezones
-  expect_equal(result[["-0500"]], "America/Atikokan")
-  expect_equal(result[["+0100"]], "Africa/Algiers")
+    # ---- Content checks ----
+    # Specific values should match expected timezones
+    expect_equal(result[["-0500"]], "America/Atikokan")
+    expect_equal(result[["+0100"]], "Africa/Algiers")
 })
 
 
 test_that("GuessTZ prioritizes local system time zone", {
-  result <- GuessTZ(aOF = "-0500", All = FALSE, iTZ = "America/New_York")
+    result <- GuessTZ(aOF = "-0500", All = FALSE, iTZ = "America/New_York")
 
-  # ---- Structure checks ----
-  # Result should be a character vector with names corresponding to offsets
-  expect_true(is.character(result))
-  expect_true(length(result) == 1)
+    # ---- Structure checks ----
+    # Result should be a character vector with names corresponding to offsets
+    expect_true(is.character(result))
+    expect_true(length(result) == 1)
 
-  # ---- Content checks ----
-  # Specific values should match expected timezones
-  expect_equal(result, "America/New_York")
+    # ---- Content checks ----
+    # Specific values should match expected timezones
+    expect_equal(result, "America/New_York")
 })
 
 
 test_that("GuessTZ returns Etc/GMT+12 for -1200 offset", {
-  result <- GuessTZ(aOF = "-1200", All = TRUE)
+    result <- GuessTZ(aOF = "-1200", All = TRUE)
 
-  # ---- Structure checks ----
-  # Result should be a character vector with named offset
-  expect_true(is.character(result))
-  expect_named(result, "-1200")
+    # ---- Structure checks ----
+    # Result should be a character vector with named offset
+    expect_true(is.character(result))
+    expect_named(result, "-1200")
 
-  # ---- Relationship checks ----
-  # Offset should map correctly to a timezone
-  expect_equal(names(result), "-1200")
+    # ---- Relationship checks ----
+    # Offset should map correctly to a timezone
+    expect_equal(names(result), "-1200")
 
-  # ---- Content checks ----
-  # Specific value should match expected timezone
-  expect_equal(result[["-1200"]], "Etc/GMT+12")
+    # ---- Content checks ----
+    # Specific value should match expected timezone
+    expect_equal(result[["-1200"]], "Etc/GMT+12")
 })
 
 
 
 test_that("GuessTZ handles multiple offsets with All = TRUE", {
-  result <- GuessTZ(aOF = c("+0000", "-0500"), All = TRUE)
+    result <- GuessTZ(aOF = c("+0000", "-0500"), All = TRUE)
 
-  # ---- Structure checks ----
-  expect_true(is.list(result) || is.character(result))
-  expect_true(length(result) == 2)
+    # ---- Structure checks ----
+    expect_true(is.list(result) || is.character(result))
+    expect_true(length(result) == 2)
 
-  # ---- Content checks ----
-  expect_named(result, c("+0000", "-0500"))
+    # ---- Content checks ----
+    expect_named(result, c("+0000", "-0500"))
 })
 test_that("GuessTZ uses custom reference date", {
-  custom_date <- as.POSIXct("2021-07-01 12:00:00", tz = "UTC")
-  result <- GuessTZ(aOF = "+0000", DT = custom_date, All = FALSE)
+    custom_date <- as.POSIXct("2021-07-01 12:00:00", tz = "UTC")
+    result <- GuessTZ(aOF = "+0000", DT = custom_date, All = FALSE)
 
-  # ---- Structure checks ----
-  expect_true(is.character(result))
+    # ---- Structure checks ----
+    expect_true(is.character(result))
 
-  # ---- Content checks ----
-  # Should return a valid timezone
-  expect_true(nchar(result) > 0)
+    # ---- Content checks ----
+    # Should return a valid timezone
+    expect_true(nchar(result) > 0)
 })
 test_that("GuessTZ handles local timezone prioritization", {
-  result <- GuessTZ(aOF = "-0500", iTZ = "local", All = FALSE)
+    result <- GuessTZ(aOF = "-0500", iTZ = "local", All = FALSE)
 
-  # ---- Structure checks ----
-  expect_true(is.character(result))
-  expect_true(length(result) == 1)
+    # ---- Structure checks ----
+    expect_true(is.character(result))
+    expect_true(length(result) == 1)
+})
+
+
+test_that("GuessTZ handles invalid timezone gracefully", {
+    # Test with an invalid timezone
+    expect_error(
+        GuessTZ(aOF = "+0000", iTZ = "Invalid/Timezone"),
+        "not recognized"
+    )
+})
+
+
+test_that("GuessTZ handles multiple DT values correctly", {
+    # Test with multiple DT values - should use only the first
+    custom_dates <- c(
+        as.POSIXct("2021-01-01 12:00:00", tz = "UTC"),
+        as.POSIXct("2021-07-01 12:00:00", tz = "UTC")
+    )
+    result <- GuessTZ(aOF = "+0000", DT = custom_dates, All = FALSE)
+
+    # ---- Structure checks ----
+    expect_true(is.character(result))
+    expect_true(length(result) == 1)
+})
+
+
+test_that("GuessTZ with All=TRUE returns list for single offset", {
+    result <- GuessTZ(aOF = "+0000", All = TRUE)
+
+    # ---- Structure checks ----
+    expect_true(is.list(result) || is.character(result))
+    expect_true(length(result) >= 1)
+})
+
+
+test_that("GuessTZ prioritizes iTZ when it matches", {
+    # Test when iTZ is in the list of matching timezones
+    result <- GuessTZ(
+        aOF = "+0000",
+        iTZ = "UTC",
+        All = FALSE
+    )
+
+    # ---- Content checks ----
+    expect_equal(result, "UTC")
+})
+
+
+test_that("GuessTZ handles single offset with iTZ prioritization", {
+    # Test single offset with iTZ that matches
+    result <- GuessTZ(
+        aOF = "-0500",
+        iTZ = "America/New_York",
+        All = FALSE
+    )
+
+    # ---- Content checks ----
+    expect_equal(result, "America/New_York")
 })
