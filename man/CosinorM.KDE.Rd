@@ -204,35 +204,35 @@ where,
 FlyEast
 
 BdfList <-
-  BriefSum(
-    df = FlyEast,
-    SR = 1 / 60,
-    Start = "2017-10-24 13:45:00"
-  )
+    BriefSum (
+        df = FlyEast,
+        SR = 1 / 60,
+        Start = "2017-10-24 13:45:00"
+    )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset(
-  x = df,
-  subset = df$Date == "2017-10-27"
+df <- subset (
+    x = df,
+    subset = df$Date == "2017-10-27"
 )
 
 
-fit <- CosinorM.KDE(
-  time = df$Time,
-  activity = df$Activity
+fit <- CosinorM.KDE (
+    time = df$Time,
+    activity = df$Activity
 )
 
 # inspect coefficients
 fit$coef.cosinor
 
 # plot KDE in hours
-plot(
-  x = fit$kdf$hour,
-  y = fit$kdf$density,
-  type = "l",
-  xlab = "Hour",
-  ylab = "KDE"
+plot (
+    x = fit$kdf$hour,
+    y = fit$kdf$density,
+    type = "l",
+    xlab = "Hour",
+    ylab = "KDE"
 )
 }
 

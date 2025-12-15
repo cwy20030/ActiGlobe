@@ -32,16 +32,16 @@ hours via `DST2GL()` and flipping the DST flag on the transition day.
 }
 \examples{
 # Standard use: New York in summer vs. winter
-dates <- as.POSIXct(c("2021-06-15", "2021-12-15"), tz = "America/New_York")
-DST(dates, TZ = "America/New_York")
+dates <- as.POSIXct (c ("2021-06-15", "2021-12-15"), tz = "America/New_York")
+DST (dates, TZ = "America/New_York")
 
 \donttest{
 # Around the spring-forward transition
-trans <- as.Date(c("2021-03-13", "2021-03-14", "2021-03-15"))
-DST(trans, TZ = "America/New_York")
+trans <- as.Date (c ("2021-03-13", "2021-03-14", "2021-03-15"))
+DST (trans, TZ = "America/New_York")
 
 # Using the local system time zone
-DST(as.POSIXct("2023-07-01 12:00:00"), TZ = "local")
+DST (as.POSIXct ("2023-07-01 12:00:00"), TZ = "local")
 }
 }
 \keyword{daylight}

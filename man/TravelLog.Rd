@@ -24,9 +24,9 @@ Generate the Travel Log Template Needed for Time Zone Correction
 }
 \examples{
 
-Tlg <- TravelLog(Write = FALSE)
+Tlg <- TravelLog (Write = FALSE)
 
-print(Tlg)
+print (Tlg)
 
 }
 \keyword{Log}

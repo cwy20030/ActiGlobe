@@ -35,17 +35,17 @@ requested time unit.
 \examples{
 \donttest{
 # Two calendar days: returns c(24, 24) hours
-Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
+Date2TotalT (as.Date (c ("2021-01-01", "2021-01-02")), "hour")
 
 
 # Working in minutes
-Date2TotalT(as.POSIXct(c(
-  "2021-06-10 08:00:00",
-  "2021-06-10 14:30:00"
+Date2TotalT (as.POSIXct (c (
+    "2021-06-10 08:00:00",
+    "2021-06-10 14:30:00"
 )), "minute")
 }
 
 # In seconds (case-insensitive unit name)
-Date2TotalT(as.Date("2022-12-31"), "SeCoNd")
+Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")
 
 }

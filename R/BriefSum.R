@@ -81,7 +81,7 @@
 #' c("ActiGlobe","data.frame") on both returned data.frames.
 #'
 #' @examples
-#' \dontrun{
+#'
 #' # Import data
 #' data (FlyEast)
 #'
@@ -100,7 +100,7 @@
 #' ## BriefSum(df = FlyEast,
 #' ##          SR = 1/60,
 #' ##          Start = "2017-10-24 13:45:00")
-#' }
+#'
 #'
 #' @keywords summary actigraphy
 #' @export
