@@ -167,6 +167,12 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 
 # Pre-defined helper functions -------------------------------
 #' @title Check Input
+#' @description
+#' Validates that the object is of correct class and that ci_level and
+#' n parameters are within acceptable ranges.
+#' @param object A fitted model object to validate.
+#' @param ci_level Confidence level to validate.
+#' @param n Number of grid points to validate.
 #' @noRd
 CheckInput <- function (object, ci_level, n) {
     if (!inherits (object, c ("CosinorM", "CosinorM.KDE")))
@@ -181,6 +187,11 @@ CheckInput <- function (object, ci_level, n) {
 }
 
 #' @title Get Observed Data
+#' @description
+#' Extracts time and activity observations from a fitted CosinorM or
+#' CosinorM.KDE model object.
+#' @param object A fitted model object.
+#' @returns A data.frame with columns t_obs and y_obs.
 #' @noRd
 GetObsData <- function (object) {
     if (!is.null (object$model) && !is.null (object$model$time)) {
@@ -198,6 +209,19 @@ GetObsData <- function (object) {
 }
 
 #' @title Get Cosinor Parameter
+#' @description
+#' Unified function to extract cosinor parameters with switch statement.
+#' @param param Parameter name: "MESOR", "Amplitude", "Acrophase", 
+#'   "Bathyphase", or "PeakTrough"
+#' @param use_posthoc Logical; if TRUE, use post-hoc estimates
+#' @param coef_cos Cosinor coefficients vector (for MESOR, Amplitude, Acrophase)
+#' @param post Post-hoc estimates vector
+#' @param tau Period(s) of the cosinor model
+#' @param day Length of day (for Bathyphase)
+#' @param acrophase_time Acrophase time (for Bathyphase)
+#' @param mesor MESOR value (for PeakTrough)
+#' @param amplitude Amplitude value (for PeakTrough)
+#' @returns Numeric value or list depending on param type.
 #' @noRd
 GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL, 
                       tau = NULL, day = NULL, acrophase_time = NULL, 
@@ -269,6 +293,14 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
 }
 
 #' @title Get Parametric Fit
+#' @description
+#' Computes the fitted values and standard errors for a parametric
+#' cosinor model over a fine time grid.
+#' @param object A fitted CosinorM object.
+#' @param aug Data frame with observed data.
+#' @param tau Period(s) of the cosinor model.
+#' @param n Number of grid points for prediction.
+#' @returns A list with newt, fit_pred, se_fit, and uses_kdf.
 #' @noRd
 GetParamFit <- function (object, aug, tau, n) {
     nTau <- length (tau)
@@ -320,6 +352,13 @@ GetParamFit <- function (object, aug, tau, n) {
 }
 
 #' @title Get KDE Fit
+#' @description
+#' Extracts fitted values and standard errors from a CosinorM.KDE
+#' model object.
+#' @param object A fitted CosinorM.KDE object.
+#' @param t_obs Observed time points.
+#' @param tau Period(s) of the cosinor model.
+#' @returns A list with newt, fit_pred, se_fit, and uses_kdf, or NULL.
 #' @noRd
 GetKDEFit <- function (object, t_obs, tau) {
     if (!is.null (object$kdf)) {
@@ -341,6 +380,14 @@ GetKDEFit <- function (object, t_obs, tau) {
 }
 
 #' @title Get Fit
+#' @description
+#' Determines whether to use KDE or parametric fit and computes the
+#' fitted curve accordingly.
+#' @param object A fitted model object.
+#' @param aug Data frame with observed data.
+#' @param tau Period(s) of the cosinor model.
+#' @param n Number of grid points for prediction.
+#' @returns A list with newt, fit_pred, se_fit, and uses_kdf.
 #' @noRd
 GetFit <- function (object, aug, tau, n) {
     if (inherits (object, "CosinorM.KDE")) {
@@ -351,6 +398,17 @@ GetFit <- function (object, aug, tau, n) {
 }
 
 #' @title Get CI
+#' @description
+#' Computes pointwise confidence bands for the fitted cosinor curve
+#' using either z-critical values (KDE) or t-critical values
+#' (parametric).
+#' @param ci Logical; if TRUE, compute confidence bands.
+#' @param uses_kdf Logical; if TRUE, use z-critical values.
+#' @param fit_pred Fitted values.
+#' @param se_fit Standard errors of fitted values.
+#' @param ci_level Confidence level.
+#' @param object A fitted model object.
+#' @returns A list with ym (lower bound) and yM (upper bound).
 #' @noRd
 GetCI <- function (ci, uses_kdf, fit_pred, se_fit, 
                                     ci_level, object) {
@@ -373,6 +431,17 @@ GetCI <- function (ci, uses_kdf, fit_pred, se_fit,
 }
 
 #' @title Fallback Fit
+#' @description
+#' Fills in missing peak, trough, and acrophase markers using the
+#' fitted curve's maximum and minimum values.
+#' @param bathy Bathyphase time value.
+#' @param peak_value Peak activity value.
+#' @param trough_value Trough activity value.
+#' @param acrophase_time Acrophase time value.
+#' @param newt Time points of fitted curve.
+#' @param fit_pred Fitted values.
+#' @returns A list with updated bathy, peak_value, trough_value, and
+#'   acrophase_time.
 #' @noRd
 FallbackFit <- function (bathy, peak_value, trough_value, 
                                     acrophase_time, newt, fit_pred) {
@@ -392,6 +461,16 @@ FallbackFit <- function (bathy, peak_value, trough_value,
 }
 
 #' @title Plot Fit
+#' @description
+#' Adds the fitted cosinor curve and optional confidence ribbon to
+#' a ggplot object.
+#' @param g A ggplot object.
+#' @param newt Time points for fitted curve.
+#' @param fit_pred Fitted values.
+#' @param ci Logical; if TRUE, add confidence ribbon.
+#' @param ym Lower confidence bound.
+#' @param yM Upper confidence bound.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotFit <- function(g, newt, fit_pred, ci, ym, yM) {
     g <- g + ggplot2::geom_line (
@@ -412,6 +491,18 @@ PlotFit <- function(g, newt, fit_pred, ci, ym, yM) {
 }
 
 #' @title Plot MESOR
+#' @description
+#' Adds MESOR horizontal line, observed data points, peak and trough
+#' markers to a ggplot object.
+#' @param g A ggplot object.
+#' @param mesor MESOR value.
+#' @param aug Data frame with observed data.
+#' @param point_size Size for observed data points.
+#' @param acrophase_time Acrophase time value.
+#' @param peak_value Peak activity value.
+#' @param bathy Bathyphase time value.
+#' @param trough_value Trough activity value.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotMESOR <- function(g, mesor, aug, point_size, acrophase_time, 
                                   peak_value, bathy, trough_value) {
@@ -444,6 +535,12 @@ PlotMESOR <- function(g, mesor, aug, point_size, acrophase_time,
 }
 
 #' @title Plot Acrophase
+#' @description
+#' Adds vertical line(s) at the acrophase time(s) to a ggplot object.
+#' @param g A ggplot object.
+#' @param acrophase_time Acrophase time value(s).
+#' @param aug Data frame with observed data.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotAcro <- function(g, acrophase_time, aug) {
     y_sf <- floor (max (aug$y_obs, na.rm = TRUE) * 0.8)
@@ -458,6 +555,12 @@ PlotAcro <- function(g, acrophase_time, aug) {
 }
 
 #' @title Plot Inactive
+#' @description
+#' Identifies and adds shaded rectangles for detected inactive periods
+#' to a ggplot object.
+#' @param g A ggplot object.
+#' @param aug Data frame with observed data.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotInactive <- function(g, aug) {
     y_sf <- floor (max (aug$y_obs, na.rm = TRUE) * 0.8)
@@ -489,6 +592,14 @@ PlotInactive <- function(g, aug) {
 }
 
 #' @title Plot Amplitude
+#' @description
+#' Adds dashed line segments to visualize the amplitude from MESOR to
+#' peak value at acrophase time(s).
+#' @param g A ggplot object.
+#' @param amplitude Amplitude value(s).
+#' @param acrophase_time Acrophase time value(s).
+#' @param mesor MESOR value.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotAmp <- function(g, amplitude, acrophase_time, mesor) {
     if (length (amplitude) >= 1 && all (is.finite (amplitude))) {
@@ -517,6 +628,18 @@ PlotAmp <- function(g, amplitude, acrophase_time, mesor) {
 }
 
 #' @title Plot Labels
+#' @description
+#' Adds repelled text labels showing MESOR, amplitude, and acrophase
+#' values to a ggplot object.
+#' @param g A ggplot object.
+#' @param labels Logical; if TRUE, add labels.
+#' @param use_posthoc Logical; if TRUE, label as post-hoc.
+#' @param tau Period(s) of the cosinor model.
+#' @param mesor MESOR value.
+#' @param amplitude Amplitude value(s).
+#' @param acrophase_time Acrophase time value(s).
+#' @param aug Data frame with observed data.
+#' @returns Updated ggplot object.
 #' @noRd
 PlotLabels <- function(g, labels, use_posthoc, tau, mesor, amplitude, 
                         acrophase_time, aug) {
@@ -541,6 +664,16 @@ PlotLabels <- function(g, labels, use_posthoc, tau, mesor, amplitude,
 }
 
 #' @title Plot Theme
+#' @description
+#' Adds color/fill scales, theme settings, axis labels, and plot title
+#' to a ggplot object.
+#' @param g A ggplot object.
+#' @param legend.position Position for the legend.
+#' @param tau Period(s) of the cosinor model.
+#' @param object A fitted model object.
+#' @param title_extra Optional extra text for title.
+#' @param day Length of day in hours (typically 24).
+#' @returns Updated ggplot object.
 #' @noRd
 PlotTheme <- function(g, legend.position, tau, object, 
                                   title_extra, day = 24) {
