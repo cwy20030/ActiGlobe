@@ -17,21 +17,30 @@ ggCosinorM(
 )
 }
 \arguments{
-\item{object}{A fitted model of class \code{\link{CosinorM}} or \code{\link{CosinorM.KDE}}}
+\item{object}{A fitted model of class \code{\link{CosinorM}} or
+\code{\link{CosinorM.KDE}}}
 
-\item{labels}{Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).}
+\item{labels}{Logical; Default `TRUE` places repelled labels on the plot
+with MESOR, amplitude(s), and acrophase(s).}
 
-\item{ci}{Logical; Default `TRUE` computes and draws pointwise parametric confidence bands for the fitted cosinor curve using the model covariance.}
+\item{ci}{Logical; Default `TRUE` computes and draws pointwise parametric
+confidence bands for the fitted cosinor curve using the model covariance.}
 
-\item{ci_level}{Confidence level for the pointwise bands, expressed in numeric value between 0 and 1.}
+\item{ci_level}{Confidence level for the pointwise bands, expressed in
+numeric value between 0 and 1.}
 
-\item{n}{Integer; number of points on the fine prediction grid used to draw the fitted cosinor and confidence ribbon. (default to `400`)}
+\item{n}{Integer; number of points on the fine prediction grid used to draw
+the fitted cosinor and confidence ribbon. (default to `400`)}
 
-\item{point_size}{Numeric; plotting size for observed points. (default: `0.5`)}
+\item{point_size}{Numeric; plotting size for observed points.
+(default: `0.5`)}
 
-\item{title_extra}{Optional character string appended to the plot title for extra context.}
+\item{title_extra}{Optional character string appended to the plot title for
+extra context.}
 
-\item{legend.position}{Position of the legend on the plot; default is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`, or a numeric vector of length two specifying x and y coordinates.}
+\item{legend.position}{Position of the legend on the plot; default is
+`"right"`. Other options include `"top"`, `"bottom"`, `"left"`, or a numeric
+vector of length two specifying x and y coordinates.}
 
 \item{...}{Additional arguments (currently ignored) kept for future update}
 }
@@ -39,45 +48,49 @@ ggCosinorM(
 A `ggplot` object representing the cosinor model fit visualization.
 }
 \description{
-Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.
+Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The
+plot shows the parametric cosinor fit over a fine time grid, optional
+pointwise confidence bands, observed data points, MESOR line, acrophase
+verticals, amplitude annotation segments, and labelled parameter values when
+ requested.
 }
 \examples{
 \dontrun{
 # Import data
-data (FlyEast)
+data(FlyEast)
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-28")
+df <- subset(df, df$Date == "2017-10-28")
 
-fit <- CosinorM (
-    time = df$Time,
-    activity = df$Activity,
-    tau = 24,
-    method = "OLS"
+fit <- CosinorM(
+  time = df$Time,
+  activity = df$Activity,
+  tau = 24,
+  method = "OLS"
 )
 
 
-p <- ggCosinorM (
-    object = fit,
-    labels = TRUE,
-    ci = TRUE,
-    ci_level = 0.95,
-    title_extra = "2017-10-24"
+p <- ggCosinorM(
+  object = fit,
+  labels = TRUE,
+  ci = TRUE,
+  ci_level = 0.95,
+  title_extra = "2017-10-24"
 )
-print (p)
+print(p)
 }
 
 }
 \seealso{
-\code{\link[ggplot2]{ggplot}}, \code{\link[ggrepel]{geom_label_repel}}, \code{\link[stats]{predict}}
+\code{\link[ggplot2]{ggplot}} \code{\link[ggrepel]{geom_label_repel}}
 }
 \keyword{cosinor}
 \keyword{ggplot}

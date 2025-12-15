@@ -239,8 +239,8 @@ It is worth noting that while `CosinorM.KDE` does provide a variance and standar
 ```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE}
 boot.seci (
     object = fit.KDE,
-    level = 0.95,
-    N = 100
+    ci_level = 0.95,
+    n = 100
 ) ### for demonstration, the number of bootstraps was limited to 100.
 ```
 Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation. 

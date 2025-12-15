@@ -25,10 +25,10 @@
 #' requested time unit.
 #'
 #' @param DT
-#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending order.
-#'   Each entry represents the start of an interval.  Internally, the function
-#'   appends one extra day beyond the last entry so that the final interval
-#'   covers a full 24 h until the next midnight. See \code{as.POSIXct}.
+#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending
+#'   order. Each entry represents the start of an interval.  Internally, the
+#'   function appends one extra day beyond the last entry so that the final
+#'   interval covers a full 24 h until the next midnight. See \code{as.POSIXct}.
 #'
 #' @param TUnit
 #'   Character string specifying the unit for the output durations.
@@ -36,7 +36,8 @@
 #'   case-insensitive.  Default is `"hour"`, meaning the returned values
 #'   are in decimal hours.
 #'
-#' @param TZ The time zone when the recording started. (default = "local", which means user's local time zone)
+#' @param TZ The time zone when the recording started. (default = "local",
+#' which means user's local time zone)
 #'
 #' @return
 #'   A numeric vector of the same length as `DT`.  Each element is the
@@ -47,38 +48,54 @@
 #' @examples
 #' \donttest{
 #' # Two calendar days: returns c(24, 24) hours
-#' Date2TotalT (as.Date (c ("2021-01-01", "2021-01-02")), "hour")
+#' Date2TotalT(as.Date(c("2021-01-01", "2021-01-02")), "hour")
 #'
 #'
 #' # Working in minutes
-#' Date2TotalT (as.POSIXct (c (
-#'     "2021-06-10 08:00:00",
-#'     "2021-06-10 14:30:00"
+#' Date2TotalT(as.POSIXct(c(
+#'   "2021-06-10 08:00:00",
+#'   "2021-06-10 14:30:00"
 #' )), "minute")
 #' }
 #'
 #' # In seconds (case-insensitive unit name)
-#' Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")
+#' Date2TotalT(as.Date("2022-12-31"), "SeCoNd")
 #'
 #' @export
-Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
-    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
-    ## Convert the displayed unit into a factor.
-    Divider <- ifelse (tolower (TUnit) == "hour", 3600,
-        ifelse (tolower (TUnit) == "minute", 60,
-            ifelse (tolower (TUnit) == "second", 1, NA)
-        )
+Date2TotalT <- function(DT, TUnit = "hour", TZ = "local") {
+  TZ <- ifelse(TZ == "local", Sys.timezone(), TZ)
+
+  # Validate the time zone
+  valid_zones <- OlsonNames()
+  if (!TZ %in% valid_zones) {
+    stop(sprintf(
+      "The provided time zone \"%s\" is not recognized.\n",
+      TZ
+    ), "Please check the spelling or consult the IANA time zone table
+    (ActiGlobe::IANA).")
+  }
+
+  ## Convert the displayed unit into a factor.
+  TDivider <-
+    UnitFactor(
+      x = TUnit,
+      method = "Time"
     )
 
+  #### Compute the supposed data points for each day ---------------
+  sTotalSec <-
+    sapply(DT, function(D) {
+      MxD <- as.character(as.POSIXct(paste(max(as.Date(D, tz = TZ)) + 1,
+                                           " 00:00:00"), tz = TZ))
+      # Vector 1 for the starting date
+      iniDs <- as.character(as.POSIXct(paste(as.Date(D, tz = TZ),
+                                             " 00:00:00"), tz = TZ))
+      endDs <- MxD # Vector 2 for the next date
 
-    #### Compute the supposed data points for each day ---------------
-    MxD <- as.character (as.POSIXct (max (as.Date (DT)) + 1))
-    iniDs <- DT # Vector 1 for the starting date
-    endDs <- c (DT [-1], MxD) # Vector 2 for the next date
+      as.numeric(as.POSIXct(endDs, tz = TZ)) -
+        as.numeric(as.POSIXct(iniDs, tz = TZ)) # Supposed seconds for each day
+    })
+  Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
-    sTotalSec <- as.numeric (as.POSIXct (endDs, tz = TZ)) - as.numeric (as.POSIXct (iniDs, tz = TZ)) # Supposed seconds for each day
-
-    Out <- sTotalSec / Divider # Convert the output based on TUnit
-
-    return (Out)
+  return(Out)
 }

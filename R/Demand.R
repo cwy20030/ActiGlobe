@@ -42,28 +42,33 @@
 #'
 #' Demand(c("Option A", "Option B", "Other"), "option")
 #'
-#'
 #' @noRd
 
 
-Demand <- function (options, MESSAGE) {
-    # Print the options for the user
-    for (i in seq_len (length (options))) {
-        cat (paste (i, ": ", options [i], "\n", sep = ""))
-    }
+Demand <- function(options, MESSAGE) {
+  # Print the options for the user
+  for (i in seq_len(length(options))) {
+    cat(paste(i, ": ", options[i], "\n", sep = ""))
+  }
 
-    # Request the user to select an option
-    selected_option <- readline (prompt = paste0 ("Please select the ", MESSAGE, " by entering its number: "))
+  # Request the user to select an option
+  selected_option <-
+    readline(prompt = paste0("Please select the ",
+                             MESSAGE, " by entering its number: "))
 
-    # Check if the input is a number and within the range of options
-    if (!grepl ("^[0-9]+$", selected_option) || as.numeric (selected_option) > length (options) || as.numeric (selected_option) < 1) {
-        cat ("Invalid selection. Please try again.\n")
-        return (Demand (options, MESSAGE))
-    }
+  # Check if the input is a number and within the range of options
+  if (!grepl("^[0-9]+$", selected_option) ||
+      as.numeric(selected_option) > length(options) ||
+      as.numeric(selected_option) < 1) {
+    cat("Invalid selection. Please try again.\n")
+    return(Demand(options, MESSAGE))
+  }
 
-    if (grepl ("Other", options [as.numeric (selected_option)])) options [as.numeric (selected_option)] <- readline (prompt = "Please enter the path: ")
+  if (grepl("Other", options[as.numeric(selected_option)]))
+    options[as.numeric(selected_option)] <-
+    readline(prompt = "Please enter the path: ")
 
 
-    # Return the selected option
-    return (options [as.numeric (selected_option)])
+  # Return the selected option
+  return(options[as.numeric(selected_option)])
 }

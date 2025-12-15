@@ -1,14 +1,14 @@
-
 test_that("IANA has correct structure and contents", {
-
+  # -------------------------------------------------------------------
   # Define the expected column names for the full IANA dataset
+  # -------------------------------------------------------------------
   expected_cols_IANA <- c(
-    "Country_Name","Country_Code",
-    "Timezone_IANA","TimeZone_Identifiers",
-    "TZ_Code","Offset",
-    "Observes_DST","Current_DST_Status",
-    "Current_Abbreviation","Current_Time_Zone_long_name","Current_Offset",
-    "Standard_Abbreviation","Standard_Time_Zone_long_name","Standard_Offset"
+    "Country_Name", "Country_Code",
+    "Timezone_IANA", "TimeZone_Identifiers",
+    "TZ_Code", "Offset",
+    "Observes_DST", "Current_DST_Status",
+    "Current_Abbreviation", "Current_Time_Zone_long_name", "Current_Offset",
+    "Standard_Abbreviation", "Standard_Time_Zone_long_name", "Standard_Offset"
   )
 
   # ---- Structure checks ----
@@ -22,6 +22,7 @@ test_that("IANA has correct structure and contents", {
   # mIANA() should return a subset of IANA with overlapping values
   sIANA <- mIANA()
 
+  # ---- Content checks ----
   # Check that all values in sIANA are present in IANA for key columns
   expect_true(all(sIANA$Timezone_IANA %in% IANA$Timezone_IANA))
   expect_true(all(sIANA$TZ_Code %in% IANA$TZ_Code))
@@ -29,13 +30,10 @@ test_that("IANA has correct structure and contents", {
   expect_true(all(sIANA$Standard_Offset %in% IANA$Standard_Offset))
 })
 
-
-
-
-
 test_that("TLog has correct structure as compared to TravelLog template", {
-
+  # -------------------------------------------------------------------
   # Generate a template TravelLog object for comparison
+  # -------------------------------------------------------------------
   Ttemp <- TravelLog()
 
   # ---- Structure checks ----

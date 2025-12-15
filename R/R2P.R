@@ -19,7 +19,10 @@
 #
 #' @title Convert Travelling Log to Parameters for TAdjust
 #'
-#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for the recording. Note, if jet lag occurred during the recording, please, update the metadata using \code{\link{TAdjust}} before passing to this function.
+#' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for
+#' the recording. Note, if jet lag occurred during the recording, please,
+#'  update the metadata using \code{\link{TAdjust}} before passing to this
+#'  function.
 #' @param D The date travelling by plane.
 #' @param U The UTC offset values <e.g., "UTC+09:30" or "UTC-07:00">
 #'
@@ -27,94 +30,98 @@
 #' A data frame containing the following columns:
 #' \itemize{
 #'   \item \code{Date} — The recording dates.
-#'   \item \code{Recording_Period} — An integer index indicating the travel period
-#'         (e.g., before/after flight segments).
+#'   \item \code{Recording_Period} — An integer index indicating the travel
+#'         period (e.g., before/after flight segments).
 #'   \item \code{UTC} — The updated UTC offset string for each date.
-#'   \item \code{Hour_to_Adjust} — Numeric values representing the difference in hours
-#'         between the old and new UTC offsets, used for time adjustment.
+#'   \item \code{Hour_to_Adjust} — Numeric values representing the difference
+#'         in hours between the old and new UTC offsets, used for time
+#'         adjustment.
 #' }
 #'
 #' @examples
-#' data (FlyEast)
+#' data(FlyEast)
 #'
 #'
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
-#'     BriefSum (
-#'         df = FlyEast,
-#'         SR = 1 / 60,
-#'         Start = "2017-10-24 13:45:00"
-#'     )
+#'   BriefSum(
+#'     df = FlyEast,
+#'     SR = 1 / 60,
+#'     Start = "2017-10-24 13:45:00"
+#'   )
 #'
 #' # Let's extract actigraphy data from a single day
 #' Bdf <- BdfList$Bdf
 #'
-#' data (TLog)
-#' R2P (Bdf = Bdf,
-#'      D = TLog$date_Start,
-#'      U = TLog$UTC_Offset)
+#' data(TLog)
+#' R2P(
+#'   Bdf = Bdf,
+#'   D = TLog$date_Start,
+#'   U = TLog$UTC_Offset
+#' )
 #'
 #' @noRd
 
 
-R2P <- function (Bdf, D, U) {
-    ## Extract Date info from summary
-    DT <- Bdf$Date ## All Recording Dates
-    DT <- DateFormat (DT)
-    MinDate <- min (DT) ## First Date
-    MaxDate <- max (DT) ## Last Date
+R2P <- function(Bdf, D, U) {
+  ## Extract Date info from summary
+  DT <- Bdf$Date ## All Recording Dates
+  DT <- DateFormat(DT)
+  MinDate <- min(DT) ## First Date
+  MaxDate <- max(DT) ## Last Date
 
 
-    ## Check if UTC is in the Bdf
-    if (!"UTC" %in% names (Bdf)) stop ("Bdf must be an object created by BriefSum.")
+  ## Check if UTC is in the Bdf
+  if (!"UTC" %in% names(Bdf))
+    stop("Bdf must be an object created by BriefSum.")
 
 
-    ## Extract UTC offset
-    if (any (grepl ("UTC", U))) U <- UTC2Num (U)
+  ## Extract UTC offset
+  if (any(grepl("UTC", U))) U <- UTC2Num(U)
 
 
-    #### Double check for date coherence ---------
-    D <- DateFormat(D)
+  #### Double check for date coherence ---------
+  D <- DateFormat(D)
 
 
-    # Process UTC and Time adjustment -------------
+  # Process UTC and Time adjustment -------------
 
-    Bdf$UTC.old <- Bdf$UTC [[1]]
+  Bdf$UTC.old <- Bdf$UTC[[1]]
 
-    for (d in 1:length (D)) {
-        if (d < length (D)) {
-            Period <- as.Date (D [d]:(D [d + 1] - 1))
+  for (d in seq_len(length(D))) {
+    if (d < length(D)) {
+      Period <- as.Date(D[d]:(D[d + 1] - 1))
+    } else {
+      fD <- as.integer(which(DT == D[d]))
+      eD <- as.integer(which(DT == MaxDate))
 
-        } else {
-            fD <- as.integer (which (DT == D [d]))
-            eD <- as.integer (which (DT == MaxDate))
+      nD <- (eD - fD) + 1
 
-            nD <- (eD - fD) + 1
+      idx <- seq(
+        from = fD,
+        to = eD,
+        length.out = nD
+      )
 
-            idx <- seq (
-                from = fD,
-                to = eD,
-                length.out = nD
-            )
-
-            Period <- as.Date (DT [idx])
-        }
-
-        Bdf$Recording_Period [DT %in% Period] <- d
-        Bdf$UTC [DT %in% Period] <- Num2UTC (U [d])
+      Period <- as.Date(DT[idx])
     }
 
-    ### Compute Changes in Hours -------------
-    Bdf$Hour_to_Adjust <- UTC2Num (Bdf$UTC) - UTC2Num (Bdf$UTC.old)
+    Bdf$Recording_Period[DT %in% Period] <- d
+    Bdf$UTC[DT %in% Period] <- Num2UTC(U[d])
+  }
+
+  ### Compute Changes in Hours -------------
+  Bdf$Hour_to_Adjust <- UTC2Num(Bdf$UTC) - UTC2Num(Bdf$UTC.old)
 
 
-    ## Update Recording Period
-    if (!MinDate %in% D) {
-        Bdf$Recording_Period <- ifelse (is.na (Bdf$Recording_Period), 1, Bdf$Recording_Period + 1)
-    }
+  ## Update Recording Period
+  if (!MinDate %in% D) {
+    Bdf$Recording_Period <- ifelse(is.na(Bdf$Recording_Period), 1,
+                                   Bdf$Recording_Period + 1)
+  }
 
 
-    # Output --------
-    Out <- Bdf [c ("Date", "Recording_Period", "UTC", "Hour_to_Adjust")]
-    return (Out)
+  # Output --------
+  Out <- Bdf[c("Date", "Recording_Period", "UTC", "Hour_to_Adjust")]
+  return(Out)
 }

@@ -2,16 +2,16 @@
 % Please edit documentation in R/boot.seci.R
 \name{boot.seci}
 \alias{boot.seci}
-\title{Bootstrap Standard Errors and Confidence Intervals for Model Parameters}
+\title{Bootstrap Standard Errors and Confidence Intervals for Parameters}
 \usage{
-boot.seci(object, level = 0.95, N = 500, digits = 2)
+boot.seci(object, ci_level = 0.95, n = 500, digits = 2)
 }
 \arguments{
 \item{object}{A fitted `CosinorM` or `CosinorM.KDE` model object.}
 
-\item{level}{Numeric scaler. the confidence level.}
+\item{ci_level}{Numeric scaler. the confidence ci_level.}
 
-\item{N}{Numeric scaler. Numbers of bootstraps required to estimate the
+\item{n}{Numeric scaler. Numbers of bootstraps required to estimate the
 standard errors and confidence intervals. Default: 500}
 
 \item{digits}{Numeric scaler. Integer indicating the number of decimal places
@@ -21,13 +21,13 @@ standard errors and confidence intervals. Default: 500}
 A data.frame with one row per cosinor coefficient and columns:
 \itemize{
   \item Estimate: Mean of bootstrap coefficient values.
-  \item Std Error: Bootstrap standard deviation of each coefficient across N
+  \item Std Error: Bootstrap standard deviation of each coefficient across n
   resamples.
   \item t value: Ratio of the observed estimate to its bootstrap standard
   error, analogous to a
     signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
-     where \eqn{\alpha = 1 - level}.
+     where \eqn{\alpha = 1 - ci_level}.
   \item upper CI label: Percentile upper bound at \eqn{1 - \frac{\alpha}{2}}.
 }
 }
@@ -41,45 +41,45 @@ and post-hoc parameters via non-parametric bootstrap
 FlyEast
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-27")
+df <- subset(df, df$Date == "2017-10-27")
 
 # Multicomponent Cosinor Model
-fit <- CosinorM (
-    time = df$Time,
-    activity = df$Activity,
-    tau = c (12, 24),
-    method = "OLS"
+fit <- CosinorM(
+  time = df$Time,
+  activity = df$Activity,
+  tau = c(12, 24),
+  method = "OLS"
 )
 
 # inspect coefficients
 
-boot.seci (
-    object = fit,
-    level = 0.95,
-    N = 500
+boot.seci(
+  object = fit,
+  ci_level = 0.95,
+  n = 500
 )
 
 
 # Gaussian Kernel Density Estimation
-fit2 <- CosinorM.KDE (
-    time = df$Time,
-    activity = df$Activity
+fit2 <- CosinorM.KDE(
+  time = df$Time,
+  activity = df$Activity
 )
 
 # inspect coefficients
 
-boot.seci (
-    object = fit2,
-    level = 0.95,
-    N = 500
+boot.seci(
+  object = fit2,
+  ci_level = 0.95,
+  n = 500
 )
 }
 
