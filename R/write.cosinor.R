@@ -144,13 +144,17 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
     U <- Bdf$UTC
 
     ### Set default variable names for activity and time columns
-    if (is.null (VAct) || is.null (VTm)) {
-        first_df <- DailyAct [[1]]
-        if (is.null (first_df) || length (DailyAct) == 0) {
-            stop ("DailyAct must contain at least one data frame")
+    if (is.null (VAct)) {
+        if (length (DailyAct) == 0 || is.null (DailyAct [[1]])) {
+            stop ("DailyAct must contain at least one non-NULL data frame")
         }
-        if (is.null (VAct)) VAct <- names (first_df) [[2]]
-        if (is.null (VTm)) VTm <- names (first_df) [[1]]
+        VAct <- names (DailyAct [[1]]) [[2]]
+    }
+    if (is.null (VTm)) {
+        if (length (DailyAct) == 0 || is.null (DailyAct [[1]])) {
+            stop ("DailyAct must contain at least one non-NULL data frame")
+        }
+        VTm <- names (DailyAct [[1]]) [[1]]
     }
 
     ## Initialize all cosinor results -----------------------
