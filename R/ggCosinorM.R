@@ -27,7 +27,10 @@
 #' labelled parameter values when requested.
 #'
 #' @importFrom stats coef df.residual model.frame model.response qt vcov
-#' @importFrom ggplot2 aes coord_cartesian element_blank element_text geom_hline geom_line geom_point geom_rect geom_ribbon geom_segment ggplot labs margin scale_colour_manual scale_fill_manual scale_x_continuous theme theme_minimal
+#' @importFrom ggplot2 aes coord_cartesian element_blank element_text geom_hline
+#' @importFrom ggplot2 geom_line geom_point geom_rect geom_ribbon geom_segment
+#' @importFrom ggplot2 ggplot labs margin scale_colour_manual scale_fill_manual
+#' @importFrom ggplot2 scale_x_continuous theme theme_minimal
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom viridis scale_color_viridis scale_fill_viridis
 #' @importFrom scales alpha
@@ -241,7 +244,8 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
             "Amplitude" = {
                 if (use_posthoc) {
                     if (is.null (post) || is.null (post ["Amplitude.ph"]))
-                        stop ("Post-hoc Amplitude.ph is required.", call. = FALSE)
+                        stop ("Post-hoc Amplitude.ph is required.",
+                              call. = FALSE)
                     as.numeric (post ["Amplitude.ph"])
                 } else {
                     AmpName <- paste0 ("Amplitude.", tau)
@@ -278,16 +282,19 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
             "PeakTrough" = {
                 if (use_posthoc) {
                     PeakValue <- ifelse (!is.null (post ["Peak.ph"]),
-                                         as.numeric (post ["Peak.ph"]), NA_real_)
+                                         as.numeric (post ["Peak.ph"]),
+                                         NA_real_)
                     TroughValue <- ifelse (!is.null (post ["Trough.ph"]),
-                                           as.numeric (post ["Trough.ph"]), NA_real_)
+                                           as.numeric (post ["Trough.ph"]),
+                                           NA_real_)
                 } else {
                     PeakValue <- mesor + amplitude
                     TroughValue <- mesor - amplitude
                 }
                 list (peak = PeakValue, trough = TroughValue)
             },
-            stop ("Invalid param: ", param, ". Must be one of: MESOR, Amplitude, ",
+            stop ("Invalid param: ", param,
+                  ". Must be one of: MESOR, Amplitude, ",
                   "Acrophase, Bathyphase, PeakTrough", call. = FALSE)
     )
 }
@@ -335,7 +342,8 @@ GetParamFit <- function (object, aug, tau, n) {
         if (!all (colnames (VcovMat) %in% colnames (MatrixX))) {
             FullVcov <- matrix (0,
                                 nrow = ncol (MatrixX), ncol = ncol (MatrixX),
-                                dimnames = list (colnames (MatrixX), colnames (MatrixX))
+                                dimnames = list (colnames (MatrixX),
+                                                 colnames (MatrixX))
             )
             CommonV <- intersect (rownames (VcovMat), rownames (FullVcov))
             FullVcov [CommonV, CommonV] <- VcovMat [CommonV, CommonV]
