@@ -165,7 +165,11 @@ fit$coef.cosinor
 
 
 # plot Cosinor in hours
-ggCosinorM (fit)
+plot(fit$time,
+     fit$fitted.values,
+     type = "l",
+     xlab = "Hour",
+     ylab = "24-Hour Cosinor Model")
 }
 
 }
@@ -184,6 +188,6 @@ Harvey, A. C. (1976). Estimating Regression Models with Multiplicative
 Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 }
 \seealso{
-\code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
+\code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}  \code{\link{ggCosinorM}}
 }
 \keyword{cosinor}
