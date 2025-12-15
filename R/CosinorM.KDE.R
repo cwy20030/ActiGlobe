@@ -208,7 +208,7 @@
 #' Using R With Examples in Cognitive Psychology. Methods. Front Psychol.
 #' 2018-October-30 2018;9(2040):2040. doi:10.3389/fpsyg.2018.02040
 #'
-#' @seealso \code{\link{CosinorM}}
+#' @seealso \code{\link{CosinorM}}  \code{\link{ggCosinorM}}
 #'
 #' @examples
 #' \dontrun{
