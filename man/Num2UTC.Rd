@@ -13,18 +13,19 @@ Num2UTC(x)
 A character vector of standard UTC offsets
 }
 \description{
-Convert numeric values representing UTC offsets (in hours, with optional
-fractional parts for minutes) into standardized character strings of the
-form `"UTC+HH:MM"` or `"UTC-HH:MM"`. This is useful for translating numeric
-time zone offsets into human-readable UTC offset notation.
+Convert numeric values representing UTC offsets (in hours, with
+optional fractional parts for minutes) into standardized character
+strings of the form `"UTC+HH:MM"` or `"UTC-HH:MM"`. This is useful
+for translating numeric time zone offsets into human-readable UTC
+offset notation.
 }
 \examples{
 # Convert UTC to numeric values
-x <- c(9.5, -7)
+x <- c (9.5, -7)
 
-x1 <- Num2UTC(x)
+x1 <- Num2UTC (x)
 
-print(x1)
+print (x1)
 
 }
 \seealso{

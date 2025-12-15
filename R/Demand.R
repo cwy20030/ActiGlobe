@@ -42,6 +42,7 @@
 #'
 #' Demand(c("Option A", "Option B", "Other"), "option")
 #'
+#'
 #' @noRd
 
 

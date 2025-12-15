@@ -23,7 +23,7 @@
 #' directly. If the input is a time string, it is parsed into hours, minutes,
 #' and seconds, then converted to decimal hours relative to the first entry.
 #'
-#' @param time A vector of time values. Can be numeric, character, or factor.
+#' @param Time A vector of time values. Can be numeric, character, or factor.
 #'   Examples include `"13:45:00"` or `"01:30:15"`. If numeric, values are
 #'   returned as-is (after coercion). If character/factor, values are parsed
 #'   using \code{\link{TimeFormat}}.
@@ -43,8 +43,8 @@
 #' @examples
 #'
 #' # Character input
-#' times <- c("01:00:00", "02:30:00", "03:15:00")
-#' C2T(times, Discrete = TRUE)
+#' times <- c ("01:00:00", "02:30:00", "03:15:00")
+#' C2T (times, Discrete = TRUE)
 #'
 #' @noRd
 

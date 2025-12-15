@@ -7,14 +7,15 @@
 TravelLog(Write = FALSE, Dir = NULL)
 }
 \arguments{
-\item{Write}{A binary code to indicate whether to write a .csv file
-containing the template needed for the travel log. (default = FLASE)
-When set to FALSE, the template will be returned as an object.
-When set to TRUE, user must provide the target directory where they wish to
-store the template.}
+\item{Write}{A binary code to indicate whether to write a .csv
+file containing the template needed for the travel log. (default
+= FLASE) When set to FALSE, the template will be returned as an
+object. When set to TRUE, user must provide the target directory
+where they wish to store the template.}
 
-\item{Dir}{The directory where the travel log template to be exported <e.g.
-"C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">}
+\item{Dir}{The directory where the travel log template to be
+exported <e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../
+FOLDER NAME/">}
 }
 \value{
 a travel-log template as a data.frame or written as a CSV file
@@ -24,9 +25,9 @@ Generate the Travel Log Template Needed for Time Zone Correction
 }
 \examples{
 
-Tlg <- TravelLog(Write = FALSE)
+Tlg <- TravelLog (Write = FALSE)
 
-print(Tlg)
+print (Tlg)
 
 }
 \keyword{Log}

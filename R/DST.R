@@ -28,9 +28,10 @@
 #'
 #' @param DT A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
 #'   the dates/times to test.  These need not be sorted.
-#' @param TZ A single string naming an IANA time zone (e.g. `America/New_York`).
-#'  If `"local"`, it will extract local time zone using `Sys.timezone()`.
-#'  Must match one entry in `OlsonNames()`.
+#' @param TZ A single string naming an IANA time zone (e.g.
+#'   `America/New_York`). If `"local"`, it will extract local time
+#'   zone using `Sys.timezone()`.  Must match one entry in
+#'   `OlsonNames()`.
 #'
 #' @return
 #'   A logical vector of the same length as `DT`.
@@ -41,16 +42,16 @@
 #'
 #' @examples
 #' # Standard use: New York in summer vs. winter
-#' dates <- as.POSIXct(c("2021-06-15", "2021-12-15"), tz = "America/New_York")
-#' DST(dates, TZ = "America/New_York")
+#' dates <- as.POSIXct (c ("2021-06-15", "2021-12-15"), tz = "America/New_York")
+#' DST (dates, TZ = "America/New_York")
 #'
 #' \donttest{
 #' # Around the spring-forward transition
-#' trans <- as.Date(c("2021-03-13", "2021-03-14", "2021-03-15"))
-#' DST(trans, TZ = "America/New_York")
+#' trans <- as.Date (c ("2021-03-13", "2021-03-14", "2021-03-15"))
+#' DST (trans, TZ = "America/New_York")
 #'
 #' # Using the local system time zone
-#' DST(as.POSIXct("2023-07-01 12:00:00"), TZ = "local")
+#' DST (as.POSIXct ("2023-07-01 12:00:00"), TZ = "local")
 #' }
 #' @keywords daylight dst
 #' @export

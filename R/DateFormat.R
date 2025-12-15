@@ -32,10 +32,8 @@
 #' unless explicitly guided by a delimiter or by manual correction.
 #'
 #' @param DT A character vector containing date or date-time strings.
-#'
 #' @param as.date Logical. If TRUE (default), returns converted Date objects.
 #'   If FALSE, returns the detected format string (e.g., \code{"\%d/\%m/\%Y"}).
-#'
 #' @param Delim Optional. A single character (e.g., \code{"."}, \code{"-"},
 #'   or \code{"/"}) to override default date delimiters. Requited when input
 #'   strings may contain nonstandard separators (e.g., \code{"$"}, \code{"~"}).
@@ -61,8 +59,8 @@
 #'   "January 01, 2025", "December 12, 1980"
 #' )
 #' lapply(DT, DateFormat) # element-wise parsing
-#' ### We expect that many of these format will not work because they contain
-#' ### text
+#' ### We expect that many of these format will not work because
+#' ### they contain text
 #'
 #'
 #' DT <- c(
