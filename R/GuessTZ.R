@@ -87,11 +87,8 @@ GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
   }
 
   ## Process DT
-  if (is.null(DT)) {
-    ## Determine if DST exists using time offset on January 1st of 2021
-    DT <- as.POSIXct("2021-01-01", tz = "UTC")
-  }
-
+  if (is.null(DT)) DT <- as.POSIXct("2021-01-01", tz = "UTC")
+  
   if (!length(DT) == 1) DT <- DT[[1]]
 
 

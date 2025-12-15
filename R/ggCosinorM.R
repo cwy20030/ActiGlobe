@@ -265,10 +265,10 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
         },
         "PeakTrough" = {
             if (use_posthoc) {
-                PeakValue <- if (!is.null (post ["Peak.ph"])) 
-                    as.numeric (post ["Peak.ph"]) else NA_real_
-                TroughValue <- if (!is.null (post ["Trough.ph"])) 
-                    as.numeric (post ["Trough.ph"]) else NA_real_
+                PeakValue <- ifelse (!is.null (post ["Peak.ph"]),
+                    as.numeric (post ["Peak.ph"]), NA_real_)
+                TroughValue <- ifelse (!is.null (post ["Trough.ph"]),
+                    as.numeric (post ["Trough.ph"]), NA_real_)
             } else {
                 PeakValue <- mesor + amplitude
                 TroughValue <- mesor - amplitude
