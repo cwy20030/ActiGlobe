@@ -11,7 +11,7 @@ on:
   # Run on every push to main
   push:
     branches:
-      - main
+      - copilot/improve-test-coverage
 
 jobs:
   pkgcheck:
