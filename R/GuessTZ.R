@@ -53,100 +53,100 @@
 #' @examples
 #'
 #' # Guess time zones for UTC-5 and UTC+1 offsets
-#' GuessTZ(c("-0500", "+0100"))
+#' GuessTZ (c ("-0500", "+0100"))
 #'
 #' # Restrict to first match per offset
-#' GuessTZ(c("-0500", "+0100"), All = FALSE)
+#' GuessTZ (c ("-0500", "+0100"), All = FALSE)
 #'
 #' # Prioritize local system time zone
-#' GuessTZ(c("-0500"), iTZ = "local")
+#' GuessTZ (c ("-0500"), iTZ = "local")
 #'
 #' # Use parallel processing
-#' GuessTZ(c("+0000"), fork = TRUE)
+#' GuessTZ (c ("+0000"), fork = TRUE)
 #'
 #' @noRd
 
-GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
-  # Check Point ----------------------
-  ## Time Zone
-  ## Establish initial time zone
-  TZ1 <- ifelse(iTZ == "local", Sys.timezone(), iTZ)
+GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
+    # Check Point ----------------------
+    ## Time Zone
+    ## Establish initial time zone
+    TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
-  ### Validate the time zone using OlsonNames()
-  ### Extract all known time zones
-  oTZs <- OlsonNames()
+    ### Validate the time zone using OlsonNames()
+    ### Extract all known time zones
+    oTZs <- OlsonNames ()
 
-  if (is.null(iTZ)) {
-    TZ1 <- NULL
-  } else if (!TZ1 %in% oTZs) {
-    stop(sprintf(
-      "The provided time zone \"%s\" is not recognized.\n",
-      TZ1
-    ), "Please check the spelling or consult the IANA time zone table
+    if (is.null (iTZ)) {
+        TZ1 <- NULL
+    } else if (!TZ1 %in% oTZs) {
+        stop (sprintf (
+            "The provided time zone \"%s\" is not recognized.\n",
+            TZ1
+        ), "Please check the spelling or consult the IANA time zone table
     (ActiGlobe::IANA).")
-  }
-
-  ## Process DT
-  if (is.null(DT)) {
-    ## Determine if DST exists using time offset on January 1st of 2021
-    DT <- as.POSIXct("2021-01-01", tz = "UTC")
-  }
-
-  if (!length(DT) == 1) DT <- DT[[1]]
-
-
-  # Date-based time zone identification -----------------------
-  ## Step 0. Extract time offsets for all time zones ------------------
-  ### Parallel version
-  if (fork) {
-    ### Step 1: Create a cluster
-    NCore <- parallel::detectCores()
-    cl <- parallel::makeCluster(max(1, NCore - 2)) ### leave a couple cores free
-
-    ### Step 2: Export variables
-    parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
-
-    ### Step 3: Run parallelized task
-    Toffs <- parallel::parLapply(cl, oTZs, function(tz) {
-      format(as.POSIXct(DT, tz = tz), "%z")
-    })
-
-    ### Step 4: Clean up
-    parallel::stopCluster(cl)
-
-    Toffs <- unlist(Toffs)
-
-  } else {  ### Sequential version ---------------
-
-    Toffs <- vapply(
-      oTZs, function(tz) {
-        format(as.POSIXct(DT, tz = tz), "%z")
-      },
-      character(1)
-    )
-  }
-
-
-  ## Step 1 Guess all possible TZ indicators -----------
-  pTZs <- sapply(aOF, function(x) oTZs[Toffs %in% x])
-
-  ## Step 2 Check if the initial time zone is included
-  if (!is.null(TZ1)) {
-    if (length(aOF) == 1) {
-      pTZs <- ifelse(TZ1 %in% pTZs, TZ1, pTZs)
-    } else {
-      pTZs <- sapply(pTZs, function(x) ifelse(TZ1 %in% x, TZ1, x))
     }
-  }
 
-  ## Step 3 Keep only the first one if the All is set to FALSE
-  if (!All) {
-    if (length(aOF) > 1) {
-      pTZs <- sapply(pTZs, function(x) x[[1]])
-    } else {
-      pTZs <- pTZs[[1]]
+    ## Process DT
+    if (is.null (DT)) {
+        ## Determine if DST exists using time offset on January 1st of 2021
+        DT <- as.POSIXct ("2021-01-01", tz = "UTC")
     }
-  }
 
-  return(pTZs)
+    if (!length (DT) == 1) DT <- DT [[1]]
+
+
+    # Date-based time zone identification -----------------------
+    ## Step 0. Extract time offsets for all time zones ------------------
+    ### Parallel version
+    if (fork) {
+        ### Step 1: Create a cluster
+        NCore <- parallel::detectCores ()
+        cl <- parallel::makeCluster (max (1, NCore - 2)) ### leave a couple cores free
+
+        ### Step 2: Export variables
+        parallel::clusterExport (cl, varlist = c ("DT"), envir = environment ())
+
+        ### Step 3: Run parallelized task
+        Toffs <- parallel::parLapply (cl, oTZs, function (tz) {
+            format (as.POSIXct (DT, tz = tz), "%z")
+        })
+
+        ### Step 4: Clean up
+        parallel::stopCluster (cl)
+
+        Toffs <- unlist (Toffs)
+
+    } else { ### Sequential version ---------------
+
+        Toffs <- vapply (
+            oTZs, function (tz) {
+                format (as.POSIXct (DT, tz = tz), "%z")
+            },
+            character (1)
+        )
+    }
+
+
+    ## Step 1 Guess all possible TZ indicators -----------
+    pTZs <- sapply (aOF, function (x) oTZs [Toffs %in% x])
+
+    ## Step 2 Check if the initial time zone is included
+    if (!is.null (TZ1)) {
+        if (length (aOF) == 1) {
+            pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
+        } else {
+            pTZs <- sapply (pTZs, function (x) ifelse (TZ1 %in% x, TZ1, x))
+        }
+    }
+
+    ## Step 3 Keep only the first one if the All is set to FALSE
+    if (!All) {
+        if (length (aOF) > 1) {
+            pTZs <- sapply (pTZs, function (x) x [[1]])
+        } else {
+            pTZs <- pTZs [[1]]
+        }
+    }
+
+    return (pTZs)
 }

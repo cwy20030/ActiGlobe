@@ -16,9 +16,9 @@ resource_files:
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+knitr::opts_chunk$set (
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -31,7 +31,7 @@ to the rest of the tutorials in this package.
 ## Load the Libraries
 
 ```{r setup, eval=FALSE}
-library(ActiGlobe)
+library (ActiGlobe)
 
 ### Optional Library
 # library(zeallot)
@@ -160,7 +160,7 @@ conclusion that the subject was sleeping during the day and awake at
 night.
 
 ```{r unadjusted-plot, echo=FALSE, fig.cap="Figure 1: Unadjusted actigraphy data showing apparent day-night reversal due to unaccounted time zone change.", out.width="100%"}
-knitr::include_graphics("images/Unadjusted_Overview.png")
+knitr::include_graphics ("images/Unadjusted_Overview.png")
 ```
 
 This issue is due to a time zone change that the hardware and software
@@ -182,7 +182,7 @@ Figure 2 shows the same data after time zone adjustment using
 ActiGlobe:
 
 ```{r adjusted-plot, echo=FALSE, fig.cap="Figure 2: Adjusted actigraphy data showing correct sleep/wake patterns after time zone correction.", out.width="100%"}
-knitr::include_graphics("images/Adjusted_Overview.png")
+knitr::include_graphics ("images/Adjusted_Overview.png")
 ```
 
 After adjustment, the data clearly shows appropriate sleep periods at

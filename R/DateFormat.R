@@ -51,84 +51,85 @@
 #'
 #' @examples
 #' # Consistent format across all strings
-#' DT <- c("2017/05/02", "2000/02/28", "1970/01/02")
-#' DateFormat(DT, as.date = FALSE) # returns parsed Date vector
+#' DT <- c ("2017/05/02", "2000/02/28", "1970/01/02")
+#' DateFormat (DT, as.date = FALSE) # returns parsed Date vector
 #'
 #' \dontrun{
 #' # Mixed formats within a vector
-#' DT <- c(
-#'   "2017/05/02", "2000.Feb.28", "1970-11-02",
-#'   "January 01, 2025", "December 12, 1980"
+#' DT <- c (
+#'     "2017/05/02", "2000.Feb.28", "1970-11-02",
+#'     "January 01, 2025", "December 12, 1980"
 #' )
-#' lapply(DT, DateFormat) # element-wise parsing
+#' lapply (DT, DateFormat) # element-wise parsing
 #' ### We expect that many of these format will not work because they contain
 #' ### text
 #'
 #'
-#' DT <- c(
-#'   "2017/05/02", "2000.02.28", "1970-11-02",
-#'   "01, 01, 2025", "12, 12, 1980"
+#' DT <- c (
+#'     "2017/05/02", "2000.02.28", "1970-11-02",
+#'     "01, 01, 2025", "12, 12, 1980"
 #' )
 #'
 #' # Recommended usage for mixed formats:
-#' lapply(DT, DateFormat, Delim = ",") # element-wise parsing
+#' lapply (DT, DateFormat, Delim = ",") # element-wise parsing
 #'
-#' for (x in DT)
-#' print(DateFormat(x, Delim = ",")) # displays format/warning per entry
+#' for (x in DT) {
+#'     print (DateFormat (x, Delim = ","))
+#' } # displays format/warning per entry
 #'
 #' # Avoid using sapply, because it will convert them into numeric form
-#' sapply(DT, DateFormat)
+#' sapply (DT, DateFormat)
 #' }
 #'
 #' @export
 
 
-DateFormat <- function(DT, as.date = TRUE, Delim = NULL) {
-  fmts <- c(
-    "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
-    "%Y-%m", "%m-%Y",
-    "%Y/%m/%d", "%m/%d/%Y", "%d/%m/%Y",
-    "%Y/%m", "%m/%Y",
-    "%Y.%m.%d", "%m.%d.%Y", "%d.%m.%Y",
-    "%Y.%m", "%m.%Y"
-  ) # Add more formats as needed
+DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
+    fmts <- c (
+        "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
+        "%Y-%m", "%m-%Y",
+        "%Y/%m/%d", "%m/%d/%Y", "%d/%m/%Y",
+        "%Y/%m", "%m/%Y",
+        "%Y.%m.%d", "%m.%d.%Y", "%d.%m.%Y",
+        "%Y.%m", "%m.%Y"
+    ) # Add more formats as needed
 
-  if (!is.null(Delim)) {
-    Base <- c(
-      "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
-      "%Y-%m", "%m-%Y"
-    )
-    Base <- gsub("-", Delim, Base) # Only one deliminator is allowed.
-    fmts <- c(fmts, Base)
-  }
+    if (!is.null (Delim)) {
+        Base <- c (
+            "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
+            "%Y-%m", "%m-%Y"
+        )
+        Base <- gsub ("-", Delim, Base) # Only one deliminator is allowed.
+        fmts <- c (fmts, Base)
+    }
 
-  formatedDate <- tryCatch(as.Date(DT, format = fmts))
+    formatedDate <- tryCatch (as.Date (DT, format = fmts))
 
-  Format <- fmts[which(!is.na(formatedDate))] # Extract Possible format
+    Format <- fmts [which (!is.na (formatedDate))] # Extract Possible format
 
-  ## Extract the time format generated
-  formatedDate <- formatedDate[!is.na(formatedDate)]
+    ## Extract the time format generated
+    formatedDate <- formatedDate [!is.na (formatedDate)]
 
-  ## See which time format works for this
-  if (length(Format) > 1) {
-    Format <- unlist(lapply(seq_len(length(formatedDate)), function(d) {
-      temp <- as.character(formatedDate[d])
-      temp <- unlist(strsplit(temp, split = "-"))
+    ## See which time format works for this
+    if (length (Format) > 1) {
+        Format <- unlist (lapply (seq_len (length (formatedDate)), function (d) {
+            temp <- as.character (formatedDate [d])
+            temp <- unlist (strsplit (temp, split = "-"))
 
-      if (all(as.numeric(temp) < 1000)) {
-        NA
-      } else {
-        Format[d]
-      }
-    }))
+            if (all (as.numeric (temp) < 1000)) {
+                NA
+            } else {
+                Format [d]
+            }
+        }))
 
-    Format <- Format[!is.na(Format)]
-  }
+        Format <- Format [!is.na (Format)]
+    }
 
-  if (!as.date) {
-    # Post-process Check...
-    if (length(Format) == 0) {
-      warning(paste0("Possible illegal datetime format detected in ", DT, ".
+    if (!as.date) {
+        # Post-process Check...
+        if (length (Format) == 0) {
+            warning (paste0 ("Possible illegal datetime format detected in ", DT, ".
       Please, ensure that...
          1. the year is recorded as full four digits (i.e., 19xx).
          ==> Please, manually correct the year and try again.
@@ -136,22 +137,22 @@ DateFormat <- function(DT, as.date = TRUE, Delim = NULL) {
          2. the deliminator used to separate month and date is not of standard.
          ==> Please, specify the proper deliminator in Delim."))
 
-      Format <- ""
-    }
+            Format <- ""
+        }
 
-    if (length(unique(Format)) > 1) {
-      warning("Unable to recognize the difference between date and month.
+        if (length (unique (Format)) > 1) {
+            warning ("Unable to recognize the difference between date and month.
               Only the first detected format would be used! Please, manually
               set it using as.Date function if it is incorrect or convert the
               month number to name.")
+        }
     }
-  }
 
 
-  Format <- Format[1]
-  if (as.date) {
-    return(as.Date(DT, format = Format))
-  } else {
-    return(Format)
-  }
+    Format <- Format [1]
+    if (as.date) {
+        return (as.Date (DT, format = Format))
+    } else {
+        return (Format)
+    }
 }

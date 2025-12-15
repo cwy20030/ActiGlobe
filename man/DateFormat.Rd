@@ -48,8 +48,8 @@ DT <- c(
   "January 01, 2025", "December 12, 1980"
 )
 lapply(DT, DateFormat) # element-wise parsing
-### We expect that many of these format will not work because
-### they contain text
+### We expect that many of these format will not work because they contain
+### text
 
 
 DT <- c(

@@ -49,66 +49,68 @@
 #' @examples
 #' \dontrun{
 #' # Check for DST transitions in UTC+1 and UTC+8
-#' UTCwDST(UTCs = c("UTC+01:00", "UTC+08:00"))
+#' UTCwDST (UTCs = c ("UTC+01:00", "UTC+08:00"))
 #'
 #' # Use numeric offset directly
-#' UTCwDST(UTCs = c(1, 8))
+#' UTCwDST (UTCs = c (1, 8))
 #'
 #' # UTC-5 commonly includes DST zones (e.g., New York)
-#' UTCwDST(UTCs = -5)
+#' UTCwDST (UTCs = -5)
 #' }
 #'
 #' @export
 
-UTCwDST <- function(UTCs, fork = FALSE) {
-  # Extract Essential -------------------
-  OF <- UTCs
+UTCwDST <- function (UTCs, fork = FALSE) {
+    # Extract Essential -------------------
+    OF <- UTCs
 
-  ### Call mIANA-------------------
-  sIANA <- mIANA() # Time zone database
-  iTZ <- sIANA$Timezone_IANA
-  Soff <- sIANA$Standard_Offset
+    ### Call mIANA-------------------
+    sIANA <- mIANA () # Time zone database
+    iTZ <- sIANA$Timezone_IANA
+    Soff <- sIANA$Standard_Offset
 
 
-  #### Convert UTC to Hour offset if not converted....
-  if (any(grep("UTC|\\:", UTCs))) OF <- UTC2Num(UTCs)
+    #### Convert UTC to Hour offset if not converted....
+    if (any (grep ("UTC|\\:", UTCs))) OF <- UTC2Num (UTCs)
 
-  #### Convert offset into the POSIX format
-  aOF <- format_offset(x = OF)
+    #### Convert offset into the POSIX format
+    aOF <- format_offset (x = OF)
 
-  # Determine if DST exists using time offset on January 1st of 2021
-  JAN1 <- as.POSIXct("2021-01-01", tz = "UTC")
+    # Determine if DST exists using time offset on January 1st of 2021
+    JAN1 <- as.POSIXct ("2021-01-01", tz = "UTC")
 
-  pTZs <- GuessTZ(aOF = aOF, fork = fork)
+    pTZs <- GuessTZ (aOF = aOF, fork = fork)
 
-  ## Check points for mispecified UTC offsets ------------
-  if (any(lengths(pTZs) == 0L)) {
-    TG <- which(lengths(pTZs) == 0L)
-    message(sprintf("No matching found for following time zones: %s",
-                    UTCs[TG]," using OlsonNames.Try mIANA..."))
+    ## Check points for mispecified UTC offsets ------------
+    if (any (lengths (pTZs) == 0L)) {
+        TG <- which (lengths (pTZs) == 0L)
+        message (sprintf (
+            "No matching found for following time zones: %s",
+            UTCs [TG], " using OlsonNames.Try mIANA..."
+        ))
 
-    pTZs[TG] <- iTZ[Soff %in% UTCs[TG]]
-  }
+        pTZs [TG] <- iTZ [Soff %in% UTCs [TG]]
+    }
 
-  # Check DST status in mid‐winter vs. mid‐summer ----------
-  wDT <- as.POSIXct(JAN1, tz = "UTC")
-  ### NO daylight saving time for the north hemispher but yes for the south
+    # Check DST status in mid‐winter vs. mid‐summer ----------
+    wDT <- as.POSIXct (JAN1, tz = "UTC")
+    ### NO daylight saving time for the north hemispher but yes for the south
 
-  sDT <- as.POSIXct("2021-07-15", tz = "UTC")
-  ### Yes to daylight saving time for the north hemispher but NO for the south
+    sDT <- as.POSIXct ("2021-07-15", tz = "UTC")
+    ### Yes to daylight saving time for the north hemispher but NO for the south
 
-  ## Check if any time zone may experience time change.
-  Out <- sapply(pTZs, function(tzs) {
-    wDST <- sapply(tzs, function(tz) as.POSIXlt(wDT, tz = tz)$isdst)
-    sDST <- sapply(tzs, function(tz) as.POSIXlt(sDT, tz = tz)$isdst)
-    any(wDST != sDST)
-  })
+    ## Check if any time zone may experience time change.
+    Out <- sapply (pTZs, function (tzs) {
+        wDST <- sapply (tzs, function (tz) as.POSIXlt (wDT, tz = tz)$isdst)
+        sDST <- sapply (tzs, function (tz) as.POSIXlt (sDT, tz = tz)$isdst)
+        any (wDST != sDST)
+    })
 
-  if (length(Out) == length(UTCs)) {
-    names(Out) <- UTCs
-  }
+    if (length (Out) == length (UTCs)) {
+        names (Out) <- UTCs
+    }
 
-  return(Out)
+    return (Out)
 }
 
 
@@ -118,11 +120,11 @@ UTCwDST <- function(UTCs, fork = FALSE) {
 #'
 #' @noRd
 #'
-format_offset <- function(x) {
-  # Separate hours and minutes
-  hours <- trunc(x)
-  minutes <- round((x - hours) * 60)
+format_offset <- function (x) {
+    # Separate hours and minutes
+    hours <- trunc (x)
+    minutes <- round ((x - hours) * 60)
 
-  # Handle cases like 2.75 → 2h 45m
-  sprintf("%+03d%02d", hours, minutes)
+    # Handle cases like 2.75 → 2h 45m
+    sprintf ("%+03d%02d", hours, minutes)
 }

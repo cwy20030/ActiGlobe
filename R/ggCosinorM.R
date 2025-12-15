@@ -95,10 +95,10 @@
 #' @export
 
 ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
-                        n = 400, point_size = 0.5, title_extra = NULL, 
+                        n = 400, point_size = 0.5, title_extra = NULL,
                         legend.position = "right", ...) {
     # Validate inputs
-    .validate_ggcosinorm_inputs(object, ci_level, n)
+    .validate_ggcosinorm_inputs (object, ci_level, n)
 
     # Extract basic parameters
     day <- 24
@@ -106,7 +106,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
     nT <- length (tau)
 
     # Extract observed data
-    aug <- .extract_observed_data(object)
+    aug <- .extract_observed_data (object)
 
     # Determine parameter source
     coef_cos <- object$coef.cosinor
@@ -115,32 +115,40 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
     use_posthoc <- !use_parametric_single
 
     # Extract cosinor parameters
-    mesor <- .get_mesor(object, use_posthoc, coef_cos, post)
-    amplitude <- .get_amplitude(object, use_posthoc, coef_cos, post, tau)
-    acrophase_time <- .get_acrophase_time(object, use_posthoc, coef_cos, 
-                                          post, tau)
-    bathy <- .get_bathyphase(object, use_posthoc, post, acrophase_time, 
-                             tau, day)
-    pv <- .get_peak_trough_values(use_posthoc, post, mesor, amplitude)
+    mesor <- .get_mesor (object, use_posthoc, coef_cos, post)
+    amplitude <- .get_amplitude (object, use_posthoc, coef_cos, post, tau)
+    acrophase_time <- .get_acrophase_time (
+        object, use_posthoc, coef_cos,
+        post, tau
+    )
+    bathy <- .get_bathyphase (
+        object, use_posthoc, post, acrophase_time,
+        tau, day
+    )
+    pv <- .get_peak_trough_values (use_posthoc, post, mesor, amplitude)
     peak_value <- pv$peak
     trough_value <- pv$trough
 
     # Compute fitted curve
-    fit_result <- .compute_fitted_curve(object, aug, tau, n)
+    fit_result <- .compute_fitted_curve (object, aug, tau, n)
     newt <- fit_result$newt
     fit_pred <- fit_result$fit_pred
     se_fit <- fit_result$se_fit
     uses_kdf <- fit_result$uses_kdf
 
     # Compute confidence bands
-    ci_result <- .compute_confidence_bands(ci, uses_kdf, fit_pred, se_fit, 
-                                           ci_level, object)
+    ci_result <- .compute_confidence_bands (
+        ci, uses_kdf, fit_pred, se_fit,
+        ci_level, object
+    )
     ym <- ci_result$ym
     yM <- ci_result$yM
 
     # Fallback markers from fitted curve if needed
-    fb <- .fallback_markers_from_fit(bathy, peak_value, trough_value, 
-                                     acrophase_time, newt, fit_pred)
+    fb <- .fallback_markers_from_fit (
+        bathy, peak_value, trough_value,
+        acrophase_time, newt, fit_pred
+    )
     bathy <- fb$bathy
     peak_value <- fb$peak_value
     trough_value <- fb$trough_value
@@ -148,16 +156,22 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 
     # Build plot
     g <- ggplot2::ggplot ()
-    g <- .add_model_fit_and_ci(g, newt, fit_pred, ci, ym, yM)
-    g <- .add_mesor_and_points(g, mesor, aug, point_size, acrophase_time, 
-                               peak_value, bathy, trough_value)
-    g <- .add_acrophase_verticals(g, acrophase_time, aug)
-    g <- .add_inactive_periods(g, aug)
-    g <- .add_amplitude_segments(g, amplitude, acrophase_time, mesor)
-    g <- .add_labels(g, labels, use_posthoc, tau, mesor, amplitude, 
-                     acrophase_time, aug)
-    g <- .add_scales_and_theme(g, legend.position, tau, object, title_extra,
-                               day)
+    g <- .add_model_fit_and_ci (g, newt, fit_pred, ci, ym, yM)
+    g <- .add_mesor_and_points (
+        g, mesor, aug, point_size, acrophase_time,
+        peak_value, bathy, trough_value
+    )
+    g <- .add_acrophase_verticals (g, acrophase_time, aug)
+    g <- .add_inactive_periods (g, aug)
+    g <- .add_amplitude_segments (g, amplitude, acrophase_time, mesor)
+    g <- .add_labels (
+        g, labels, use_posthoc, tau, mesor, amplitude,
+        acrophase_time, aug
+    )
+    g <- .add_scales_and_theme (
+        g, legend.position, tau, object, title_extra,
+        day
+    )
 
     return (g)
 }
@@ -171,16 +185,21 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param ci_level Confidence level to validate.
 #' @param n Number of grid points to validate.
 #' @noRd
-.validate_ggcosinorm_inputs <- function(object, ci_level, n) {
-    if (!inherits (object, c ("CosinorM", "CosinorM.KDE")))
+.validate_ggcosinorm_inputs <- function (object, ci_level, n) {
+    if (!inherits (object, c ("CosinorM", "CosinorM.KDE"))) {
         stop ("ggCosinorM: object must be a CosinorM or ",
-              "CosinorM.KDE fit.", call. = FALSE)
+            "CosinorM.KDE fit.",
+            call. = FALSE
+        )
+    }
 
-    if (!is.numeric (ci_level) | ci_level <= 0 | ci_level >= 1)
+    if (!is.numeric (ci_level) | ci_level <= 0 | ci_level >= 1) {
         stop ("ci_level must be a numeric value between 0 and 1")
+    }
 
-    if (!is.numeric (n) | n <= 0 | n != round (n))
+    if (!is.numeric (n) | n <= 0 | n != round (n)) {
         stop ("N must be a positive integer")
+    }
 }
 
 #' @title Extract Observed Data from Cosinor Model
@@ -190,7 +209,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param object A fitted model object.
 #' @returns A data.frame with columns t_obs and y_obs.
 #' @noRd
-.extract_observed_data <- function(object) {
+.extract_observed_data <- function (object) {
     if (!is.null (object$model) && !is.null (object$model$time)) {
         t_obs <- object$model$time
         y_obs <- if (!is.null (object$model$activity)) {
@@ -200,7 +219,9 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         }
     } else {
         stop ("Object missing model$time/activity for ",
-              "observed data.", call. = FALSE)
+            "observed data.",
+            call. = FALSE
+        )
     }
     data.frame (t_obs = t_obs, y_obs = y_obs)
 }
@@ -215,14 +236,16 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param post Post-hoc estimates vector.
 #' @returns Numeric value of MESOR.
 #' @noRd
-.get_mesor <- function(object, use_posthoc, coef_cos, post) {
+.get_mesor <- function (object, use_posthoc, coef_cos, post) {
     if (use_posthoc) {
-        if (is.null (post) || is.null (post ["MESOR.ph"])) 
+        if (is.null (post) || is.null (post ["MESOR.ph"])) {
             stop ("Post-hoc MESOR.ph is required.", call. = FALSE)
+        }
         as.numeric (post ["MESOR.ph"])
     } else {
-        if (is.null (coef_cos) || is.null (coef_cos ["MESOR"])) 
+        if (is.null (coef_cos) || is.null (coef_cos ["MESOR"])) {
             stop ("Parametric MESOR is required.", call. = FALSE)
+        }
         as.numeric (coef_cos ["MESOR"])
     }
 }
@@ -238,15 +261,17 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param tau Period(s) of the cosinor model.
 #' @returns Numeric value(s) of amplitude.
 #' @noRd
-.get_amplitude <- function(object, use_posthoc, coef_cos, post, tau) {
+.get_amplitude <- function (object, use_posthoc, coef_cos, post, tau) {
     if (use_posthoc) {
-        if (is.null (post) || is.null (post ["Amplitude.ph"])) 
+        if (is.null (post) || is.null (post ["Amplitude.ph"])) {
             stop ("Post-hoc Amplitude.ph is required.", call. = FALSE)
+        }
         as.numeric (post ["Amplitude.ph"])
     } else {
         amp_name <- paste0 ("Amplitude.", tau)
-        if (!all (amp_name %in% names (coef_cos))) 
+        if (!all (amp_name %in% names (coef_cos))) {
             stop ("Parametric amplitude not found.", call. = FALSE)
+        }
         as.numeric (coef_cos [amp_name])
     }
 }
@@ -262,15 +287,17 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param tau Period(s) of the cosinor model.
 #' @returns Numeric value(s) of acrophase time in hours.
 #' @noRd
-.get_acrophase_time <- function(object, use_posthoc, coef_cos, post, tau) {
+.get_acrophase_time <- function (object, use_posthoc, coef_cos, post, tau) {
     if (use_posthoc) {
-        if (is.null (post) || is.null (post ["Acrophase.ph.time"])) 
+        if (is.null (post) || is.null (post ["Acrophase.ph.time"])) {
             stop ("Post-hoc Acrophase.ph.time is required.", call. = FALSE)
+        }
         as.numeric (post ["Acrophase.ph.time"])
     } else {
         phi_name <- paste0 ("Acrophase.", tau)
-        if (!all (phi_name %in% names (coef_cos))) 
+        if (!all (phi_name %in% names (coef_cos))) {
             stop ("Parametric acrophase not found.", call. = FALSE)
+        }
         acrophase_rad <- as.numeric (coef_cos [phi_name])
         ((acrophase_rad * tau / (2 * pi)) %% tau)
     }
@@ -288,8 +315,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param day Length of day in hours (typically 24).
 #' @returns Numeric value(s) of bathyphase time in hours.
 #' @noRd
-.get_bathyphase <- function(object, use_posthoc, post, acrophase_time,
-                            tau, day) {
+.get_bathyphase <- function (object, use_posthoc, post, acrophase_time,
+                             tau, day) {
     if (use_posthoc) {
         if (is.null (post) || is.null (post ["Bathyphase.ph.time"])) {
             NA_real_
@@ -310,17 +337,23 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param amplitude Amplitude value(s).
 #' @returns A list with peak and trough values.
 #' @noRd
-.get_peak_trough_values <- function(use_posthoc, post, mesor, amplitude) {
+.get_peak_trough_values <- function (use_posthoc, post, mesor, amplitude) {
     if (use_posthoc) {
-        peak_value <- if (!is.null (post ["Peak.ph"])) 
-            as.numeric (post ["Peak.ph"]) else NA_real_
-        trough_value <- if (!is.null (post ["Trough.ph"])) 
-            as.numeric (post ["Trough.ph"]) else NA_real_
+        peak_value <- if (!is.null (post ["Peak.ph"])) {
+            as.numeric (post ["Peak.ph"])
+        } else {
+            NA_real_
+        }
+        trough_value <- if (!is.null (post ["Trough.ph"])) {
+            as.numeric (post ["Trough.ph"])
+        } else {
+            NA_real_
+        }
     } else {
         peak_value <- mesor + amplitude
         trough_value <- mesor - amplitude
     }
-    list(peak = peak_value, trough = trough_value)
+    list (peak = peak_value, trough = trough_value)
 }
 
 #' @title Compute Parametric Cosinor Fit
@@ -333,8 +366,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param n Number of grid points for prediction.
 #' @returns A list with newt, fit_pred, se_fit, and uses_kdf.
 #' @noRd
-.compute_parametric_fit <- function(object, aug, tau, n) {
-    nT <- length(tau)
+.compute_parametric_fit <- function (object, aug, tau, n) {
+    nT <- length (tau)
     t_min <- min (aug$t_obs, na.rm = TRUE)
     t_max <- max (aug$t_obs, na.rm = TRUE)
     newt <- seq (t_min, t_max, length.out = n)
@@ -379,7 +412,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         se_fit <- rep (NA_real_, length (fit_pred))
     }
 
-    list(newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = FALSE)
+    list (newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = FALSE)
 }
 
 #' @title Compute KDE Cosinor Fit
@@ -391,20 +424,23 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param tau Period(s) of the cosinor model.
 #' @returns A list with newt, fit_pred, se_fit, and uses_kdf, or NULL.
 #' @noRd
-.compute_kde_fit <- function(object, t_obs, tau) {
+.compute_kde_fit <- function (object, t_obs, tau) {
     if (!is.null (object$kdf)) {
         kdf <- object$kdf
         newt <- t_obs
         fit_pred <- kdf$fitted.values
-        se_fit <- if (!is.null (kdf$fitted.se)) 
-            kdf$fitted.se else rep (NA_real_, length (fit_pred))
-        list(newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = TRUE)
+        se_fit <- if (!is.null (kdf$fitted.se)) {
+            kdf$fitted.se
+        } else {
+            rep (NA_real_, length (fit_pred))
+        }
+        list (newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = TRUE)
     } else if (!is.null (object$grid)) {
         gtheta <- object$grid$theta
         newt <- (gtheta * tau) / (2 * pi)
         fit_pred <- object$grid$fitted.values
         se_fit <- object$grid$fitted.se
-        list(newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = TRUE)
+        list (newt = newt, fit_pred = fit_pred, se_fit = se_fit, uses_kdf = TRUE)
     } else {
         NULL
     }
@@ -420,12 +456,14 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param n Number of grid points for prediction.
 #' @returns A list with newt, fit_pred, se_fit, and uses_kdf.
 #' @noRd
-.compute_fitted_curve <- function(object, aug, tau, n) {
+.compute_fitted_curve <- function (object, aug, tau, n) {
     if (inherits (object, "CosinorM.KDE")) {
-        kde_result <- .compute_kde_fit(object, aug$t_obs, tau)
-        if (!is.null(kde_result)) return(kde_result)
+        kde_result <- .compute_kde_fit (object, aug$t_obs, tau)
+        if (!is.null (kde_result)) {
+            return (kde_result)
+        }
     }
-    .compute_parametric_fit(object, aug, tau, n)
+    .compute_parametric_fit (object, aug, tau, n)
 }
 
 #' @title Compute Confidence Bands
@@ -441,13 +479,15 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param object A fitted model object.
 #' @returns A list with ym (lower bound) and yM (upper bound).
 #' @noRd
-.compute_confidence_bands <- function(ci, uses_kdf, fit_pred, se_fit, 
-                                      ci_level, object) {
+.compute_confidence_bands <- function (ci, uses_kdf, fit_pred, se_fit,
+                                       ci_level, object) {
     if (!ci) {
-        return(list(ym = rep(NA_real_, length(fit_pred)), 
-                    yM = rep(NA_real_, length(fit_pred))))
+        return (list (
+            ym = rep (NA_real_, length (fit_pred)),
+            yM = rep (NA_real_, length (fit_pred))
+        ))
     }
-    
+
     if (uses_kdf) {
         zcrit <- 1.96
         ym <- fit_pred - zcrit * se_fit
@@ -458,7 +498,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
         ym <- fit_pred - tcrit * se_fit
         yM <- fit_pred + tcrit * se_fit
     }
-    list(ym = ym, yM = yM)
+    list (ym = ym, yM = yM)
 }
 
 #' @title Fallback Markers from Fitted Curve
@@ -474,21 +514,24 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @returns A list with updated bathy, peak_value, trough_value, and
 #'   acrophase_time.
 #' @noRd
-.fallback_markers_from_fit <- function(bathy, peak_value, trough_value, 
-                                       acrophase_time, newt, fit_pred) {
+.fallback_markers_from_fit <- function (bathy, peak_value, trough_value,
+                                        acrophase_time, newt, fit_pred) {
     if (any (is.na (bathy) || is.na (peak_value) || is.na (trough_value))) {
         M1 <- which.max (fit_pred)
         m1 <- which.min (fit_pred)
         bathy <- ifelse (is.na (bathy), newt [m1], bathy)
         peak_value <- ifelse (is.na (peak_value), fit_pred [M1], peak_value)
         trough_value <- ifelse (is.na (trough_value), fit_pred [m1],
-                                trough_value)
+            trough_value
+        )
         if ((length (acrophase_time) == 0 || is.na (acrophase_time [1]))) {
             acrophase_time <- newt [M1]
         }
     }
-    list(bathy = bathy, peak_value = peak_value, trough_value = trough_value,
-         acrophase_time = acrophase_time)
+    list (
+        bathy = bathy, peak_value = peak_value, trough_value = trough_value,
+        acrophase_time = acrophase_time
+    )
 }
 
 #' @title Add Model Fit Line and Confidence Interval
@@ -503,13 +546,13 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param yM Upper confidence bound.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_model_fit_and_ci <- function(g, newt, fit_pred, ci, ym, yM) {
+.add_model_fit_and_ci <- function (g, newt, fit_pred, ci, ym, yM) {
     g <- g + ggplot2::geom_line (
         ggplot2::aes (x = newt, y = fit_pred, colour = "Model Fit"),
         linewidth = 0.9,
         inherit.aes = FALSE
     )
-    
+
     if (ci && any (is.finite (ym) & is.finite (yM))) {
         g <- g + ggplot2::geom_ribbon (
             ggplot2::aes (x = newt, ymin = ym, ymax = yM, fill = "Fit CI"),
@@ -535,8 +578,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param trough_value Trough activity value.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_mesor_and_points <- function(g, mesor, aug, point_size, acrophase_time, 
-                                  peak_value, bathy, trough_value) {
+.add_mesor_and_points <- function (g, mesor, aug, point_size, acrophase_time,
+                                   peak_value, bathy, trough_value) {
     g <- g +
         ggplot2::geom_hline (
             ggplot2::aes (yintercept = mesor, colour = "MESOR"),
@@ -573,7 +616,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param aug Data frame with observed data.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_acrophase_verticals <- function(g, acrophase_time, aug) {
+.add_acrophase_verticals <- function (g, acrophase_time, aug) {
     y_sf <- floor (max (aug$y_obs, na.rm = TRUE) * 0.8)
     Ay <- seq_len (y_sf)
     Ax <- rep (acrophase_time, each = length (Ay))
@@ -593,7 +636,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param aug Data frame with observed data.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_inactive_periods <- function(g, aug) {
+.add_inactive_periods <- function (g, aug) {
     y_sf <- floor (max (aug$y_obs, na.rm = TRUE) * 0.8)
     inatv <- Prob.Inact (
         y = aug$y_obs,
@@ -632,7 +675,7 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param mesor MESOR value.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_amplitude_segments <- function(g, amplitude, acrophase_time, mesor) {
+.add_amplitude_segments <- function (g, amplitude, acrophase_time, mesor) {
     if (length (amplitude) >= 1 && all (is.finite (amplitude))) {
         for (i in seq_len (length (amplitude))) {
             g <- g + ggplot2::geom_segment (
@@ -672,22 +715,32 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param aug Data frame with observed data.
 #' @returns Updated ggplot object.
 #' @noRd
-.add_labels <- function(g, labels, use_posthoc, tau, mesor, amplitude, 
-                        acrophase_time, aug) {
-    if (!labels) return(g)
-    
+.add_labels <- function (g, labels, use_posthoc, tau, mesor, amplitude,
+                         acrophase_time, aug) {
+    if (!labels) {
+        return (g)
+    }
+
     Tl <- if (use_posthoc) "post.hoc" else tau
-    Cof.Names <- c ("MESOR", paste0 ("Amplitude.", Tl), 
-                    paste0 ("Acrophase.", Tl))
+    Cof.Names <- c (
+        "MESOR", paste0 ("Amplitude.", Tl),
+        paste0 ("Acrophase.", Tl)
+    )
     Value <- c (mesor, amplitude [1], acrophase_time [1])
-    xAxis <- c (min (aug$t_obs, na.rm = TRUE), acrophase_time [1], 
-                acrophase_time [1])
-    yAxis <- c (mesor, (mesor + amplitude [1]) * 4 / 5, 
-                mesor + amplitude [1])
-    
+    xAxis <- c (
+        min (aug$t_obs, na.rm = TRUE), acrophase_time [1],
+        acrophase_time [1]
+    )
+    yAxis <- c (
+        mesor, (mesor + amplitude [1]) * 4 / 5,
+        mesor + amplitude [1]
+    )
+
     g + ggrepel::geom_label_repel (
-        ggplot2::aes (x = xAxis, y = yAxis, 
-                      label = paste0 (Cof.Names, " = ", round (Value, 2))),
+        ggplot2::aes (
+            x = xAxis, y = yAxis,
+            label = paste0 (Cof.Names, " = ", round (Value, 2))
+        ),
         label.size = NA, label.r = 0.25, label.padding = 0.25,
         force = 10, segment.color = "transparent", fontface = "bold",
         inherit.aes = FALSE
@@ -706,8 +759,8 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
 #' @param day Length of day in hours (typically 24).
 #' @returns Updated ggplot object.
 #' @noRd
-.add_scales_and_theme <- function(g, legend.position, tau, object, 
-                                  title_extra, day = 24) {
+.add_scales_and_theme <- function (g, legend.position, tau, object,
+                                   title_extra, day = 24) {
     legend_keys <- c (
         "Observed", "Peak", "Trough", "Model Fit",
         "MESOR", "Acrophase"
@@ -735,14 +788,20 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
             breaks = c ("Fit CI", "Inactive Period")
         )
 
-    essential_tau <- if (length (tau) == 1) as.character (tau) else 
+    essential_tau <- if (length (tau) == 1) {
+        as.character (tau)
+    } else {
         paste (tau, collapse = ",")
-    method_lbl <- if (!is.null (object$method)) object$method else 
-        if (inherits (object, "CosinorM.KDE")) "KDE" else "Parametric"
+    }
+    method_lbl <- if (!is.null (object$method)) {
+        object$method
+    } else
+    if (inherits (object, "CosinorM.KDE")) "KDE" else "Parametric"
     essential <- paste0 ("(", essential_tau, "Hour) - ", method_lbl)
     parts <- c (class (object) [1])
-    if (!is.null (title_extra) && nzchar (title_extra)) 
+    if (!is.null (title_extra) && nzchar (title_extra)) {
         parts <- c (parts, title_extra)
+    }
     parts <- c (parts, essential)
     plot_title <- paste (parts, collapse = " ")
 
@@ -755,11 +814,14 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                 hjust = 0.5,
                 face = "bold",
                 size = 16,
-                margin = ggplot2::margin (b = 15)),
-            legend.margin =  ggplot2::margin(0, 0, 0, 0)
+                margin = ggplot2::margin (b = 15)
+            ),
+            legend.margin = ggplot2::margin (0, 0, 0, 0)
         ) +
         ggplot2::labs (x = "Time", y = "Activity", title = plot_title) +
-        ggplot2::scale_x_continuous (breaks = seq (0, day, by = 6), 
-                                     expand = c (0, 0)) +
+        ggplot2::scale_x_continuous (
+            breaks = seq (0, day, by = 6),
+            expand = c (0, 0)
+        ) +
         ggplot2::coord_cartesian (xlim = c (0, day))
 }

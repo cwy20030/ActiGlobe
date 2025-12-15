@@ -7,27 +7,26 @@
 BriefSum(df, SR, Start, TZ = "local")
 }
 \arguments{
-\item{df}{A data.frame of raw actigraphy recording. Both time
-and activity count should be included in the `df`. See `VAct`
-and `VTm` for further detail.}
+\item{df}{A data.frame of raw actigraphy recording. Both time and activity
+count should be included in the `df`. See `VAct` and `VTm` for further
+detail.}
 
-\item{SR}{The sampling rate of the actigraphy (unit at Hz).
-Note that Hz should be equal to or less than 1.}
+\item{SR}{The sampling rate of the actigraphy (unit at Hz). Note that Hz
+should be equal to or less than 1.}
 
-\item{Start}{The starting date and time of the recording in the
-format as "2021-03-05 18:31:03". See
-\code{\link[base]{as.POSIXct}} for more details and
-\code{\link{DateFormat}} and \code{\link{TimeFormat}} for
+\item{Start}{The starting date and time of the recording in the format
+as "2021-03-05 18:31:03". See \code{\link[base]{as.POSIXct}} for more
+details and  \code{\link{DateFormat}} and \code{\link{TimeFormat}} for
 formatting help.}
 
-\item{TZ}{The time zone when the recording started. (default =
-"local", which means user's local time zone)}
+\item{TZ}{The time zone when the recording started. (default = "local",
+which means user's local time zone)}
 }
 \value{
 A named list with two elements:
 \itemize{
-  \item Bdf A data.frame containing brief summary information of
-    each recording day. Columns include:
+  \item Bdf A data.frame containing brief summary information of each
+  recording day. Columns include:
     \itemize{
     \item Date calendar date (YYYY-MM-DD)
     \item Epoch epoch length in seconds
@@ -38,18 +37,18 @@ A named list with two elements:
     \item Recording_End latest recorded time for the day (HH:MM:SS)
     \item GL_Offset numeric offset returned by DST2GL() for the day
     \item nDataPoints number of epochs observed for the day
-    \item Cumulative_Start_Second cumulative start second from
-      midnight for the day's first epoch
-    \item Cumulative_End_Second cumulative end second from
-      midnight for the day's last epoch
-    \item Excluded logical flag; TRUE if the day is excluded
-      (e.g., incomplete)
+    \item Cumulative_Start_Second cumulative start second from midnight
+    for the day's first epoch
+    \item Cumulative_End_Second cumulative end second from midnight for
+    the day's last epoch
+    \item Excluded logical flag; TRUE if the day is excluded (e.g.,
+    incomplete)
     \item Warning character; warning label when applicable (e.g.,
-      "Incomplete Recording", "Time Change")
+    "Incomplete Recording", "Time Change")
     }
 
-  \item df The original input df augmented with additional
-    columns (class ActiGlobe, data.frame):
+  \item df The original input df augmented with additional columns (class
+  ActiGlobe, data.frame):
     \itemize{
     \item DateTime POSIXct timestamp for each epoch (tz = TZ)
     \item Date date string (YYYY-MM-DD)
@@ -59,31 +58,30 @@ A named list with two elements:
     \item nPoint cumulative epoch index
     }
 }
-The function returns a list with both Bdf df = df) and sets
-classes c("ActiGlobe","data.frame") on both returned data.frames.
+The function returns a list with both Bdf df = df) and sets classes
+c("ActiGlobe","data.frame") on both returned data.frames.
 }
 \description{
-`BriefSum()` is a function that summarizes the actigraphy
-recording by day. It generates a data.frame where each row holds
-all metadata for one recording day:
-the calendar date, time--zone code, epoch length (seconds), UTC offset,
-daylight--saving flag, cumulative start/end seconds from midnight,
-recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
-`Incomplete Recording`), an exclusion flag, and the expected number of epochs
-for a full day.
+`BriefSum()` is a function that summarizes the actigraphy recording by day.
+It generates a data.frame where each row holds all metadata for one recording
+day: the calendar date, time--zone code, epoch length (seconds), UTC offset,
+daylight--saving flag, cumulative start/end seconds from midnight, recording
+start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
+`Incomplete Recording`), an exclusion flag, and the expected number of
+epochs for a full day.
 }
 \examples{
 \dontrun{
 # Import data
-data (FlyEast)
+data(FlyEast)
 
-BdfList <- BriefSum (
-    df = FlyEast,
-    SR = 1 / 60,
-    Start = "2017-10-19 13:45:00"
+BdfList <- BriefSum(
+  df = FlyEast,
+  SR = 1 / 60,
+  Start = "2017-10-19 13:45:00"
 )
 
-str (BdfList)
+str(BdfList)
 # View(BdfList)
 
 ## install library "zeallot"
