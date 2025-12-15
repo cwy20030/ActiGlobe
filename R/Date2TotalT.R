@@ -46,7 +46,7 @@
 #'   the last date), expressed in the units given by `TUnit`.
 #'
 #' @examples
-#' 
+#'
 #' # Two calendar days: returns c(24, 24) hours
 #' Date2TotalT (as.Date (c ("2021-01-01", "2021-01-02")), "hour")
 #'
@@ -56,7 +56,7 @@
 #'     "2021-06-10 08:00:00",
 #'     "2021-06-10 14:30:00"
 #' )), "minute")
-#' 
+#'
 #'
 #' # In seconds (case-insensitive unit name)
 #' Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")
@@ -84,22 +84,22 @@ Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
 
     #### Compute the supposed data points for each day ---------------
     sTotalSec <-
-        sapply (DT, function (D) {
-            MxD <- as.character (as.POSIXct (paste (
-                max (as.Date (D, tz = TZ)) + 1,
-                " 00:00:00"
-            ), tz = TZ))
-            # Vector 1 for the starting date
-            iniDs <- as.character (as.POSIXct (paste (
-                as.Date (D, tz = TZ),
-                " 00:00:00"
-            ), tz = TZ))
-            endDs <- MxD # Vector 2 for the next date
+      vapply (DT, function (D) {
+        MxD <- as.character (as.POSIXct (paste (
+          max (as.Date (D, tz = TZ)) + 1,
+          " 00:00:00"
+        ), tz = TZ))
+        # Vector 1 for the starting date
+        iniDs <- as.character (as.POSIXct (paste (
+          as.Date (D, tz = TZ),
+          " 00:00:00"
+        ), tz = TZ))
+        endDs <- MxD # Vector 2 for the next date
 
-            # Supposed seconds for each day
-            as.numeric (as.POSIXct (endDs, tz = TZ)) -
-                as.numeric (as.POSIXct (iniDs, tz = TZ))
-        })
+        # Supposed seconds for each day
+        as.numeric (as.POSIXct (endDs, tz = TZ)) -
+          as.numeric (as.POSIXct (iniDs, tz = TZ))
+      }, numeric (1))
     Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
     return (Out)

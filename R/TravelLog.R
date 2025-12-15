@@ -17,7 +17,7 @@
 #
 #' @title Generate the Travel Log Template Needed for Time Zone Correction
 #'
-#' @import utils
+#' @importFrom utils write.csv
 #'
 #' @param Write A binary code to indicate whether to write a .csv file
 #' containing the template needed for the travel log. (default = FLASE)

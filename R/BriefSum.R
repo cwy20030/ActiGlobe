@@ -27,7 +27,6 @@
 #' `Incomplete Recording`), an exclusion flag, and the expected number of
 #' epochs for a full day.
 #'
-#' @import hms
 #' @importFrom lubridate hour minute second dst ymd
 #'
 #' @param df A data.frame of raw actigraphy recording. Both time and activity
@@ -112,25 +111,9 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
     }
 
     # Prepare Basic Variables ------------------
-    # MN <- hms::as_hms("00:00:00")
-    # MN2 <- hms::as_hms("24:00:00")
+
     TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
     Epc <- 1 / SR # Compute epoch length
-    # DP <- nrow(df) # Number of Data Points
-    # TT <- DP * Epc # Total time of recordings in seconds
-
-    nDPHr <- 3600 / Epc # Compute numbers of data points per hour
-    # nDPMn <- 60 / Epc # Compute numbers of data points per minute
-    # nDPSc <- 1 / Epc # Compute numbers of data points per second
-
-    # FDP <- SR * 3600 * 24 # Total data points per 24 hours
-
-    # Define the last time point of the day ------------------
-    # Subtractor = hms::as_hms(as.difftime(Epc, units = "secs"))
-
-    ## Subtract Epoch converted time point from MN2
-    # LstP <- MN2 - Subtractor
-    # LstT = hms::as_hms(LstP)
 
     ## Compute All time points for the recording.
     Tm <- as.numeric (as.POSIXct (Start, tz = TZ)) +

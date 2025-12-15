@@ -28,7 +28,7 @@
 #' also generated to update the original `Bdf` with cosinor model coefficients
 #' for each day.
 #'
-#' @import gridExtra ggplot2 grDevices utils stats
+#' @import gridExtra ggplot2 grDevices utils stats themes
 #'
 #' @param Dir The directory where the recordings to be exported <e.g.
 #' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
@@ -138,174 +138,174 @@
 write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                            method = "OLS", tau = 24, ph = FALSE,
                            overwrite = FALSE) {
-    ## Get Essential Info -----------------
-    nT <- length (tau) ### Number of assumed rhythms
-    D <- names (DailyAct)
-    U <- Bdf$UTC
+  ## Get Essential Info -----------------
+  nT <- length (tau) ### Number of assumed rhythms
+  D <- names (DailyAct)
+  U <- Bdf$UTC
 
-    ### Set default variable names for activity and time columns
-    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
+  ### Set default variable names for activity and time columns
+  if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
+  if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
 
-    ## Initialize all cosinor results -----------------------
-    if (all (length (tau) == 1, isFALSE (ph))) {
-        nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
-        Bdf [nVNames] <- NA
-        KeyTerm <- "MESOR|Amplitude|Acrophase"
-    } else {
-        nVNames <- c (
-            "MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time",
-            "Peak", "Amplitude"
-        )
-        Bdf [nVNames] <- NA
-        KeyTerm <-
-            "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
-    }
+  ## Initialize all cosinor results -----------------------
+  if (all (length (tau) == 1, isFALSE (ph))) {
+    nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
+    Bdf [nVNames] <- NA
+    KeyTerm <- "MESOR|Amplitude|Acrophase"
+  } else {
+    nVNames <- c (
+      "MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time",
+      "Peak", "Amplitude"
+    )
+    Bdf [nVNames] <- NA
+    KeyTerm <-
+      "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
+  }
 
-    ## Check Directory ----------------
-    fDir <- paste0 (Dir, "/", ID)
-    if (!dir.exists (fDir)) dir.create (fDir)
-
-
-    ## Create a PDF file for the ID  ----------------
-    pdfDir <- paste0 (fDir, "/", ID, ".pdf")
-    if (isFALSE (overwrite)) {
-        if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
-    }
-
-    grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
+  ## Check Directory ----------------
+  fDir <- paste0 (Dir, "/", ID)
+  if (!dir.exists (fDir)) dir.create (fDir)
 
 
-    ### Plot ----------------
-    for (d in D) {
-        # print (d) ## For fail-check function purposes
-        df <- DailyAct [[d]]
+  ## Create a PDF file for the ID  ----------------
+  pdfDir <- paste0 (fDir, "/", ID, ".pdf")
+  if (isFALSE (overwrite)) {
+    if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
+  }
 
-        if (!is.null (df)) {
-            Act <- ValInput (x = df [[VAct]], type = "Act")
-            Tm <- ValInput (x = df [[VTm]], type = "Tm")
-
-            df [[VAct]] <- Act
-            df [[VTm]] <- Tm
-
-            #### Get the time zone for the current ID and date
-            TZ <- U [D == d]
-
-            #### Just in acse, provide a zero imputation for NA.
-            Act [is.na (Act)] <- 0
-
-            if (!all (Act == 0)) {
-                ### Create activity trend for the top panel ---------------
-                top.plot <-
-                    ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
-                    geom_point (aes (color = "Original Measure")) +
-                    geom_smooth (aes (color = "Smoothed Trend")) +
-                    labs (
-                        title = d,
-                        subtitle = TZ,
-                        x = "Hour",
-                        y = "Activity"
-                    ) +
-                    theme (plot.title = element_text (hjust = 0.5)) +
-                    scale_color_manual (
-                        values = c (
-                            "Original Measure" = "black",
-                            "Smoothed Trend" = "blue"
-                        ),
-                        name = "Legend Title"
-                    ) +
-                    theme_bw ()
+  grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
 
 
-                ### Fit cosinor models with 24Hr period  ----------------------
-                if (method == "KDE") {
-                    m1 <- CosinorM.KDE (time = Tm, activity = Act)
-                } else {
-                    m1 <- CosinorM (time = Tm, activity = Act, tau = tau,
-                                    method = method)
-                }
+  ### Plot ----------------
+  for (d in D) {
+    # print (d) ## For fail-check function purposes
+    df <- DailyAct [[d]]
 
-                if (all (nT == 1, isFALSE (ph))) {
-                    Cftemp <- m1$coef.cosinor
+    if (!is.null (df)) {
+      Act <- ValInput (x = df [[VAct]], type = "Act")
+      Tm <- ValInput (x = df [[VTm]], type = "Tm")
 
-                    # MESOR, Amplitude, Acrophase in radians
-                    Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
+      df [[VAct]] <- Act
+      df [[VTm]] <- Tm
 
-                    # Extract the name of Acrophase to compute the time
-                    VAcro <- names (Coef) [grepl ("Acro", names (Coef))]
+      #### Get the time zone for the current ID and date
+      TZ <- U [D == d]
 
-                    Coef [[4]] <- Rad2Hr (Coef [VAcro], tau = tau)
-                    names (Coef) [[4]] <- paste0 (VAcro, ".time")
-                } else {
-                    Cftemp <- m1$post.hoc
-                    Cftemp <- Cftemp [match (nVNames, names (Cftemp))]
-                    Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
-                    # MESOR, Bathyphase.time, Trough.ph,
-                    # Acrophase.time, Peak, Amplitude
-                }
+      #### Just in acse, provide a zero imputation for NA.
+      Act [is.na (Act)] <- 0
 
-                ### Update the report with cosinor model coefficients
-                Bdf [Bdf$Date == d, nVNames] <- Coef
-
-                #### Create the bottom plot for cosinor models -----------
-                bottom.plot <- ggCosinorM (m1, title_extra = d)
-            } else { ### If no activity recorded
-
-                ### Create activity trend for the top panel ---------------
-                top.plot <- ggplot (df, aes (x = Tm, y = Act)) +
-                    geom_point (color = "red") +
-                    labs (
-                        title = d,
-                        subtitle = " No activity recorded",
-                        x = "Hour",
-                        y = "Activity"
-                    ) +
-                    theme_bw ()
+      if (!all (Act == 0)) {
+        ### Create activity trend for the top panel ---------------
+        top.plot <-
+          ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
+          geom_point (aes (color = "Original Measure")) +
+          geom_smooth (aes (color = "Smoothed Trend")) +
+          labs (
+            title = d,
+            subtitle = TZ,
+            x = "Hour",
+            y = "Activity"
+          ) +
+          theme (plot.title = element_text (hjust = 0.5)) +
+          ggplot2::scale_colour_manual (
+            values = c (
+              "Original Measure" = "black",
+              "Smoothed Trend" = "blue"
+            ),
+            name = "Legend Title"
+          ) +
+          ggplot2::theme_bw ()
 
 
-                ### No update the report with cosinor model coefficients
-
-                #### Create the bottom plot for cosinor models -----------
-                bottom.plot <- ggplot () +
-                    labs (
-                        title = d,
-                        subtitle = " No activity recorded",
-                        x = "Hour",
-                        y = "Activity"
-                    ) +
-                    theme_minimal () +
-                    theme (
-                        plot.title       = element_text (hjust = 0.5),
-                        # keep legend space but show nothing
-                        legend.position  = "right"
-                    ) +
-                    # add empty scales so legend space is reserved
-                    scale_colour_manual (
-                        name = "",
-                        values = c ("dummy" = NA),
-                        breaks = NULL
-                    ) +
-                    scale_fill_manual (
-                        name = "",
-                        values = c ("dummy" = NA),
-                        breaks = NULL
-                    )
-
-                # Arrange the top and bottom plots in a grid
-                grid.arrange (top.plot, bottom.plot)
-            }
+        ### Fit cosinor models with 24Hr period  ----------------------
+        if (method == "KDE") {
+          m1 <- CosinorM.KDE (time = Tm, activity = Act)
+        } else {
+          m1 <- CosinorM (time = Tm, activity = Act, tau = tau,
+                          method = method)
         }
+
+        if (all (nT == 1, isFALSE (ph))) {
+          Cftemp <- m1$coef.cosinor
+
+          # MESOR, Amplitude, Acrophase in radians
+          Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
+
+          # Extract the name of Acrophase to compute the time
+          VAcro <- names (Coef) [grepl ("Acro", names (Coef))]
+
+          Coef [[4]] <- Rad2Hr (Coef [VAcro], tau = tau)
+          names (Coef) [[4]] <- paste0 (VAcro, ".time")
+        } else {
+          Cftemp <- m1$post.hoc
+          Cftemp <- Cftemp [match (nVNames, names (Cftemp))]
+          Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
+          # MESOR, Bathyphase.time, Trough.ph,
+          # Acrophase.time, Peak, Amplitude
+        }
+
+        ### Update the report with cosinor model coefficients
+        Bdf [Bdf$Date == d, nVNames] <- Coef
+
+        #### Create the bottom plot for cosinor models -----------
+        bottom.plot <- ggCosinorM (m1, title_extra = d)
+      } else { ### If no activity recorded
+
+        ### Create activity trend for the top panel ---------------
+        top.plot <- ggplot (df, aes (x = Tm, y = Act)) +
+          geom_point (color = "red") +
+          labs (
+            title = d,
+            subtitle = " No activity recorded",
+            x = "Hour",
+            y = "Activity"
+          ) +
+          ggplot2::theme_bw ()
+
+
+        ### No update the report with cosinor model coefficients
+
+        #### Create the bottom plot for cosinor models -----------
+        bottom.plot <- ggplot () +
+          labs (
+            title = d,
+            subtitle = " No activity recorded",
+            x = "Hour",
+            y = "Activity"
+          ) +
+          theme_minimal () +
+          theme (
+            plot.title       = element_text (hjust = 0.5),
+            # keep legend space but show nothing
+            legend.position  = "right"
+          ) +
+          # add empty scales so legend space is reserved
+          ggplot2::scale_colour_manual (
+            name = "",
+            values = c ("dummy" = NA),
+            breaks = NULL
+          ) +
+          scale_fill_manual (
+            name = "",
+            values = c ("dummy" = NA),
+            breaks = NULL
+          )
+
+        # Arrange the top and bottom plots in a grid
+        grid.arrange (top.plot, bottom.plot)
+      }
     }
+  }
 
-    ## Close the PDF file -------------
-    dev.off ()
+  ## Close the PDF file -------------
+  dev.off ()
 
-    ## Write the merged summary report to a CSV file --------------
-    message ("Updating the summary file")
+  ## Write the merged summary report to a CSV file --------------
+  message ("Updating the summary file")
 
-    BdfDir <- paste0 (fDir, "/Summary.csv")
-    if (isFALSE (overwrite)) {
-        if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
-    }
-    utils::write.csv (Bdf, BdfDir, row.names = FALSE)
+  BdfDir <- paste0 (fDir, "/Summary.csv")
+  if (isFALSE (overwrite)) {
+    if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
+  }
+  utils::write.csv (Bdf, BdfDir, row.names = FALSE)
 }

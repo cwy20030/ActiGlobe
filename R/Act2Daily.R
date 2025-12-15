@@ -142,8 +142,6 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
     # Cumulative recording seconds at start/end to convert to epoch indices
     a <- Bdf$Cumulative_Start_Second # Seconds from midnight to first data point
     b <- Bdf$Cumulative_End_Second # Seconds from midnight to last data point
-    # iDP <- a / Epc # Starting epoch index (1-based)
-    # eDP <- b / Epc # Ending epoch index (1-based)
 
     # Recording boundary times as strings
     RS <- Bdf$Recording_Start # e.g. "HH:MM:SS" for day start
