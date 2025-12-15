@@ -151,7 +151,7 @@
 #' Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 #'
 #' @seealso
-#' \code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}
+#' \code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}  \code{\link{ggCosinorM}}
 #'
 #'
 #' @examples
@@ -188,7 +188,11 @@
 #'
 #'
 #' # plot Cosinor in hours
-#' ggCosinorM (fit)
+#' plot(fit$time,
+#'      fit$fitted.values,
+#'      type = "l",
+#'      xlab = "Hour",
+#'      ylab = "24-Hour Cosinor Model")
 #' }
 #'
 #' @keywords cosinor
