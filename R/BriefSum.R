@@ -27,7 +27,6 @@
 #' `Incomplete Recording`), an exclusion flag, and the expected number of
 #' epochs for a full day.
 #'
-#' @import hms
 #' @importFrom lubridate hour minute second dst ymd
 #'
 #' @param df A data.frame of raw actigraphy recording. Both time and activity

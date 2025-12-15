@@ -48,9 +48,10 @@ UTC2Num <- function (x) {
     x <- trimws (x) # Remove white space
 
     # Step 2: Validate the format -------------------------
-    mp <- unlist (sapply (x, function (i) {
+    mp <-  vapply (x, function (i) {
         ifelse (grepl ("-", i), -1, 1)
-    }))
+        }, numeric (1))
+
     a <- gsub ("\\+|\\-", "", x) #### Remove plus minus sign
 
     b <- as.numeric (gsub (":.*", "", a))

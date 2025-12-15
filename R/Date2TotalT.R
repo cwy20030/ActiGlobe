@@ -56,7 +56,7 @@
 #'     "2021-06-10 08:00:00",
 #'     "2021-06-10 14:30:00"
 #' )), "minute")
-#' 
+#'
 #'
 #' # In seconds (case-insensitive unit name)
 #' Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")
@@ -84,7 +84,7 @@ Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
 
     #### Compute the supposed data points for each day ---------------
     sTotalSec <-
-        sapply (DT, function (D) {
+        vapply (DT, function (D) {
             MxD <- as.character (as.POSIXct (paste (
                 max (as.Date (D, tz = TZ)) + 1,
                 " 00:00:00"
@@ -99,7 +99,7 @@ Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
             # Supposed seconds for each day
             as.numeric (as.POSIXct (endDs, tz = TZ)) -
                 as.numeric (as.POSIXct (iniDs, tz = TZ))
-        })
+        }, numeric (1))
     Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
     return (Out)

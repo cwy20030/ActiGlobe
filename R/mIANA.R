@@ -22,7 +22,7 @@
 #' based on the abbreviated time zone code. An internal function to resolve the
 #' internal data access issue.
 #'
-#' @import utils
+#' @importFrom utils write.csv
 #'
 #' @param Write A binary code to indicate whether to write a .csv file
 #' containing the template needed for the travel log. (default = FLASE)

@@ -20,7 +20,7 @@
 #' @description Computes standard errors and confidence intervals for cosinor
 #' and post-hoc parameters via non-parametric bootstrap
 #'
-#' @import stats
+#' @importFrom stats sd quantile
 #'
 #' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
 #' @param ci_level Numeric scaler. the confidence ci_level.

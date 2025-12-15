@@ -26,11 +26,8 @@
 #' MESOR line, acrophase verticals, amplitude annotation segments, and
 #' labelled parameter values when requested.
 #'
+#' @import ggplot2
 #' @importFrom stats coef df.residual model.frame model.response qt vcov
-#' @importFrom ggplot2 aes coord_cartesian element_blank element_text geom_hline
-#' @importFrom ggplot2 geom_line geom_point geom_rect geom_ribbon geom_segment
-#' @importFrom ggplot2 ggplot labs margin scale_colour_manual scale_fill_manual
-#' @importFrom ggplot2 scale_x_continuous theme theme_minimal
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom viridis scale_color_viridis scale_fill_viridis
 #' @importFrom scales alpha

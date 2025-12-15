@@ -207,14 +207,14 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                         y = "Activity"
                     ) +
                     theme (plot.title = element_text (hjust = 0.5)) +
-                    scale_color_manual (
+                    ggplot2::scale_colour_manual (
                         values = c (
                             "Original Measure" = "black",
                             "Smoothed Trend" = "blue"
                         ),
                         name = "Legend Title"
                     ) +
-                    theme_bw ()
+                    ggplot2::theme_bw ()
 
 
                 ### Fit cosinor models with 24Hr period  ----------------------
@@ -260,7 +260,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                         x = "Hour",
                         y = "Activity"
                     ) +
-                    theme_bw ()
+                    ggplot2::theme_bw ()
 
 
                 ### No update the report with cosinor model coefficients
@@ -280,7 +280,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                         legend.position  = "right"
                     ) +
                     # add empty scales so legend space is reserved
-                    scale_colour_manual (
+                    ggplot2::scale_colour_manual (
                         name = "",
                         values = c ("dummy" = NA),
                         breaks = NULL
