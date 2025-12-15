@@ -1,20 +1,20 @@
 # File ActiGlobe/R/UTCwDST.R
 #
-# Copyright (C) 2025  C. William Yao, PhD
+# Copyright (C) 2025 C. William Yao, PhD
 #
 #
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or any later version.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or any later version.
 #
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
 #
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 #' @title Determine if Daylight Saving Transitions may occur in an UTC Offset
 #'
@@ -35,20 +35,19 @@
 #' Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 #' like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 #' offsets using `UTC2Num()`.
-#' @param fork Logical, if TRUE, it will use parallel processing to speed up the
-#' computation. Default is FALSE.
+#' @param fork Logical, if TRUE, it will use parallel processing to speed up
+#' the computation. Default is FALSE.
 #'
 #' @return
-#'   A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
-#'   least one time zone at the specified offset undergoes a DST transition,
-#'   `FALSE` otherwise.
+#'  A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
+#'  least one time zone at the specified offset undergoes a DST transition,
+#'  `FALSE` otherwise.
 #'
 #' @seealso
 #' \code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
 #'
 #' @examples
-#'
-#'  \dontrun{
+#' \dontrun{
 #' # Check for DST transitions in UTC+1 and UTC+8
 #' UTCwDST(UTCs = c("UTC+01:00", "UTC+08:00"))
 #'
@@ -57,7 +56,7 @@
 #'
 #' # UTC-5 commonly includes DST zones (e.g., New York)
 #' UTCwDST(UTCs = -5)
-#'}
+#' }
 #'
 #' @export
 

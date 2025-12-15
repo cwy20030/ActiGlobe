@@ -24,7 +24,7 @@ test_that("C2T discrete time conversion works", {
   expect_error(
     tryCatch(
       C2T(c("invalid"),
-        Discrete = TRUE
+          Discrete = TRUE
       )
     )
   )

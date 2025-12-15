@@ -46,10 +46,9 @@
 #'   \pkg{parallel} package to compute offsets across all Olson time zones.
 #'   Defaults to `FALSE` (sequential).
 #'
-#' @return A character vector or list of character vectors
-#'   containing candidate time zones corresponding to each offset in
-#'   `aOF`. If `All = FALSE`, only the first match is returned per
-#'   offset.
+#' @return A character vector or list of character vectors containing
+#'   candidate time zones corresponding to each offset in `aOF`.
+#'   If `All = FALSE`,only the first match is returned per offset.
 #'
 #' @examples
 #'
@@ -64,7 +63,6 @@
 #'
 #' # Use parallel processing
 #' GuessTZ(c("+0000"), fork = TRUE)
-#'
 #'
 #' @noRd
 
@@ -103,8 +101,7 @@ GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
   if (fork) {
     ### Step 1: Create a cluster
     NCore <- parallel::detectCores()
-    ### leave a couple cores free
-    cl <- parallel::makeCluster(max(1, NCore - 2))
+    cl <- parallel::makeCluster(max(1, NCore - 2)) ### leave a couple cores free
 
     ### Step 2: Export variables
     parallel::clusterExport(cl, varlist = c("DT"), envir = environment())
