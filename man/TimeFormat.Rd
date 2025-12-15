@@ -37,7 +37,7 @@ Time <- c (
 )
 
 ## Ask TimeFormat to tell us the format of the time.
-TimeFormat (time - Time, as.time = FALSE)
+TimeFormat (time = Time, as.time = FALSE)
 
 # Example 2: When multiple formats co-exist in a variable
 ## Create and store dates and time in a variable called Time
