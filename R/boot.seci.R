@@ -98,6 +98,38 @@
 
 boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
     ## Checkpoint -----------------------
+    validate_boot_inputs (object, ci_level, n, digits)
+
+    ## Set seed  -----------
+    set.seed (123456789)
+
+    ## Alpha value ---------------
+    CIs <- compute_ci_labels (ci_level)
+
+    ## Extract parameters  -----------
+    activity <- object$model$activity
+    time <- object$model$time
+    Coefs <- c (object$coef.cosinor, object$post.hoc)
+
+    ## Output data.frame -----------------------
+    boot.df <- data.frame (matrix (nrow = n, ncol = length (Coefs)))
+    names (boot.df) <- names (Coefs)
+
+    ## Bootstrap resampling ---------------
+    boot.df <- perform_bootstrap (object, boot.df, time, activity, n)
+
+    ## Compute statistics -----------------
+    Out <- compute_boot_statistics (boot.df, Coefs, CIs, digits)
+
+    return (Out)
+}
+
+
+## Helper functions for boot.seci ---------------
+
+#' @title Validate Bootstrap Inputs
+#' @noRd
+validate_boot_inputs <- function (object, ci_level, n, digits) {
     if ("param" %in% names (object)) {
         stop ("Object cannot be a diluted model structure.")
     }
@@ -114,89 +146,101 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
     if (!is.numeric (digits) || digits < 0 || digits != round (digits)) {
         stop ("digits must be a non-negative integer")
     }
+}
 
-    ## Set seed  -----------
-    set.seed (123456789)
 
-    ## Alpha value ---------------
+#' @title Compute CI Labels
+#' @noRd
+compute_ci_labels <- function (ci_level) {
     a <- 1 - ci_level
     a.half <- (a / 2)
     da <- 1 - a.half
-    CIs <- c (
+    c (
         sprintf ("%.1f%%", 100 * a.half),
         sprintf ("%.1f%%", 100 * da)
     )
-
-    ## Extract parameters  -----------
-    activity <- object$model$activity
-    time <- object$model$time
-    arctan2 <- object$arctan2
-    Coefs <- c (object$coef.cosinor, object$post.hoc)
-
-    ## Output data.frame -----------------------
-    boot.df <- data.frame (matrix (nrow = n, ncol = length (Coefs)))
-    names (boot.df) <- names (Coefs)
+}
 
 
+#' @title Perform Bootstrap Resampling
+#' @noRd
+perform_bootstrap <- function (object, boot.df, time, activity, n) {
     if (inherits (object, "CosinorM.KDE")) {
-        bw <- object$bw
-        grid <- object$grid.size
-
-        for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time),
-                               replace = TRUE)
-            idx <- idx [order (idx)]
-            Time <- as.numeric (time [idx])
-            Act <- as.numeric (activity [idx])
-
-            mdl <- CosinorM.KDE (
-                time = Time,
-                activity = Act,
-                bw = bw,
-                grid = grid,
-                arctan2 = arctan2,
-                dilute = TRUE
-            )
-
-            boot.df [b, ] <- mdl$coef.cosinor
-        }
+        boot.df <- bootstrap_kde (object, boot.df, time, activity, n)
+    } else if (inherits (object, "CosinorM")) {
+        boot.df <- bootstrap_cosinor (object, boot.df, time, activity, n)
     }
+    boot.df
+}
 
 
-    if (inherits (object, "CosinorM")) {
-        tau <- object$tau
-        method <- object$method
-        type <- object$type
+#' @title Bootstrap for CosinorM.KDE
+#' @noRd
+bootstrap_kde <- function (object, boot.df, time, activity, n) {
+    bw <- object$bw
+    grid <- object$grid.size
+    arctan2 <- object$arctan2
 
+    for (b in seq_len (n)) {
+        idx <- sample.int (length (time), size = length (time),
+                           replace = TRUE)
+        idx <- idx [order (idx)]
+        Time <- as.numeric (time [idx])
+        Act <- as.numeric (activity [idx])
 
-        for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time),
-                               replace = TRUE)
-            idx <- idx [order (idx)]
-            mdl <- CosinorM (
-                time = time [idx],
-                activity = activity [idx],
-                tau = tau,
-                method = method,
-                type = type,
-                dilute = TRUE
-            )
+        mdl <- CosinorM.KDE (
+            time = Time,
+            activity = Act,
+            bw = bw,
+            grid = grid,
+            arctan2 = arctan2,
+            dilute = TRUE
+        )
 
-            boot.df [b, ] <- mdl$coef.cosinor
-        }
+        boot.df [b, ] <- mdl$coef.cosinor
     }
+    boot.df
+}
 
+
+#' @title Bootstrap for CosinorM
+#' @noRd
+bootstrap_cosinor <- function (object, boot.df, time, activity, n) {
+    tau <- object$tau
+    method <- object$method
+    type <- object$type
+
+    for (b in seq_len (n)) {
+        idx <- sample.int (length (time), size = length (time),
+                           replace = TRUE)
+        idx <- idx [order (idx)]
+        mdl <- CosinorM (
+            time = time [idx],
+            activity = activity [idx],
+            tau = tau,
+            method = method,
+            type = type,
+            dilute = TRUE
+        )
+
+        boot.df [b, ] <- mdl$coef.cosinor
+    }
+    boot.df
+}
+
+
+#' @title Compute Bootstrap Statistics
+#' @noRd
+compute_boot_statistics <- function (boot.df, Coefs, CIs, digits) {
     Est <- unlist (lapply (boot.df, mean, na.rm = TRUE))
     SEs <- unlist (lapply (boot.df, sd, na.rm = TRUE))
     lci <- unlist (lapply (boot.df, quantile, 0.025))
     uci <- unlist (lapply (boot.df, quantile, 0.975))
 
-
     ## t-values (observed / SE)
     t_vals <- Coefs / SEs
 
-
-    ## Combine results -----------------
+    ## Combine results
     Out <- data.frame (
         Estimate = Est,
         SE = SEs,
@@ -207,10 +251,5 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
     )
     names (Out) <- c ("Estimate", "Std Error", "t value", CIs)
 
-    Out <- round (
-        x = Out,
-        digits = digits
-    )
-
-    return (Out)
+    round (x = Out, digits = digits)
 }

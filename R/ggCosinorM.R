@@ -230,73 +230,98 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
                       tau = NULL, day = NULL, acrophase_time = NULL,
                       mesor = NULL, amplitude = NULL) {
     switch (param,
-            "MESOR" = {
-                if (use_posthoc) {
-                    if (is.null (post) || is.null (post ["MESOR.ph"]))
-                        stop ("Post-hoc MESOR.ph is required.", call. = FALSE)
-                    as.numeric (post ["MESOR.ph"])
-                } else {
-                    if (is.null (coef_cos) || is.null (coef_cos ["MESOR"]))
-                        stop ("Parametric MESOR is required.", call. = FALSE)
-                    as.numeric (coef_cos ["MESOR"])
-                }
-            },
-            "Amplitude" = {
-                if (use_posthoc) {
-                    if (is.null (post) || is.null (post ["Amplitude.ph"]))
-                        stop ("Post-hoc Amplitude.ph is required.",
-                              call. = FALSE)
-                    as.numeric (post ["Amplitude.ph"])
-                } else {
-                    AmpName <- paste0 ("Amplitude.", tau)
-                    if (!all (AmpName %in% names (coef_cos)))
-                        stop ("Parametric amplitude not found.", call. = FALSE)
-                    as.numeric (coef_cos [AmpName])
-                }
-            },
-            "Acrophase" = {
-                if (use_posthoc) {
-                    if (is.null (post) || is.null (post ["Acrophase.ph.time"]))
-                        stop ("Post-hoc Acrophase.ph.time is required.",
-                              call. = FALSE)
-                    as.numeric (post ["Acrophase.ph.time"])
-                } else {
-                    PhiName <- paste0 ("Acrophase.", tau)
-                    if (!all (PhiName %in% names (coef_cos)))
-                        stop ("Parametric acrophase not found.", call. = FALSE)
-                    AcrophaseRad <- as.numeric (coef_cos [PhiName])
-                    ((AcrophaseRad * tau / (2 * pi)) %% tau)
-                }
-            },
-            "Bathyphase" = {
-                if (use_posthoc) {
-                    if (is.null (post) || is.null (post ["Bathyphase.ph.time"])) {
-                        NA_real_
-                    } else {
-                        rep (as.numeric (post ["Bathyphase.ph.time"]))
-                    }
-                } else {
-                    (acrophase_time - tau / 2) %% day
-                }
-            },
-            "PeakTrough" = {
-                if (use_posthoc) {
-                    PeakValue <- ifelse (!is.null (post ["Peak.ph"]),
-                                         as.numeric (post ["Peak.ph"]),
-                                         NA_real_)
-                    TroughValue <- ifelse (!is.null (post ["Trough.ph"]),
-                                           as.numeric (post ["Trough.ph"]),
-                                           NA_real_)
-                } else {
-                    PeakValue <- mesor + amplitude
-                    TroughValue <- mesor - amplitude
-                }
-                list (peak = PeakValue, trough = TroughValue)
-            },
+            "MESOR" = extract_mesor (use_posthoc, coef_cos, post),
+            "Amplitude" = extract_amplitude (use_posthoc, coef_cos, post, tau),
+            "Acrophase" = extract_acrophase (use_posthoc, coef_cos, post, tau),
+            "Bathyphase" = extract_bathyphase (use_posthoc, post,
+                                               acrophase_time, tau, day),
+            "PeakTrough" = extract_peak_trough (use_posthoc, post, mesor,
+                                                amplitude),
             stop ("Invalid param: ", param,
                   ". Must be one of: MESOR, Amplitude, ",
                   "Acrophase, Bathyphase, PeakTrough", call. = FALSE)
     )
+}
+
+
+#' @title Extract MESOR Parameter
+#' @noRd
+extract_mesor <- function (use_posthoc, coef_cos, post) {
+    if (use_posthoc) {
+        if (is.null (post) || is.null (post ["MESOR.ph"]))
+            stop ("Post-hoc MESOR.ph is required.", call. = FALSE)
+        as.numeric (post ["MESOR.ph"])
+    } else {
+        if (is.null (coef_cos) || is.null (coef_cos ["MESOR"]))
+            stop ("Parametric MESOR is required.", call. = FALSE)
+        as.numeric (coef_cos ["MESOR"])
+    }
+}
+
+
+#' @title Extract Amplitude Parameter
+#' @noRd
+extract_amplitude <- function (use_posthoc, coef_cos, post, tau) {
+    if (use_posthoc) {
+        if (is.null (post) || is.null (post ["Amplitude.ph"]))
+            stop ("Post-hoc Amplitude.ph is required.", call. = FALSE)
+        as.numeric (post ["Amplitude.ph"])
+    } else {
+        AmpName <- paste0 ("Amplitude.", tau)
+        if (!all (AmpName %in% names (coef_cos)))
+            stop ("Parametric amplitude not found.", call. = FALSE)
+        as.numeric (coef_cos [AmpName])
+    }
+}
+
+
+#' @title Extract Acrophase Parameter
+#' @noRd
+extract_acrophase <- function (use_posthoc, coef_cos, post, tau) {
+    if (use_posthoc) {
+        if (is.null (post) || is.null (post ["Acrophase.ph.time"]))
+            stop ("Post-hoc Acrophase.ph.time is required.", call. = FALSE)
+        as.numeric (post ["Acrophase.ph.time"])
+    } else {
+        PhiName <- paste0 ("Acrophase.", tau)
+        if (!all (PhiName %in% names (coef_cos)))
+            stop ("Parametric acrophase not found.", call. = FALSE)
+        AcrophaseRad <- as.numeric (coef_cos [PhiName])
+        ((AcrophaseRad * tau / (2 * pi)) %% tau)
+    }
+}
+
+
+#' @title Extract Bathyphase Parameter
+#' @noRd
+extract_bathyphase <- function (use_posthoc, post, acrophase_time, tau, day) {
+    if (use_posthoc) {
+        if (is.null (post) || is.null (post ["Bathyphase.ph.time"])) {
+            NA_real_
+        } else {
+            rep (as.numeric (post ["Bathyphase.ph.time"]))
+        }
+    } else {
+        (acrophase_time - tau / 2) %% day
+    }
+}
+
+
+#' @title Extract Peak and Trough Values
+#' @noRd
+extract_peak_trough <- function (use_posthoc, post, mesor, amplitude) {
+    if (use_posthoc) {
+        PeakValue <- ifelse (!is.null (post ["Peak.ph"]),
+                             as.numeric (post ["Peak.ph"]),
+                             NA_real_)
+        TroughValue <- ifelse (!is.null (post ["Trough.ph"]),
+                               as.numeric (post ["Trough.ph"]),
+                               NA_real_)
+    } else {
+        PeakValue <- mesor + amplitude
+        TroughValue <- mesor - amplitude
+    }
+    list (peak = PeakValue, trough = TroughValue)
 }
 
 #' @title Get Parametric Fit

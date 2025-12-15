@@ -118,77 +118,29 @@
 Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE) {
   # Extract essential per-day metadata from Bdf -------------------
-    sIANA <- mIANA ()
-    iTZ <- sIANA$Timezone_IANA
-    STD <- sIANA$TZ_Code
-
-
-    DT <- Bdf$Date # Calendar date for each recording day
-
-
-    aTZ <- vapply (Bdf$TZ_code, function (x) { # Time zone identifier per day
-        if (!grepl ("/", x)) {
-            iTZ [STD %in% x] [1]
-        } else {
-            x
-        }
-    }, FUN.VALUE = character (1))
-
-
-    Epc <- Bdf$Epoch # Epoch length (seconds) per day
-    UTCs <- Bdf$UTC # UTC offset for each day
-    DSTs <- Bdf$Daylight_Saving # Daylight saving flag per day
-
-    # Cumulative recording seconds at start/end to convert to epoch indices
-    a <- Bdf$Cumulative_Start_Second # Seconds from midnight to first data point
-    b <- Bdf$Cumulative_End_Second # Seconds from midnight to last data point
-    # iDP <- a / Epc # Starting epoch index (1-based)
-    # eDP <- b / Epc # Ending epoch index (1-based)
-
-    # Recording boundary times as strings
-    RS <- Bdf$Recording_Start # e.g. "HH:MM:SS" for day start
-    RE <- Bdf$Recording_End # e.g. "HH:MM:SS" for day end
-    DRS <- paste0 (DT, " ", RS) # Full datetime at recording start
-    DRE <- paste0 (DT, " ", RE) # Full datetime at recording end
-
+    metadata <- extract_metadata (Bdf)
+    DT <- metadata$DT
+    aTZ <- metadata$aTZ
+    Epc <- metadata$Epc
+    UTCs <- metadata$UTCs
+    DSTs <- metadata$DSTs
+    a <- metadata$a
+    b <- metadata$b
+    DRS <- metadata$DRS
+    DRE <- metadata$DRE
 
     ## Determine divider to convert seconds into requested TUnit --------------
-
-    TDivider <-
-        UnitFactor (
-            x = TUnit,
-            method = "Time"
-        )
-
+    TDivider <- UnitFactor (x = TUnit, method = "Time")
 
     ## Set default variable names for activity and time columns ----------------
-
-    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
-
+    if (is.null (VAct)) VAct <- names (df) [[2]]
+    if (is.null (VTm)) VTm <- names (df) [[1]]
 
     ## Build warning & exclusion masks -------------------------
-
-    W <- Bdf$Warning # Warning label per day
-    Ecl <- Bdf$Excluded # Logical: exclude this day?
-    fDP <- max (Bdf$nDataPoints, na.rm = TRUE) # Max points in a full day
-
-    # Optionally keep "Incomplete Recording" days
-    if (Incomplete) {
-        Ecl [W == "Incomplete Recording"] <- FALSE
-    }
-
-    # Handle travel days: keep if Travel=TRUE, else exclude
-    if (any (grepl ("Travel", W))) {
-        if (Travel) {
-            Ecl [grep ("Travel", W)] <- FALSE
-
-            warning ("Due to travel, some activity counts will overlap spanning
-              adjacent days!")
-        } else {
-            Ecl [grep ("Travel", W)] <- TRUE
-        }
-    }
+    exclusion_info <- build_exclusion_masks (Bdf, Incomplete, Travel)
+    Ecl <- exclusion_info$Ecl
+    W <- exclusion_info$W
+    fDP <- exclusion_info$fDP
 
     ## Initialize output list structure (one element per date) ------------
 
@@ -324,4 +276,63 @@ Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
         "Daily_df" = Out,
         "df"       = ndf
     ))
+}
+
+
+## Helper functions for Act2Daily ---------------
+
+#' @title Extract Metadata from Bdf
+#' @noRd
+extract_metadata <- function (Bdf) {
+    sIANA <- mIANA ()
+    iTZ <- sIANA$Timezone_IANA
+    STD <- sIANA$TZ_Code
+
+    DT <- Bdf$Date
+
+    aTZ <- vapply (Bdf$TZ_code, function (x) {
+        if (!grepl ("/", x)) {
+            iTZ [STD %in% x] [1]
+        } else {
+            x
+        }
+    }, FUN.VALUE = character (1))
+
+    Epc <- Bdf$Epoch
+    UTCs <- Bdf$UTC
+    DSTs <- Bdf$Daylight_Saving
+    a <- Bdf$Cumulative_Start_Second
+    b <- Bdf$Cumulative_End_Second
+    RS <- Bdf$Recording_Start
+    RE <- Bdf$Recording_End
+    DRS <- paste0 (DT, " ", RS)
+    DRE <- paste0 (DT, " ", RE)
+
+    list (DT = DT, aTZ = aTZ, Epc = Epc, UTCs = UTCs, DSTs = DSTs,
+          a = a, b = b, DRS = DRS, DRE = DRE)
+}
+
+
+#' @title Build Exclusion Masks
+#' @noRd
+build_exclusion_masks <- function (Bdf, Incomplete, Travel) {
+    W <- Bdf$Warning
+    Ecl <- Bdf$Excluded
+    fDP <- max (Bdf$nDataPoints, na.rm = TRUE)
+
+    if (Incomplete) {
+        Ecl [W == "Incomplete Recording"] <- FALSE
+    }
+
+    if (any (grepl ("Travel", W))) {
+        if (Travel) {
+            Ecl [grep ("Travel", W)] <- FALSE
+            warning ("Due to travel, some activity counts will overlap spanning
+              adjacent days!")
+        } else {
+            Ecl [grep ("Travel", W)] <- TRUE
+        }
+    }
+
+    list (Ecl = Ecl, W = W, fDP = fDP)
 }

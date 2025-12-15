@@ -139,39 +139,24 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                            method = "OLS", tau = 24, ph = FALSE,
                            overwrite = FALSE) {
     ## Get Essential Info -----------------
-    nT <- length (tau) ### Number of assumed rhythms
+    nT <- length (tau)
     D <- names (DailyAct)
     U <- Bdf$UTC
 
     ### Set default variable names for activity and time columns
-    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
+    if (is.null (VAct)) VAct <- names (DailyAct [[1]]) [[2]]
+    if (is.null (VTm)) VTm <- names (DailyAct [[1]]) [[1]]
 
     ## Initialize all cosinor results -----------------------
-    if (all (length (tau) == 1, isFALSE (ph))) {
-        nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
-        Bdf [nVNames] <- NA
-        KeyTerm <- "MESOR|Amplitude|Acrophase"
-    } else {
-        nVNames <- c (
-            "MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time",
-            "Peak", "Amplitude"
-        )
-        Bdf [nVNames] <- NA
-        KeyTerm <-
-            "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
-    }
+    cosinor_setup <- setup_cosinor_columns (tau, ph)
+    nVNames <- cosinor_setup$nVNames
+    KeyTerm <- cosinor_setup$KeyTerm
+    Bdf [nVNames] <- NA
 
-    ## Check Directory ----------------
-    fDir <- paste0 (Dir, "/", ID)
-    if (!dir.exists (fDir)) dir.create (fDir)
-
-
-    ## Create a PDF file for the ID  ----------------
-    pdfDir <- paste0 (fDir, "/", ID, ".pdf")
-    if (isFALSE (overwrite)) {
-        if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
-    }
+    ## Setup output directories and files ----------------
+    file_paths <- setup_output_paths (Dir, ID, overwrite)
+    fDir <- file_paths$fDir
+    pdfDir <- file_paths$pdfDir
 
     grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
 
@@ -308,4 +293,39 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
         if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
     }
     utils::write.csv (Bdf, BdfDir, row.names = FALSE)
+}
+
+
+## Helper functions for write.cosinor ---------------
+
+#' @title Setup Cosinor Columns
+#' @noRd
+setup_cosinor_columns <- function (tau, ph) {
+    if (all (length (tau) == 1, isFALSE (ph))) {
+        nVNames <- c ("MESOR", "Amplitude", "Acrophase", "Acrophase.time")
+        KeyTerm <- "MESOR|Amplitude|Acrophase"
+    } else {
+        nVNames <- c (
+            "MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time",
+            "Peak", "Amplitude"
+        )
+        KeyTerm <-
+            "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
+    }
+    list (nVNames = nVNames, KeyTerm = KeyTerm)
+}
+
+
+#' @title Setup Output Paths
+#' @noRd
+setup_output_paths <- function (Dir, ID, overwrite) {
+    fDir <- paste0 (Dir, "/", ID)
+    if (!dir.exists (fDir)) dir.create (fDir)
+
+    pdfDir <- paste0 (fDir, "/", ID, ".pdf")
+    if (isFALSE (overwrite)) {
+        if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
+    }
+
+    list (fDir = fDir, pdfDir = pdfDir)
 }
