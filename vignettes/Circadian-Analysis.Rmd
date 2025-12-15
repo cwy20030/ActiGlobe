@@ -54,7 +54,7 @@ df <- subset(df, df$Date == "2017-10-27")
 
 
 ### Single-phase Model (i.e., single phase circadian rhythm)
-#### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
+#### Traditional Cosinor Model fitted via Ordinary Least Square (OLS)
 
 ```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, 
 fig.width=7, fig.alt="Figure 1: Fitting of OLS-based Cosinor Model"}
@@ -85,7 +85,7 @@ device sampling rate due to the use of the sequence generator.
 
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Econometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 Besides, the traditional OLS-based cosinor model,`CosinorM` also 
 allows users to estimate the model using the FGLS-based method. In 
 ActiGlobe, the FGLS was implemented via a weighted residual least 
@@ -122,7 +122,7 @@ is possible to add more phase components when using `CosinorM`. Here,
 we provided two examples of cosinor models with two phase components, 
 each fitted using OLS or FGLS-based methods. 
 
-#### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
+#### Traditional Cosinor Model fitted via Ordinary Least Square (OLS)
 ```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, 
 fig.width=7, fig.alt="Figure 3: Dual-phase OLS Cosinor Model"}
 fit.ols2 <-
@@ -143,7 +143,7 @@ ggCosinorM(fit.ols2)
 ```
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Econometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 ```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, 
 fig.width=7, fig.alt="Figure 4: Dual-phase FGLS Cosinor Model"}
 fit.fgls2 <-
