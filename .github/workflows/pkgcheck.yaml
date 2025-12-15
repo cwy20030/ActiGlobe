@@ -8,10 +8,10 @@ concurrency:
 on:
   # Manually trigger the Action under Actions/pkgcheck
   workflow_dispatch:
-  # Run on every push to main
+  # Run on every push to copilot/update-checks-and-code-style
   push:
     branches:
-      - Test-Copilot
+      - copilot/update-checks-and-code-style
 
 jobs:
   pkgcheck:
