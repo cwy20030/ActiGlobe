@@ -101,7 +101,8 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     if (fork) {
         ### Step 1: Create a cluster
         NCore <- parallel::detectCores ()
-        cl <- parallel::makeCluster (max (1, NCore - 2)) ### leave a couple cores free
+        ### leave a couple cores free
+        cl <- parallel::makeCluster (max (1, NCore - 2))
 
         ### Step 2: Export variables
         parallel::clusterExport (cl, varlist = c ("DT"), envir = environment ())

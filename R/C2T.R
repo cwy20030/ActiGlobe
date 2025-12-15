@@ -110,7 +110,8 @@ ParseT <- function (time, fmt) {
     colon_count <- lengths (regmatches (time, gregexpr (":", time)))
 
     # Step 3. Split the time string by ":"
-    parts <- unlist (strsplit (gsub ("AM|PM", "", time, ignore.case = TRUE), ":"))
+    parts <- unlist (strsplit (gsub ("AM|PM", "", time, ignore.case = TRUE),
+                               ":"))
 
     # Step 4. Extract Hour, Minute, Second
     hour <- as.numeric (parts [1])
@@ -119,8 +120,10 @@ ParseT <- function (time, fmt) {
 
     # Adjust for 12-hour format if needed
     if (is12 && has_ampm) {
-        if (grepl ("PM", time, ignore.case = TRUE) && hour < 12) hour <- hour + 12
-        if (grepl ("AM", time, ignore.case = TRUE) && hour == 12) hour <- 0
+        if (grepl ("PM", time, ignore.case = TRUE) && hour < 12)
+            hour <- hour + 12
+        if (grepl ("AM", time, ignore.case = TRUE) && hour == 12)
+            hour <- 0
     }
 
     # Return decimal hours

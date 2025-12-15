@@ -215,8 +215,10 @@ se.CosinorM <- function (object, method = "delta") {
 
 
     ### Reorder to match coef.cosinor
-    VARs <- VARs [order (match (gsub ("^var\\.", "", names (VARs)), names (Coefs)))]
-    SEs <- SEs [order (match (gsub ("^se\\.", "", names (SEs)), names (Coefs)))]
+    VARs <- VARs [order (match (gsub ("^var\\.", "", names (VARs)),
+                                names (Coefs)))]
+    SEs <- SEs [order (match (gsub ("^se\\.", "", names (SEs)),
+                              names (Coefs)))]
 
     return (list (var = VARs, se = SEs))
 }

@@ -43,8 +43,8 @@
 #' probability of inactivity must exceed 0.5 to classify the period as inactive.
 #' Default = 3.
 #' @param logical Logical scalar; if `TRUE`, the function returns a logical
-#' vector indicating inactive periods. If `FALSE`, a summary table of inactivity
-#'   classification results is returned.
+#' vector indicating inactive periods. If `FALSE`, a summary table of
+#' inactivity classification results is returned.
 #'
 #' @return
 #' - If `logical = TRUE`: a logical vector of the same length as `y`, where
@@ -117,7 +117,8 @@ Prob.Inact <- function (y, time, k = 12, threshold = 3, logical = TRUE) {
         Time = time
     )
     df$y_log <- log (y)
-    df$y_ina <- ifelse (is.infinite (df$y_log) & df$y_log < 0, 1, 0) # Inactive is 1
+    df$y_ina <-
+        ifelse (is.infinite (df$y_log) & df$y_log < 0, 1, 0) # Inactive is 1
 
     fit_glm <- glm (y_ina ~ poly (Time, k), data = df, family = binomial)
 

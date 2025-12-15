@@ -297,8 +297,10 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
 
 
     ##  Variance / se for fitted curve -----------------------------
-    W <- K * matrix (rep (w, each = nrow (K)), nrow = nrow (K), byrow = FALSE)
-    W <- W / matrix (rep (den, times = ncol (W)), nrow = nrow (W), byrow = FALSE)
+    W <- K * matrix (rep (w, each = nrow (K)), nrow = nrow (K),
+                     byrow = FALSE)
+    W <- W / matrix (rep (den, times = ncol (W)), nrow = nrow (W),
+                     byrow = FALSE)
 
     resid <- activity - y_h
     RS <- resid^2
@@ -308,7 +310,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
     trWW <- sum (W * W)
     df_denom <- n - (2 * trW) + trWW
     if (df_denom <= 0) {
-        stop ("Nonpositive denominator for sigma^2 estimate; increase bw or check W")
+        stop ("Nonpositive denominator for sigma^2 estimate;
+              increase bw or check W")
     }
 
     sigma_hat <- RSS / df_denom
@@ -316,7 +319,7 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
     se_fitted <- sqrt (var_fitted)
 
 
-    # Evaluate on dense grid for stable integrals (grid points) -----------------
+    # Evaluate on dense grid for stable integrals (grid points) ----------------
     # gtheta in radians, exclude duplicate 2*pi (2pi = 0)
     gtheta <- seq (0, 2 * pi, length.out = as.integer (grid) + 1)
     gtheta <- gtheta [-(length (gtheta))] # length = grid
@@ -366,8 +369,10 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
 
     # compute activity-scale integrals using grid pdf (stable)
     I0_act <- area.g * sum ((pdf.g * w.g) / den.g, na.rm = TRUE)
-    Icos_act <- area.g * sum ((pdf.g * cos (gtheta) * w.g) / den.g, na.rm = TRUE)
-    Isin_act <- area.g * sum ((pdf.g * sin (gtheta) * w.g) / den.g, na.rm = TRUE)
+    Icos_act <-
+        area.g * sum ((pdf.g * cos (gtheta) * w.g) / den.g, na.rm = TRUE)
+    Isin_act <-
+        area.g * sum ((pdf.g * sin (gtheta) * w.g) / den.g, na.rm = TRUE)
 
     # cosinor activity-scale parameters from grid integrals
     mesor <- I0_act / (2 * pi)
@@ -421,7 +426,8 @@ CosinorM.KDE <- function (time, activity, bw = 0.8, grid = 360L,
     Amp <- (peak_value - trough_value) / 2
     names (Amp) <- "Amplitude.post-hoc"
 
-    post.hoc <- c (mesor_vlaue, bathy.ph, trough_value, acro.ph, peak_value, Amp)
+    post.hoc <- c (mesor_vlaue, bathy.ph, trough_value,
+                   acro.ph, peak_value, Amp)
     names (post.hoc) <- c (
         "MESOR.ph", "Bathyphase.ph.time", "Trough.ph",
         "Acrophase.ph.time", "Peak.ph", "Amplitude.ph"

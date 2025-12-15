@@ -58,10 +58,11 @@ TravelLog <- function (Write = FALSE, Dir = NULL) {
 
         ### Check essential components
         if (is.null (Dir)) {
-            stop ("A directory must be provided in order to export the template.")
+            stop ("To export the template, a directory must be provided.")
         }
 
-        write.csv (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = FALSE)
+        write.csv (df, paste0 (Dir, "/TravelLog_Template.csv"),
+                   row.names = FALSE)
     }
 
 

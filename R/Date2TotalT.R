@@ -96,8 +96,9 @@ Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
             ), tz = TZ))
             endDs <- MxD # Vector 2 for the next date
 
+            # Supposed seconds for each day
             as.numeric (as.POSIXct (endDs, tz = TZ)) -
-                as.numeric (as.POSIXct (iniDs, tz = TZ)) # Supposed seconds for each day
+                as.numeric (as.POSIXct (iniDs, tz = TZ))
         })
     Out <- sTotalSec / TDivider # Convert the output based on TUnit
 
