@@ -56,8 +56,7 @@ df <- subset(df, df$Date == "2017-10-27")
 ### Single-phase Model (i.e., single phase circadian rhythm)
 #### Traditional Cosinor Model fitted via Ordinary Least Square (OLS)
 
-```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, 
-fig.width=7, fig.alt="Figure 1: Fitting of OLS-based Cosinor Model"}
+```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 1: OLS Cosinor"}
 fit.ols <-
   CosinorM(
     time = df$Time,
@@ -94,8 +93,7 @@ representation of the "border" between sleep and wakefulness than
 traditional OLS. Nevertheless, neither method can realistically 
 capture our activity patterns, given that they are simply 
 single-phase cosinor models.
-```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, 
-fig.width=7, fig.alt="Figure 2: Fitting of FGLS-based Cosinor Model"}
+```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 2: FGLS Cosinor"}
 fit.fgls <-
   CosinorM(
     time = df$Time,
@@ -123,8 +121,7 @@ we provided two examples of cosinor models with two phase components,
 each fitted using OLS or FGLS-based methods. 
 
 #### Traditional Cosinor Model fitted via Ordinary Least Square (OLS)
-```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, 
-fig.width=7, fig.alt="Figure 3: Dual-phase OLS Cosinor Model"}
+```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 3: Dual-phase OLS"}
 fit.ols2 <-
   CosinorM(
     time = df$Time,
@@ -144,8 +141,7 @@ ggCosinorM(fit.ols2)
 
 
 #### Econometry-modified Cosinor Model with Feasible General Least Square (FGLS)
-```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, 
-fig.width=7, fig.alt="Figure 4: Dual-phase FGLS Cosinor Model"}
+```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 4: Dual-phase FGLS"}
 fit.fgls2 <-
   CosinorM(
     time = df$Time,
@@ -169,9 +165,7 @@ the rest-activity patterns estimated by general linear regression are
 the cumulative sums of all the fitted cosinor components (i.e., both 
 12- and 24-hour waves). As such, it is better to use the post 
 hoc-extracted parameters for analysis.
-```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, 
-echo=FALSE, fig.height=5, fig.width=7, 
-fig.alt="Figure 5: Dual-phase OLS 12 and 24h components"}
+```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 5: OLS 12+24h components"}
 Coefs <- fit.ols2$coef.cosinor
 
 for (i in fit.ols2$tau) {
@@ -260,8 +254,7 @@ sinusoidal shape. To ease transition from cosinor model, we designed
 `CosinorM.KDE` to generate cosinor-like parameters by projecting the 
 model onto an imaginary cosinor plane. 
 
-```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, 
-fig.width=7, fig.alt="Figure 6: Circularized Gaussian KDE"}
+```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt="Figure 6: KDE"}
 fit.KDE <-
   CosinorM.KDE(
     time = df$Time,
@@ -311,9 +304,7 @@ library(ggplot2)
 
 ##### OLS-Cosinor vs. Kernel Density Estimation
 When we compare the KDE-based estimate with the OLS-based cosinor model, we can immediately see that `CosinorM.KDE` better captures the complexity of the wearer’s activity pattern. Since `CosinorM.KDE` does not assume a specific pattern of activity, it avoids introducing bias from assumptions or model specifications into the rest-activity-based circadian parameters.
-```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, 
-message=FALSE, warning=FALSE, 
-fig.alt="Figure 7: OLS Cosinor vs Gaussian KDE overlay"}
+```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE, fig.alt="Figure 7: OLS vs KDE"}
 # Prepare data
 n <- length(fit.ols$fitted.values)
 plot_df <- data.frame(
@@ -397,8 +388,7 @@ ggplot() +
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, 
-eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
 # Prepare data
 n <- length(fit.fgls$fitted.values)
 plot_df <- data.frame(
