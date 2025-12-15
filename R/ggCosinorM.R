@@ -182,10 +182,10 @@ CheckInput <- function (object, ci_level, n) {
         stop ("ggCosinorM: object must be a CosinorM or ",
               "CosinorM.KDE fit.", call. = FALSE)
 
-    if (!is.numeric (ci_level) | ci_level <= 0 | ci_level >= 1)
+    if (!is.numeric (ci_level) || ci_level <= 0 || ci_level >= 1)
         stop ("ci_level must be a numeric value between 0 and 1")
 
-    if (!is.numeric (n) | n <= 0 | n != round (n))
+    if (!is.numeric (n) || n <= 0 || n != round (n))
         stop ("N must be a positive integer")
 }
 

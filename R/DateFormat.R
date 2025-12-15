@@ -112,7 +112,8 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
 
     ## See which time format works for this
     if (length (Format) > 1) {
-        Format <- unlist (lapply (seq_len (length (formatedDate)), function (d) {
+        Format <- unlist (lapply (seq_len (length (formatedDate)),
+                                  function (d) {
             temp <- as.character (formatedDate [d])
             temp <- unlist (strsplit (temp, split = "-"))
 
@@ -129,7 +130,8 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
     if (!as.date) {
         # Post-process Check...
         if (length (Format) == 0) {
-            warning (paste0 ("Possible illegal datetime format detected in ", DT, ".
+            warning (paste0 ("Possible illegal datetime format detected in ",
+            DT, ".
       Please, ensure that...
          1. the year is recorded as full four digits (i.e., 19xx).
          ==> Please, manually correct the year and try again.

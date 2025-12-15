@@ -140,13 +140,13 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
 
     ### Step 1 Change NDPs
-    #### Based on the new daylight saving, we will change the NDPs and cumulative
-    #### time...
+    #### Based on the new daylight saving, we will change the NDPs and
+    #### cumulative time...
     ##### Adjusting factor for incorrect initial GL guesses
     A1 <- ifelse (nuUDST & GL0 == 0, 0, -1 * GL0)
     GL <- GL0 + A1 ### Update GL....
-    #####  Remove the inappropriately adjusted gain or loss due to suspected time
-    #####  shift
+    #####  Remove the inappropriately adjusted gain or loss due to suspected
+    #####  time shift
     NDP <- ifelse (A1 == 0, nDP, nDP + (A1 * 3600 / Epc))
     ##### Number of data points needed to be added.
     mDP <- max (cumsum (nDP)) - max (cumsum (NDP))
@@ -181,7 +181,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     y [y > LstP] <- NA
 
 
-    ## Adjust Cumulative Start DataPoint V2 will give you the same as the above--
+    ## Adjust Cumulative Start DataPoint V2 will give you the same as the above
     #  if ( Version == 2) {
     #    T2A = c(0,diff(H2J))
     #    x = a1
@@ -234,7 +234,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
         #### The OCD double check flow control...
         if (Nl2 > 0) {
-            N [Idxl] <- FDP [Idxl] ### Update the total data point on the last day
+            N [Idxl] <- FDP [Idxl]
+            ### Update the total data point on the last day
 
             ### Extract the Max cumulative end second for the recording
             yMax <- y [Idxl]
@@ -244,33 +245,39 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
 
             #### New Last Day
             DT [Idxl + 1] <- as.character (as.Date (DT [Idxl]) + 1)
-            Epc [Idxl + 1] <- Epc [Idxl] ### Assume the same epoch length as the last
+            Epc [Idxl + 1] <- Epc [Idxl]
+            ### Assume the same epoch length as the last
+
             U [Idxl + 1] <- U [Idxl] ### Assume the same UTC as the last
             gTZ [Idxl + 1] <- gTZ [Idxl] ### Assume the same TZ as the last
             nuUDST [Idxl + 1] <- DST (
                 DT = DT [Idxl + 1],
                 TZ = gTZ [Idxl]
             ) ### Check if DST occur
-            RS [Idxl + 1] <- RS [Idxl] ### Assume the same begining time as the last
+            RS [Idxl + 1] <- RS [Idxl]
+            ### Assume the same begining time as the last
 
             ### Extract the New last time of recording
             RE [Idxl + 1] <- format (HMSl [length (HMSl)], "%H:%M:%S")
             ### Check GL due to DST
-            GL [Idxl + 1] <- DST2GL (DT = as.POSIXct (DT [Idxl + 1], tz = gTZ [Idxl]))
+            GL [Idxl + 1] <- DST2GL (DT = as.POSIXct (DT [Idxl + 1],
+                                                      tz = gTZ [Idxl]))
             N [Idxl + 1] <- Nl2 ### Cumulative data points on the NEW last day
             ### Cumulative start second on the NEW last day
             x [Idxl + 1] <- y [Idxl] + Epc [Idxl]
             y [Idxl + 1] <- yMax ### Cumulative end second on the NEW last day
             ### Assume the same recording period as the last
             Prd [Idxl + 1] <- Prd [Idxl]
-            H2J [Idxl + 1] <- H2J [Idxl] ### Assume the same hour to adjust as the last
+            H2J [Idxl + 1] <- H2J [Idxl]
+            ### Assume the same hour to adjust as the last
         }
     }
 
 
     # Add it back to the report ----------------
     ##  Initialize Report ------------
-    Summary <- data.frame (matrix (nrow = length (DT), ncol = length (names (Bdf))))
+    Summary <- data.frame (matrix (nrow = length (DT),
+                                   ncol = length (names (Bdf))))
     names (Summary) <- names (Bdf)
     Summary$Date <- DT
     Summary$Epoch <- Epc
@@ -319,7 +326,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     if (length (uniDl) > 1) {
         ### Update the warning on the last day
         Summary$Warning [Idxl] <- "Original Last Day"
-        Summary$Excluded [Idxl] <- FALSE ### Update the exclusion on the last day
+        Summary$Excluded [Idxl] <- FALSE
+        ### Update the exclusion on the last day
     }
 
     Summary$Recording_Period <- Prd

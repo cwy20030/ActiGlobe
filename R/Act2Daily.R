@@ -117,7 +117,7 @@
 
 Act2Daily <- function (df, Bdf, TUnit = "hour", VAct = NULL, VTm = NULL,
                        Incomplete = FALSE, Travel = TRUE) {
-    # Extract essential per-day metadata from Bdf -------------------
+  # Extract essential per-day metadata from Bdf -------------------
     sIANA <- mIANA ()
     iTZ <- sIANA$Timezone_IANA
     STD <- sIANA$TZ_Code
