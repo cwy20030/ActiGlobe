@@ -157,7 +157,8 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
 
     ##### Daylight Saving
     DSTs <- lubridate::dst (AllT)
-    aDSTs <- DST (ADs) ### Use negative to prioritize non-daylight saving time.
+    ### Use negative to prioritize non-daylight saving time.
+    aDSTs <- DST (ADs)
     ### Alternative code: ifelse(ADs %in% unique(Ds[!DSTs]), FALSE, TRUE)
 
     ###### Determine the influence of Daylight Saving
