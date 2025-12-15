@@ -42,43 +42,43 @@
 #' @examples
 #' # Example around a typical spring-forward transition (e.g. US second Sunday
 #' # in March)
-#' dates <- as.Date("2021-03-14")
+#' dates <- as.Date ("2021-03-14")
 #'
 #' # On 2021-03-14 clocks jumped forward: day is 23h so output = -1
-#' DST2GL(dates)
+#' DST2GL (dates)
 #'
 #'
 #' # Example around a fall-back transition (e.g. first Sunday in November)
-#' dates <- as.Date("2021-11-07")
+#' dates <- as.Date ("2021-11-07")
 #'
 #' # On 2021-11-07 clocks fall back: day is 25h so output = +1
-#' DST2GL(dates)
+#' DST2GL (dates)
 #'
 #' # Multiple Dates
-#' sapply(c("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
+#' sapply (c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
 #'
 #' @export
 
 
-DST2GL <- function(DT, TZ = "local") {
-  TZ <- ifelse(TZ == "local", Sys.timezone(), TZ)
+DST2GL <- function (DT, TZ = "local") {
+    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
 
-  # Validate the time zone
-  valid_zones <- OlsonNames()
-  if (!TZ %in% valid_zones) {
-    stop(sprintf(
-      "The provided time zone \"%s\" is not recognized.\n",
-      TZ
-    ), "Please check the spelling or consult the IANA time zone table
+    # Validate the time zone
+    valid_zones <- OlsonNames ()
+    if (!TZ %in% valid_zones) {
+        stop (sprintf (
+            "The provided time zone \"%s\" is not recognized.\n",
+            TZ
+        ), "Please check the spelling or consult the IANA time zone table
     (ActiGlobe::IANA).")
-  }
+    }
 
-  sFDPs <- Date2TotalT(DT = DT, TUnit = "second", TZ = TZ)
-  sFDPs <- as.numeric(sFDPs)
+    sFDPs <- Date2TotalT (DT = DT, TUnit = "second", TZ = TZ)
+    sFDPs <- as.numeric (sFDPs)
 
-  ### Compute total numbers of hours in difference
-  Out <- (sFDPs - (86400)) / 3600
+    ### Compute total numbers of hours in difference
+    Out <- (sFDPs - (86400)) / 3600
 
-  names(Out) <- DT
-  return(Out)
+    names (Out) <- DT
+    return (Out)
 }

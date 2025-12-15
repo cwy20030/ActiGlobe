@@ -31,36 +31,41 @@
 #'
 #' @examples
 #'
-#' Tlg <- TravelLog(Write = FALSE)
+#' Tlg <- TravelLog (Write = FALSE)
 #'
-#' print(Tlg)
+#' print (Tlg)
 #'
 #' @keywords Travel Log Template Timezone Shift
 #' @export
 
-TravelLog <- function(Write = FALSE, Dir = NULL) {
-  df <- data.frame(matrix(ncol = 5, nrow = 1))
+TravelLog <- function (Write = FALSE, Dir = NULL) {
+    df <- data.frame (matrix (ncol = 5, nrow = 1))
 
-  names(df) <- c("ID", "UTC_Offset", "Country_with_Daylight_Saving",
-                 "date_Start", "date_End")
+    names (df) <- c (
+        "ID", "UTC_Offset", "Country_with_Daylight_Saving",
+        "date_Start", "date_End"
+    )
 
-  df[1, ] <- c("ExampleID", "+05:00", "TRUE",
-               as.character(Sys.Date()),
-               as.character(Sys.Date() + 1))
-
-
-  ## Write option
-  if (Write) { ### When TRUE
-
-    ### Check essential components
-    if (is.null(Dir))
-      stop("A directory must be provided in order to export the template.")
-
-    write.csv(df, paste0(Dir, "/TravelLog_Template.csv"), row.names = FALSE)
-  }
+    df [1, ] <- c (
+        "ExampleID", "+05:00", "TRUE",
+        as.character (Sys.Date ()),
+        as.character (Sys.Date () + 1)
+    )
 
 
-  if (!Write) {
-    return(df)
-  }
+    ## Write option
+    if (Write) { ### When TRUE
+
+        ### Check essential components
+        if (is.null (Dir)) {
+            stop ("A directory must be provided in order to export the template.")
+        }
+
+        write.csv (df, paste0 (Dir, "/TravelLog_Template.csv"), row.names = FALSE)
+    }
+
+
+    if (!Write) {
+        return (df)
+    }
 }

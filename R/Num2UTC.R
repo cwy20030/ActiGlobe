@@ -32,35 +32,35 @@
 #'
 #' @examples
 #' # Convert UTC to numeric values
-#' x <- c(9.5, -7)
+#' x <- c (9.5, -7)
 #'
-#' x1 <- Num2UTC(x)
+#' x1 <- Num2UTC (x)
 #'
-#' print(x1)
+#' print (x1)
 #'
 #' @seealso \code{\link{UTC2Num}}
 #' @export
 
-Num2UTC <- function(x) {
-  # Check Point -------------------------
-  if (any(!is.numeric(x))) x <- as.numeric(as.character(x))
-  if (any(abs(x) > 14) || any(is.na(x))) {
-    stop("UTC offsets must be between -14 and +14 hours.")
-  }
+Num2UTC <- function (x) {
+    # Check Point -------------------------
+    if (any (!is.numeric (x))) x <- as.numeric (as.character (x))
+    if (any (abs (x) > 14) || any (is.na (x))) {
+        stop ("UTC offsets must be between -14 and +14 hours.")
+    }
 
-  ## Get the hours
-  A <- ifelse(x < 0, ceiling(x), floor(x)) ### Hour unit
-  B <- (abs(x) - abs(A)) * 60 ### Minute unit
-
-
-  mp <- ifelse(x < 0, "-", "+") ### Check positive or negative
-
-  C <- ifelse(abs(A) < 10, paste0(mp, "0", abs(A)), paste0(mp, A))
-  D <- ifelse(B == 0, "00", B)
+    ## Get the hours
+    A <- ifelse (x < 0, ceiling (x), floor (x)) ### Hour unit
+    B <- (abs (x) - abs (A)) * 60 ### Minute unit
 
 
-  Out <- paste0("UTC", C, ":", D)
+    mp <- ifelse (x < 0, "-", "+") ### Check positive or negative
+
+    C <- ifelse (abs (A) < 10, paste0 (mp, "0", abs (A)), paste0 (mp, A))
+    D <- ifelse (B == 0, "00", B)
 
 
-  return(Out)
+    Out <- paste0 ("UTC", C, ":", D)
+
+
+    return (Out)
 }

@@ -43,7 +43,7 @@
 #'
 #' @examples
 #' # Activity validation
-#' ValInput(c("1", "2", "3"), type = "Act")
+#' ValInput (c ("1", "2", "3"), type = "Act")
 #'
 #' # Time validation (requires C2T defined)
 #' # ValInput (c ("12:00", "13:00"), type = "Tm")
@@ -51,41 +51,43 @@
 #' @noRd
 
 
-ValInput <- function(x, type = c("Act", "Tm")) {
-  # Step 0 Argument matching and system info Extraction -----------------------
-  type <- match.arg(type)
+ValInput <- function (x, type = c ("Act", "Tm")) {
+    # Step 0 Argument matching and system info Extraction -----------------------
+    type <- match.arg (type)
 
-  # Step 1 Switch based on type -----------------------------------------------
-  switch(type,
+    # Step 1 Switch based on type -----------------------------------------------
+    switch (type,
 
-    ## Activity validation ---------------------
-    "Act" = {
-      if (!inherits(x, "numeric")) x <- as.numeric(as.character(x))
-      if (all(x == 0)) stop("All activity values are zero.")
-      if (any(!is.finite(x))) stop("Activity contains NA/NaN/Inf.")
+        ## Activity validation ---------------------
+        "Act" = {
+            if (!inherits (x, "numeric")) x <- as.numeric (as.character (x))
+            if (all (x == 0)) stop ("All activity values are zero.")
+            if (any (!is.finite (x))) stop ("Activity contains NA/NaN/Inf.")
 
-      return(x)
-    },
+            return (x)
+        },
 
 
-    ## Time validation ---------------------
-    "Tm" = {
-      if (!inherits(x, "numeric")) {
-        x <- vapply(x, function(xx)
-          C2T(xx, Discrete = TRUE),
-          FUN.VALUE = numeric(1))
-      }
+        ## Time validation ---------------------
+        "Tm" = {
+            if (!inherits (x, "numeric")) {
+                x <- vapply (x, function (xx) {
+                    C2T (xx, Discrete = TRUE)
+                },
+                FUN.VALUE = numeric (1)
+                )
+            }
 
-      if (any(x > 24 | x < 0)) {
-        stop(paste(
-          "Currently, the model cannot fit actigraphy recordings lasting
+            if (any (x > 24 | x < 0)) {
+                stop (paste (
+                    "Currently, the model cannot fit actigraphy recordings lasting
           longer than a day.",
-          "Please, rescale the time coordinate to between 0 and 24.",
-          "Note that it is crucial to have the proper time coordinate since
+                    "Please, rescale the time coordinate to between 0 and 24.",
+                    "Note that it is crucial to have the proper time coordinate since
           the model relies on it."
-        ))
-      }
-      return(x)
-    }
-  )
+                ))
+            }
+            return (x)
+        }
+    )
 }

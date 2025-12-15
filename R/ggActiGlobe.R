@@ -23,7 +23,9 @@
 #' `coloring` points that were flagged (e.g. travel overlaps or unallocated
 #' epochs).
 #'
-#' @import ggplot2
+#' @importFrom ggplot2 ggplot aes element_line element_text geom_point
+#' @importFrom ggplot2 geom_vline labs margin scale_x_continuous
+#' @importFrom ggplot2 scale_y_continuous theme theme_classic
 #'
 #' @param df A data.frame of annotated actigraphy epochs.  Must include:
 #'   - An activity column named by `VAct`.
@@ -89,138 +91,140 @@
 
 
 ggActiGlobe <- function(df, Bdf, VAct = NULL, VDT = "DateTime") {
-  ## Ensure Note column exists --------------
-  if (!"Note" %in% names(df)) {
-    df$Note <- ""
-  }
+    ## Ensure Note column exists --------------
+    if (!"Note" %in% names(df)) {
+        df$Note <- ""
+    }
 
-  NR <- seq_len(nrow(df))
-  A <- df[[VAct]]
-  Mx <- round(max(A, na.rm = TRUE))
-  mn <- round(min(A, na.rm = TRUE))
-  
-
-  VD <- "Date"
-  D <- df[[VD]]
-  DT <- df[[VDT]]
-  Tc <- sub("^\\S+\\s+", "", as.character(DT))
+    NR <- seq_len(nrow(df))
+    A <- df[[VAct]]
+    Mx <- round(max(A, na.rm = TRUE))
+    mn <- round(min(A, na.rm = TRUE))
 
 
-  if (!inherits(DT, c("POSIXct", "POSIXlt"))) {
-    DT <- as.POSIXct(DT)
-  }
+    VD <- "Date"
+    D <- df[[VD]]
+    DT <- df[[VDT]]
+    Tc <- sub("^\\S+\\s+", "", as.character(DT))
 
 
-  ## Identify midnight boundaries
-  MdN <- as.factor(ifelse(grepl("00:00:00", Tc) | !grepl(":", Tc), "1", "0"))
+    if (!inherits(DT, c("POSIXct", "POSIXlt"))) {
+        DT <- as.POSIXct(DT)
+    }
 
 
-  ##### X Tick Control -----------------
-  if (length(unique(D)) > 1) { #### Multiple Days
-    NTicks <- 0.2
-    Ds <- c(D[[1]], D[MdN == "1"])
-
-    LabX <- "Date"
-  } else { #### Same Day
-
-    NTicks <- 0.2
-    D <- C2T(
-      time = Tc,
-      Discrete = TRUE
-    )
-    Ds <- unique(ceiling(D))
-    D <- floor(D)
-
-    LabX <- "Time of the Day"
-  }
+    ## Identify midnight boundaries
+    MdN <- as.factor(ifelse(grepl("00:00:00", Tc) | !grepl(":", Tc), "1", "0"))
 
 
-  NTicks <- floor(length(Ds) * NTicks)
+    ##### X Tick Control -----------------
+    if (length(unique(D)) > 1) { #### Multiple Days
+        NTicks <- 0.2
+        Ds <- c(D[[1]], D[MdN == "1"])
 
-  Idx <- which(!duplicated(D))
+        LabX <- "Date"
+    } else { #### Same Day
+
+        NTicks <- 0.2
+        D <- C2T(
+            time = Tc,
+            Discrete = TRUE
+        )
+        Ds <- unique(ceiling(D))
+        D <- floor(D)
+
+        LabX <- "Time of the Day"
+    }
 
 
-  XTicks <-
-    pick_ticks(
-      Ds = Ds,
-      NTicks = NTicks
-    )
+    NTicks <- floor(length(Ds) * NTicks)
 
-  Xcrd <- Idx[XTicks$indices] ### X Coordinate for the selected ticks
-  Xtx <- XTicks$values ### Selected x ticks label
+    Idx <- which(!duplicated(D))
 
 
-  ## Flag points with any Note (e.g. travel overlap or unallocated) ----------
-  if ("Note" %in% names(df)) {
-    Nt <- df$Note
+    XTicks <-
+        pick_ticks(
+            Ds = Ds,
+            NTicks = NTicks
+        )
+
+    Xcrd <- Idx[XTicks$indices] ### X Coordinate for the selected ticks
+    Xtx <- XTicks$values ### Selected x ticks label
+
+
+    ## Flag points with any Note (e.g. travel overlap or unallocated) ----------
+    if ("Note" %in% names(df)) {
+        Nt <- df$Note
+        E <- as.factor(ifelse(Nt != "", "1", "0"))
+    } else {
+        E <- as.factor(rep("0", nrow(df)))
+    }
+
+
     E <- as.factor(ifelse(Nt != "", "1", "0"))
-  } else {
-    E <- as.factor(rep("0", nrow(df)))
-  }
+
+    ## Create ggplot object -------------
+    g <-
+        ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
+        ggplot2::geom_point(alpha = 0.5, shape = 16) +
+        ggplot2::geom_vline(
+            xintercept = as.numeric(NR[MdN == "1"]),
+            linetype   = "dashed",
+            color      = "blue",
+            linewidth  = 0.8
+        ) +
+        ggplot2::scale_y_continuous(limits = c(mn, Mx)) +
+        ggplot2::scale_x_continuous(
+            breaks = Xcrd, # numeric positions on the NR axis
+            labels = Xtx # text to show at those positions
+        ) +
+        ggplot2::labs(x = LabX, y = "Activity Count") +
+        ggplot2::theme_classic() +
+        ggplot2::theme(
+            plot.margin     = ggplot2::margin(0, 0, 0, 0),
+            axis.line       = ggplot2::element_line(linewidth = 0.8),
+            axis.text       = ggplot2::element_text(color = "black",
+                                                    face = "bold"),
+            axis.title      = ggplot2::element_text(color = "black",
+                                                    face = "bold"),
+            legend.position = "none"
+        )
 
 
-  E <- as.factor(ifelse(Nt != "", "1", "0"))
-
-  ## Create ggplot object -------------
-  g <-
-    ggplot2::ggplot(mapping = ggplot2::aes(x = NR, y = A, colour = E)) +
-    ggplot2::geom_point(alpha = 0.5, shape = 16) +
-    ggplot2::geom_vline(
-      xintercept = as.numeric(NR[MdN == "1"]),
-      linetype   = "dashed",
-      color      = "blue",
-      linewidth  = 0.8
-    ) +
-    ggplot2::scale_y_continuous(limits = c(mn, Mx)) +
-    ggplot2::scale_x_continuous(
-      breaks = Xcrd, # numeric positions on the NR axis
-      labels = Xtx # text to show at those positions
-    ) +
-    ggplot2::labs(x = LabX, y = "Activity Count") +
-    ggplot2::theme_classic() +
-    ggplot2::theme(
-      plot.margin     = ggplot2::margin(0, 0, 0, 0),
-      axis.line       = ggplot2::element_line(linewidth = 0.8),
-      axis.text       = ggplot2::element_text(color = "black", face = "bold"),
-      axis.title      = ggplot2::element_text(color = "black", face = "bold"),
-      legend.position = "none"
-    )
-
-
-  return(g)
+    return(g)
 }
 
 
 #' @title Pick Ticks for ggActiGlobe
 #' @noRd
 pick_ticks <- function(Ds, NTicks) {
-  n <- length(Ds)
-  if (n == 0) {
-    return(integer(0))
-  }
+    n <- length(Ds)
+    if (n == 0) {
+        return(integer(0))
+    }
 
-  # Interpret NTicks: if <=1 treat as fraction of length,
-  # otherwise treat as count
-  if (NTicks <= 1) {
-    k <- floor(n * NTicks)
-  } else {
-    k <- floor(NTicks)
-  }
+    # Interpret NTicks: if <=1 treat as fraction of length,
+    # otherwise treat as count
+    if (NTicks <= 1) {
+        k <- floor(n * NTicks)
+    } else {
+        k <- floor(NTicks)
+    }
 
-  # Ensure at least one tick
-  k <- max(k, 1)
-  # Do not request more ticks than available
-  k <- min(k, n)
+    # Ensure at least one tick
+    k <- max(k, 1)
+    # Do not request more ticks than available
+    k <- min(k, n)
 
-  # Generate k roughly-equal spaced indices, include first and last
-  # when possible
-  idx <- unique(round(seq(1, n, length.out = k)))
-  # In rare rounding cases ensure correct length by adjusting with seq.int
-  if (length(idx) < k) {
-    idx <- seq.int(1, n, length.out = k)
-    idx <- unique(round(idx))
-  }
-  idx <- as.integer(idx)
+    # Generate k roughly-equal spaced indices, include first and last
+    # when possible
+    idx <- unique(round(seq(1, n, length.out = k)))
+    # In rare rounding cases ensure correct length by adjusting with seq.int
+    if (length(idx) < k) {
+        idx <- seq.int(1, n, length.out = k)
+        idx <- unique(round(idx))
+    }
+    idx <- as.integer(idx)
 
-  list(indices = idx, values = Ds[idx])
+    list(indices = idx, values = Ds[idx])
 }
