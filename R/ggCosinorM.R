@@ -274,7 +274,9 @@ GetParam <- function (param, use_posthoc, coef_cos = NULL, post = NULL,
                 TroughValue <- mesor - amplitude
             }
             list (peak = PeakValue, trough = TroughValue)
-        }
+        },
+        stop ("Invalid param: ", param, ". Must be one of: MESOR, Amplitude, ",
+             "Acrophase, Bathyphase, PeakTrough", call. = FALSE)
     )
 }
 
