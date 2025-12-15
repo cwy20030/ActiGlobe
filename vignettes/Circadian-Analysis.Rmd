@@ -22,7 +22,11 @@ library(ActiGlobe)
 
 
 ## Cosinor Analysis
-After we segmented the data by date, we can now model the circadian rhythm using the activity scores. For this, we will use the pre-travel recording on the 27<sup>th</sup> of October. Since the recording was not affected by the time change. We can simply store the unaffected segments in a new variable called `df`, which stands for data frame.
+After we segmented the data by date, we can now model the circadian 
+rhythm using the activity scores. For this, we will use the pre-travel 
+recording on the 27<sup>th</sup> of October. Since the recording was 
+not affected by the time change. We can simply store the unaffected 
+segments in a new variable called `df`, which stands for data frame.
 ```{r Import 20171027, message=FALSE, warning=FALSE, results='asis'}
 # Import data
 data("FlyEast")
@@ -52,7 +56,8 @@ df <- subset(df, df$Date == "2017-10-27")
 ### Single-phase Model (i.e., single phase circadian rhythm)
 #### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
 
-```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 1: Fitting of OLS-based Cosinor Model"}
+```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, 
+fig.width=7, fig.alt="Figure 1: Fitting of OLS-based Cosinor Model"}
 fit.ols <-
   CosinorM(
     time = df$Time,
@@ -72,13 +77,25 @@ ggCosinorM(fit.ols)
 
 
 #### Note 
-If we process `FlyEast` using the `cosinor::cosinor.lm`, we will notice that the results look a bit different. This is because ActiGlobe treats the first time point of the day as `00:00:00`, whereas this is sometimes treated as `00:00:00` plus one unit of the device sampling rate due to the use of the sequence generator. 
+If we process `FlyEast` using the `cosinor::cosinor.lm`, we will 
+notice that the results look a bit different. This is because 
+ActiGlobe treats the first time point of the day as `00:00:00`, 
+whereas this is sometimes treated as `00:00:00` plus one unit of the 
+device sampling rate due to the use of the sequence generator. 
 
 
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
-Besides, the traditional OLS-based cosinor model,`CosinorM` also allows users to estimate the model using the FGLS-based method. In ActiGlobe, the FGLS was implemented via a weighted residual least square approximation. This two-step process often produces a better representation of the "border" between sleep and wakefulness than traditional OLS. Nevertheless, neither method can realistically capture our activity patterns, given that they are simply single-phase cosinor models.
-```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 2: Fitting of FGLS-based Cosinor Model"}
+Besides, the traditional OLS-based cosinor model,`CosinorM` also 
+allows users to estimate the model using the FGLS-based method. In 
+ActiGlobe, the FGLS was implemented via a weighted residual least 
+square approximation. This two-step process often produces a better 
+representation of the "border" between sleep and wakefulness than 
+traditional OLS. Nevertheless, neither method can realistically 
+capture our activity patterns, given that they are simply 
+single-phase cosinor models.
+```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, 
+fig.width=7, fig.alt="Figure 2: Fitting of FGLS-based Cosinor Model"}
 fit.fgls <-
   CosinorM(
     time = df$Time,
@@ -98,10 +115,16 @@ ggCosinorM(fit.fgls)
 
 ### Dual-phase Model (i.e., 12 + 24hour rhythms)
 
-While certain circadian measures, such as melatonin, often follow a roughly 24-hour single-phase, human activity pattern is generally fragmented. To capture the non-linearity in our activity pattern, it is possible to add more phase components when using `CosinorM`. Here, we provided two examples of cosinor models with two phase components, each fitted using OLS or FGLS-based methods. 
+While certain circadian measures, such as melatonin, often follow a 
+roughly 24-hour single-phase, human activity pattern is generally 
+fragmented. To capture the non-linearity in our activity pattern, it 
+is possible to add more phase components when using `CosinorM`. Here, 
+we provided two examples of cosinor models with two phase components, 
+each fitted using OLS or FGLS-based methods. 
 
 #### Traditional Cosinor Model fitted via Ordinary Least Sqaure (OLS)
-```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model"}
+```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, 
+fig.width=7, fig.alt="Figure 3: Dual-phase OLS Cosinor Model"}
 fit.ols2 <-
   CosinorM(
     time = df$Time,
@@ -121,7 +144,8 @@ ggCosinorM(fit.ols2)
 
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
-```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model"}
+```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, 
+fig.width=7, fig.alt="Figure 4: Dual-phase FGLS Cosinor Model"}
 fit.fgls2 <-
   CosinorM(
     time = df$Time,
@@ -139,8 +163,15 @@ ggCosinorM(fit.fgls2)
 ```
 
 
-It is worth noting that we cannot individually interpret each cosinor parameter alone when fitting a multicomponent model. This is because the rest-activity patterns estimated by general linear regression are the cumulative sums of all the fitted cosinor components (i.e., both 12- and 24-hour waves). As such, it is better to use the post hoc-extracted parameters for analysis.
-```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, echo=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 5 Opening the Dual-phase OLS-based Cosinor Model into 12 and 24hour components"}
+It is worth noting that we cannot individually interpret each cosinor 
+parameter alone when fitting a multicomponent model. This is because 
+the rest-activity patterns estimated by general linear regression are 
+the cumulative sums of all the fitted cosinor components (i.e., both 
+12- and 24-hour waves). As such, it is better to use the post 
+hoc-extracted parameters for analysis.
+```{r Model 2 OLS in parts, message=FALSE, warning=FALSE, 
+echo=FALSE, fig.height=5, fig.width=7, 
+fig.alt="Figure 5: Dual-phase OLS 12 and 24h components"}
 Coefs <- fit.ols2$coef.cosinor
 
 for (i in fit.ols2$tau) {
@@ -219,9 +250,18 @@ legend("topright",
 
 
 ### Gaussian Kernel Density Estimation on Circularized Time
-Besides the traditional cosinor rhythmetry, ActiGlobe also offers Gaussian kernel density estimation (KDE). In contrast to the traditional cosinor method, `CosinrM.KDE` uses nonparametric kernel smoothing to map the activity pattern on a circularized time domain. This strategy allows it to better respect the intensity and the duration of the underlying rest-activity patterns, without forcing a sinusoidal shape. To ease transition from cosinor model, we designed `CosinorM.KDE` to generate cosinor-like parameters by projecting the model onto an imaginary cosinor plane. 
+Besides the traditional cosinor rhythmetry, ActiGlobe also offers 
+Gaussian kernel density estimation (KDE). In contrast to the 
+traditional cosinor method, `CosinrM.KDE` uses nonparametric kernel 
+smoothing to map the activity pattern on a circularized time domain. 
+This strategy allows it to better respect the intensity and the 
+duration of the underlying rest-activity patterns, without forcing a 
+sinusoidal shape. To ease transition from cosinor model, we designed 
+`CosinorM.KDE` to generate cosinor-like parameters by projecting the 
+model onto an imaginary cosinor plane. 
 
-```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 6: Fitting of Circularized Gaussian Kernel Density Estimation"}
+```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, 
+fig.width=7, fig.alt="Figure 6: Circularized Gaussian KDE"}
 fit.KDE <-
   CosinorM.KDE(
     time = df$Time,
@@ -237,7 +277,17 @@ ggCosinorM(fit.KDE)
 
 
 
-It is worth noting that while `CosinorM.KDE` does provide a variance and standard error for the fitted rest-activity pattern; this is a density‑based signal‑processing strategy, not a regression model. As a signal‑processing technique, `CosinorM.KDE` lacks the ability to directly provide standard errors or confidence intervals for cosinor parameters and related post hoc estimates (e.g., bathyphase). Thankfully, we can use bootstrap resampling to empirically estimate confidence intervals and standard errors for these post‑hoc parameters. Note that `CosinorM.KDE` is designed to stabilize estimates when data are irregularly spaced or limited to short recording intervals. 
+It is worth noting that while `CosinorM.KDE` does provide a variance 
+and standard error for the fitted rest-activity pattern; this is a 
+density‑based signal‑processing strategy, not a regression model. As 
+a signal‑processing technique, `CosinorM.KDE` lacks the ability to 
+directly provide standard errors or confidence intervals for cosinor 
+parameters and related post hoc estimates (e.g., bathyphase). 
+Thankfully, we can use bootstrap resampling to empirically estimate 
+confidence intervals and standard errors for these post‑hoc 
+parameters. Note that `CosinorM.KDE` is designed to stabilize 
+estimates when data are irregularly spaced or limited to short 
+recording intervals. 
 
 
 ```{r Bootstrap SE CI KDE, message=FALSE, warning=FALSE}
@@ -247,7 +297,9 @@ boot.seci(
   n = 100
 ) ### for demonstration, the number of bootstraps was limited to 100.
 ```
-Currently, \code{\link{boot.seci}} was designed to compute standard errors and confidence intervals in serial processes, which means that it will take some time to finish the computation. 
+Currently, \code{\link{boot.seci}} was designed to compute standard 
+errors and confidence intervals in serial processes, which means that 
+it will take some time to finish the computation. 
 
 #### Visualized Model Comparisons
 ```{r import ggplot}
@@ -259,7 +311,9 @@ library(ggplot2)
 
 ##### OLS-Cosinor vs. Kernel Density Estimation
 When we compare the KDE-based estimate with the OLS-based cosinor model, we can immediately see that `CosinorM.KDE` better captures the complexity of the wearer’s activity pattern. Since `CosinorM.KDE` does not assume a specific pattern of activity, it avoids introducing bias from assumptions or model specifications into the rest-activity-based circadian parameters.
-```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, message=FALSE, warning=FALSE , fig.alt=  "Figure 7: Overlay of Fitting of OLS-based Cosinor and Circularized Gaussian Kernel Density Estimation"}
+```{r Model 1 OLS vs KDE, echo=FALSE, fig.height=5, fig.width=7, 
+message=FALSE, warning=FALSE, 
+fig.alt="Figure 7: OLS Cosinor vs Gaussian KDE overlay"}
 # Prepare data
 n <- length(fit.ols$fitted.values)
 plot_df <- data.frame(
@@ -343,7 +397,8 @@ ggplot() +
 
 
 
-```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
+```{r Model 1 FGLS vs KDE, message=FALSE, warning=FALSE, 
+eval=FALSE, echo=FALSE, fig.height=5, fig.width=7}
 # Prepare data
 n <- length(fit.fgls$fitted.values)
 plot_df <- data.frame(

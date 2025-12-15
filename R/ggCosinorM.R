@@ -28,6 +28,7 @@
 #'
 #' @import stats ggplot2 ggrepel viridis
 #' @importFrom scales alpha
+#' @importFrom utils globalVariables
 #'
 #' @param object A fitted model of class \code{\link{CosinorM}} or
 #'   \code{\link{CosinorM.KDE}}.
@@ -763,3 +764,6 @@ ggCosinorM <- function (object, labels = TRUE, ci = TRUE, ci_level = 0.95,
                                      expand = c (0, 0)) +
         ggplot2::coord_cartesian (xlim = c (0, day))
 }
+
+# Suppress CMD check notes about global variables
+utils::globalVariables(c("t_obs", "y_obs"))
