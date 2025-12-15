@@ -134,7 +134,7 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     ## Step 2 Check if the initial time zone is included
     if (!is.null (TZ1)) {
         if (length (aOF) == 1) {
-            pTZs <- if (TZ1 %in% pTZs [[1]]) TZ1 else pTZs
+            pTZs <- if (TZ1 %in% pTZs [[1]]) list (TZ1) else pTZs
         } else {
             pTZs <- lapply (pTZs, function (x) if (TZ1 %in% x) TZ1 else x)
         }
