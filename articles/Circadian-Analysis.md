@@ -10,19 +10,19 @@ in a new variable called `df`, which stands for data frame.
 
 ``` r
 # Import data
-data ("FlyEast")
+data("FlyEast")
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-27")
+df <- subset(df, df$Date == "2017-10-27")
 ```
 
 ### Single-phase Model (i.e., single phase circadian rhythm)
@@ -31,12 +31,12 @@ df <- subset (df, df$Date == "2017-10-27")
 
 ``` r
 fit.ols <-
-    CosinorM (
-        time = df$Time,
-        activity = df$Activity,
-        tau = 24,
-        method = "OLS"
-    )
+  CosinorM(
+    time = df$Time,
+    activity = df$Activity,
+    tau = 24,
+    method = "OLS"
+  )
 
 ### Look at the parameters
 fit.ols$coef.cosinor
@@ -44,7 +44,7 @@ fit.ols$coef.cosinor
 #>   177.297222   161.296243    -2.896002  -156.456357   -39.215893
 
 ### Plot
-ggCosinorM (fit.ols)
+ggCosinorM(fit.ols)
 ```
 
 ![Figure 1: Fitting of OLS-based Cosinor
@@ -52,12 +52,11 @@ Model](Circadian-Analysis_files/figure-html/Model%201%20OLS-1.png)
 
 #### Note
 
-If we process `FlyEast` using the
-[`cosinor::cosinor.lm`](https://rdrr.io/pkg/cosinor/man/cosinor.lm.html),
-we will notice that the results look a bit different. This is because
-ActiGlobe treats the first time point of the day as `00:00:00`, whereas
-this is sometimes treated as `00:00:00` plus one unit of the device
-sampling rate due to the use of the sequence generator.
+If we process `FlyEast` using the `cosinor::cosinor.lm`, we will notice
+that the results look a bit different. This is because ActiGlobe treats
+the first time point of the day as `00:00:00`, whereas this is sometimes
+treated as `00:00:00` plus one unit of the device sampling rate due to
+the use of the sequence generator.
 
 #### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
 
@@ -72,12 +71,12 @@ models.
 
 ``` r
 fit.fgls <-
-    CosinorM (
-        time = df$Time,
-        activity = df$Activity,
-        tau = 24,
-        method = "FGLS"
-    )
+  CosinorM(
+    time = df$Time,
+    activity = df$Activity,
+    tau = 24,
+    method = "FGLS"
+  )
 
 ### Look at the parameters
 fit.fgls$coef.cosinor
@@ -85,7 +84,7 @@ fit.fgls$coef.cosinor
 #>   181.169023   183.040124    -2.409542  -136.146165  -122.343405
 
 ### Plot
-ggCosinorM (fit.fgls)
+ggCosinorM(fit.fgls)
 ```
 
 ![Figure 2: Fitting of FGLS-based Cosinor
@@ -104,12 +103,12 @@ fitted using OLS or FGLS-based methods.
 
 ``` r
 fit.ols2 <-
-    CosinorM (
-        time = df$Time,
-        activity = df$Activity,
-        tau = c (12, 24),
-        method = "OLS"
-    )
+  CosinorM(
+    time = df$Time,
+    activity = df$Activity,
+    tau = c(12, 24),
+    method = "OLS"
+  )
 
 
 fit.ols2$coef.cosinor
@@ -125,7 +124,7 @@ fit.ols2$post.hoc
 
 
 ### Plot
-ggCosinorM (fit.ols2)
+ggCosinorM(fit.ols2)
 ```
 
 ![Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor
@@ -135,12 +134,12 @@ Model](Circadian-Analysis_files/figure-html/Model%202%20OLS-1.png)
 
 ``` r
 fit.fgls2 <-
-    CosinorM (
-        time = df$Time,
-        activity = df$Activity,
-        tau = c (12, 24),
-        method = "FGLS"
-    )
+  CosinorM(
+    time = df$Time,
+    activity = df$Activity,
+    tau = c(12, 24),
+    method = "FGLS"
+  )
 
 
 fit.fgls2$coef.cosinor
@@ -155,7 +154,7 @@ fit.fgls2$post.hoc
 #>         306.138144         157.178540
 
 ### Plot
-ggCosinorM (fit.fgls2)
+ggCosinorM(fit.fgls2)
 ```
 
 ![Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor
@@ -191,10 +190,10 @@ cosinor plane.
 
 ``` r
 fit.KDE <-
-    CosinorM.KDE (
-        time = df$Time,
-        activity = df$Activity
-    )
+  CosinorM.KDE(
+    time = df$Time,
+    activity = df$Activity
+  )
 
 ### Look at the parameters
 fit.KDE$coef.cosinor
@@ -206,7 +205,7 @@ fit.KDE$post.hoc
 #>            Peak.ph       Amplitude.ph 
 #>         583.221110         287.060893
 
-ggCosinorM (fit.KDE)
+ggCosinorM(fit.KDE)
 ```
 
 ![Figure 6: Fitting of Circularized Gaussian Kernel Density
@@ -224,10 +223,10 @@ Note that `CosinorM.KDE` is designed to stabilize estimates when data
 are irregularly spaced or limited to short recording intervals.
 
 ``` r
-boot.seci (
-    object = fit.KDE,
-    level = 0.95,
-    N = 100
+boot.seci(
+  object = fit.KDE,
+  ci_level = 0.95,
+  n = 100
 ) ### for demonstration, the number of bootstraps was limited to 100.
 #>                    Estimate Std Error t value    2.5%   97.5%
 #> MESOR                177.24      4.60   38.55  168.93  185.37
@@ -251,8 +250,7 @@ to finish the computation.
 
 ``` r
 ### For external graphic plot.
-library (ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.5.2
+library(ggplot2)
 ```
 
 ##### OLS-Cosinor vs. Kernel Density Estimation

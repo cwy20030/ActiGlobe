@@ -52,40 +52,41 @@ were flagged in \`Note\`.
 
 ``` r
 if (FALSE) { # \dontrun{
-library (ActiGlobe)
+library(ActiGlobe)
 
 # Overview the Uncorrected Longitudinal Recording
-data (FlyEast)
+data(FlyEast)
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
-p <- ggActiGlobe (
-    df = BdfList$df,
-    Bdf = BdfList$Bdf,
-    VAct = "Activity",
-    VDT = "DateTime"
+p <- ggActiGlobe(
+  df = BdfList$df,
+  Bdf = BdfList$Bdf,
+  VAct = "Activity",
+  VDT = "DateTime"
 )
 
-print (p)
+print(p)
 
 
 # Overview the Corrected Longitudinal Recording
-data (TLog)
+data(TLog)
 
-BdfList$Bdf.adj <- TAdjust (BdfList$Bdf, TLog)
-p2 <- ggActiGlobe (
-    df = BdfList$df,
-    Bdf = BdfList$Bdf,
-    VAct = "Activity",
-    VDT = "DateTime"
+BdfList$Bdf.adj <- TAdjust(BdfList$Bdf, TLog)
+p2 <- ggActiGlobe(
+  df = BdfList$df,
+  Bdf = BdfList$Bdf,
+  VAct = "Activity",
+  VDT = "DateTime"
 )
-print (p2)
+print(p2)
 
-# Pro-tip: [`cowplot`] can help stack the time series graphs in one single plot
+# Pro-tip: [`cowplot`] can help stack the time series graphs in one
+# single plot
 } # }
 ```

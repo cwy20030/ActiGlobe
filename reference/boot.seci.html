@@ -28,6 +28,7 @@ and post-hoc parameters via non-parametric bootstrap"><meta property="og:image" 
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -48,7 +49,7 @@ and post-hoc parameters via non-parametric bootstrap"><meta property="og:image" 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Bootstrap Standard Errors and Confidence Intervals for Model Parameters</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/boot.seci.R" class="external-link"><code>R/boot.seci.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/boot.seci.R" class="external-link"><code>R/boot.seci.R</code></a></small>
       <div class="d-none name"><code>boot.seci.Rd</code></div>
     </div>
 
@@ -59,7 +60,7 @@ and post-hoc parameters via non-parametric bootstrap</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">boot.seci</span><span class="op">(</span><span class="va">object</span>, level <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="fl">500</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">boot.seci</span><span class="op">(</span><span class="va">object</span>, ci_level <span class="op">=</span> <span class="fl">0.95</span>, n <span class="op">=</span> <span class="fl">500</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,11 +71,11 @@ and post-hoc parameters via non-parametric bootstrap</p>
 <dd><p>A fitted `CosinorM` or `CosinorM.KDE` model object.</p></dd>
 
 
-<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
-<dd><p>Numeric scaler. the confidence level.</p></dd>
+<dt id="arg-ci-level">ci_level<a class="anchor" aria-label="anchor" href="#arg-ci-level"></a></dt>
+<dd><p>Numeric scaler. the confidence ci_level.</p></dd>
 
 
-<dt id="arg-n">N<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
+<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>Numeric scaler. Numbers of bootstraps required to estimate the
 standard errors and confidence intervals. Default: 500</p></dd>
 
@@ -87,13 +88,13 @@ standard errors and confidence intervals. Default: 500</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.frame with one row per cosinor coefficient and columns:</p><ul><li><p>Estimate: Mean of bootstrap coefficient values.</p></li>
-<li><p>Std Error: Bootstrap standard deviation of each coefficient across N
+<li><p>Std Error: Bootstrap standard deviation of each coefficient across n
   resamples.</p></li>
 <li><p>t value: Ratio of the observed estimate to its bootstrap standard
   error, analogous to a
     signal-to-noise measure: $$t = \hat{\theta}_obs / SE_boot$$</p></li>
 <li><p>lower CI label: Percentile lower bound at \(\frac{\alpha}{2}\),
-     where \(\alpha = 1 - level\).</p></li>
+     where \(\alpha = 1 - ci_level\).</p></li>
 <li><p>upper CI label: Percentile upper bound at \(1 - \frac{\alpha}{2}\).</p></li>
 </ul></div>
     <div class="section level2">
@@ -130,8 +131,8 @@ standard errors and confidence intervals. Default: 500</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">boot.seci</span> <span class="op">(</span></span></span>
 <span class="r-in"><span>    object <span class="op">=</span> <span class="va">fit</span>,</span></span>
-<span class="r-in"><span>    level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
-<span class="r-in"><span>    N <span class="op">=</span> <span class="fl">500</span></span></span>
+<span class="r-in"><span>    ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fl">500</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -145,8 +146,8 @@ standard errors and confidence intervals. Default: 500</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">boot.seci</span> <span class="op">(</span></span></span>
 <span class="r-in"><span>    object <span class="op">=</span> <span class="va">fit2</span>,</span></span>
-<span class="r-in"><span>    level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
-<span class="r-in"><span>    N <span class="op">=</span> <span class="fl">500</span></span></span>
+<span class="r-in"><span>    ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fl">500</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

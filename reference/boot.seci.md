@@ -6,7 +6,7 @@ post-hoc parameters via non-parametric bootstrap
 ## Usage
 
 ``` r
-boot.seci(object, level = 0.95, N = 500, digits = 2)
+boot.seci(object, ci_level = 0.95, n = 500, digits = 2)
 ```
 
 ## Arguments
@@ -15,11 +15,11 @@ boot.seci(object, level = 0.95, N = 500, digits = 2)
 
   A fitted \`CosinorM\` or \`CosinorM.KDE\` model object.
 
-- level:
+- ci_level:
 
-  Numeric scaler. the confidence level.
+  Numeric scaler. the confidence ci_level.
 
-- N:
+- n:
 
   Numeric scaler. Numbers of bootstraps required to estimate the
   standard errors and confidence intervals. Default: 500
@@ -35,7 +35,7 @@ A data.frame with one row per cosinor coefficient and columns:
 
 - Estimate: Mean of bootstrap coefficient values.
 
-- Std Error: Bootstrap standard deviation of each coefficient across N
+- Std Error: Bootstrap standard deviation of each coefficient across n
   resamples.
 
 - t value: Ratio of the observed estimate to its bootstrap standard
@@ -43,7 +43,7 @@ A data.frame with one row per cosinor coefficient and columns:
   \hat{\theta}\_obs / SE_boot\$\$
 
 - lower CI label: Percentile lower bound at \\\frac{\alpha}{2}\\, where
-  \\\alpha = 1 - level\\.
+  \\\alpha = 1 - ci_level\\.
 
 - upper CI label: Percentile upper bound at \\1 - \frac{\alpha}{2}\\.
 
@@ -81,8 +81,8 @@ fit <- CosinorM (
 
 boot.seci (
     object = fit,
-    level = 0.95,
-    N = 500
+    ci_level = 0.95,
+    n = 500
 )
 
 
@@ -96,8 +96,8 @@ fit2 <- CosinorM.KDE (
 
 boot.seci (
     object = fit2,
-    level = 0.95,
-    N = 500
+    ci_level = 0.95,
+    n = 500
 )
 } # }
 ```

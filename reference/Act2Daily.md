@@ -47,8 +47,8 @@ Act2Daily(
 
 - VTm:
 
-  Optional character. Name of the time index column in \`df\`. If NULL,
-  defaults to the first column of \`df\`.
+  Optional character. Name of the date.time index column in \`df\`. If
+  NULL, defaults to the first column of \`df\`.
 
 - Incomplete:
 

@@ -26,6 +26,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,7 +47,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate the Travel Log Template Needed for Time Zone Correction</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/TravelLog.R" class="external-link"><code>R/TravelLog.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/TravelLog.R" class="external-link"><code>R/TravelLog.R</code></a></small>
       <div class="d-none name"><code>TravelLog.Rd</code></div>
     </div>
 
@@ -64,13 +65,17 @@
 
 
 <dl><dt id="arg-write">Write<a class="anchor" aria-label="anchor" href="#arg-write"></a></dt>
-<dd><p>A binary code to indicate whether to write a .csv file containing the template needed for the travel log. (default = FLASE)
-When set to FALSE, the template will be returned as an object.
-When set to TRUE, user must provide the target directory where they wish to store the template.</p></dd>
+<dd><p>A binary code to indicate whether to write a .csv
+file containing the template needed for the travel log. (default
+= FLASE) When set to FALSE, the template will be returned as an
+object. When set to TRUE, user must provide the target directory
+where they wish to store the template.</p></dd>
 
 
 <dt id="arg-dir">Dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
-<dd><p>The directory where the travel log template to be exported &lt;e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/"&gt;</p></dd>
+<dd><p>The directory where the travel log template to be
+exported &lt;e.g. "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../
+FOLDER NAME/"&gt;</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -85,7 +90,7 @@ When set to TRUE, user must provide the target directory where they wish to stor
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span> <span class="op">(</span><span class="va">Tlg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          ID UTC_Offset Country_with_Daylight_Saving date_Start   date_End</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ExampleID     +05:00                         TRUE 2025-12-08 2025-12-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ExampleID     +05:00                         TRUE 2025-12-15 2025-12-16</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

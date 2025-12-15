@@ -227,6 +227,20 @@ where,
   instability) and produce NA or an error; very large `bw` approaches a
   near-uniform kernel and will wash out temporal structure.
 
+## References
+
+Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and
+Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+
+On Nonparametric Density Estimation for Circular Data: An Overview,
+bookTitle= Directional Statistics for Innovative Applications: A
+Bicentennial Tribute to Florence Nightingale. Springer Nature Singapore;
+2022:351–378.
+
+Cremers J, Klugkist I. One Direction? A Tutorial for Circular Data
+Analysis Using R With Examples in Cognitive Psychology. Methods. Front
+Psychol. 2018-October-30 2018;9(2040):2040. doi:10.3389/fpsyg.2018.02040
+
 ## See also
 
 [`CosinorM`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.md)

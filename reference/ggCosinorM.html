@@ -5,7 +5,15 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Plot `CosinorM` and `CosinorM.KDE` Fit with `ggplot2` — ggCosinorM"><meta name="description" content="Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested."><meta property="og:description" content="Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Plot `CosinorM` and `CosinorM.KDE` Fit with `ggplot2` — ggCosinorM"><meta name="description" content="Create visualization of a CosinorM or CosinorM.KDE fit using
+ggplot2. The plot shows the parametric cosinor fit over a fine time
+grid, optional pointwise confidence bands, observed data points,
+MESOR line, acrophase verticals, amplitude annotation segments, and
+labelled parameter values when requested."><meta property="og:description" content="Create visualization of a CosinorM or CosinorM.KDE fit using
+ggplot2. The plot shows the parametric cosinor fit over a fine time
+grid, optional pointwise confidence bands, observed data points,
+MESOR line, acrophase verticals, amplitude annotation segments, and
+labelled parameter values when requested."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -26,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,12 +55,16 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot `CosinorM` and `CosinorM.KDE` Fit with `ggplot2`</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/ggCosinorM.R" class="external-link"><code>R/ggCosinorM.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/ggCosinorM.R" class="external-link"><code>R/ggCosinorM.R</code></a></small>
       <div class="d-none name"><code>ggCosinorM.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>Create visualization of a CosinorM or CosinorM.KDE fit using ggplot2. The plot shows the parametric cosinor fit over a fine time grid, optional pointwise confidence bands, observed data points, MESOR line, acrophase verticals, amplitude annotation segments, and labelled parameter values when requested.</p>
+    <p>Create visualization of a CosinorM or CosinorM.KDE fit using
+ggplot2. The plot shows the parametric cosinor fit over a fine time
+grid, optional pointwise confidence bands, observed data points,
+MESOR line, acrophase verticals, amplitude annotation segments, and
+labelled parameter values when requested.</p>
     </div>
 
     <div class="section level2">
@@ -74,39 +87,50 @@
 
 
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>A fitted model of class <code><a href="CosinorM.html">CosinorM</a></code> or <code><a href="CosinorM.KDE.html">CosinorM.KDE</a></code></p></dd>
+<dd><p>A fitted model of class <code><a href="CosinorM.html">CosinorM</a></code> or
+<code><a href="CosinorM.KDE.html">CosinorM.KDE</a></code>.</p></dd>
 
 
 <dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
-<dd><p>Logical; Default `TRUE` places repelled labels on the plot with MESOR, amplitude(s), and acrophase(s).</p></dd>
+<dd><p>Logical; Default `TRUE` places repelled labels on
+the plot with MESOR, amplitude(s), and acrophase(s).</p></dd>
 
 
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
-<dd><p>Logical; Default `TRUE` computes and draws pointwise parametric confidence bands for the fitted cosinor curve using the model covariance.</p></dd>
+<dd><p>Logical; Default `TRUE` computes and draws pointwise
+parametric confidence bands for the fitted cosinor curve using
+the model covariance.</p></dd>
 
 
 <dt id="arg-ci-level">ci_level<a class="anchor" aria-label="anchor" href="#arg-ci-level"></a></dt>
-<dd><p>Confidence level for the pointwise bands, expressed in numeric value between 0 and 1.</p></dd>
+<dd><p>Confidence level for the pointwise bands, expressed
+in numeric value between 0 and 1 (default: `0.95`).</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>Integer; number of points on the fine prediction grid used to draw the fitted cosinor and confidence ribbon. (default to `400`)</p></dd>
+<dd><p>Integer; number of points on the fine prediction grid used
+to draw the fitted cosinor and confidence ribbon (default: `400`).</p></dd>
 
 
 <dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
-<dd><p>Numeric; plotting size for observed points. (default: `0.5`)</p></dd>
+<dd><p>Numeric; plotting size for observed points
+(default: `0.5`).</p></dd>
 
 
 <dt id="arg-title-extra">title_extra<a class="anchor" aria-label="anchor" href="#arg-title-extra"></a></dt>
-<dd><p>Optional character string appended to the plot title for extra context.</p></dd>
+<dd><p>Optional character string appended to the plot
+title for extra context.</p></dd>
 
 
 <dt id="arg-legend-position">legend.position<a class="anchor" aria-label="anchor" href="#arg-legend-position"></a></dt>
-<dd><p>Position of the legend on the plot; default is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`, or a numeric vector of length two specifying x and y coordinates.</p></dd>
+<dd><p>Position of the legend on the plot; default
+is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`,
+or a numeric vector of length two specifying x and y coordinates.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments (currently ignored) kept for future update</p></dd>
+<dd><p>Additional arguments (currently ignored) kept for future
+update.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -115,7 +139,9 @@
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></code>, <code><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_label_repel</a></code>, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></code></p></div>
+    <div class="dont-index"><p><code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></code>,
+<code><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_label_repel</a></code>,
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></code></p></div>
     </div>
 
     <div class="section level2">

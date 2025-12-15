@@ -5,14 +5,16 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarize the Actigraphy Recording by Day — BriefSum"><meta name="description" content="`BriefSum()` is a function that summarizes the actigraphy recording by day. It
-generates a data.frame where each row holds all metadata for one recording day:
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarize the Actigraphy Recording by Day — BriefSum"><meta name="description" content="`BriefSum()` is a function that summarizes the actigraphy
+recording by day. It generates a data.frame where each row holds
+all metadata for one recording day:
 the calendar date, time–zone code, epoch length (seconds), UTC offset,
 daylight–saving flag, cumulative start/end seconds from midnight,
 recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
 `Incomplete Recording`), an exclusion flag, and the expected number of epochs
-for a full day."><meta property="og:description" content="`BriefSum()` is a function that summarizes the actigraphy recording by day. It
-generates a data.frame where each row holds all metadata for one recording day:
+for a full day."><meta property="og:description" content="`BriefSum()` is a function that summarizes the actigraphy
+recording by day. It generates a data.frame where each row holds
+all metadata for one recording day:
 the calendar date, time–zone code, epoch length (seconds), UTC offset,
 daylight–saving flag, cumulative start/end seconds from midnight,
 recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
@@ -38,6 +40,7 @@ for a full day."><meta property="og:image" content="https://cwy20030.github.io/A
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -58,13 +61,14 @@ for a full day."><meta property="og:image" content="https://cwy20030.github.io/A
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize the Actigraphy Recording by Day</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/BriefSum.R" class="external-link"><code>R/BriefSum.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/BriefSum.R" class="external-link"><code>R/BriefSum.R</code></a></small>
       <div class="d-none name"><code>BriefSum.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>`BriefSum()` is a function that summarizes the actigraphy recording by day. It
-generates a data.frame where each row holds all metadata for one recording day:
+    <p>`BriefSum()` is a function that summarizes the actigraphy
+recording by day. It generates a data.frame where each row holds
+all metadata for one recording day:
 the calendar date, time–zone code, epoch length (seconds), UTC offset,
 daylight–saving flag, cumulative start/end seconds from midnight,
 recording start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
@@ -82,25 +86,33 @@ for a full day.</p>
 
 
 <dl><dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
-<dd><p>A data.frame of raw actigraphy recording. Both time and activity count
-should be included in the `df`. See `VAct` and `VTm` for further detail.</p></dd>
+<dd><p>A data.frame of raw actigraphy recording. Both time
+and activity count should be included in the `df`. See `VAct`
+and `VTm` for further detail.</p></dd>
 
 
 <dt id="arg-sr">SR<a class="anchor" aria-label="anchor" href="#arg-sr"></a></dt>
-<dd><p>The sampling rate of the actigraphy (unit at Hz). Note that Hz should be equal to or less than 1.</p></dd>
+<dd><p>The sampling rate of the actigraphy (unit at Hz).
+Note that Hz should be equal to or less than 1.</p></dd>
 
 
 <dt id="arg-start">Start<a class="anchor" aria-label="anchor" href="#arg-start"></a></dt>
-<dd><p>The starting date and time of the recording in the format as "2021-03-05 18:31:03". See <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></code> for more details and  <code><a href="DateFormat.html">DateFormat</a></code> and <code><a href="TimeFormat.html">TimeFormat</a></code> for formatting help.</p></dd>
+<dd><p>The starting date and time of the recording in the
+format as "2021-03-05 18:31:03". See
+<code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></code> for more details and
+<code><a href="DateFormat.html">DateFormat</a></code> and <code><a href="TimeFormat.html">TimeFormat</a></code> for
+formatting help.</p></dd>
 
 
 <dt id="arg-tz">TZ<a class="anchor" aria-label="anchor" href="#arg-tz"></a></dt>
-<dd><p>The time zone when the recording started. (default = "local", which means user's local time zone)</p></dd>
+<dd><p>The time zone when the recording started. (default =
+"local", which means user's local time zone)</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A named list with two elements:</p><ul><li><p>Bdf A data.frame containing brief summary information of each recording day. Columns include:</p><ul><li><p>Date calendar date (YYYY-MM-DD)</p></li>
+    <p>A named list with two elements:</p><ul><li><p>Bdf A data.frame containing brief summary information of
+    each recording day. Columns include:</p><ul><li><p>Date calendar date (YYYY-MM-DD)</p></li>
 <li><p>Epoch epoch length in seconds</p></li>
 <li><p>UTC dominant UTC offset string (e.g., "UTC+02:00")</p></li>
 <li><p>TZ_code time zone code (e.g., "EST")</p></li>
@@ -109,19 +121,25 @@ should be included in the `df`. See `VAct` and `VTm` for further detail.</p></dd
 <li><p>Recording_End latest recorded time for the day (HH:MM:SS)</p></li>
 <li><p>GL_Offset numeric offset returned by DST2GL() for the day</p></li>
 <li><p>nDataPoints number of epochs observed for the day</p></li>
-<li><p>Cumulative_Start_Second cumulative start second from midnight for the day's first epoch</p></li>
-<li><p>Cumulative_End_Second cumulative end second from midnight for the day's last epoch</p></li>
-<li><p>Excluded logical flag; TRUE if the day is excluded (e.g., incomplete)</p></li>
-<li><p>Warning character; warning label when applicable (e.g., "Incomplete Recording", "Time Change")</p></li>
+<li><p>Cumulative_Start_Second cumulative start second from
+      midnight for the day's first epoch</p></li>
+<li><p>Cumulative_End_Second cumulative end second from
+      midnight for the day's last epoch</p></li>
+<li><p>Excluded logical flag; TRUE if the day is excluded
+      (e.g., incomplete)</p></li>
+<li><p>Warning character; warning label when applicable (e.g.,
+      "Incomplete Recording", "Time Change")</p></li>
 </ul></li>
-<li><p>df The original input df augmented with additional columns (class ActiGlobe, data.frame):</p><ul><li><p>DateTime POSIXct timestamp for each epoch (tz = TZ)</p></li>
+<li><p>df The original input df augmented with additional
+    columns (class ActiGlobe, data.frame):</p><ul><li><p>DateTime POSIXct timestamp for each epoch (tz = TZ)</p></li>
 <li><p>Date date string (YYYY-MM-DD)</p></li>
 <li><p>Time time string (HH:MM:SS)</p></li>
 <li><p>UTC UTC offset string for each epoch</p></li>
 <li><p>DaylightSaving logical flag per epoch</p></li>
 <li><p>nPoint cumulative epoch index</p></li>
 </ul></li>
-</ul><p>The function returns a list with both Bdf df = df) and sets classes c("ActiGlobe","data.frame") on both returned data.frames.</p>
+</ul><p>The function returns a list with both Bdf df = df) and sets
+classes c("ActiGlobe","data.frame") on both returned data.frames.</p>
     </div>
 
     <div class="section level2">

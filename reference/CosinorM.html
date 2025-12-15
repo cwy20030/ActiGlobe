@@ -26,6 +26,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,7 +47,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>`Cosinor` Model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/CosinorM.R" class="external-link"><code>R/CosinorM.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/CosinorM.R" class="external-link"><code>R/CosinorM.R</code></a></small>
       <div class="d-none name"><code>CosinorM.Rd</code></div>
     </div>
 
@@ -80,12 +81,17 @@
 
 
 <dt id="arg-tau">tau<a class="anchor" aria-label="anchor" href="#arg-tau"></a></dt>
-<dd><p>Numeric scalar or vector for the assumed circadian period. Default is 24 for single-phase; multiple phases can be supplied via [c()]</p></dd>
+<dd><p>Numeric scalar or vector for the assumed circadian
+period. Default is 24 for single-phase; multiple phases can be
+supplied via [c()]</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>Character string specifying estimation method</p><ul><li><p>"OLS": Ordinary least squares via <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></code> (default)</p></li>
-<li><p>"FGLS": Feasible generalized least squares; models heteroskedasticity via a log-variance fit to squared OLS residuals, computes weights, and refits by weighted least squares</p></li>
+<li><p>"FGLS": Feasible generalized least squares; models
+    heteroskedasticity via a log-variance fit to squared OLS
+    residuals, computes weights, and refits by weighted least
+    squares</p></li>
 </ul></dd>
 
 
@@ -93,17 +99,21 @@
 <dd><p>Logical; if TRUE (default) acrophase is computed with
 <code>atan2(gamma, beta)</code>, resulting in the quadrant interval between
 \(-\pi\) and \(\pi\). Whereas, when set to FALSE, the legacy arctangent
-quadrant is mapped. The resulting interval lies between \(-\frac{\pi}{2}\)
-and \(\frac{\pi}{2}\).</p></dd>
+quadrant is mapped. The resulting interval lies between
+\(-\frac{\pi}{2}\) and \(\frac{\pi}{2}\).</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Character string passed to <code><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></code> for robust standard error computation</p></dd>
+<dd><p>Character string passed to
+<code><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></code> for robust standard error
+computation</p></dd>
 
 
 <dt id="arg-dilute">dilute<a class="anchor" aria-label="anchor" href="#arg-dilute"></a></dt>
 <dd><p>Logical;</p><ul><li><p>"FALSE": All essential parameters would be produced.  (default)</p></li>
-<li><p>"TRUE": Only cosinor coefficients are returned. This is suited for post-hoc processes, such as computing confidence interval via nonparametric bootstrap</p></li>
+<li><p>"TRUE": Only cosinor coefficients are returned. This is
+    suited for post-hoc processes, such as computing confidence
+    interval via nonparametric bootstrap</p></li>
 </ul></dd>
 
 </dl></div>
@@ -119,21 +129,28 @@ and \(\frac{\pi}{2}\).</p></dd>
 <li><p>Beta: the coefficient of the cosine function</p></li>
 <li><p>Gamma: the coefficient of the sine function</p></li>
 </ul></li>
-<li><p>post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)</p></li>
-<li><p>extra: only available for ultradian (i.e., \(\tau\) less than 24hour) single-component model</p></li>
+<li><p>post.hoc: Post-hoc peak/trough diagnostics derived from
+    fitted.values at observation angles (MESOR.ph,
+    Bathyphase.ph.time, Trough.ph, Acrophase.ph.time, Peak.ph,
+    Amplitude.ph)</p></li>
+<li><p>extra: only available for ultradian (i.e., \(\tau\) less
+    than 24hour) single-component model</p></li>
 <li><p>vcov: Robust variance-covariance matrix</p></li>
 <li><p>se: Standard errors</p></li>
 </ul><p>Inherits all components from <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The `Cosinor` model is a cosine-based harmonic regression used to estimate circadian rhythm parameters.</p>
+    <p>The `Cosinor` model is a cosine-based harmonic regression used
+to estimate circadian rhythm parameters.</p>
 <p><strong>Single-phase equation</strong>:
-      $$y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) $$</p><ul><li><p>\(M \): MESOR (mid-line estimating statistic of rhythm), the intercept</p></li>
+      $$y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) $$</p><ul><li><p>\(M \): MESOR (mid-line estimating statistic of
+    rhythm), the intercept</p></li>
 <li><p>\(A \): Amplitude, peak deviation from M</p></li>
 <li><p>\(t \): Time coordinate within the cycle</p></li>
 <li><p>\(\tau \): The assumed period length</p></li>
-<li><p>\(\phi \): Acrophase (time-of-peak), computed from fitted sine and cosine coefficients</p></li>
+<li><p>\(\phi \): Acrophase (time-of-peak), computed from
+    fitted sine and cosine coefficients</p></li>
 </ul><p>Note that because the model is parameterized with a negative phase inside the
 cosine, this means the the derived peak time from acrophase corresponds to
 the peak time forward from midnight (not backward). In other words, the
@@ -141,7 +158,8 @@ when the acrophase is positive, it means the peak activity time occurs after
 midnight and vice versa.</p>
 
 <p><strong>Linearized form</strong>:
-     $$\hat{y} = M + \beta x + \gamma z + \epsilon $$</p><ul><li><p>\(\beta = A * cos(\phi)\), estimated coefficient for the cosine term</p></li>
+     $$\hat{y} = M + \beta x + \gamma z + \epsilon $$</p><ul><li><p>\(\beta = A * cos(\phi)\), estimated coefficient for
+    the cosine term</p></li>
 <li><p>\(x = cos(\frac{2 * \pi * t} {\tau})\), cosine-transformed time</p></li>
 <li><p>\(\gamma = A * sin(\phi)\), estimated coefficient for the sine term</p></li>
 <li><p>\(z = sin(\frac{2 * \pi * t} {\tau})\), sine-transformed time</p></li>
@@ -152,17 +170,29 @@ By default, <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link
 <p><strong>Acrophase \(\phi\) interpretation</strong>:
  \(\phi \) is derived from
  $$\phi = \arctan2(\frac{\gamma} {\beta}) $$</p>
-<p>Note,</p><ul><li><p>\(\phi \) can be converted to clock time to identify the peak activity time AFTER midnight.</p></li>
-<li><p>if the model is not a mono-phase (i.e., more than one \(\tau \)), there will be \(\frac{24 (hours)} {\tau} \) number of peaks within a day.</p></li>
+<p>Note,</p><ul><li><p>\(\phi \) can be converted to clock time to identify
+    the peak activity time AFTER midnight.</p></li>
+<li><p>if the model is not a mono-phase (i.e., more than one
+    \(\tau \)), there will be \(\frac{24 (hours)} {\tau} \)
+    number of peaks within a day.</p></li>
 </ul><p><strong>Amplitude \((A) \) estimation</strong>:
 Amplitude is calculated from fitted sine and cosine coefficients as:
 $$A= \sqrt {(\beta^2 + \gamma^2)}$$</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth &amp; Brooks/Cole.</p>
-<p>Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions of factorial models for analysis of variance. Applied Statistics, 22, 392-399. doi:10.2307/2346786.</p>
-<p>Harvey, A. C. (1976). Estimating Regression Models with Multiplicative Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974</p>
+    <p>Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology
+and Medical Modelling. 2014-12-01 2014;11(1):16.
+doi:10.1186/1742-4682-11-16</p>
+<p>Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical
+Models in S eds J. M. Chambers and T. J. Hastie, Wadsworth &amp;
+Brooks/Cole.</p>
+<p>Wilkinson, G. N. and Rogers, C. E. (1973). Symbolic descriptions
+of factorial models for analysis of variance. Applied Statistics,
+22, 392-399. doi:10.2307/2346786.</p>
+<p>Harvey, A. C. (1976). Estimating Regression Models with
+Multiplicative Heteroscedasticity. Econometrica, 44(3), 461-465.
+doi:10.2307/1913974</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -204,7 +234,8 @@ $$A= \sqrt {(\beta^2 + \gamma^2)}$$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot Cosinor in hours</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span> <span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">time</span>, <span class="va">fit</span><span class="op">$</span><span class="va">fitted.values</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Hour"</span>, ylab <span class="op">=</span> <span class="st">"24-Hour Cosinor Model"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span> <span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">time</span>, <span class="va">fit</span><span class="op">$</span><span class="va">fitted.values</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Hour"</span>,</span></span>
+<span class="r-in"><span>      ylab <span class="op">=</span> <span class="st">"24-Hour Cosinor Model"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

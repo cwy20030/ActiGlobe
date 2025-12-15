@@ -5,7 +5,11 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Detect Possible Time Format — TimeFormat"><meta name="description" content="This function will automatically detect possible time format. Users can choose to either reformat the date or report the datetime format detected."><meta property="og:description" content="This function will automatically detect possible time format. Users can choose to either reformat the date or report the datetime format detected."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Detect Possible Time Format — TimeFormat"><meta name="description" content="This function will automatically detect possible time format.
+Users can choose to either reformat the date or report the
+datetime format detected."><meta property="og:description" content="This function will automatically detect possible time format.
+Users can choose to either reformat the date or report the
+datetime format detected."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -26,6 +30,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -46,29 +51,33 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Detect Possible Time Format</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/TimeFormat.R" class="external-link"><code>R/TimeFormat.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/TimeFormat.R" class="external-link"><code>R/TimeFormat.R</code></a></small>
       <div class="d-none name"><code>TimeFormat.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>This function will automatically detect possible time format. Users can choose to either reformat the date or report the datetime format detected.</p>
+    <p>This function will automatically detect possible time format.
+Users can choose to either reformat the date or report the
+datetime format detected.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TimeFormat</span><span class="op">(</span><span class="va">Time</span>, as.time <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TimeFormat</span><span class="op">(</span><span class="va">time</span>, as.time <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-time">Time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
+<dl><dt id="arg-as-time">as.time<a class="anchor" aria-label="anchor" href="#arg-as-time"></a></dt>
+<dd><p>A binary operator indicating whether to return a
+converted time based on the detection or the time format.
+(default: FALSE, which returns time format)</p></dd>
+
+
+<dt id="arg-time">Time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
 <dd><p>A character string of time.</p></dd>
-
-
-<dt id="arg-as-time">as.time<a class="anchor" aria-label="anchor" href="#arg-as-time"></a></dt>
-<dd><p>A binary operator indicating whether to return a converted time based on the detection or the time format. (default: FALSE, which returns time format)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -76,8 +85,8 @@
     <p>If <code>as.time = TRUE</code>, returns a character vector of the input times
 reformatted according to the detected format. Each element corresponds to
 the respective entry in <code>Time</code>.</p>
-<p>If <code>as.time = FALSE</code>, returns a character scalar giving the best-matching
-time format string.</p>
+<p>If <code>as.time = FALSE</code>, returns a character scalar giving the
+best-matching time format string.</p>
 <p>If no format matches, returns NA and issues a warning.</p>
     </div>
 
@@ -86,14 +95,16 @@ time format string.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># Example 1: When all dates have the same format</span></span></span>
 <span class="r-in"><span><span class="co">## Create and store a date in a variable called Time</span></span></span>
-<span class="r-in"><span><span class="va">Time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2017/05/02 23:00:01"</span>, <span class="st">"1970/01/02 05:10:33"</span>, <span class="st">"2000/02/28 07:00:00"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2017/05/02 23:00:01"</span>, <span class="st">"1970/01/02 05:10:33"</span>,</span></span>
+<span class="r-in"><span>           <span class="st">"2000/02/28 07:00:00"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Ask TimeFormat to tell us the format of the time.</span></span></span>
 <span class="r-in"><span><span class="fu">TimeFormat</span> <span class="op">(</span><span class="va">Time</span>, as.time <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example 2: When multiple formats co-exist in a variable</span></span></span>
 <span class="r-in"><span><span class="co">## Create and store dates and time in a variable called Time</span></span></span>
-<span class="r-in"><span><span class="va">Time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2017/05/02 23:00:01"</span>, <span class="st">"2000/02/28 07:00"</span>, <span class="st">"1970/01/02"</span>, <span class="st">"2022/11/28 08:35 PM"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2017/05/02 23:00:01"</span>, <span class="st">"2000/02/28 07:00"</span>,</span></span>
+<span class="r-in"><span>           <span class="st">"1970/01/02"</span>, <span class="st">"2022/11/28 08:35 PM"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Ask TimeFormat to tell us the format of the Time.</span></span></span>
 <span class="r-in"><span><span class="co">### DO This!</span></span></span>

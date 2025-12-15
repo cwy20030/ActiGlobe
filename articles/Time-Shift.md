@@ -79,8 +79,8 @@ BdfList <-
     Start = "2017-10-24 13:45:00"
   )
 
-
-str(BdfList, max.level = 1) ### An overview of the output structure from BriefSum()
+### An overview of the output structure from BriefSum()
+str(BdfList, max.level = 1) 
 #> List of 2
 #>  $ Bdf:Classes 'ActiGlobe' and 'data.frame': 35 obs. of  13 variables:
 #>  $ df :Classes 'ActiGlobe' and 'data.frame': 48847 obs. of  9 variables:
@@ -109,14 +109,7 @@ Bdf <- BdfList$Bdf
 head(Bdf)
 ```
 
-| Date | Epoch | UTC | TZ_code | Daylight_Saving | Recording_Start | Recording_End | GL_Offset | nDataPoints | Cumulative_Start_Second | Cumulative_End_Second | Excluded | Warning |
-|:---|---:|:---|:---|:---|:---|:---|---:|---:|---:|---:|:---|:---|
-| 2017-10-24 | 60 | UTC-04:00 | EDT | TRUE | 13:45:00 | 23:59:00 | 0 | 615 | 60 | 36900 | TRUE | Incomplete Recording |
-| 2017-10-25 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 36960 | 123300 | FALSE |  |
-| 2017-10-26 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 123360 | 209700 | FALSE |  |
-| 2017-10-27 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 209760 | 296100 | FALSE |  |
-| 2017-10-28 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 296160 | 382500 | FALSE |  |
-| 2017-10-29 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 382560 | 468900 | FALSE |  |
+![Table 2 The Header of Bdf](images/Bdf_head.png)
 
 Table 2 The Header of Bdf
 
@@ -127,17 +120,19 @@ point.
 ``` r
 df <- BdfList$df
 
-head(df) ### This should give us the same first few lines of FlyEast dataset with a few new columns created by [BrifSum()].
+head(df)
+### This should give us the same first few lines of FlyEast dataset
+### with a few new columns created by [BrifSum()].
 ```
 
-| Activity | X2 | Marker | DateTime | Date | Time | UTC | DaylightSaving | nPoint |
-|---:|:---|---:|:---|:---|:---|:---|:---|---:|
-| 11 | 0.00 | 0 | 2017-10-24 13:45:00 | 2017-10-24 | 13:45:00 | UTC-04:00 | TRUE | 1 |
-| 0 | 0.00 | 0 | 2017-10-24 13:46:00 | 2017-10-24 | 13:46:00 | UTC-04:00 | TRUE | 2 |
-| 0 | 0.00 | 0 | 2017-10-24 13:47:00 | 2017-10-24 | 13:47:00 | UTC-04:00 | TRUE | 3 |
-| 0 | 0.00 | 0 | 2017-10-24 13:48:00 | 2017-10-24 | 13:48:00 | UTC-04:00 | TRUE | 4 |
-| 0 | 0.00 | 0 | 2017-10-24 13:49:00 | 2017-10-24 | 13:49:00 | UTC-04:00 | TRUE | 5 |
-| 0 | 0.00 | 0 | 2017-10-24 13:50:00 | 2017-10-24 | 13:50:00 | UTC-04:00 | TRUE | 6 |
+| Activity | X2   | Marker | DateTime            | Date       | Time     | UTC       | DaylightSaving | nPoint |
+|---------:|:-----|-------:|:--------------------|:-----------|:---------|:----------|:---------------|-------:|
+|       11 | 0.00 |      0 | 2017-10-24 13:45:00 | 2017-10-24 | 13:45:00 | UTC+00:00 | FALSE          |      1 |
+|        0 | 0.00 |      0 | 2017-10-24 13:46:00 | 2017-10-24 | 13:46:00 | UTC+00:00 | FALSE          |      2 |
+|        0 | 0.00 |      0 | 2017-10-24 13:47:00 | 2017-10-24 | 13:47:00 | UTC+00:00 | FALSE          |      3 |
+|        0 | 0.00 |      0 | 2017-10-24 13:48:00 | 2017-10-24 | 13:48:00 | UTC+00:00 | FALSE          |      4 |
+|        0 | 0.00 |      0 | 2017-10-24 13:49:00 | 2017-10-24 | 13:49:00 | UTC+00:00 | FALSE          |      5 |
+|        0 | 0.00 |      0 | 2017-10-24 13:50:00 | 2017-10-24 | 13:50:00 | UTC+00:00 | FALSE          |      6 |
 
 Table 3. BriefSum Enriched Longitudinal Recording
 
@@ -206,14 +201,14 @@ data(IANA)
 head(IANA)
 ```
 
-|  | Country_Name | Country_Code | Timezone_IANA | TimeZone_Identifiers | TZ_Code | Offset | Observes_DST | Current_DST_Status | Current_Abbreviation | Current_Time_Zone_long_name | Current_Offset | Standard_Abbreviation | Standard_Time_Zone_long_name | Standard_Offset |
-|:---|:---|:---|:---|:---|:---|---:|:---|:---|:---|:---|:---|:---|:---|:---|
-| 2 | Netherlands | NL | Europe/Amsterdam | Europe/Brussels,CET,Europe/Amsterdam,Europe/Luxembourg,MET | CEST | 2 | Yes | DST Active | CEST | Central European Summer Time | +02:00 | CET | Central European Standard Time | +01:00 |
-| 5 | Denmark | DK | Europe/Copenhagen | Europe/Berlin,Arctic/Longyearbyen,Atlantic/Jan_Mayen,Europe/Copenhagen,Europe/Oslo,Europe/Stockholm | CEST | 2 | Yes | DST Active | CEST | Central European Summer Time | +02:00 | CET | Central European Standard Time | +01:00 |
-| 6 | Switzerland | CH | Europe/Zurich | Europe/Zurich,Europe/Busingen,Europe/Vaduz | CEST | 2 | Yes | DST Active | CEST | Central European Summer Time | +02:00 | CET | Central European Standard Time | +01:00 |
-| 16 | Canada | CA | America/Vancouver | America/Vancouver,Canada/Pacific | PDT | -7 | Yes | DST Active | PDT | Pacific Daylight Time | -07:00 | PST | Pacific Standard Time | -08:00 |
-| 21 | United States | US | America/Chicago | America/Chicago,CST6CDT,US/Central | CDT | -5 | Yes | DST Active | CDT | Central Daylight Time | -05:00 | CST | Central Standard Time | -06:00 |
-| 22 | United States | US | America/Los_Angeles | America/Los_Angeles,PST8PDT,US/Pacific | PDT | -7 | Yes | DST Active | PDT | Pacific Daylight Time | -07:00 | PST | Pacific Standard Time | -08:00 |
+|     | Country_Name  | Country_Code | Timezone_IANA       | TimeZone_Identifiers                                                                                | TZ_Code | Offset | Observes_DST | Current_DST_Status | Current_Abbreviation | Current_Time_Zone_long_name  | Current_Offset | Standard_Abbreviation | Standard_Time_Zone_long_name   | Standard_Offset |
+|:----|:--------------|:-------------|:--------------------|:----------------------------------------------------------------------------------------------------|:--------|-------:|:-------------|:-------------------|:---------------------|:-----------------------------|:---------------|:----------------------|:-------------------------------|:----------------|
+| 2   | Netherlands   | NL           | Europe/Amsterdam    | Europe/Brussels,CET,Europe/Amsterdam,Europe/Luxembourg,MET                                          | CEST    |      2 | Yes          | DST Active         | CEST                 | Central European Summer Time | +02:00         | CET                   | Central European Standard Time | +01:00          |
+| 5   | Denmark       | DK           | Europe/Copenhagen   | Europe/Berlin,Arctic/Longyearbyen,Atlantic/Jan_Mayen,Europe/Copenhagen,Europe/Oslo,Europe/Stockholm | CEST    |      2 | Yes          | DST Active         | CEST                 | Central European Summer Time | +02:00         | CET                   | Central European Standard Time | +01:00          |
+| 6   | Switzerland   | CH           | Europe/Zurich       | Europe/Zurich,Europe/Busingen,Europe/Vaduz                                                          | CEST    |      2 | Yes          | DST Active         | CEST                 | Central European Summer Time | +02:00         | CET                   | Central European Standard Time | +01:00          |
+| 16  | Canada        | CA           | America/Vancouver   | America/Vancouver,Canada/Pacific                                                                    | PDT     |     -7 | Yes          | DST Active         | PDT                  | Pacific Daylight Time        | -07:00         | PST                   | Pacific Standard Time          | -08:00          |
+| 21  | United States | US           | America/Chicago     | America/Chicago,CST6CDT,US/Central                                                                  | CDT     |     -5 | Yes          | DST Active         | CDT                  | Central Daylight Time        | -05:00         | CST                   | Central Standard Time          | -06:00          |
+| 22  | United States | US           | America/Los_Angeles | America/Los_Angeles,PST8PDT,US/Pacific                                                              | PDT     |     -7 | Yes          | DST Active         | PDT                  | Pacific Daylight Time        | -07:00         | PST                   | Pacific Standard Time          | -08:00          |
 
 Table 5. An Overview of the 2024 IANA Time Zone Database
 
@@ -238,31 +233,13 @@ their annotations.
 knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 ```
 
-|  | Date | Epoch | UTC | TZ_code | Daylight_Saving | Recording_Start | Recording_End | GL_Offset | nDataPoints | Cumulative_Start_Second | Cumulative_End_Second | Excluded | Warning |
-|:---|:---|---:|:---|:---|:---|:---|:---|---:|---:|---:|---:|:---|:---|
-| 10 | 2017-11-02 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 728160 | 814500 | FALSE |  |
-| 11 | 2017-11-03 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 814560 | 900900 | FALSE |  |
-| 12 | 2017-11-04 | 60 | UTC-04:00 | EDT | TRUE | 00:00:00 | 23:59:00 | 0 | 1440 | 900960 | 987300 | FALSE |  |
-| 13 | 2017-11-05 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 1 | 1500 | 987360 | 1077300 | TRUE | Time Change |
-| 14 | 2017-11-06 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1077360 | 1163700 | FALSE |  |
-| 15 | 2017-11-07 | 60 | UTC-05:00 | EST | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1163760 | 1250100 | FALSE |  |
-
-Table 6 Initial Brief Summary of the Recording
+![](images/Bdf_demo.png)
 
 ``` r
 knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 ```
 
-|  | Date | Epoch | UTC | TZ_code | Daylight_Saving | Recording_Start | Recording_End | GL_Offset | nDataPoints | Cumulative_Start_Second | Cumulative_End_Second | Excluded | Warning | Recording_Period | Hour_Adjusted |
-|:---|:---|---:|:---|:---|:---|:---|:---|---:|---:|---:|---:|:---|:---|---:|---:|
-| 10 | 2017-11-02 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 771360 | 857700 | TRUE | Travel Day | 2 | 12 |
-| 11 | 2017-11-03 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 857760 | 944100 | FALSE |  | 2 | 12 |
-| 12 | 2017-11-04 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 944160 | 1030500 | FALSE |  | 2 | 12 |
-| 13 | 2017-11-05 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1030560 | 1116900 | FALSE |  | 2 | 12 |
-| 14 | 2017-11-06 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1116960 | 1203300 | FALSE |  | 2 | 12 |
-| 15 | 2017-11-07 | 60 | UTC+08:00 | Asia/Brunei | FALSE | 00:00:00 | 23:59:00 | 0 | 1440 | 1203360 | 1289700 | FALSE |  | 2 | 12 |
-
-Table 7. Adjusted Brief Summary of the Recording
+![](images/Bdf.adj_demo.png)
 
 When we compare the overview of the longitudinal recording, we can also
 see clear changes in the various documentations about the recordings and
@@ -326,7 +303,7 @@ for (i in seq_along(length(x))) {
 2.  Time-shift Adjusted Recording
 
 ``` r
-for (i in seq_alonglength(x))) {
+for (i in seq_along(length(x))) {
   x <- Bdf.adj$Cumulative_Start_Second
   y <- Bdf.adj$Cumulative_End_Second
   GX <- df$Activity[(x[i]:y[i]) / 60]
@@ -338,7 +315,8 @@ for (i in seq_alonglength(x))) {
 
 ``` r
 for (i in names(dfList$Daily_df)) {
-  plot(dfList$Daily_df[[i]]$Activity, main = i, font.lab = 2, ylab = "Activity (counts)")
+  plot(dfList$Daily_df[[i]]$Activity, main = i, font.lab = 2,
+       ylab = "Activity (counts)")
 }
 ```
 

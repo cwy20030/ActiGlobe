@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/cwy20030/ActiGlobe/blob/HEAD/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/DESCRIPTION)
 
 Yao C, Varesco G, Bieuzen F, Simonelli G (2025). *ActiGlobe: Wearable
 Recording Processor for Time Shift Adjustment and Data Analysis*. R

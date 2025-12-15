@@ -28,6 +28,7 @@ weighted by activity and extract first-harmonic cosinor summaries."><meta proper
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
+    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -48,7 +49,7 @@ weighted by activity and extract first-harmonic cosinor summaries."><meta proper
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>KDE-based circadian cosinor summary</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/CosinorM.KDE.R" class="external-link"><code>R/CosinorM.KDE.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/CosinorM.KDE.R" class="external-link"><code>R/CosinorM.KDE.R</code></a></small>
       <div class="d-none name"><code>CosinorM.KDE.Rd</code></div>
     </div>
 
@@ -74,38 +75,43 @@ weighted by activity and extract first-harmonic cosinor summaries.</p>
 
 
 <dl><dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
-<dd><p>Numeric vector of time coordinates for each data point. Values are interpreted
-modulo 24 and must lie in [0, 24). If not numeric, an internal function will
-be used to convert it to numeric values in unit of hour.</p></dd>
+<dd><p>Numeric vector of time coordinates for each data
+point. Values are interpreted modulo 24 and must lie in [0, 24).
+If not numeric, an internal function will be used to convert it
+to numeric values in unit of hour.</p></dd>
 
 
 <dt id="arg-activity">activity<a class="anchor" aria-label="anchor" href="#arg-activity"></a></dt>
-<dd><p>Numeric vector of activity counts from an actigraphy device in correspondance to
-each time point. Non-numeric inputs will be coerced. All-zero or non-finite
+<dd><p>Numeric vector of activity counts from an
+actigraphy device in correspondance to each time point.
+Non-numeric inputs will be coerced. All-zero or non-finite
 activity values produce an error.</p></dd>
 
 
 <dt id="arg-bw">bw<a class="anchor" aria-label="anchor" href="#arg-bw"></a></dt>
-<dd><p>Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
-bw is interpreted in the same units as the angular scale after conversion:
-the implementation converts `bw` from hours to radians internally using
-\(bw_{rad} = bw * 2\pi / \tau\). Default: 0.8.
-Note, small <code>bw</code> (approaching 0) can cause numerical instability, while
-large <code>bw</code> (approaching 1.5) leads a near-uniform kernel and reduces
+<dd><p>Numeric scalar. Kernel standard deviation (SD)
+controlling smoothing. bw is interpreted in the same units as the
+angular scale after conversion: the implementation converts `bw`
+from hours to radians internally using \(bw_{rad} = bw * 2\pi
+/ \tau\). Default: 0.8. Note, small <code>bw</code> (approaching 0) can
+cause numerical instability, while large <code>bw</code> (approaching
+1.5) leads a near-uniform kernel and reduces
 temporal resolution.</p></dd>
 
 
 <dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
-<dd><p>Integer number of evaluation points used for the dense grid on
-\([0, 2 * \pi)\). The grid excludes the duplicate 2*pi endpoint. Default: 360.</p></dd>
+<dd><p>Integer number of evaluation points used for the
+dense grid on \([0, 2 * \pi)\). The grid excludes the duplicate
+2*pi endpoint. Default: 360.</p></dd>
 
 
 <dt id="arg-arctan-">arctan2<a class="anchor" aria-label="anchor" href="#arg-arctan-"></a></dt>
-<dd><p>Logical; if TRUE (default) acrophase is computed with
-<code>atan2(gamma, beta)</code>, resulting in the quadrant interval between
-\(-\pi\) and \(\pi\). Whereas, when set to FALSE, the legacy arctangent
-quadrant is mapped. The resulting interval lies between \(-\frac{\pi}{2}\)
-and \(\frac{\pi}{2}\).</p></dd>
+<dd><p>Logical; if TRUE (default) acrophase is computed
+with <code>atan2(gamma, beta)</code>, resulting in the quadrant
+interval between \(-\pi\) and \(\pi\). Whereas, when set to
+FALSE, the legacy arctangent quadrant is mapped. The resulting
+interval lies between \(-\frac{\pi}{2}\) and
+\(\frac{\pi}{2}\).</p></dd>
 
 
 <dt id="arg-dilute">dilute<a class="anchor" aria-label="anchor" href="#arg-dilute"></a></dt>
@@ -117,10 +123,12 @@ nonparametric bootstrap</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of class <code>c("CosinorM.KDE")</code> with elements:</p><ul><li><p>parm: Parameters specified in the model (list with <code>time</code>, <code>activity</code>, <code>bw</code>, <code>grid</code>)</p></li>
+    <p>A list of class <code>c("CosinorM.KDE")</code> with elements:</p><ul><li><p>parm: Parameters specified in the model (list with
+    <code>time</code>, <code>activity</code>, <code>bw</code>, <code>grid</code>)</p></li>
 <li><p>tau: Period in hours (default to 24hour)</p></li>
 <li><p>kdf: A data.frame with the following columns:</p><ul><li><p>theta: Angular positions (radians) at the observation angles</p></li>
-<li><p>density: Estimated PDF values at the observation angles (integrates to 1 over \([0,2\pi)\) when scaled)</p></li>
+<li><p>density: Estimated PDF values at the observation
+        angles (integrates to 1 over \([0,2\pi)\) when scaled)</p></li>
 <li><p>trapizoid.weight: Numeric vector of trapezoid integration weights
       at observation angles</p></li>
 <li><p>kernel.weight: Denominator from kernel convolution (kernel mass
@@ -132,22 +140,32 @@ nonparametric bootstrap</p></dd>
 <li><p>hour: Corresponding clock time in hours</p></li>
 </ul></li>
 <li><p>coef.cosinor: Named numeric vector with entries:</p><ul><li><p>MESOR: the mean of activity density over 24 hours</p></li>
-<li><p>Amplitude: the first-harmonic amplitude derived from Beta and Gamma</p></li>
-<li><p>Acrophase: Acrophase in radians (time-of-peak) of the dominant daily component</p></li>
-<li><p>Acrophase.hr: Acrophase converted to clock hours in [0,24)</p></li>
-<li><p>Beta: coefficient equivalent to the cosine-weighted integral of the KDE</p></li>
-<li><p>Gamma: coefficient equivalent to the sine-weighted integral of the KDE</p></li>
+<li><p>Amplitude: the first-harmonic amplitude derived from
+        Beta and Gamma</p></li>
+<li><p>Acrophase: Acrophase in radians (time-of-peak) of the
+        dominant daily component</p></li>
+<li><p>Acrophase.hr: Acrophase converted to clock hours in
+        [0,24)</p></li>
+<li><p>Beta: coefficient equivalent to the cosine-weighted
+        integral of the KDE</p></li>
+<li><p>Gamma: coefficient equivalent to the sine-weighted
+        integral of the KDE</p></li>
 </ul></li>
 <li><p>post.hoc: Post-hoc peak/trough diagnostics derived from fitted.values
   at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph,
   Acrophase.ph.time, Peak.ph, Amplitude.ph)</p></li>
 <li><p>grid: (when <code>dilute = FALSE</code>) list of grid diagnostics:</p><ul><li><p>theta: evaluation angles on the dense grid (radians)</p></li>
 <li><p>density: Grid-level PDF (integrates to 1 over theta)</p></li>
-<li><p>trapizoid.weight: Trapezoid integration weights for the grid points</p></li>
-<li><p>kernel.weight: Kernel mass (denominator) at each grid point</p></li>
-<li><p>fitted.values: Normalized fitted values at grid points (activity-scale)</p></li>
-<li><p>fitted.var: Variance propagation through fitted variances on the grid</p></li>
-<li><p>fitted.se: Standard error of the fitted values at grid points</p></li>
+<li><p>trapizoid.weight: Trapezoid integration weights for
+        the grid points</p></li>
+<li><p>kernel.weight: Kernel mass (denominator) at each grid
+        point</p></li>
+<li><p>fitted.values: Normalized fitted values at grid points
+        (activity-scale)</p></li>
+<li><p>fitted.var: Variance propagation through fitted
+        variances on the grid</p></li>
+<li><p>fitted.se: Standard error of the fitted values at grid
+        points</p></li>
 </ul></li>
 </ul></div>
     <div class="section level2">
@@ -157,49 +175,84 @@ activity. The KDE is computed on a regular angular grid over \[0, 2*pi) using
 a wrapped Gaussian kernel with specified bandwidth. Cosinor summaries (MESOR,
 Beta, Gamma, Amplitude, Acrophase) are obtained by numerical integration of
 the KDE using trapezoid-rule quadrature.</p>
-<p>Cosinor parameters are obtained by numerical integration of the KDE on the grid:</p><ul><li><p>MESOR: mean level of the fitted curve, \(M = I_0 / (2\pi)\).</p></li>
+<p>Cosinor parameters are obtained by numerical integration of the
+KDE on the grid:</p><ul><li><p>MESOR: mean level of the fitted curve, \(M = I_0 / (2\pi)\).</p></li>
 <li><p>\(\beta\): cosine coefficient, \(\beta = I_{cos} / \pi\).</p></li>
 <li><p>\(\gamma\): sine coefficient, \(\gamma = I_{sin} / \pi\).</p></li>
-<li><p>Amplitude: magnitude of the first harmonic, \(A = \sqrt{\beta^2 + \gamma^2}\).</p></li>
-<li><p>Acrophase: peak time, \(\phi = atan2(-\gamma, \beta)\), expressed in radians and converted to hours.</p></li>
-</ul><p>The grid integrals are computed with trapezoid weights \(w_g\):
+<li><p>Amplitude: magnitude of the first harmonic,
+    \(A = \sqrt{\beta^2 + \gamma^2}\).</p></li>
+<li><p>Acrophase: peak time, \(\phi = atan2(-\gamma, \beta)\),
+    expressed in radians and converted to hours.</p></li>
+</ul><p>The grid integrals are computed with trapezoid weights
+\(w_g\):
 $$I_0 = \text{area}_g \sum_g \frac{pdf_g \, w_g}{den_g}$$
-$$I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\, w_g}{den_g}$$
-$$I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\, w_g}{den_g}$$</p>
-<p>where \(pdf_g\) is the normalized KDE at grid angle \(\theta_g\), \(den_g\)
-is the kernel denominator at that grid point, and \(\text{area}_g\) rescales the
-fitted density back to the activity scale.</p>
-<p>Notes:</p><ul><li><p>Normalization factors \(1/\pi\) and \(1/(2\pi)\) follow from the orthogonality of sine and cosine on \([0,2\pi)\).</p></li>
-<li><p>The KDE summarizes the first harmonic of the rest–activity pattern over one cycle; higher harmonics are not extracted.</p></li>
-<li><p>The trapezoid rule ensures numerical stability by integrating over a dense, evenly spaced grid.</p></li>
-<li><p>The dense grid excludes the duplicate \(2\pi\) endpoint (grid in \([0,2\pi)\)) to avoid duplicated quadrature nodes.</p></li>
-<li><p>Grid and observation trapezoid weights correct for irregular sampling and yield stable approximations to continuous integrals.</p></li>
-<li><p>Grid points with near-zero denominator \(\sum_i K(\theta-\theta_i) w_i\) are set to <code>NA</code> and excluded from integrals to avoid division-by-zero artifacts.</p></li>
+$$I_{cos} = \text{area}_g \sum_g
+  \frac{pdf_g \cos(\theta_g)\, w_g}{den_g}$$
+$$I_{sin} = \text{area}_g \sum_g
+  \frac{pdf_g \sin(\theta_g)\, w_g}{den_g}$$</p>
+<p>where \(pdf_g\) is the normalized KDE at grid angle
+\(\theta_g\), \(den_g\) is the kernel denominator at that
+grid point, and \(\text{area}_g\) rescales the fitted density
+back to the activity scale.</p>
+<p>Notes:</p><ul><li><p>Normalization factors \(1/\pi\) and \(1/(2\pi)\) follow
+    from the orthogonality of sine and cosine on \([0,2\pi)\).</p></li>
+<li><p>The KDE summarizes the first harmonic of the rest–activity
+    pattern over one cycle; higher harmonics are not extracted.</p></li>
+<li><p>The trapezoid rule ensures numerical stability by
+    integrating over a dense, evenly spaced grid.</p></li>
+<li><p>The dense grid excludes the duplicate \(2\pi\) endpoint
+    (grid in \([0,2\pi)\)) to avoid duplicated quadrature nodes.</p></li>
+<li><p>Grid and observation trapezoid weights correct for
+    irregular sampling and yield stable approximations to
+    continuous integrals.</p></li>
+<li><p>Grid points with near-zero denominator
+    \(\sum_i K(\theta-\theta_i) w_i\) are set to <code>NA</code> and
+    excluded from integrals to avoid division-by-zero artifacts.</p></li>
 </ul><p><strong>Residaul Variance and Effective Degree of Freedom</strong></p><ul><li><p><strong>Regression (projection hat matrix):</strong></p>
 <p>$$\hat{\sigma}^2 = \frac{\mathrm{RSS}}{n - p},$$</p>
-<p>where \(p\) is the number of parameters (degrees of freedom used by the fit).</p></li>
+<p>where \(p\) is the number of parameters (degrees of freedom
+  used by the fit).</p></li>
 <li><p><strong>Linear kernel smoothing:</strong></p>
 <p>Fitted values are given by the linear smoother</p>
 <p>$$\hat{y} = W y,$$</p>
-<p>where \(W\) is the hat matrix induced by the kernel weights (not a projection).</p></li>
-</ul><p>When defining residuals as \(r = y - \hat{y}\) and \(\mathrm{RSS} = \sum r_i^2\),
-the unbiased estimator under the Gaussian kernel smoother can be written as
-$$\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W) + \mathrm{tr}(W^{\top} W)\,}.$$</p>
-<p>where,</p><ul><li><p>$$\mathrm{tr}(W)$$ is the effective degrees of freedom used by the smoother
-        (analogous to the number of parameters).</p></li>
-<li><p>$$\mathrm{tr}(W^{\top} W) = \sum_{i,j} W_{ij}^2$$ is a correction term because
-        \(W\) is not an orthogonal projection.</p></li>
+<p>where \(W\) is the hat matrix induced by the kernel weights
+  (not a projection).</p></li>
+</ul><p>When defining residuals as \(r = y - \hat{y}\) and
+\(\mathrm{RSS} = \sum r_i^2\), the unbiased estimator under the
+Gaussian kernel smoother can be written as
+$$\hat{\sigma}^2 = \frac{\mathrm{RSS}}{\,n - 2\,\mathrm{tr}(W)
+  + \mathrm{tr}(W^{\top} W)\,}.$$</p>
+<p>where,</p><ul><li><p>$$\mathrm{tr}(W)$$ is the effective degrees of freedom
+    used by the smoother (analogous to the number of parameters).</p></li>
+<li><p>$$\mathrm{tr}(W^{\top} W) = \sum_{i,j} W_{ij}^2$$ is a
+    correction term because \(W\) is not an orthogonal
+    projection.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="warnings-and-edge-cases">Warnings and edge cases<a class="anchor" aria-label="anchor" href="#warnings-and-edge-cases"></a></h2>
 
 
-<p></p><ul><li><p>The function errors if <code>all(activity) == 0</code> or if <code>activity</code> contains
-  non-finite values.</p></li>
-<li><p>Very small <code>bw</code> can cause near-zero denominator values (numerical
-  instability) and produce NA or an error; very large <code>bw</code> approaches a
-  near-uniform kernel and will wash out temporal structure.</p></li>
+<p></p><ul><li><p>The function errors if <code>all(activity) == 0</code> or if
+    <code>activity</code> contains non-finite values.</p></li>
+<li><p>Very small <code>bw</code> can cause near-zero denominator values
+    (numerical instability) and produce NA or an error; very large
+    <code>bw</code> approaches a near-uniform kernel and will wash out
+    temporal structure.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology
+and Medical Modelling. 2014-12-01 2014;11(1):16.
+doi:10.1186/1742-4682-11-16</p>
+<p>On Nonparametric Density Estimation for Circular Data: An
+Overview, bookTitle= Directional Statistics for Innovative
+Applications: A Bicentennial Tribute to Florence Nightingale.
+Springer Nature Singapore; 2022:351–378.</p>
+<p>Cremers J, Klugkist I. One Direction? A Tutorial for Circular Data
+Analysis Using R With Examples in Cognitive Psychology. Methods.
+Front Psychol. 2018-October-30 2018;9(2040):2040.
+doi:10.3389/fpsyg.2018.02040</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="CosinorM.html">CosinorM</a></code></p></div>

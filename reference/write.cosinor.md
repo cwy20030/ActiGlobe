@@ -32,7 +32,7 @@ write.cosinor(
 - Dir:
 
   The directory where the recordings to be exported \<e.g.
-  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../FOLDER
+  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../ FOLDER
   NAME/"\>
 
 - ID:
@@ -137,6 +137,7 @@ BdfList <-
 
 # Let's extract the quick summary of the recording
 Bdf <- BdfList$Bdf
+df <- BdfList$df
 
 ### Note that since the original data was affected by travel-induced time
 ### shift, the recordings would not be properly segmented from 2017-11-02.
@@ -148,10 +149,10 @@ Bdf <- Bdf [1:8, ]
 ## Segment Data by Day
 dfList <-
     Act2Daily (
-        df = FlyEast,
+        df = df,
         Bdf = Bdf,
         VAct = "Activity",
-        VTm = "X2",
+        VTm = "Time",
         Incomplete = TRUE,
         Travel = TRUE
     )
@@ -162,7 +163,7 @@ dfList <-
 write.cosinor (
     Dir = getwd (), ## Export to the current working directory
     ID = "JD",
-    df = dfList$Daily_df,
+    DailyAct = dfList$Daily_df,
     Bdf = Bdf,
     VAct = "Activity",
     VTm = "Time"

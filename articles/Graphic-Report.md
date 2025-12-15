@@ -41,14 +41,14 @@ review the pre-processed recordings directly from PDF.
 
 ``` r
 ### Here, we selectively generate graphs at random for day 11 and day 12.
-for (i in names (dfList$Daily_df) [11:12]) {
-    ggActiGlobe (
-        df = dfList$Daily_df [[i]],
-        Bdf = Bdf.adj,
-        VAct = "Activity",
-        VDT = "DateTime"
-    ) +
-        scale_color_grey () #### Change the graph colour
+for (i in names(dfList$Daily_df)[11:12]) {
+  ggActiGlobe(
+    df = dfList$Daily_df[[i]],
+    Bdf = Bdf.adj,
+    VAct = "Activity",
+    VDT = "DateTime"
+  ) +
+    scale_color_grey() #### Change the graph colour
 }
 ```
 
@@ -70,13 +70,13 @@ recordings, it is advisable for users to review some recordings with
 during processing.
 
 ``` r
-dfList <- write.act (
-    Dir = "The_PATH_in_the_computer_WHERE_the_daily_recordings_will_be_stored",
-    ID = "JD",
-    df = df,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VTm = "Time"
+dfList <- write.act(
+  Dir = "The_PATH_in_the_computer_WHERE_the_daily_recordings_will_be_stored",
+  ID = "JD",
+  df = df,
+  Bdf = Bdf.adj,
+  VAct = "Activity",
+  VTm = "Time"
 )
 ```
 
@@ -93,12 +93,12 @@ segmented daily recording from
 Note, ActiGlobe appends all recordings to a single PDF file.
 
 ``` r
-dfList <- write.cosinor (
-    Dir = "The_PATH_in_the_computer_WHERE_the_daily_recordings_will_be_stored",
-    ID = "JD",
-    DailyAct = dfList$Daily_df,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VTm = "Time"
+dfList <- write.cosinor(
+  Dir = "The_PATH_in_the_computer_WHERE_the_daily_recordings_will_be_stored",
+  ID = "JD",
+  DailyAct = dfList$Daily_df,
+  Bdf = Bdf.adj,
+  VAct = "Activity",
+  VTm = "Time"
 )
 ```

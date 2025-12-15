@@ -54,7 +54,7 @@ Date2TotalT (as.POSIXct (c (
     "2021-06-10 08:00:00",
     "2021-06-10 14:30:00"
 )), "minute")
-#> [1] 390 570
+#> [1] 1440 1440
 # }
 
 # In seconds (case-insensitive unit name)

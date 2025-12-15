@@ -29,7 +29,7 @@ ggCosinorM(
   A fitted model of class
   [`CosinorM`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.md)
   or
-  [`CosinorM.KDE`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.KDE.md)
+  [`CosinorM.KDE`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.KDE.md).
 
 - labels:
 
@@ -45,16 +45,16 @@ ggCosinorM(
 - ci_level:
 
   Confidence level for the pointwise bands, expressed in numeric value
-  between 0 and 1.
+  between 0 and 1 (default: \`0.95\`).
 
 - n:
 
   Integer; number of points on the fine prediction grid used to draw the
-  fitted cosinor and confidence ribbon. (default to \`400\`)
+  fitted cosinor and confidence ribbon (default: \`400\`).
 
 - point_size:
 
-  Numeric; plotting size for observed points. (default: \`0.5\`)
+  Numeric; plotting size for observed points (default: \`0.5\`).
 
 - title_extra:
 
@@ -69,7 +69,7 @@ ggCosinorM(
 
 - ...:
 
-  Additional arguments (currently ignored) kept for future update
+  Additional arguments (currently ignored) kept for future update.
 
 ## Value
 

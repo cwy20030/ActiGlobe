@@ -164,6 +164,9 @@ sine and cosine coefficients as: \$\$A= \sqrt {(\beta^2 + \gamma^2)}\$\$
 
 ## References
 
+Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and
+Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
+
 Chambers, J. M. (1992) Linear models. Chapter 4 of Statistical Models in
 S eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 
@@ -215,6 +218,7 @@ fit$coef.cosinor
 
 
 # plot Cosinor in hours
-plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour", ylab = "24-Hour Cosinor Model")
+plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour",
+      ylab = "24-Hour Cosinor Model")
 } # }
 ```

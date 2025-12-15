@@ -4,21 +4,30 @@
 
 - New master and class functions added: NA
 
-- New internal function added: Prob.Inact, mIANA
+- New internal function added: Prob.Inact, mIANA, UnitFactor, ValInput
 
 - Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ,
-  UTCwDST
+  UTCwDST, Date2TotalT, write.act, BriefSum, write.act, write.cosinor,
+  C2T
 
 - Brief Detail:
 
   - piecewise binomial estimation of inactive period using Prob.Inact
   - enable internal call function for data through mIANA setting
+  - implement UnitFactor for generic conversion
+  - implement ValInput for OS-based switcher to execute C-based serial
+    processing within write.\* functions to avoid segfault overflow
+  - additional parameter created to identify the initial timepoint of
+    each recording period
   - augment ggCosinorM legend
   - modify internal uses of IANA in Act2Daily
   - enable switches for paralelle process for GuessTZ
   - add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT
     zones when OlsonNames lookup fails
   - augment test suits for all internal/helper functions
+  - augment fail check in Date2TotalT function
+  - implement string parsing for time in C2T to avoid automatic TZ
+    adjustment from as.POSXct
 
 ## Version 0.2.0, 2025-10-31
 

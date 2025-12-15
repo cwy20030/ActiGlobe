@@ -89,11 +89,10 @@ ggActiGlobe(df = df,
             VDT = "DateTime")
 ```
 
-![Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day
-Epoching Misalignment](articles/images/Unadjusted_Overview.png)
-
-Figure 1. An Overview of the Raw Recording with Clear Day‑to‑day
-Epoching Misalignment
+![Figure 1. An Overview of the Raw
+Recording](/articles/images/Unadjusted_Overview.png) **Figure 1.**
+Overview of the raw recording with clear day‑to‑day epoching
+misalignment
 
 ### Adjust Travel-induced Time Shift
 
@@ -112,8 +111,6 @@ and anonymize the travel destination to keep participants’ privacy.
 ``` r
 dfList = Act2Daily(df = df,
                    Bdf = Bdf.adj,
-                   VAct = "Activity",
-                   VTm = "Time",
                    Incomplete = TRUE,
                    Travel = TRUE)
 ```
@@ -130,9 +127,8 @@ ggActiGlobe(df = df2,
 ```
 
 ![Figure 2. An Overview of the Adjusted
-Recording](articles/images/Adjusted_Overview.png)
-
-Figure 2. An Overview of the Adjusted Recording
+Recording](/articles/images/Adjusted_Overview.png) **Figure 2.**
+Overview of the *adjusted* recording
 
 ## Other Features
 
