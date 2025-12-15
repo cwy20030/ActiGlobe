@@ -23,7 +23,7 @@
 #' `coloring` points that were flagged (e.g. travel overlaps or unallocated
 #' epochs).
 #'
-#' @import ggplot2
+#' @importFrom ggplot2 aes element_line element_text geom_point geom_vline ggplot labs margin scale_x_continuous scale_y_continuous theme theme_classic
 #'
 #' @param df A data.frame of annotated actigraphy epochs.  Must include:
 #'   - An activity column named by `VAct`.

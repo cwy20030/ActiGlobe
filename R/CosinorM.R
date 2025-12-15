@@ -79,7 +79,8 @@
 #' \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 #'
 #'
-#' @import stats sandwich
+#' @importFrom stats lm coef resid predict update as.formula vcov
+#' @importFrom sandwich vcovHC
 #'
 #'
 #' @param time Numeric vector of time coordinates for each data point
