@@ -30,7 +30,7 @@
 #' @returns
 #' If \code{as.time = TRUE}, returns a character vector of the input times
 #' reformatted according to the detected format. Each element corresponds to
-#' the respective entry in \code{Time}.
+#' the respective entry in \code{time}.
 #'
 #' If \code{as.time = FALSE}, returns a character scalar giving the
 #' best-matching time format string.

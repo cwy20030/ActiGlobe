@@ -126,13 +126,18 @@ GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
   ## Step 1 Guess all possible TZ indicators -----------
   pTZs <- lapply(aOF, function(x) oTZs[Toffs %in% x])
+  names(pTZs) <- aOF
 
   ## Step 2 Check if the initial time zone is included
   if (!is.null(TZ1)) {
     if (length(aOF) == 1) {
-      if (TZ1 %in% pTZs[[1]]) pTZs <- list(TZ1)
+      if (TZ1 %in% pTZs[[1]]) {
+        pTZs <- list(TZ1)
+        names(pTZs) <- aOF
+      }
     } else {
       pTZs <- lapply(pTZs, function(x) if (TZ1 %in% x) TZ1 else x)
+      names(pTZs) <- aOF
     }
   }
 
@@ -140,6 +145,7 @@ GuessTZ <- function(aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
   if (!All) {
     if (length(aOF) > 1) {
       pTZs <- vapply(pTZs, function(x) x[[1]], FUN.VALUE = character(1))
+      names(pTZs) <- aOF
     } else {
       pTZs <- pTZs[[1]]
     }
