@@ -143,7 +143,8 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
         grid <- object$grid.size
 
         for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time), replace = TRUE)
+            idx <- sample.int (length (time), size = length (time),
+                               replace = TRUE)
             idx <- idx [order (idx)]
             Time <- as.numeric (time [idx])
             Act <- as.numeric (activity [idx])
@@ -169,7 +170,8 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
 
 
         for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time), replace = TRUE)
+            idx <- sample.int (length (time), size = length (time),
+                               replace = TRUE)
             idx <- idx [order (idx)]
             mdl <- CosinorM (
                 time = time [idx],

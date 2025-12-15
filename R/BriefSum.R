@@ -210,8 +210,9 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
     df$Time <- Ts ### Time in string
     df$UTC <- UTCs ### UTC in string
     df$DaylightSaving <- DSTs ### Daylight saving indicator in logical
+    ### cumulative data point index in numeric.
     df$nPoint <-
-        seq_len (length.out = nrow (df)) ### cumulative data point index in numeric.
+        seq_len (length.out = nrow (df))
 
 
     # Initialize Report ------------
@@ -234,7 +235,8 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
     #### Set Exclusion and Warning
     Summary$Excluded <- ifelse (!nDP == 24 * nDPHr, TRUE, FALSE)
     Summary$Warning <- ifelse (Summary$Excluded, "Incomplete Recording", "")
-    Summary$Warning <- ifelse (nDP > 24 * nDPHr, "Time Change", Summary$Warning)
+    Summary$Warning <- ifelse (nDP > 24 * nDPHr, "Time Change",
+                               Summary$Warning)
 
 
     class (df) <- c ("ActiGlobe", "data.frame")

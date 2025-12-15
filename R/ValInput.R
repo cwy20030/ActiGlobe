@@ -52,10 +52,10 @@
 
 
 ValInput <- function (x, type = c ("Act", "Tm")) {
-    # Step 0 Argument matching and system info Extraction -----------------------
+    # Step 0 Argument matching and system info Extraction ---------------------
     type <- match.arg (type)
 
-    # Step 1 Switch based on type -----------------------------------------------
+    # Step 1 Switch based on type ---------------------------------------------
     switch (type,
 
         ## Activity validation ---------------------
@@ -80,11 +80,11 @@ ValInput <- function (x, type = c ("Act", "Tm")) {
 
             if (any (x > 24 | x < 0)) {
                 stop (paste (
-                    "Currently, the model cannot fit actigraphy recordings lasting
-          longer than a day.",
+                    "Currently, the model cannot fit actigraphy
+                    recordings lasting longer than a day.",
                     "Please, rescale the time coordinate to between 0 and 24.",
-                    "Note that it is crucial to have the proper time coordinate since
-          the model relies on it."
+                    "Note that it is crucial to have the proper time
+                    coordinate since the model relies on it."
                 ))
             }
             return (x)

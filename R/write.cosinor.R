@@ -158,7 +158,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
             "Peak", "Amplitude"
         )
         Bdf [nVNames] <- NA
-        KeyTerm <- "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
+        KeyTerm <-
+            "MESOR|Bathyphase.time|Trough.ph|Acrophase.time|Peak|Amplitude"
     }
 
     ## Check Directory ----------------
@@ -190,7 +191,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
 
-            Act [is.na (Act)] <- 0 #### Just in acse, provide a zero imputation for NA.
+            #### Just in acse, provide a zero imputation for NA.
+            Act [is.na (Act)] <- 0
 
             if (!all (Act == 0)) {
                 ### Create activity trend for the top panel ---------------
@@ -215,11 +217,12 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                     theme_bw ()
 
 
-                ### Fit cosinor models with 24Hr period  -----------------------
+                ### Fit cosinor models with 24Hr period  ----------------------
                 if (method == "KDE") {
                     m1 <- CosinorM.KDE (time = Tm, activity = Act)
                 } else {
-                    m1 <- CosinorM (time = Tm, activity = Act, tau = tau, method = method)
+                    m1 <- CosinorM (time = Tm, activity = Act, tau = tau,
+                                    method = method)
                 }
 
                 if (all (nT == 1, isFALSE (ph))) {
@@ -237,7 +240,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                     Cftemp <- m1$post.hoc
                     Cftemp <- Cftemp [match (nVNames, names (Cftemp))]
                     Coef <- Cftemp [grepl (KeyTerm, names (Cftemp))]
-                    # MESOR, Bathyphase.time, Trough.ph, Acrophase.time, Peak, Amplitude
+                    # MESOR, Bathyphase.time, Trough.ph,
+                    # Acrophase.time, Peak, Amplitude
                 }
 
                 ### Update the report with cosinor model coefficients

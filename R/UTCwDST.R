@@ -94,10 +94,11 @@ UTCwDST <- function (UTCs, fork = FALSE) {
 
     # Check DST status in mid‐winter vs. mid‐summer ----------
     wDT <- as.POSIXct (JAN1, tz = "UTC")
-    ### NO daylight saving time for the north hemispher but yes for the south
+    ### NO daylight saving time for the north hemisphere but yes for the south
 
     sDT <- as.POSIXct ("2021-07-15", tz = "UTC")
-    ### Yes to daylight saving time for the north hemispher but NO for the south
+    ### Yes to daylight saving time for the north hemisphere
+    ### but NO for the south
 
     ## Check if any time zone may experience time change.
     Out <- sapply (pTZs, function (tzs) {
