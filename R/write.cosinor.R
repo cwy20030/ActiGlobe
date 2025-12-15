@@ -144,8 +144,14 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
     U <- Bdf$UTC
 
     ### Set default variable names for activity and time columns
-    if (is.null (VAct)) VAct <- names (DailyAct [[1]]) [[2]]
-    if (is.null (VTm)) VTm <- names (DailyAct [[1]]) [[1]]
+    if (is.null (VAct) || is.null (VTm)) {
+        first_df <- DailyAct [[1]]
+        if (is.null (first_df) || length (DailyAct) == 0) {
+            stop ("DailyAct must contain at least one data frame")
+        }
+        if (is.null (VAct)) VAct <- names (first_df) [[2]]
+        if (is.null (VTm)) VTm <- names (first_df) [[1]]
+    }
 
     ## Initialize all cosinor results -----------------------
     cosinor_setup <- setup_cosinor_columns (tau, ph)
@@ -290,7 +296,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
 
     BdfDir <- paste0 (fDir, "/Summary.csv")
     if (isFALSE (overwrite)) {
-        if (dir.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
+        if (file.exists (BdfDir)) BdfDir <- paste0 (BdfDir, " ", Sys.time ())
     }
     utils::write.csv (Bdf, BdfDir, row.names = FALSE)
 }
@@ -324,7 +330,7 @@ setup_output_paths <- function (Dir, ID, overwrite) {
 
     pdfDir <- paste0 (fDir, "/", ID, ".pdf")
     if (isFALSE (overwrite)) {
-        if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
+        if (file.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
     }
 
     list (fDir = fDir, pdfDir = pdfDir)
