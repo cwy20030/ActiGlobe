@@ -11,7 +11,8 @@ concurrency:
 # usethis::use_github_action("check-standard") will install it.
 on:
   push:
-    branches: [main, master]
+  # Manually trigger the Action under Actions/pkgcheck
+  workflow_dispatch:
   pull_request:
 
 name: R-CMD-check.yaml
