@@ -72,7 +72,10 @@
 
 TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     # Establish initial time zone ----------------
-    if (TZ == "local") TZ <- Sys.timezone ()
+    if (!is.null (TZ)) {
+
+        if (TZ == "local") TZ <- Sys.timezone ()
+    }
 
     ## Extract Essential Parameters ----------------
     DT <- Bdf$Date
