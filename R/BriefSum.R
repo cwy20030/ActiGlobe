@@ -113,6 +113,9 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
     # Prepare Basic Variables ------------------
     # MN <- hms::as_hms("00:00:00")
     # MN2 <- hms::as_hms("24:00:00")
+    if (is.null(TZ) || length(TZ) != 1 || is.na(TZ)) {
+        TZ <- "local"
+    }
     if (TZ == "local") TZ <- Sys.timezone ()
     Epc <- 1 / SR # Compute epoch length
     # DP <- nrow(df) # Number of Data Points

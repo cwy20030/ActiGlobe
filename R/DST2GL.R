@@ -54,13 +54,18 @@
 #' # On 2021-11-07 clocks fall back: day is 25h so output = +1
 #' DST2GL (dates)
 #'
+#' \dontrun{
 #' # Multiple Dates
 #' sapply (c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
+#' }
 #'
 #' @export
 
 
 DST2GL <- function (DT, TZ = "local") {
+    if (is.null(TZ) || length(TZ) != 1 || is.na(TZ)) {
+        TZ <- "local"
+    }
     if (TZ == "local") TZ <- Sys.timezone ()
 
     # Validate the time zone

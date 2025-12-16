@@ -53,6 +53,9 @@
 #' @export
 
 TZ2UTC <- function (DT, TZ = "local") {
+    if (is.null(TZ) || length(TZ) != 1 || is.na(TZ)) {
+        TZ <- "local"
+    }
     if (TZ == "local") TZ <- Sys.timezone ()
 
 

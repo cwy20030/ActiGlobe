@@ -73,7 +73,9 @@
 TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     # Establish initial time zone ----------------
     if (!is.null (TZ)) {
-
+        if (length(TZ) != 1 || is.na(TZ)) {
+            TZ <- "local"
+        }
         if (TZ == "local") TZ <- Sys.timezone ()
     }
 

@@ -63,6 +63,9 @@
 #'
 #' @export
 Date2TotalT <- function (DT, TUnit = "hour", TZ = "local") {
+    if (is.null(TZ) || length(TZ) != 1 || is.na(TZ)) {
+        TZ <- "local"
+    }
     if (TZ == "local") TZ <- Sys.timezone ()
 
     # Validate the time zone

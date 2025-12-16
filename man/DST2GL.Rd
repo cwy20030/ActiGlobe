@@ -43,7 +43,9 @@ dates <- as.Date ("2021-11-07")
 # On 2021-11-07 clocks fall back: day is 25h so output = +1
 DST2GL (dates)
 
+\dontrun{
 # Multiple Dates
 sapply (c ("2021-03-13", "2021-03-14", "2021-03-15"), DST2GL)
+}
 
 }
