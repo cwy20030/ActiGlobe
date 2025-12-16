@@ -138,33 +138,11 @@ test_that ("write.cosinor exports PDF and summary CSV correctly", {
         "MESOR", "Bathyphase.time", "Trough.ph", "Acrophase.time",
         "Peak", "Amplitude"
     ) %in% names (out)))
-})
 
 
-test_that("write.cosinor handles method='FGLS' correctly", {
-    tmpdir <- tempdir()
-    ID <- "TEST_FGLS"
 
-    BdfList <-
-        BriefSum(
-            df = FlyEast,
-            SR = 1 / 60,
-            Start = "2017-10-24 13:45:00",
-            TZ = "America/New_York"
-        )
 
-    Bdf <- BdfList$Bdf[5:6, ]
-    df <- BdfList$df
-
-    dfList <-
-        Act2Daily(
-            df = df,
-            Bdf = Bdf,
-            VAct = "Activity",
-            VTm = "Time"
-        )
-
-    # Test FGLS method
+    # Test FGLS method --------------------------------
     write.cosinor(
         Dir = tmpdir,
         ID = ID,
@@ -177,16 +155,26 @@ test_that("write.cosinor handles method='FGLS' correctly", {
     )
 
     # ---- Structure checks ----
-    fDir <- file.path(paste0(tmpdir, "/", ID, "/"))
-    expect_true(dir.exists(fDir))
+    fDir <- file.path (paste0 (tmpdir, "/", ID, "/"))
+    expect_true (dir.exists (fDir)) # directory exists
 
-    pdfFile <- file.path(fDir, paste0(ID, ".pdf"))
-    expect_true(file.exists(pdfFile))
+    pdfFile <- file.path (fDir, paste0 (ID, ".pdf"))
+    expect_true (file.exists (pdfFile)) # PDF exists
 
-    csvFile <- file.path(fDir, "Summary.csv")
-    expect_true(file.exists(csvFile))
+    csvFile <- file.path (fDir, "Summary.csv")
+    expect_true (file.exists (csvFile)) # CSV exists
+
+    # ---- Relationship checks ----
+    # Verify that the summary CSV relates correctly to the input Bdf
+    out <- utils::read.csv (csvFile, stringsAsFactors = FALSE)
+    expect_equal (nrow (out), nrow (Bdf)) # same number of rows as input subset
+    expect_true (length (out) > length (Bdf))
 
     # ---- Content checks ----
-    out <- utils::read.csv(csvFile, stringsAsFactors = FALSE)
-    expect_equal(nrow(out), nrow(Bdf))
+    # Ensure the summary CSV contains expected cosinor coefficient columns
+    expect_true (all (c (
+        "MESOR", "Amplitude", "Acrophase",
+        "Acrophase.time"
+    ) %in% names (out)))
+
 })
