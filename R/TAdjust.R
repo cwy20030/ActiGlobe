@@ -211,7 +211,6 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     Tl <- as.numeric (as.POSIXct (Dl, tz = gTZ [Idxl]))
 
     Epl <- as.numeric (Epc [[1]])
-
     Timel <- seq (
         from = Tl,
         by = Epl,
