@@ -147,11 +147,8 @@ knitr::kable (head (IANA), format = "html",
 ###  {.scrollable}
 Before `ActiGlobe` directly modify information stored in the enriched longitudinal recording - `df`, we will need to adjust the brief summary stored in `Bdf`. This design allows us to quickly scan through the summary file, just in case any adjustment is not properly addressed.
 
-```{r TAdjust_Action, echo = FALSE, message=FALSE, warning=FALSE, results='hide'}
-Bdf.adj <- TAdjust (Bdf, TLog, fork = TRUE)
-```
 
-```{r TAdjust, eval=FALSE, message=FALSE, warning=FALSE}
+```{r TAdjust, message=FALSE, warning=FALSE}
 Bdf.adj <- TAdjust (Bdf, TLog)
 ```
 
