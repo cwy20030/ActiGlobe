@@ -52,26 +52,26 @@ object with adjusted data points and time shift based on travel log.
 if (FALSE) { # \dontrun{
 
 # Import sample data
-data(FlyEast)
+data (FlyEast)
 
 # Create quick summary of the recording with adjustment for daylight saving.
-BdfList <- BriefSum(
-  df = FlyEast,
-  SR = 1 / 60,
-  Start = "2017-10-19 13:45:00"
+BdfList <- BriefSum (
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-19 13:45:00"
 )
 
 # Extract only the summary report
 Bdf <- BdfList$Bdf
 
 # Import sample travel Log
-data(TLog)
+data (TLog)
 
 # Adjust time shift based on travel log
-Bdf.adj <- TAdjust(Bdf, TLog)
+Bdf.adj <- TAdjust (Bdf, TLog)
 
 # Display the summary
-View(Bdf)
-View(Bdf.adj) ### Focus on the dates after 2017-11-01
+View (Bdf)
+View (Bdf.adj) ### Focus on the dates after 2017-11-01
 } # }
 ```

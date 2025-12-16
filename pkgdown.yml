@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   Graphic-Report: Graphic-Report.html
   Introduction: Introduction.html
   Time-Shift: Time-Shift.html
-last_built: 2025-12-15T16:57Z
+last_built: 2025-12-16T05:54Z
 urls:
   reference: https://cwy20030.github.io/ActiGlobe/reference
   article: https://cwy20030.github.io/ActiGlobe/articles

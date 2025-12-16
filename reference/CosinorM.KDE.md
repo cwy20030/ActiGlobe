@@ -21,7 +21,7 @@ CosinorM.KDE(
 - time:
 
   Numeric vector of time coordinates for each data point. Values are
-  interpreted modulo 24 and must lie in \[0, 24). If not numeric, an
+  interpreted modulo 24 and must lie in \\\[0, 24)\\. If not numeric, an
   internal function will be used to convert it to numeric values in unit
   of hour.
 
@@ -33,12 +33,12 @@ CosinorM.KDE(
 
 - bw:
 
-  Numeric scalar. Kernel standard deviation (SD) controlling smoothing.
+  Numeric scalar. Kernel standard deviation (SD) controlling s moothing.
   bw is interpreted in the same units as the angular scale after
   conversion: the implementation converts \`bw\` from hours to radians
   internally using \\bw\_{rad} = bw \* 2\pi / \tau\\. Default: 0.8.
   Note, small `bw` (approaching 0) can cause numerical instability,
-  while large `bw` (approaching 1.5) leads a near-uniform kernel and
+  while arge `bw` (approaching 1.5) leads a near-uniform kernel and
   reduces temporal resolution.
 
 - grid:
@@ -232,7 +232,7 @@ where,
 Cornelissen G. Cosinor-based rhythmometry. Theoretical Biology and
 Medical Modelling. 2014-12-01 2014;11(1):16. doi:10.1186/1742-4682-11-16
 
-On Nonparametric Density Estimation for Circular Data: An Overview,
+On Nonparametric Density Estimation for Circular Data: An Overview ,
 bookTitle= Directional Statistics for Innovative Applications: A
 Bicentennial Tribute to Florence Nightingale. Springer Nature Singapore;
 2022:351–378.
@@ -244,6 +244,7 @@ Psychol. 2018-October-30 2018;9(2040):2040. doi:10.3389/fpsyg.2018.02040
 ## See also
 
 [`CosinorM`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.md)
+[`ggCosinorM`](https://cwy20030.github.io/ActiGlobe/reference/ggCosinorM.md)
 
 ## Examples
 

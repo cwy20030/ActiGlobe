@@ -84,7 +84,7 @@ by Daylight Saving and Travel-induced Time Shift</h3>
 Yao</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/vignettes/Time-Shift.Rmd" class="external-link"><code>vignettes/Time-Shift.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/vignettes/Time-Shift.Rmd" class="external-link"><code>vignettes/Time-Shift.Rmd</code></a></small>
       <div class="d-none name"><code>Time-Shift.Rmd</code></div>
     </div>
 
@@ -103,10 +103,10 @@ Graphic-Report.</p>
 <h2 id="load-the-libraries">Load the Libraries<a class="anchor" aria-label="anchor" href="#load-the-libraries"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cwy20030/ActiGlobe" class="external-link">ActiGlobe</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://github.com/cwy20030/ActiGlobe" class="external-link">ActiGlobe</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Optional Library</span></span>
-<span><span class="co"># library(zeallot)</span></span></code></pre></div>
+<span><span class="co"># library (zeallot)</span></span></code></pre></div>
 <p>If any of the packages has yet been installed, we can always install
 them using the function [“install.packages()”].</p>
 </div>
@@ -116,7 +116,7 @@ them using the function [“install.packages()”].</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"FlyEast"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">FlyEast</span><span class="op">)</span> <span class="co">### Only the first few lines</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span> <span class="op">(</span><span class="va">FlyEast</span><span class="op">)</span> <span class="co">### Only the first few lines</span></span></code></pre></div>
 <table class="table">
 <caption>Table 1. An Overview of the FlyEast Dataset</caption>
 <thead><tr class="header">
@@ -158,8 +158,8 @@ them using the function [“install.packages()”].</p>
 </tbody>
 </table>
 <p>For more information, type <code><a href="../reference/FlyEast.html">?FlyEast</a></code> or
-<code><a href="../reference/FlyEast.html">help(FlyEast)</a></code> in your R console.</p>
-<p>&lt; Tip for Beginner to R&gt; 1. Type: View(FlyEast) in the R
+<code><a href="../reference/FlyEast.html">help (FlyEast)</a></code> in your R console.</p>
+<p>&lt; Tip for Beginner to R&gt; 1. Type: View (FlyEast) in the R
 console will allow users to review the data structure of FlyEast. 2. Use
 <b>Tab</b> button to help finish the code. Try typing: “Fly” in the
 Console (i.e., the window where we can see a <code>&gt;</code>), then
@@ -190,8 +190,8 @@ both the summary and the newly enriched recording data in a
 <span>    Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="co">### An overview of the output structure from BriefSum()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">BdfList</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span> <span class="op">(</span><span class="va">BdfList</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co">### An overview of the output structure from BriefSum()</span></span>
 <span><span class="co">#&gt; List of 2</span></span>
 <span><span class="co">#&gt;  $ Bdf:Classes 'ActiGlobe' and 'data.frame': 35 obs. of  13 variables:</span></span>
 <span><span class="co">#&gt;  $ df :Classes 'ActiGlobe' and 'data.frame': 48847 obs. of  9 variables:</span></span></code></pre></div>
@@ -199,7 +199,7 @@ both the summary and the newly enriched recording data in a
 multiple outputs at once just like in <code>Matlab</code> and
 <code>Python</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">Bdf</span>, <span class="va">df</span><span class="op">)</span> <span class="op">%&lt;-%</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="va">Bdf</span>, <span class="va">df</span><span class="op">)</span> <span class="op">%&lt;-%</span></span>
 <span>  <span class="fu"><a href="../reference/BriefSum.html">BriefSum</a></span><span class="op">(</span></span>
 <span>    df <span class="op">=</span> <span class="va">FlyEast</span>,</span>
 <span>    SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span>
@@ -212,19 +212,305 @@ recording is less than 24 hours and the presence of daylight-saving time
 (based on the initial time zone).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Bdf</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">Bdf</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="images/Bdf_head.png" alt="Table 2 The Header of Bdf"><div class="figcaption">Table 2 The Header of Bdf</div>
-</div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span> <span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></code></pre></div>
+<table style="width:800px;" class="table">
+<caption>
+Table 2 The Header of Bdf
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017-10-24
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+13:45:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+615
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+36900
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Incomplete Recording
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-25
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+36960
+</td>
+<td style="text-align:right;">
+123300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-26
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+123360
+</td>
+<td style="text-align:right;">
+209700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-27
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+209760
+</td>
+<td style="text-align:right;">
+296100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-28
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+296160
+</td>
+<td style="text-align:right;">
+382500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017-10-29
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+382560
+</td>
+<td style="text-align:right;">
+468900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
 <p>In the enriched data - <code>df</code>, we have both the original
 data stored in <code>FlyEast</code> and some new information, such as
 the time stamp of each data point.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">df</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">### This should give us the same first few lines of FlyEast dataset</span></span>
-<span><span class="co">### with a few new columns created by [BrifSum()].</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span> <span class="op">(</span><span class="va">df</span><span class="op">)</span> </span>
+<span><span class="co">### This should give us the same first few lines of </span></span>
+<span><span class="co">### FlyEast dataset with a few new columns created by [BrifSum()].</span></span></code></pre></div>
 <table style="width:800px;" class="table">
 <caption>
 Table 3. BriefSum Enriched Longitudinal Recording
@@ -279,10 +565,10 @@ nPoint
 13:45:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 1
@@ -308,10 +594,10 @@ FALSE
 13:46:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 2
@@ -337,10 +623,10 @@ FALSE
 13:47:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 3
@@ -366,10 +652,10 @@ FALSE
 13:48:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 4
@@ -395,10 +681,10 @@ FALSE
 13:49:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 5
@@ -424,10 +710,10 @@ FALSE
 13:50:00
 </td>
 <td style="text-align:left;">
-UTC+00:00
+UTC-04:00
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 6
@@ -457,12 +743,12 @@ destination.</p>
 TLog. The <code>TLog</code> was created using the standard travel diary
 template, which can be created using the function
 <code><a href="../reference/TravelLog.html">TravelLog()</a></code>. For more information on the standard travel
-diary, type <code><a href="../reference/TravelLog.html">?TravelLog</a></code> or <code><a href="../reference/TravelLog.html">help(TravelLog)</a></code> in
+diary, type <code><a href="../reference/TravelLog.html">?TravelLog</a></code> or <code><a href="../reference/TravelLog.html">help (TravelLog)</a></code> in
 the R console.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span> <span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
 <table style="width:800px;" class="table">
 <caption>
 Table 4. An Example of a Standard Travel Diary Template
@@ -570,13 +856,13 @@ because it can affect up to one hour in difference when correcting for
 time stamps.</p>
 <p>To facilitate the documentation of the travel log, we also include a
 copy of the standard Internet Assigned Numbers Authority (IANA)
-timetable in ActiGlobe. We can simply use <code>View(IANA)</code> to
+timetable in ActiGlobe. We can simply use <code>View (IANA)</code> to
 pull up the 2025b version of the timetable.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span></code></pre></div>
-<table style="width:450px;" class="table">
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span> <span class="op">(</span><span class="va">IANA</span><span class="op">)</span></span></code></pre></div>
+<table style="width:700px;" class="table">
 <caption>
 Table 5. An Overview of the 2024 IANA Time Zone Database
 </caption>
@@ -923,16 +1209,674 @@ adjust the brief summary stored in <code>Bdf</code>. This design allows
 us to quickly scan through the summary file, just in case any adjustment
 is not properly addressed.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TAdjust.html">TAdjust</a></span><span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TAdjust.html">TAdjust</a></span> <span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
 <p>When we put it side-by-side with the initial brief summary, we can
 see clear changes across the various documents regarding the recordings
 and their annotations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
-<p><img src="images/Bdf_demo.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="va">Bdf</span> <span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
+<table style="width:700px;" class="table">
+<caption>
+Table 6 Initial Brief Summary of the Recording
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+2017-11-02
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+728160
+</td>
+<td style="text-align:right;">
+814500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+2017-11-03
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+814560
+</td>
+<td style="text-align:right;">
+900900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+2017-11-04
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-04:00
+</td>
+<td style="text-align:left;">
+EDT
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+900960
+</td>
+<td style="text-align:right;">
+987300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+2017-11-05
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1500
+</td>
+<td style="text-align:right;">
+987360
+</td>
+<td style="text-align:right;">
+1077300
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Time Change
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+2017-11-06
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1077360
+</td>
+<td style="text-align:right;">
+1163700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+2017-11-07
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC-05:00
+</td>
+<td style="text-align:left;">
+EST
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1163760
+</td>
+<td style="text-align:right;">
+1250100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Bdf.adj</span><span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
-<p><img src="images/Bdf.adj_demo.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span> <span class="op">(</span><span class="va">Bdf.adj</span> <span class="op">[</span><span class="fl">10</span><span class="op">:</span><span class="fl">15</span>, <span class="op">]</span><span class="op">)</span> <span class="co">### Only display 6 days</span></span></code></pre></div>
+<table style="width:700px;" class="table">
+<caption>
+Table 7. Adjusted Brief Summary of the Recording
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Epoch
+</th>
+<th style="text-align:left;">
+UTC
+</th>
+<th style="text-align:left;">
+TZ_code
+</th>
+<th style="text-align:left;">
+Daylight_Saving
+</th>
+<th style="text-align:left;">
+Recording_Start
+</th>
+<th style="text-align:left;">
+Recording_End
+</th>
+<th style="text-align:right;">
+GL_Offset
+</th>
+<th style="text-align:right;">
+nDataPoints
+</th>
+<th style="text-align:right;">
+Cumulative_Start_Second
+</th>
+<th style="text-align:right;">
+Cumulative_End_Second
+</th>
+<th style="text-align:left;">
+Excluded
+</th>
+<th style="text-align:left;">
+Warning
+</th>
+<th style="text-align:right;">
+Recording_Period
+</th>
+<th style="text-align:right;">
+Hour_Adjusted
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+2017-11-02
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+771360
+</td>
+<td style="text-align:right;">
+857700
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Travel Day
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+2017-11-03
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+857760
+</td>
+<td style="text-align:right;">
+944100
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+2017-11-04
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+944160
+</td>
+<td style="text-align:right;">
+1030500
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+2017-11-05
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1030560
+</td>
+<td style="text-align:right;">
+1116900
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+2017-11-06
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1116960
+</td>
+<td style="text-align:right;">
+1203300
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+2017-11-07
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+UTC+08:00
+</td>
+<td style="text-align:left;">
+Asia/Brunei
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+00:00:00
+</td>
+<td style="text-align:left;">
+23:59:00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+1203360
+</td>
+<td style="text-align:right;">
+1289700
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+</tbody>
+</table>
 <p>When we compare the overview of the longitudinal recording, we can
 also see clear changes in the various documentations about the
 recordings and their annotations</p>
@@ -943,22 +1887,21 @@ recordings and their annotations</p>
 <span>  VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
 <span>  VDT <span class="op">=</span> <span class="st">"DateTime"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="images/Unadjusted_Overview.png" alt="Figure 1. An Overview of Unadjusted Recordin"><div class="figcaption">Figure 1. An Overview of Unadjusted
-Recordin</div>
+<div class="figure">
+<img src="images/Unadjusted_Overview.png" class="r-plt" alt="Figure 1. An Overview of Unadjusted Recordin" width="819"><p class="caption">
+Figure 1. An Overview of Unadjusted Recordin
+</p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### Reconstruct the longitudinal recording with proper segmentation</span></span>
 <span><span class="va">dfList</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Act2Daily.html">Act2Daily</a></span><span class="op">(</span></span>
 <span>  df <span class="op">=</span> <span class="va">df</span>,</span>
 <span>  Bdf <span class="op">=</span> <span class="va">Bdf.adj</span>,</span>
-<span>  VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
-<span>  VTm <span class="op">=</span> <span class="st">"Time"</span>,</span>
 <span>  Incomplete <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  Travel <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span> <span class="op">(</span><span class="va">rbind</span>, <span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/ggActiGlobe.html">ggActiGlobe</a></span><span class="op">(</span></span>
 <span>  df <span class="op">=</span> <span class="va">df2</span>,</span>
@@ -966,8 +1909,10 @@ Recordin</div>
 <span>  VAct <span class="op">=</span> <span class="st">"Activity"</span>,</span>
 <span>  VDT <span class="op">=</span> <span class="st">"DateTime"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="images/Adjusted_Overview.png" alt="Figure 2. An Overview of Adjusted Recordin"><div class="figcaption">Figure 2. An Overview of Adjusted Recordin</div>
+<div class="figure">
+<img src="images/Adjusted_Overview.png" class="r-plt" alt="Figure 2. An Overview of Adjusted Recordin" width="817"><p class="caption">
+Figure 2. An Overview of Adjusted Recordin
+</p>
 </div>
 <p>We can also use the following code to look at each daily recording
 separately. Note that the code below was intentionally left without
@@ -976,29 +1921,28 @@ generating any output plot to avoid overcrowding this tutorial.</p>
 <li>Unadjusted Original Recording</li>
 </ol>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">Bdf</span><span class="op">$</span><span class="va">Cumulative_Start_Second</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">Bdf</span><span class="op">$</span><span class="va">Cumulative_End_Second</span></span>
-<span>  <span class="va">GX</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span><span class="op">[</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">:</span><span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GX</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">GX</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span><span class="op">[</span><span class="op">(</span><span class="va">x</span> <span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">:</span><span class="va">y</span> <span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span> <span class="op">(</span><span class="va">GX</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Time-shift Adjusted Recording</li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">Bdf.adj</span><span class="op">$</span><span class="va">Cumulative_Start_Second</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">Bdf.adj</span><span class="op">$</span><span class="va">Cumulative_End_Second</span></span>
-<span>  <span class="va">GX</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span><span class="op">[</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">:</span><span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GX</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_alonglength</span> (x))<span class="er">)</span> {</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  x <span class="ot">&lt;-</span> Bdf.adj<span class="sc">$</span>Cumulative_Start_Second</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  y <span class="ot">&lt;-</span> Bdf.adj<span class="sc">$</span>Cumulative_End_Second</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  GX <span class="ot">&lt;-</span> df<span class="sc">$</span>Activity[(x [i]<span class="sc">:</span>y [i]) <span class="sc">/</span> <span class="dv">60</span>]</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>  <span class="fu">print</span> (<span class="fu">plot</span> (GX, <span class="at">main =</span> i, <span class="at">font.lab =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">"Activity (counts)"</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>}</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Time-shift Adjusted Recording</li>
 </ol>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Activity</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>       ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span> <span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span> <span class="op">(</span><span class="va">dfList</span><span class="op">$</span><span class="va">Daily_df</span> <span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Activity</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>        ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Refer to the ‘Graphic-Report’ tutorial for instructions on how to
 segment and export recordings by day, as well as how to generate a

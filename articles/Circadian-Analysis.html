@@ -84,7 +84,7 @@ Circularized Kernel Density Estimation</h3>
 Yao</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/vignettes/Circadian-Analysis.Rmd" class="external-link"><code>vignettes/Circadian-Analysis.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/vignettes/Circadian-Analysis.Rmd" class="external-link"><code>vignettes/Circadian-Analysis.Rmd</code></a></small>
       <div class="d-none name"><code>Circadian-Analysis.Rmd</code></div>
     </div>
 
@@ -101,19 +101,19 @@ in a new variable called <code>df</code>, which stands for data
 frame.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Import data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"FlyEast"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="st">"FlyEast"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">BdfList</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/BriefSum.html">BriefSum</a></span><span class="op">(</span></span>
-<span>    df <span class="op">=</span> <span class="va">FlyEast</span>,</span>
-<span>    SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span>
-<span>    Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/BriefSum.html">BriefSum</a></span> <span class="op">(</span></span>
+<span>        df <span class="op">=</span> <span class="va">FlyEast</span>,</span>
+<span>        SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span>
+<span>        Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Let's extract actigraphy data from a single day</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">df</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">Date</span> <span class="op">==</span> <span class="st">"2017-10-27"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span> <span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">Date</span> <span class="op">==</span> <span class="st">"2017-10-27"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="single-phase-model-i-e--single-phase-circadian-rhythm">Single-phase Model (i.e., single phase circadian rhythm)<a class="anchor" aria-label="anchor" href="#single-phase-model-i-e--single-phase-circadian-rhythm"></a>
 </h3>
@@ -123,12 +123,12 @@ frame.</p>
 </h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.ols</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
-<span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
-<span>    tau <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"OLS"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span> <span class="op">(</span></span>
+<span>        time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
+<span>        activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
+<span>        tau <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>        method <span class="op">=</span> <span class="st">"OLS"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Look at the parameters</span></span>
 <span><span class="va">fit.ols</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
@@ -136,14 +136,14 @@ frame.</p>
 <span><span class="co">#&gt;   177.297222   161.296243    -2.896002  -156.456357   -39.215893</span></span>
 <span></span>
 <span><span class="co">### Plot</span></span>
-<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span><span class="op">(</span><span class="va">fit.ols</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.ols</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%201%20OLS-1.png" class="r-plt" alt="Figure 1: Fitting of OLS-based Cosinor Model" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a>
 </h4>
 <p>If we process <code>FlyEast</code> using the
-<code>cosinor::cosinor.lm</code>, we will notice that the results look a
+<code><a href="https://rdrr.io/pkg/cosinor/man/cosinor.lm.html" class="external-link">cosinor::cosinor.lm</a></code>, we will notice that the results look a
 bit different. This is because ActiGlobe treats the first time point of
 the day as <code>00:00:00</code>, whereas this is sometimes treated as
 <code>00:00:00</code> plus one unit of the device sampling rate due to
@@ -163,12 +163,12 @@ realistically capture our activity patterns, given that they are simply
 single-phase cosinor models.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.fgls</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
-<span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
-<span>    tau <span class="op">=</span> <span class="fl">24</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"FGLS"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span> <span class="op">(</span></span>
+<span>        time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
+<span>        activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
+<span>        tau <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>        method <span class="op">=</span> <span class="st">"FGLS"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Look at the parameters</span></span>
 <span><span class="va">fit.fgls</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
@@ -176,7 +176,7 @@ single-phase cosinor models.</p>
 <span><span class="co">#&gt;   181.169023   183.040124    -2.409542  -136.146165  -122.343405</span></span>
 <span></span>
 <span><span class="co">### Plot</span></span>
-<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span><span class="op">(</span><span class="va">fit.fgls</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.fgls</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%201%20FGLS-1.png" class="r-plt" alt="Figure 2: Fitting of FGLS-based Cosinor Model" width="672"></p>
 </div>
 </div>
@@ -195,12 +195,12 @@ components, each fitted using OLS or FGLS-based methods.</p>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.ols2</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
-<span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
-<span>    tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">24</span><span class="op">)</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"OLS"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span> <span class="op">(</span></span>
+<span>        time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
+<span>        activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
+<span>        tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">12</span>, <span class="fl">24</span><span class="op">)</span>,</span>
+<span>        method <span class="op">=</span> <span class="st">"OLS"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">fit.ols2</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
@@ -216,7 +216,7 @@ components, each fitted using OLS or FGLS-based methods.</p>
 <span></span>
 <span></span>
 <span><span class="co">### Plot</span></span>
-<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span><span class="op">(</span><span class="va">fit.ols2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.ols2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%202%20OLS-1.png" class="r-plt" alt="Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model" width="672"></p>
 </div>
 <div class="section level4">
@@ -225,12 +225,12 @@ components, each fitted using OLS or FGLS-based methods.</p>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.fgls2</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
-<span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
-<span>    tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">24</span><span class="op">)</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"FGLS"</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/CosinorM.html">CosinorM</a></span> <span class="op">(</span></span>
+<span>        time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
+<span>        activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span>
+<span>        tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">12</span>, <span class="fl">24</span><span class="op">)</span>,</span>
+<span>        method <span class="op">=</span> <span class="st">"FGLS"</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">fit.fgls2</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
@@ -245,7 +245,7 @@ components, each fitted using OLS or FGLS-based methods.</p>
 <span><span class="co">#&gt;         306.138144         157.178540</span></span>
 <span></span>
 <span><span class="co">### Plot</span></span>
-<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span><span class="op">(</span><span class="va">fit.fgls2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.fgls2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%202%20FGLS-1.png" class="r-plt" alt="Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model" width="672"></p>
 <p>It is worth noting that we cannot individually interpret each cosinor
 parameter alone when fitting a multicomponent model. This is because the
@@ -274,10 +274,10 @@ shape. To ease transition from cosinor model, we designed
 projecting the model onto an imaginary cosinor plane.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.KDE</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/CosinorM.KDE.html">CosinorM.KDE</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
-<span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/CosinorM.KDE.html">CosinorM.KDE</a></span> <span class="op">(</span></span>
+<span>        time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span>
+<span>        activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Look at the parameters</span></span>
 <span><span class="va">fit.KDE</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
@@ -289,7 +289,7 @@ projecting the model onto an imaginary cosinor plane.</p>
 <span><span class="co">#&gt;            Peak.ph       Amplitude.ph </span></span>
 <span><span class="co">#&gt;         583.221110         287.060893</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span><span class="op">(</span><span class="va">fit.KDE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ggCosinorM.html">ggCosinorM</a></span> <span class="op">(</span><span class="va">fit.KDE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Circadian-Analysis_files/figure-html/Model%201%20KDE-1.png" class="r-plt" alt="Figure 6: Fitting of Circularized Gaussian Kernel Density Estimation" width="672"></p>
 <p>It is worth noting that while <code>CosinorM.KDE</code> does provide
 a variance and standard error for the fitted rest-activity pattern; this
@@ -303,10 +303,10 @@ Note that <code>CosinorM.KDE</code> is designed to stabilize estimates
 when data are irregularly spaced or limited to short recording
 intervals.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/boot.seci.html">boot.seci</a></span><span class="op">(</span></span>
-<span>  object <span class="op">=</span> <span class="va">fit.KDE</span>,</span>
-<span>  ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  n <span class="op">=</span> <span class="fl">100</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/boot.seci.html">boot.seci</a></span> <span class="op">(</span></span>
+<span>    object <span class="op">=</span> <span class="va">fit.KDE</span>,</span>
+<span>    ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>    n <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span> <span class="co">### for demonstration, the number of bootstraps was limited to 100.</span></span>
 <span><span class="co">#&gt;                    Estimate Std Error t value    2.5%   97.5%</span></span>
 <span><span class="co">#&gt; MESOR                177.24      4.60   38.55  168.93  185.37</span></span>
@@ -328,7 +328,8 @@ to finish the computation.</p>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### For external graphic plot.</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.5.2</span></span></code></pre></div>
 <div class="section level5">
 <h5 id="ols-cosinor-vs--kernel-density-estimation">OLS-Cosinor vs. Kernel Density Estimation<a class="anchor" aria-label="anchor" href="#ols-cosinor-vs--kernel-density-estimation"></a>
 </h5>

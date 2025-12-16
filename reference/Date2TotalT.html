@@ -53,7 +53,7 @@ requested time unit."><meta property="og:image" content="https://cwy20030.github
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Compute Total Time in Each Date (Per Day)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/Date2TotalT.R" class="external-link"><code>R/Date2TotalT.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/Date2TotalT.R" class="external-link"><code>R/Date2TotalT.R</code></a></small>
       <div class="d-none name"><code>Date2TotalT.Rd</code></div>
     </div>
 
@@ -74,11 +74,10 @@ requested time unit.</p>
 
 
 <dl><dt id="arg-dt">DT<a class="anchor" aria-label="anchor" href="#arg-dt"></a></dt>
-<dd><p>A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in
-ascending order.
-Each entry represents the start of an interval.  Internally, the function
-appends one extra day beyond the last entry so that the final interval
-covers a full 24 h until the next midnight. See <code>as.POSIXct</code>.</p></dd>
+<dd><p>A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending
+order. Each entry represents the start of an interval.  Internally, the
+function appends one extra day beyond the last entry so that the final
+interval covers a full 24 h until the next midnight. See <code>as.POSIXct</code>.</p></dd>
 
 
 <dt id="arg-tunit">TUnit<a class="anchor" aria-label="anchor" href="#arg-tunit"></a></dt>
@@ -89,8 +88,8 @@ are in decimal hours.</p></dd>
 
 
 <dt id="arg-tz">TZ<a class="anchor" aria-label="anchor" href="#arg-tz"></a></dt>
-<dd><p>The time zone when the recording started. (default =
-"local", which means user's local time zone)</p></dd>
+<dd><p>The time zone when the recording started. (default = "local",
+which means user's local time zone)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -103,7 +102,7 @@ are in decimal hours.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two calendar days: returns c(24, 24) hours</span></span></span>
 <span class="r-in"><span><span class="fu">Date2TotalT</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2021-01-01"</span>, <span class="st">"2021-01-02"</span><span class="op">)</span><span class="op">)</span>, <span class="st">"hour"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 24 24</span>
@@ -115,7 +114,7 @@ are in decimal hours.</p></dd>
 <span class="r-in"><span>    <span class="st">"2021-06-10 14:30:00"</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span>, <span class="st">"minute"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1440 1440</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># In seconds (case-insensitive unit name)</span></span></span>
 <span class="r-in"><span><span class="fu">Date2TotalT</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span> <span class="op">(</span><span class="st">"2022-12-31"</span><span class="op">)</span>, <span class="st">"SeCoNd"</span><span class="op">)</span></span></span>

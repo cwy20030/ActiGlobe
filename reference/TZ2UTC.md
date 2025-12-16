@@ -26,21 +26,21 @@ A character string indicating the UTC offset, e.g., "UTC-05:00"
 ## Examples
 
 ``` r
-x <- as.Date(c("2017-10-24", "2017-11-20"))
-TZ2UTC(DT = x, TZ = "America/New_York") ## Expect two different UTCs
+x <- as.Date (c ("2017-10-24", "2017-11-20"))
+TZ2UTC (DT = x, TZ = "America/New_York") ## Expect two different UTCs
 #> [1] "UTC-04:00" "UTC-05:00"
 
 if (FALSE) { # \dontrun{
 # A vector of dates
 x <-
-  seq.Date(
-    from = as.Date("2017-10-24"),
-    to = as.Date("2017-11-27"),
-    by = "day"
-  )
+    seq.Date (
+        from = as.Date ("2017-10-24"),
+        to = as.Date ("2017-11-27"),
+        by = "day"
+    )
 
 # If the user resides in a country that follows daylight saving time
-TZ2UTC(DT = x, TZ = "local")
+TZ2UTC (DT = x, TZ = "local")
 
 # If not
 # TZ2UTC(DT = x, TZ = "America/New_York")

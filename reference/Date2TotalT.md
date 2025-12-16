@@ -43,7 +43,6 @@ the last date), expressed in the units given by \`TUnit\`.
 ## Examples
 
 ``` r
-# \donttest{
 # Two calendar days: returns c(24, 24) hours
 Date2TotalT (as.Date (c ("2021-01-01", "2021-01-02")), "hour")
 #> [1] 24 24
@@ -55,7 +54,7 @@ Date2TotalT (as.POSIXct (c (
     "2021-06-10 14:30:00"
 )), "minute")
 #> [1] 1440 1440
-# }
+
 
 # In seconds (case-insensitive unit name)
 Date2TotalT (as.Date ("2022-12-31"), "SeCoNd")

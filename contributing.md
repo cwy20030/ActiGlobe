@@ -9,8 +9,8 @@ The ActiGlobe Team
   - [Improve Documentation 📓](#improve-documentation-notebook)
   - [Bug Report 🐛](#bug-report-bug)
   - [New Feature and Ideas 💡](#new-feature-and-ideas-bulb)
-- [General Guideline on Liscening, Documentation and Code Contribution
-  📋](#general-guideline-on-liscening-documentation-and-code-contribution-clipboard)
+- [Gemeral Guideline on Liscening, Documentation and Code Contribution
+  📋](#gemeral-guideline-on-liscening-documentation-and-code-contribution-clipboard)
   - [Container 💾](#container-floppy_disk)
   - [Licensing 📇](#licensing-card_index)
   - [Documentation and Website ✒️](#documentation-and-website-black_nib)
@@ -154,10 +154,10 @@ When contributing new ideas in code, please make sure to fork (i.e.,
 copy) the repository and create a new branch for your changes. This
 practice helps maintain a clean and organized codebase, allowing for
 easier collaboration and review. Once the code is ready, submit a pull
-request for review. We ask all contributors to follow the recommended
+request for review. We ask all contributors to follow the recommend
 workflow and use the pull request template provided below to facilitate
-the review process. For more details about the general coding and
-documentation guidelines, please see the next section.
+the review process. For more detail about the general coding and
+documentation guidelines, please, see the next section.
 
 ##### Work Flow for Code Contribution 💪
 
@@ -174,7 +174,9 @@ After receiving the ‘go-ahead’ from the authors or maintainers,
 - Write and test your code (unit tests are encouraged).
 - Document your code with `roxygen2`.
 - Check licencing documentation.
-- Run `devtools::check()` and aim for zero errors and warnings.
+- Run
+  [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+  and aim for zero errors and warnings.
 - Commit and push your changes.
 - Submit a pull request.
 
@@ -182,7 +184,7 @@ We follow the GitHub flow for development. If you have previously forked
 the project, please update your fork with the latest changes before
 starting new work.
 
-## General Guideline on Liscening, Documentation and Code Contribution 📋
+## Gemeral Guideline on Liscening, Documentation and Code Contribution 📋
 
 As with most R package development, contributions to `ActiGlobe` are
 encouraged to familiarize themselves with
@@ -267,7 +269,7 @@ learning a completely new coding style unique to the contributor.
   appropriately. For example:
 
 ``` R
-this <- function ()
+this <- function()
 ```
 
 We understand that this is different from the typical `tidyverse`

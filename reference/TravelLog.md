@@ -21,7 +21,7 @@ TravelLog(Write = FALSE, Dir = NULL)
 - Dir:
 
   The directory where the travel log template to be exported \<e.g.
-  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../ FOLDER
+  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../FOLDER
   NAME/"\>
 
 ## Value
@@ -35,5 +35,5 @@ Tlg <- TravelLog (Write = FALSE)
 
 print (Tlg)
 #>          ID UTC_Offset Country_with_Daylight_Saving date_Start   date_End
-#> 1 ExampleID     +05:00                         TRUE 2025-12-15 2025-12-16
+#> 1 ExampleID     +05:00                         TRUE 2025-12-16 2025-12-17
 ```

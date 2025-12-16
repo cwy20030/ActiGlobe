@@ -111,6 +111,8 @@ and anonymize the travel destination to keep participants’ privacy.
 ``` r
 dfList = Act2Daily(df = df,
                    Bdf = Bdf.adj,
+                   VAct = "Activity",
+                   VTm = "Time",
                    Incomplete = TRUE,
                    Travel = TRUE)
 ```

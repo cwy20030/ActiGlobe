@@ -47,7 +47,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Daylight Saving Time</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/DST.R" class="external-link"><code>R/DST.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/DST.R" class="external-link"><code>R/DST.R</code></a></small>
       <div class="d-none name"><code>DST.Rd</code></div>
     </div>
 
@@ -70,10 +70,9 @@ the dates/times to test.  These need not be sorted.</p></dd>
 
 
 <dt id="arg-tz">TZ<a class="anchor" aria-label="anchor" href="#arg-tz"></a></dt>
-<dd><p>A single string naming an IANA time zone (e.g.
-`America/New_York`). If `"local"`, it will extract local time
-zone using `Sys.timezone()`.  Must match one entry in
-`OlsonNames()`.</p></dd>
+<dd><p>A single string naming an IANA time zone (e.g. `America/New_York`).
+If `"local"`, it will extract local time zone using `Sys.timezone()`.
+Must match one entry in `OlsonNames()`.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -97,7 +96,7 @@ hours via `DST2GL()` and flipping the DST flag on the transition day.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2021-06-15 2021-12-15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       TRUE      FALSE </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Around the spring-forward transition</span></span></span>
 <span class="r-in"><span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"2021-03-13"</span>, <span class="st">"2021-03-14"</span>, <span class="st">"2021-03-15"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">DST</span> <span class="op">(</span><span class="va">trans</span>, TZ <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span></span></span>
@@ -107,8 +106,8 @@ hours via `DST2GL()` and flipping the DST flag on the transition day.</p>
 <span class="r-in"><span><span class="co"># Using the local system time zone</span></span></span>
 <span class="r-in"><span><span class="fu">DST</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span> <span class="op">(</span><span class="st">"2023-07-01 12:00:00"</span><span class="op">)</span>, TZ <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2023-07-01 12:00:00 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               FALSE </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                TRUE </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

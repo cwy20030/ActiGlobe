@@ -181,6 +181,7 @@ Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 
 [`lm`](https://rdrr.io/r/stats/lm.html)
 [`CosinorM.KDE`](https://cwy20030.github.io/ActiGlobe/reference/CosinorM.KDE.md)
+[`ggCosinorM`](https://cwy20030.github.io/ActiGlobe/reference/ggCosinorM.md)
 
 ## Examples
 
@@ -190,26 +191,26 @@ require (graphics)
 
 if (FALSE) { # \dontrun{
 # Import data
-data (FlyEast)
+data( FlyEast)
 
 
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum (
+  df = FlyEast,
+  SR = 1 / 60,
+  Start = "2017-10-24 13:45:00"
+  )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
 df <- subset (df, df$Date == "2017-10-27")
 
 fit <- CosinorM (
-    time = df$Time,
-    activity = df$Activity,
-    tau = 24,
-    method = "OLS"
+  time = df$Time,
+  activity = df$Activity,
+  tau = 24,
+  method = "OLS"
 )
 
 
@@ -218,7 +219,10 @@ fit$coef.cosinor
 
 
 # plot Cosinor in hours
-plot (fit$time, fit$fitted.values, type = "l", xlab = "Hour",
-      ylab = "24-Hour Cosinor Model")
+plot(fit$time,
+   fit$fitted.values,
+   type = "l",
+   xlab = "Hour",
+   ylab = "24-Hour Cosinor Model")
 } # }
 ```

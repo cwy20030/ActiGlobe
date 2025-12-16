@@ -55,7 +55,7 @@ labelled parameter values when requested."><meta property="og:image" content="ht
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot `CosinorM` and `CosinorM.KDE` Fit with `ggplot2`</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/ggCosinorM.R" class="external-link"><code>R/ggCosinorM.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/ggCosinorM.R" class="external-link"><code>R/ggCosinorM.R</code></a></small>
       <div class="d-none name"><code>ggCosinorM.Rd</code></div>
     </div>
 
@@ -151,30 +151,30 @@ update.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="va">FlyEast</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">BdfList</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="BriefSum.html">BriefSum</a></span> <span class="op">(</span></span></span>
-<span class="r-in"><span>        df <span class="op">=</span> <span class="va">FlyEast</span>,</span></span>
-<span class="r-in"><span>        SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span></span>
-<span class="r-in"><span>        Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="BriefSum.html">BriefSum</a></span> <span class="op">(</span></span></span>
+<span class="r-in"><span>    df <span class="op">=</span> <span class="va">FlyEast</span>,</span></span>
+<span class="r-in"><span>    SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span></span>
+<span class="r-in"><span>    Start <span class="op">=</span> <span class="st">"2017-10-24 13:45:00"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Let's extract actigraphy data from a single day</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">df</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span> <span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">$</span><span class="va">Date</span> <span class="op">==</span> <span class="st">"2017-10-28"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="CosinorM.html">CosinorM</a></span> <span class="op">(</span></span></span>
-<span class="r-in"><span>    time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span></span>
-<span class="r-in"><span>    activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span></span>
-<span class="r-in"><span>    tau <span class="op">=</span> <span class="fl">24</span>,</span></span>
-<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"OLS"</span></span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Time</span>,</span></span>
+<span class="r-in"><span>  activity <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span>,</span></span>
+<span class="r-in"><span>  tau <span class="op">=</span> <span class="fl">24</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"OLS"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggCosinorM</span> <span class="op">(</span></span></span>
-<span class="r-in"><span>    object <span class="op">=</span> <span class="va">fit</span>,</span></span>
-<span class="r-in"><span>    labels <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>    ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>    ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
-<span class="r-in"><span>    title_extra <span class="op">=</span> <span class="st">"2017-10-24"</span></span></span>
+<span class="r-in"><span>  object <span class="op">=</span> <span class="va">fit</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  ci <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  ci_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  title_extra <span class="op">=</span> <span class="st">"2017-10-24"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span> <span class="op">(</span><span class="va">p</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

@@ -55,7 +55,7 @@ function."><meta property="og:image" content="https://cwy20030.github.io/ActiGlo
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Adjust Time Shift based on Travel Log</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/TAdjust.R" class="external-link"><code>R/TAdjust.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/TAdjust.R" class="external-link"><code>R/TAdjust.R</code></a></small>
       <div class="d-none name"><code>TAdjust.Rd</code></div>
     </div>
 
@@ -112,27 +112,27 @@ shift based on travel log.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Import sample data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">FlyEast</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="va">FlyEast</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create quick summary of the recording with adjustment for daylight saving.</span></span></span>
-<span class="r-in"><span><span class="va">BdfList</span> <span class="op">&lt;-</span> <span class="fu"><a href="BriefSum.html">BriefSum</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  df <span class="op">=</span> <span class="va">FlyEast</span>,</span></span>
-<span class="r-in"><span>  SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span></span>
-<span class="r-in"><span>  Start <span class="op">=</span> <span class="st">"2017-10-19 13:45:00"</span></span></span>
+<span class="r-in"><span><span class="va">BdfList</span> <span class="op">&lt;-</span> <span class="fu"><a href="BriefSum.html">BriefSum</a></span> <span class="op">(</span></span></span>
+<span class="r-in"><span>    df <span class="op">=</span> <span class="va">FlyEast</span>,</span></span>
+<span class="r-in"><span>    SR <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">60</span>,</span></span>
+<span class="r-in"><span>    Start <span class="op">=</span> <span class="st">"2017-10-19 13:45:00"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract only the summary report</span></span></span>
 <span class="r-in"><span><span class="va">Bdf</span> <span class="op">&lt;-</span> <span class="va">BdfList</span><span class="op">$</span><span class="va">Bdf</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Import sample travel Log</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span> <span class="op">(</span><span class="va">TLog</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adjust time shift based on travel log</span></span></span>
-<span class="r-in"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu">TAdjust</span><span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu">TAdjust</span> <span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Display the summary</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">Bdf.adj</span><span class="op">)</span> <span class="co">### Focus on the dates after 2017-11-01</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span> <span class="op">(</span><span class="va">Bdf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span> <span class="op">(</span><span class="va">Bdf.adj</span><span class="op">)</span> <span class="co">### Focus on the dates after 2017-11-01</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

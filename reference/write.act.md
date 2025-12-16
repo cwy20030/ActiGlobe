@@ -29,7 +29,7 @@ write.act(
 - Dir:
 
   The directory where the recordings to be exported \<e.g.
-  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../ FOLDER
+  "C:/Users/\_\_\_YOUR USERNAME\_\_\_/UPSTREAM FOLDER/.../FOLDER
   NAME/"\>
 
 - ID:

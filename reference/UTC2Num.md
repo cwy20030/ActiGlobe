@@ -22,10 +22,10 @@ Numeric values of UTC offsets
 
 ``` r
 # Convert UTC to numeric values
-x <- c("UTC+09:30", "UTC-07:00")
+x <- c ("UTC+09:30", "UTC-07:00")
 
-x1 <- UTC2Num(x)
+x1 <- UTC2Num (x)
 
-print(x)
+print (x)
 #> [1] "UTC+09:30" "UTC-07:00"
 ```

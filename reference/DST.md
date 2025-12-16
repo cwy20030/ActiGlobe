@@ -46,7 +46,7 @@ DST (dates, TZ = "America/New_York")
 #> 2021-06-15 2021-12-15 
 #>       TRUE      FALSE 
 
-# \donttest{
+
 # Around the spring-forward transition
 trans <- as.Date (c ("2021-03-13", "2021-03-14", "2021-03-15"))
 DST (trans, TZ = "America/New_York")
@@ -56,6 +56,5 @@ DST (trans, TZ = "America/New_York")
 # Using the local system time zone
 DST (as.POSIXct ("2023-07-01 12:00:00"), TZ = "local")
 #> 2023-07-01 12:00:00 
-#>               FALSE 
-# }
+#>                TRUE 
 ```

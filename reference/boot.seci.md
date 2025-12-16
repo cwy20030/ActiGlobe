@@ -1,4 +1,4 @@
-# Bootstrap Standard Errors and Confidence Intervals for Model Parameters
+# Bootstrap Standard Errors and Confidence Intervals for Parameters
 
 Computes standard errors and confidence intervals for cosinor and
 post-hoc parameters via non-parametric bootstrap

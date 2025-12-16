@@ -53,7 +53,7 @@ change occurs between winter and summer timestamps."><meta property="og:image" c
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Determine if Daylight Saving Transitions may occur in an UTC Offset</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/Test-Copilot/R/UTCwDST.R" class="external-link"><code>R/UTCwDST.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/R/UTCwDST.R" class="external-link"><code>R/UTCwDST.R</code></a></small>
       <div class="d-none name"><code>UTCwDST.Rd</code></div>
     </div>
 
@@ -81,15 +81,15 @@ offsets using `UTC2Num()`.</p></dd>
 
 
 <dt id="arg-fork">fork<a class="anchor" aria-label="anchor" href="#arg-fork"></a></dt>
-<dd><p>Logical, if TRUE, it will use parallel processing to speed up the
-computation. Default is FALSE.</p></dd>
+<dd><p>Logical, if TRUE, it will use parallel processing to speed up
+the computation. Default is FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
-  least one time zone at the specified offset undergoes a DST transition,
-  `FALSE` otherwise.</p>
+ least one time zone at the specified offset undergoes a DST transition,
+ `FALSE` otherwise.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -106,16 +106,15 @@ the function returns `TRUE` for that offset.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># Check for DST transitions in UTC+1 and UTC+8</span></span></span>
-<span class="r-in"><span><span class="fu">UTCwDST</span><span class="op">(</span>UTCs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UTC+01:00"</span>, <span class="st">"UTC+08:00"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">UTCwDST</span> <span class="op">(</span>UTCs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"UTC+01:00"</span>, <span class="st">"UTC+08:00"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use numeric offset directly</span></span></span>
-<span class="r-in"><span><span class="fu">UTCwDST</span><span class="op">(</span>UTCs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">UTCwDST</span> <span class="op">(</span>UTCs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># UTC-5 commonly includes DST zones (e.g., New York)</span></span></span>
-<span class="r-in"><span><span class="fu">UTCwDST</span><span class="op">(</span>UTCs <span class="op">=</span> <span class="op">-</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">UTCwDST</span> <span class="op">(</span>UTCs <span class="op">=</span> <span class="op">-</span><span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
