@@ -16,24 +16,6 @@ resource_files:
 ---
 
 
-<style>
-/* container that forces a fixed pixel width and enables scrolling */
-.fullsize-scroll {
-  width: 700px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* prevent theme CSS from shrinking the image */
-.fullsize-scroll img {
-  width: 1200px !important;
-  max-width: none !important;
-  height: auto !important;
-  display: block;
-}
-
-</style>
-
 
 ## What will be covered in this tutorial?
 This specific tutorial is designed specifically to show users how to use ActiGlobe to preprocess longitudinal actigrpahy recordings affected by time shift. For analysis and generation of graphic/excel report of daily actigraphy measures, please go to tutorial title: Graphic-Report.
@@ -87,7 +69,8 @@ BdfList <-
   BriefSum(
     df = FlyEast,
     SR = 1 / 60,
-    Start = "2017-10-24 13:45:00"
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
   )
 
 
@@ -101,7 +84,8 @@ c(Bdf, df) %<-%
   BriefSum(
     df = FlyEast,
     SR = 1 / 60,
-    Start = "2017-10-24 13:45:00"
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
   )
 ```
 
