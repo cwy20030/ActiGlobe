@@ -59,7 +59,7 @@ fit.ols <-
         time = df$Time,
         activity = df$Activity,
         tau = 24,
-        method = "OLS"
+        method = "OLS",
     )
 
 ### Look at the parameters
