@@ -147,7 +147,7 @@ knitr::kable (head (IANA), format = "html", table.attr = "style='width:450px;'")
 ###  {.scrollable}
 Before `ActiGlobe` directly modify information stored in the enriched longitudinal recording - `df`, we will need to adjust the brief summary stored in `Bdf`. This design allows us to quickly scan through the summary file, just in case any adjustment is not properly addressed.
 
-```{r TAdjust, message=FALSE, warning=FALSE}
+```{r TAdjust, message=FALSE, warning=FALSE, eval=FALSE}
 Bdf.adj <- TAdjust (Bdf, TLog)
 ```
 
@@ -205,6 +205,7 @@ dfList <- Act2Daily (
     Incomplete = TRUE,
     Travel = TRUE
 )
+
 
 df2 <- do.call (rbind, dfList$Daily_df)
 
