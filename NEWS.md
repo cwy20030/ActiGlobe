@@ -21,7 +21,7 @@ Revision history for the R/ActiGlobe package
     - implement UnitFactor for generic conversion
     - implement ValInput for OS-based switcher to execute C-based serial processing within write.* functions to avoid segfault overflow 
     - additional parameter created to identify the initial timepoint of each recording period
-    - augment ggCosinorM legend
+    - augment ggCosinorM legend and reduce code cyclocomplexity
     - modify internal uses of IANA in Act2Daily
     - enable switches for paralelle process for GuessTZ 
     - add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT zones when OlsonNames lookup fails
