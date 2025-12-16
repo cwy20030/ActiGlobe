@@ -62,30 +62,30 @@ labelled parameter values when requested.
 data (FlyEast)
 
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+  BriefSum (
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00"
+  )
 
 # Let's extract actigraphy data from a single day
 df <- BdfList$df
 df <- subset (df, df$Date == "2017-10-28")
 
 fit <- CosinorM (
-    time = df$Time,
-    activity = df$Activity,
-    tau = 24,
-    method = "OLS"
+  time = df$Time,
+  activity = df$Activity,
+  tau = 24,
+  method = "OLS"
 )
 
 
 p <- ggCosinorM (
-    object = fit,
-    labels = TRUE,
-    ci = TRUE,
-    ci_level = 0.95,
-    title_extra = "2017-10-24"
+  object = fit,
+  labels = TRUE,
+  ci = TRUE,
+  ci_level = 0.95,
+  title_extra = "2017-10-24"
 )
 print (p)
 }

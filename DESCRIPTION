@@ -7,7 +7,7 @@ Authors@R: c(person("C. William", "Yao", email = "chun.william.yao.cnmtl@ssss.go
 			 person("François", "Bieuzen", email = "fbieuzen@insquebec.org", role = c("aut","ctb"), comment = c(ORCID="0000-0002-9690-9168")),
              person("Guido", "Simonelli", email = "guido.simonelli@umontreal.ca", role = c("aut","ctb","fnd"), comment = c(ORCID="0000-0002-5400-319X")))
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
-Description: Cross-continental travel and local practices of daylight saving time can induce a time shift. When left unadjusted, it can lead to biases in interpreting wearable measures. This research tool streamlines data processing and analysis (e.g., cosinor analysis, circularized kernel density estimation) for longitudinal recordings. Together with additional features such as exporting daily wearable measures and creating visual reports, it aims to facilitate research on longitudinal wearable measurements. To learn its application, please refer to the provided vignettes for a brief tutorial. This tool is developed based on the methodology detailed in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
+Description: Cross-continental travel and local practices of daylight saving time can induce time shift. When left unadjusted, it can lead to biases in interpreting wearable measures. This research tool streamlines data processing and analysis (e.g., cosinor analysis, circularized kernel density estimation) for longitudinal recordings. Together with additional features such as exporting daily wearable measures and creating visual reports, it aims to facilitate research on longitudinal wearable measurements. To learn its application, please refer to the provided vignettes for a brief tutorial. This tool is developed based on the methodology detailed in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
 License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -19,7 +19,6 @@ Imports:
     ggrepel,
     grDevices,
     gridExtra,
-    hms,
     lubridate,
     readr,
     sandwich,
@@ -34,6 +33,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     zeallot,
+	hms,
 	mockery
 URL: https://github.com/cwy20030/ActiGlobe, 
 	https://cwy20030.github.io/ActiGlobe/

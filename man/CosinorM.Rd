@@ -55,13 +55,13 @@ A list of class c("CosinorM", "lm") containing:
   \item time: The time coordinates of the recording
   \item method: The estimation method used
   \item coef.cosinor: Named numeric vector with entries:
-    \itemize{
-      \item MESOR: Mid-line estimating statistic of rhythm
-      \item Amplitude: Predicted peak activity magnitude
-      \item Acrophase: Acrophase in radian (time-of-peak)
-      \item Beta: the coefficient of the cosine function
-      \item Gamma: the coefficient of the sine function
-    }
+  \itemize{
+    \item MESOR: Mid-line estimating statistic of rhythm
+    \item Amplitude: Predicted peak activity magnitude
+    \item Acrophase: Acrophase in radian (time-of-peak)
+    \item Beta: the coefficient of the cosine function
+    \item Gamma: the coefficient of the sine function
+  }
   \item post.hoc: Post-hoc peak/trough diagnostics derived from
   fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time,
   Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
@@ -80,7 +80,7 @@ The `Cosinor` model is a cosine-based harmonic regression used to estimate
 circadian rhythm parameters.
 
 \strong{Single-phase equation}:
-      \deqn{y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
+    \deqn{y = M + A \cos \left(\frac{2\pi t}{\tau} - \phi\right) }
 \itemize{
   \item \eqn{M }: MESOR (mid-line estimating statistic of rhythm), the
   intercept
@@ -91,7 +91,6 @@ circadian rhythm parameters.
   cosine coefficients
 }
 
-
 Note that because the model is parameterized with a negative phase inside the
 cosine, this means the the derived peak time from acrophase corresponds to
 the peak time forward from midnight (not backward). In other words, the
@@ -100,7 +99,7 @@ midnight and vice versa.
 
 
 \strong{Linearized form}:
-     \deqn{\hat{y} = M + \beta x + \gamma z + \epsilon }
+   \deqn{\hat{y} = M + \beta x + \gamma z + \epsilon }
 \itemize{
   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine
   term
@@ -143,9 +142,9 @@ data( FlyEast)
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
   BriefSum (
-    df = FlyEast,
-    SR = 1 / 60,
-    Start = "2017-10-24 13:45:00"
+  df = FlyEast,
+  SR = 1 / 60,
+  Start = "2017-10-24 13:45:00"
   )
 
 # Let's extract actigraphy data from a single day
@@ -166,10 +165,10 @@ fit$coef.cosinor
 
 # plot Cosinor in hours
 plot(fit$time,
-     fit$fitted.values,
-     type = "l",
-     xlab = "Hour",
-     ylab = "24-Hour Cosinor Model")
+   fit$fitted.values,
+   type = "l",
+   xlab = "Hour",
+   ylab = "24-Hour Cosinor Model")
 }
 
 }

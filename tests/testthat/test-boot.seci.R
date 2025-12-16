@@ -35,9 +35,9 @@ test_that ("boot.seci successfully run for OLS multicosinor and KDE", {
     # ---- Relationship checks ----
     # Verify expected row names correspond to cosinor components
     expected_rows <- c (
-        "MESOR", "Amplitude.12", "Amplitude.24", "Acrophase.12", "Acrophase.24",
-        "Beta.12", "Beta.24", "Gamma.12", "Gamma.24", "MESOR.ph",
-        "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time",
+        "MESOR", "Amplitude.12", "Amplitude.24", "Acrophase.12",
+        "Acrophase.24","Beta.12", "Beta.24", "Gamma.12", "Gamma.24",
+        "MESOR.ph", "Bathyphase.ph.time", "Trough.ph", "Acrophase.ph.time",
         "Peak.ph", "Amplitude.ph"
     )
     expect_equal (rownames (BCI), expected_rows)
@@ -45,13 +45,16 @@ test_that ("boot.seci successfully run for OLS multicosinor and KDE", {
 
     # ---- Content checks ----
     # Ensure all values are numeric
-    expect_true (all (sapply (BCI, is.numeric)))
+    expect_true (all (vapply (BCI, is.numeric, logical (1))))
+
 
 
     # ---- Error checks ----
     # Invalid bootstrap parameters should trigger errors
-    expect_error (tryCatch (boot.seci (object = fit, ci_level = 1.5, n = 100)))
-    expect_error (tryCatch (boot.seci (object = fit, ci_level = 0.95, n = -10)))
+    expect_error (tryCatch (boot.seci (object = fit,
+                                       ci_level = 1.5, n = 100)))
+    expect_error (tryCatch (boot.seci (object = fit,
+                                       ci_level = 0.95, n = -10)))
 
 
     # Test Gaussian Kernel Density Estimation (KDE)
@@ -79,10 +82,13 @@ test_that ("boot.seci successfully run for OLS multicosinor and KDE", {
 
 
     # ---- Content checks ----
-    expect_true (all (sapply (BCI2, is.numeric)))
+    expect_true (all (vapply (BCI2, is.numeric, logical (1))))
+
 
     # ---- Error checks ----
     # Invalid bootstrap parameters should trigger errors
-    expect_error (tryCatch (boot.seci (object = fit2, ci_level = 1.5, n = 100)))
-    expect_error (tryCatch (boot.seci (object = fit2, ci_level = 0.95, n = -10)))
+    expect_error (tryCatch (boot.seci (object = fit2,
+                                       ci_level = 1.5, n = 100)))
+    expect_error (tryCatch (boot.seci (object = fit2,
+                                       ci_level = 0.95, n = -10)))
 })

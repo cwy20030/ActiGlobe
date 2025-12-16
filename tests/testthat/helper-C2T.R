@@ -80,7 +80,8 @@ test_that ("C2T continuous time conversion works", {
     # ---- Relationship checks ----
     # Sequence should correspond to minutes across a 24-hour day
     expected <- seq (0, 24, by = 1 / 60)
-    expected <- expected [-length (expected)] # remove last element to match length
+    # remove last element to match length
+    expected <- expected [-length (expected)]
     expect_equal (length (res), length (expected))
 
     # ---- Content checks ----
