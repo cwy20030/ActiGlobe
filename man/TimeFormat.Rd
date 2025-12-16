@@ -16,7 +16,7 @@ returns time format)}
 \value{
 If \code{as.time = TRUE}, returns a character vector of the input times
 reformatted according to the detected format. Each element corresponds to
-the respective entry in \code{Time}.
+the respective entry in \code{time}.
 
 If \code{as.time = FALSE}, returns a character scalar giving the
 best-matching time format string.
@@ -31,31 +31,34 @@ choose to either reformat the date or report the datetime format detected.
 
 # Example 1: When all dates have the same format
 ## Create and store a date in a variable called Time
-Time <- c("2017/05/02 23:00:01", "1970/01/02 05:10:33",
-"2000/02/28 07:00:00")
+Time <- c (
+    "2017/05/02 23:00:01", "1970/01/02 05:10:33",
+    "2000/02/28 07:00:00"
+)
 
 ## Ask TimeFormat to tell us the format of the time.
-TimeFormat(Time, as.time = FALSE)
+TimeFormat (time = Time, as.time = FALSE)
 
 # Example 2: When multiple formats co-exist in a variable
 ## Create and store dates and time in a variable called Time
-Time <- c("2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02",
-"2022/11/28 08:35 PM")
+Time <- c (
+    "2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02",
+    "2022/11/28 08:35 PM"
+)
 
 ## Ask TimeFormat to tell us the format of the Time.
 ### DO This!
 #### Option 1.
-print(lapply(Time, TimeFormat))
+print (lapply (Time, TimeFormat))
 
 #### Option 2. To match the warning message to the items
 for (x in Time) {
-  print(TimeFormat(x))
+    print (TimeFormat (x))
 }
 
 
 ### DO NOT!
-### print(TimeFormat(Time))
+### print(TimeFormat(time = Time))
 ### Note, this process will fail because there are multiple formats
-
 
 }

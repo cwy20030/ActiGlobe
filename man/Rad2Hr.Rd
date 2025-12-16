@@ -19,9 +19,9 @@ Numeric vector of times in [0, tau). NA values propagate.
 Convert `acrophase` in radian to clock time based on tau.
 }
 \examples{
-Rad2Hr(pi / 2, tau = 24)
+Rad2Hr (pi / 2, tau = 24)
 
-Rad2Hr(c(-pi / 2, 0, pi, 3 * pi / 2), tau = 24)
+Rad2Hr (c (-pi / 2, 0, pi, 3 * pi / 2), tau = 24)
 
 }
 \keyword{acrophase}
