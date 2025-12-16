@@ -33,7 +33,7 @@ library (ActiGlobe)
 data ("FlyEast")
 ```
 
-```{r BriefSum, message=FALSE, warning=FALSE, include = FALSE}
+```{r BriefSum, message=FALSE, warning=FALSE, include=FALSE, eval=FALSE}
 BdfList <-
     BriefSum (
         df = FlyEast,
