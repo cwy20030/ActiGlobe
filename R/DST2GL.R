@@ -61,7 +61,7 @@
 
 
 DST2GL <- function (DT, TZ = "local") {
-    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
+    if (TZ == "local") TZ <- Sys.timezone ()
 
     # Validate the time zone
     valid_zones <- OlsonNames ()

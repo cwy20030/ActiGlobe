@@ -76,7 +76,6 @@ R2P <- function (Bdf, D, U) {
         stop ("Bdf must be an object created by BriefSum.")
     }
 
-
     ## Extract UTC offset
     if (any (grepl ("UTC", U))) U <- UTC2Num (U)
 

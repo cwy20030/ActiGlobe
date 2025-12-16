@@ -70,7 +70,6 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     # Check Point ----------------------
     ## Time Zone
     ## Establish initial time zone
-    TZ1 <- ifelse (iTZ == "local", Sys.timezone (), iTZ)
 
     ### Validate the time zone using OlsonNames()
     ### Extract all known time zones
@@ -78,12 +77,16 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
     if (is.null (iTZ)) {
         TZ1 <- NULL
-    } else if (!TZ1 %in% oTZs) {
+    } else if (iTZ == "local") {
+       TZ1 <- Sys.timezone ()
+    } else if (!iTZ %in% oTZs) {
         stop (sprintf (
             "The provided time zone \"%s\" is not recognized.\n",
-            TZ1
+            iTZ
         ), "Please check the spelling or consult the IANA time zone table
     (ActiGlobe::IANA).")
+    } else {
+        TZ1 <- iTZ
     }
 
     ## Process DT

@@ -72,7 +72,10 @@
 
 TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     # Establish initial time zone ----------------
-    TZ <- ifelse (TZ == "local", Sys.timezone (), TZ)
+    if (!is.null (TZ)) {
+
+        if (TZ == "local") TZ <- Sys.timezone ()
+    }
 
     ## Extract Essential Parameters ----------------
     DT <- Bdf$Date
@@ -129,6 +132,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     ### If TZ is not specified, guess it.
 
     gTZ <- vapply (seq_len (length (DT)), function (x) {
+
         GuessTZ (
             aOF = format_offset (UTC2Num (U [[x]])),
             DT = DT [[x]],
