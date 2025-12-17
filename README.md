@@ -8,9 +8,7 @@
 ![version](https://img.shields.io/badge/version-0.2.1-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
