@@ -6,9 +6,11 @@
 <!-- badges: start -->
 
 ![version](https://img.shields.io/badge/version-0.2.1-green)
-[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg?branch=Test)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
-[![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg?branch=Test)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
@@ -37,8 +39,7 @@ devtools::install_github("cwy20030/ActiGlobe",
                          build_vignettes = TRUE)
 ```
 
-Coming soon… 
-ActiGlobe-release
+Coming soon… ActiGlobe-release
 
 ``` r
 install.packages("ActiGlobe")
@@ -70,7 +71,7 @@ citation("ActiGlobe")
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
-\[online bibtex-converter\]
+$$online bibtex-converter$$
 (<https://asouqi.github.io/bibtex-converter/>)
 
 ## Quick Start - No Time Change
@@ -93,18 +94,27 @@ Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
 
-```r
+``` r
 ### Quick overview of the original recording
 ggActiGlobe(df = df, 
             Bdf = Bdf,
             VAct = "Activity",
             VDT = "DateTime")
 ```
-![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
-<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment 
 
+<div class="figure">
+
+<img src="vignettes/images/Unadjusted_Overview.png" alt="&lt;b&gt; Figure 1. &lt;/b&gt; Overview of the raw recording with clear day‑to‑day epoching misalignment" width="1707" />
+<p class="caption">
+
+<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day
+epoching misalignment
+</p>
+
+</div>
 
 ### Adjust Travel-induced Time Shift
+
 ``` r
 #### Import the travel log into R and give it a name
 TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
@@ -120,12 +130,15 @@ and anonymize the travel destination to keep participants’ privacy.
 ``` r
 dfList = Act2Daily(df = df,
                    Bdf = Bdf.adj,
+                   VAct = "Activity",
+                   VTm = "Time",
                    Incomplete = TRUE,
                    Travel = TRUE)
 ```
 
 #### Review adjustment
-```r
+
+``` r
 df2 <- do.call(rbind, dfList$Daily_df)
 
 ggActiGlobe(df = df2, 
@@ -134,14 +147,25 @@ ggActiGlobe(df = df2,
             VDT = "DateTime")
 ```
 
-![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
+<div class="figure">
+
+<img src="vignettes/images/Adjusted_Overview.png" alt="&lt;b&gt; Figure 2. &lt;/b&gt; Overview of the &lt;u&gt;adjusted&lt;/u&gt; recording" width="1702" />
+<p class="caption">
+
 <b> Figure 2. </b> Overview of the <u>adjusted</u> recording
+</p>
+
+</div>
 
 ## Other Features
-Generate report via write.cosinor() and export pre-processed data via write.act() reproducibility and further analysis.
 
-ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling. To learn how to perform and visualize ecnometrics-based cosinor model and circularized kernel density estimation, please, see the package vignettes.
+Generate report via write.cosinor() and export pre-processed data via
+write.act() reproducibility and further analysis.
 
+ActiGlobe can also be used to analyze data via traditional OLS cosinor
+modeling. To learn how to perform and visualize ecnometrics-based
+cosinor model and circularized kernel density estimation, please, see
+the package vignettes.
 
 ## Code of conduct
 
