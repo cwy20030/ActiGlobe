@@ -9,6 +9,7 @@ template:
     desc: >
       Step-by-step guides to help you learn the package.
     contents:
+      - vignette("Introduction")
       - vignette("Time-Shift")
       - vignette("Circadian-Analysis")
       - vignette("Graphic-Report")
