@@ -23,8 +23,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-    permissions:
-      contents: write
+    
     strategy:
       fail-fast: false
       matrix:
