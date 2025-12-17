@@ -69,8 +69,7 @@ citation("ActiGlobe")
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
-$$online bibtex-converter$$
-(<https://asouqi.github.io/bibtex-converter/>)
+[online bibtex-converter](https://asouqi.github.io/bibtex-converter)
 
 ## Quick Start - No Time Change
 
