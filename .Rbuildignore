@@ -28,3 +28,4 @@
 ^_pkgdown\.yml$
 ^([^/]+)\.png$
 ^\.all-contributorsrc$
+^codemeta\.jason
