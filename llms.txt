@@ -58,7 +58,7 @@ citation("ActiGlobe")
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
-\[online bibtex-converter\]
+\\online bibtex-converter\\
 (<https://asouqi.github.io/bibtex-converter/>)
 
 ## Quick Start - No Time Change
@@ -89,10 +89,12 @@ ggActiGlobe(df = df,
             VDT = "DateTime")
 ```
 
-![Figure 1. An Overview of the Raw
-Recording](/articles/images/Unadjusted_Overview.png) **Figure 1.**
-Overview of the raw recording with clear day‑to‑day epoching
-misalignment
+![\<b\> Figure 1. \</b\> Overview of the raw recording with clear
+day‑to‑day epoching
+misalignment](articles/images/Unadjusted_Overview.png)
+
+**Figure 1.** Overview of the raw recording with clear day‑to‑day
+epoching misalignment
 
 ### Adjust Travel-induced Time Shift
 
@@ -128,9 +130,10 @@ ggActiGlobe(df = df2,
             VDT = "DateTime")
 ```
 
-![Figure 2. An Overview of the Adjusted
-Recording](/articles/images/Adjusted_Overview.png) **Figure 2.**
-Overview of the *adjusted* recording
+![\<b\> Figure 2. \</b\> Overview of the \<u\>adjusted\</u\>
+recording](articles/images/Adjusted_Overview.png)
+
+**Figure 2.** Overview of the *adjusted* recording
 
 ## Other Features
 

@@ -10,7 +10,7 @@ actigraphy measures, please go to tutorial title: Graphic-Report.
 ## Load the Libraries
 
 ``` r
-library (ActiGlobe)
+library(ActiGlobe)
 
 ### Optional Library
 # library(zeallot)
@@ -22,9 +22,9 @@ them using the function \[“install.packages()”\].
 ## Load Example Data: FlyEast
 
 ``` r
-data ("FlyEast")
+data("FlyEast")
 
-head (FlyEast) ### Only the first few lines
+head(FlyEast) ### Only the first few lines
 ```
 
 | Activity | X2   | Marker |
@@ -73,15 +73,15 @@ recording data in a `data.list`.
 
 ``` r
 BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00",
-        TZ = "America/New_York"
-    )
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
+  )
 
-### An overview of the output structure from BriefSum()
-str (BdfList, max.level = 1)
+
+str(BdfList, max.level = 1) ### An overview of the output structure from BriefSum()
 #> List of 2
 #>  $ Bdf:Classes 'ActiGlobe' and 'data.frame': 35 obs. of  13 variables:
 #>  $ df :Classes 'ActiGlobe' and 'data.frame': 48847 obs. of  9 variables:
@@ -91,12 +91,13 @@ We can also take the advantage of `zeallot` to store multiple outputs at
 once just like in `Matlab` and `Python`.
 
 ``` r
-c (Bdf, df) %<-%
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+c(Bdf, df) %<-%
+  BriefSum(
+    df = FlyEast,
+    SR = 1 / 60,
+    Start = "2017-10-24 13:45:00",
+    TZ = "America/New_York"
+  )
 ```
 
 In the brief summary of daily recording, we would have thirteen
@@ -107,12 +108,10 @@ recording is less than 24 hours and the presence of daylight-saving time
 
 ``` r
 Bdf <- BdfList$Bdf
-head (Bdf)
+head(Bdf)
 ```
 
-![Table 2 The Header of Bdf](images/Bdf_head.png)
-
-Table 2 The Header of Bdf
+##### Table 2 The Header of Bdf ![Table 2 The Header of Bdf](images/Bdf_head.png)
 
 In the enriched data - `df`, we have both the original data stored in
 `FlyEast` and some new information, such as the time stamp of each data
@@ -121,9 +120,7 @@ point.
 ``` r
 df <- BdfList$df
 
-head (df)
-### This should give us the same first few lines of FlyEast dataset
-### with a few new columns created by [BrifSum()].
+head(df) ### This should give us the same first few lines of FlyEast dataset with a few new columns created by [BrifSum()].
 ```
 
 | Activity | X2 | Marker | DateTime | Date | Time | UTC | DaylightSaving | nPoint |
@@ -164,9 +161,9 @@ or
 in the R console.
 
 ``` r
-data (TLog)
+data(TLog)
 
-head (TLog)
+head(TLog)
 ```
 
 | ID       | UTC_Offset | Country_with_Daylight_Saving | date_Start | date_End |
@@ -197,9 +194,9 @@ timetable in ActiGlobe. We can simply use `View(IANA)` to pull up the
 2025b version of the timetable.
 
 ``` r
-data (IANA)
+data(IANA)
 
-head (IANA)
+head(IANA)
 ```
 
 |  | Country_Name | Country_Code | Timezone_IANA | TimeZone_Identifiers | TZ_Code | Offset | Observes_DST | Current_DST_Status | Current_Abbreviation | Current_Time_Zone_long_name | Current_Offset | Standard_Abbreviation | Standard_Time_Zone_long_name | Standard_Offset |
@@ -223,8 +220,7 @@ stored in `Bdf`. This design allows us to quickly scan through the
 summary file, just in case any adjustment is not properly addressed.
 
 ``` r
-Bdf.adj <- TAdjust (Bdf, TLog)
-#> [1] "UTC -04:00" "UTC +08:00" "UTC +09:00" "UTC -04:00"
+Bdf.adj <- TAdjust(Bdf, TLog)
 ```
 
 When we put it side-by-side with the initial brief summary, we can see
@@ -232,60 +228,60 @@ clear changes across the various documents regarding the recordings and
 their annotations.
 
 ``` r
-knitr::kable (Bdf [10:15, ]) ### Only display 6 days
+knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 ```
 
-![](images/Bdf_demo.png)
+##### Table 6 Initial Brief Summary of the Recording ![Table 6 Initial Brief Summary of the Recording](images/Bdf_demo.png)
 
 ``` r
-knitr::kable (Bdf.adj [10:15, ]) ### Only display 6 days
+knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 ```
 
-![](images/Bdf.adj_demo.png)
+##### Table 7. Adjusted Brief Summary of the Recording ![Table 6 Initial Brief Summary of the Recording](images/Bdf.adj_demo.png)
 
 When we compare the overview of the longitudinal recording, we can also
 see clear changes in the various documentations about the recordings and
 their annotations
 
 ``` r
-ggActiGlobe (
-    df = df,
-    Bdf = Bdf,
-    VAct = "Activity",
-    VDT = "DateTime"
+ggActiGlobe(
+  df = df,
+  Bdf = Bdf,
+  VAct = "Activity",
+  VDT = "DateTime"
 )
 ```
 
 ![Figure 1. An Overview of Unadjusted
-Recordin](images/Unadjusted_Overview.png)
+Recording](images/Unadjusted_Overview.png)
 
-Figure 1. An Overview of Unadjusted Recordin
+Figure 1. An Overview of Unadjusted Recording
 
 ``` r
 ### Reconstruct the longitudinal recording with proper segmentation
-dfList <- Act2Daily (
-    df = df,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VTm = "Time",
-    Incomplete = TRUE,
-    Travel = TRUE
+dfList <- Act2Daily(
+  df = df,
+  Bdf = Bdf.adj,
+  VAct = "Activity",
+  VTm = "Time",
+  Incomplete = TRUE,
+  Travel = TRUE
 )
 
-df2 <- do.call (rbind, dfList$Daily_df)
+df2 <- do.call(rbind, dfList$Daily_df)
 
-ggActiGlobe (
-    df = df2,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VDT = "DateTime"
+ggActiGlobe(
+  df = df2,
+  Bdf = Bdf.adj,
+  VAct = "Activity",
+  VDT = "DateTime"
 )
 ```
 
-![Figure 2. An Overview of Adjusted
-Recordin](images/Adjusted_Overview.png)
+![Figure 1. An Overview of Adjusted
+Recording](images/Adjusted_Overview.png)
 
-Figure 2. An Overview of Adjusted Recordin
+Figure 1. An Overview of Adjusted Recording
 
 We can also use the following code to look at each daily recording
 separately. Note that the code below was intentionally left without
@@ -294,33 +290,30 @@ generating any output plot to avoid overcrowding this tutorial.
 1.  Unadjusted Original Recording
 
 ``` r
-for (i in seq_along (length (x))) {
-    x <- Bdf$Cumulative_Start_Second
-    y <- Bdf$Cumulative_End_Second
-    GX <- df$Activity [(x [i]:y [i]) / 60]
-    print (plot (GX, main = i, font.lab = 2, ylab = "Activity (counts)"))
+for (i in seq_along(length(x))) {
+  x <- Bdf$Cumulative_Start_Second
+  y <- Bdf$Cumulative_End_Second
+  GX <- df$Activity[(x[i]:y[i]) / 60]
+  print(plot(GX, main = i, font.lab = 2, ylab = "Activity (counts)"))
 }
 ```
 
 2.  Time-shift Adjusted Recording
 
 ``` r
-for (i in seq_along (length (x))) {
-    x <- Bdf.adj$Cumulative_Start_Second
-    y <- Bdf.adj$Cumulative_End_Second
-    GX <- df$Activity [(x [i]:y [i]) / 60]
-    print (plot (GX, main = i, font.lab = 2, ylab = "Activity (counts)"))
+for (i in seq_alonglength(x))) {
+  x <- Bdf.adj$Cumulative_Start_Second
+  y <- Bdf.adj$Cumulative_End_Second
+  GX <- df$Activity[(x[i]:y[i]) / 60]
+  print(plot(GX, main = i, font.lab = 2, ylab = "Activity (counts)"))
 }
 ```
 
 3.  Time-shift Adjusted Recording
 
 ``` r
-for (i in names (dfList$Daily_df)) {
-    plot (dfList$Daily_df [[i]]$Activity,
-        main = i, font.lab = 2,
-        ylab = "Activity (counts)"
-    )
+for (i in names(dfList$Daily_df)) {
+  plot(dfList$Daily_df[[i]]$Activity, main = i, font.lab = 2, ylab = "Activity (counts)")
 }
 ```
 
