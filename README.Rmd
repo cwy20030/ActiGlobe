@@ -1,29 +1,29 @@
 ---
 output: github_document
+resource_files:
+  - .vignettes/images/Unadjusted_Overview.png
+  - .vignettes/images/Adjusted_Overview.png
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r}
-#| echo: false
-knitr::opts_chunk$set (
-    collapse = TRUE,
-    comment = "#>",
-    fig.path = "man/figures/"
-)
-```
-
 # ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
-![version](https://img.shields.io/badge/version-0.1.9-green)
-[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg?branch=Test)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
-[![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg?branch=Test)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
+
+![version](https://img.shields.io/badge/version-0.2.1-green)
+[![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
+[![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
-ActiGlobe is designed to make it easy to pre-process longitudinal actigraphy recordings, especially for the recordings affected by time shift due to daylight saving changes and or cross-continental travel. It streamlines the process from end-to-end, to simplify the process of pre-processing, analyzing, and exporting daily actigraphy data and visual reports, making it an essential tool for researchers and professionals in the field. To learn how to use it, check the vignettes for a quick tutorial.
-
+ActiGlobe is designed to make it easy to pre-process longitudinal
+actigraphy recordings, especially for the recordings affected by time
+shift due to daylight saving changes and or cross-continental travel. It
+streamlines the process from end-to-end, to simplify the process of
+pre-processing, analyzing, and exporting daily actigraphy data and
+visual reports, making it an essential tool for researchers and
+professionals in the field.
 
 ## Installation
 
@@ -31,53 +31,67 @@ The pre-released version of ActiGlobe can installed from
 [GitHub](https://github.com/) with:
 
 #### ActiGlobe-dev
-```{r eval = FALSE}
-# If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code.
+
+```{r eval=FALSE}
+# If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code. 
 # install.packages("devtools")
-devtools::install_github ("cwy20030/ActiGlobe")
+devtools::install_github("cwy20030/ActiGlobe")
 
 
 # To properly install tutorial, please, use the following code
-devtools::install_github ("cwy20030/ActiGlobe",
-    build_vignettes = TRUE
-)
+devtools::install_github("cwy20030/ActiGlobe",
+                         build_vignettes = TRUE)
 ```
 
+Coming soon… 
+ActiGlobe-release
 
-
-Coming soon...
-#### ActiGlobe-release
-```{r eval = FALSE}
-install.packages ("ActiGlobe")
+```{r eval=FALSE}
+install.packages("ActiGlobe")
 ```
-
 
 <br>
 
-## Citation 
-### For the pre-release package ‘ActiGlobe’ in publication:
-```{r}
-citation ("ActiGlobe")
-```
-To convert to EndNote compatible format, paste the BibTeX entry in [online bibtex-converter] (https://asouqi.github.io/bibtex-converter/) 
+## Citation
 
+### For the pre-release package ‘ActiGlobe’ in publication:
+
+```{r eval=FALSE}
+citation("ActiGlobe")
+#> To cite package 'ActiGlobe' in publications use:
+#> 
+#>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
+#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
+#>   <https://github.com/cwy20030/ActiGlobe>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
+#>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
+#>     year = {2025},
+#>     note = {R package version 0.1.9},
+#>     url = {https://github.com/cwy20030/ActiGlobe},
+#>   }
+```
+
+To convert to an EndNote-compatible format, paste the BibTeX entry in
+\[online bibtex-converter\]
+(<https://asouqi.github.io/bibtex-converter/>)
 
 ## Quick Start - No Time Change
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 ### Load ActiGlobe into R
-library (ActiGlobe)
+library(ActiGlobe)
 ```
 
-
-```{r eval = FALSE}
-### Replace FlyEast with the dataset and specify sampling rate in SR and the start of the recording.
-BdfList <-
-    BriefSum (
-        df = FlyEast,
-        SR = 1 / 60,
-        Start = "2017-10-24 13:45:00"
-    )
+```{r eval=FALSE}
+### Replace FlyEast with the dataset and specify sampling rate in SR and the start of the recording. 
+BdfList = 
+BriefSum(df = FlyEast,
+         SR = 1/60,
+         Start = "2017-10-24 13:45:00")
 
 
 ### Extract the summary report and the enriched data
@@ -85,57 +99,55 @@ Bdf <- BdfList$Bdf
 df <- BdfList$df
 ```
 
-<br>
-```{r eval = FALSE}
+```{r eval=FALSE}
 ### Quick overview of the original recording
-ggActiGlobe (
-    df = df,
-    Bdf = Bdf,
-    VAct = "Activity",
-    VDT = "DateTime"
-)
+ggActiGlobe(df = df, 
+            Bdf = Bdf,
+            VAct = "Activity",
+            VDT = "DateTime")
 ```
-![Figure 1. An Overview of the Raw Recording](/vignettes/images/Unadjusted_Overview.png)
-<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment 
 
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment"}
+knitr::include_graphics("vignettes/images/Unadjusted_Overview.png",dpi = 300)
 
-
-```{r eval = FALSE}
-### Import the travel log into R and give it a name
-TLog <- read.csv ("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
-
-### Replace the TLog with the name of the travel log assigned
-Bdf.adj <- TAdjust (
-    Bdf = Bdf,
-    TLog = TLog
-)
 ```
-Take a coffee break if needed because ActiGlobe will adjust time shift and anonymize the travel destination to keep participants' privacy.
 
+### Adjust Travel-induced Time Shift
+```{r eval=FALSE}
+#### Import the travel log into R and give it a name
+TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
+
+#### Replace the TLog with the name of the travel log assigned
+Bdf.adj = TAdjust(Bdf = Bdf, 
+                  TLog = TLog)
+```
+
+Take a coffee break if needed because ActiGlobe will adjust time shift
+and anonymize the travel destination to keep participants’ privacy.
 
 ```{r eval=FALSE}
-dfList <- Act2Daily (
-    df = df,
-    Bdf = Bdf.adj,
-    Incomplete = TRUE,
-    Travel = TRUE
-)
+dfList = Act2Daily(df = df,
+                   Bdf = Bdf.adj,
+                   VAct = "Activity",
+                   VTm = "Time",
+                   Incomplete = TRUE,
+                   Travel = TRUE)
 ```
 
 #### Review adjustment
 ```{r eval=FALSE}
-df2 <- do.call (rbind, dfList$Daily_df)
+df2 <- do.call(rbind, dfList$Daily_df)
 
-ggActiGlobe (
-    df = df2,
-    Bdf = Bdf.adj,
-    VAct = "Activity",
-    VDT = "DateTime"
-)
+ggActiGlobe(df = df2, 
+            Bdf = Bdf.adj,
+            VAct = "Activity",
+            VDT = "DateTime")
 ```
 
-![Figure 2. An Overview of the Adjusted Recording](/vignettes/images/Adjusted_Overview.png)
-<b> Figure 2. </b> Overview of the <u>adjusted</u> recording
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="<b> Figure 2. </b> Overview of the <u>adjusted</u> recording"}
+knitr::include_graphics("vignettes/images/Adjusted_Overview.png",dpi = 300)
+
+```
 
 
 ## Other Features
@@ -146,4 +158,6 @@ ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling.
 
 ## Code of conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of
+Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
