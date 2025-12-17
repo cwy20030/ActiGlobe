@@ -76,8 +76,7 @@ citation("ActiGlobe")
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
-\[online bibtex-converter\]
-(<https://asouqi.github.io/bibtex-converter/>)
+[online bibtex-converter](https://asouqi.github.io/bibtex-converter)
 
 ## Quick Start - No Time Change
 
@@ -107,15 +106,10 @@ ggActiGlobe(df = df,
             VDT = "DateTime")
 ```
 
-<<<<<<< HEAD
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=3.33, fig.cap="<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment"}
 knitr::include_graphics("vignettes/images/Unadjusted_Overview.png")
-=======
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="<b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day epoching misalignment"}
-knitr::include_graphics("vignettes/images/Unadjusted_Overview.png",dpi = 300)
->>>>>>> 4286eb0af04c4a8b1c96b9d8e09a9ec946bfea51
 
-```
 
 ### Adjust Travel-induced Time Shift
 ```{r eval=FALSE}
@@ -149,13 +143,9 @@ ggActiGlobe(df = df2,
             VDT = "DateTime")
 ```
 
-<<<<<<< HEAD
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=3.33, fig.cap="<b> Figure 2. </b> Overview of the <u>adjusted</u> recording"}
 knitr::include_graphics("vignettes/images/Adjusted_Overview.png")
-=======
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="<b> Figure 2. </b> Overview of the <u>adjusted</u> recording"}
-knitr::include_graphics("vignettes/images/Adjusted_Overview.png",dpi = 300)
->>>>>>> 4286eb0af04c4a8b1c96b9d8e09a9ec946bfea51
 
 ```
 
