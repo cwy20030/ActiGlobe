@@ -161,3 +161,30 @@ ActiGlobe can also be used to analyze data via traditional OLS cosinor modeling.
 Please note that this project is released with a [Contributor Code of
 Conduct](https://github.com/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md).
 By participating in this project you agree to abide by its terms.
+
+## Contributors
+
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [all-contributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
+
+<table>
+
+<tr>
+<td align="center">
+<a href="https://github.com/cwy20030">
+<img src="https://avatars.githubusercontent.com/u/35785225?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/cwy20030/ActiGlobe/commits?author=cwy20030">cwy20030</a>
+</td>
+</tr>
+
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
