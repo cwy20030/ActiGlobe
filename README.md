@@ -5,7 +5,8 @@
 
 <!-- badges: start -->
 
-![version](https://img.shields.io/badge/version-0.2.1-green)
+![ActiGlobe Version](https://img.shields.io/badge/Version-0.2.1-purple)
+![R Version](https://img.shields.io/badge/R-%3E%3D%204.3-navy)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
