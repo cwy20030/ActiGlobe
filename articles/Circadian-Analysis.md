@@ -253,7 +253,6 @@ to finish the computation.
 ``` r
 ### For external graphic plot.
 library (ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.5.2
 ```
 
 ##### OLS-Cosinor vs. Kernel Density Estimation
