@@ -101,7 +101,7 @@ please go to the rest of the tutorials in this package.</p>
 <h2 id="load-the-libraries">Load the Libraries<a class="anchor" aria-label="anchor" href="#load-the-libraries"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cwy20030/ActiGlobe" class="external-link">ActiGlobe</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://github.com/cwy20030/ActiGlobe" class="external-link">ActiGlobe</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Optional Library</span></span>
 <span><span class="co"># library(zeallot)</span></span></code></pre></div>
@@ -111,9 +111,10 @@ install them using the function <code><a href="https://rdrr.io/r/utils/install.p
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<div class="section level3">
-<h3 id="what-is-actigraphy">What is Actigraphy?<a class="anchor" aria-label="anchor" href="#what-is-actigraphy"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="what-is-actigraphy">What is Actigraphy?<a class="anchor" aria-label="anchor" href="#what-is-actigraphy"></a>
+</h2>
 <p>Actigraphy is a non-invasive method used for measuring sleep/wake
 cycles by using a small device, usually in the form of a wrist-worn
 watch. It is the easiest way to measure sleep in the field and is widely
@@ -122,7 +123,6 @@ and ease of use (Smith et al., 2018). An actigraphy device has a
 built-in accelerometer that measures movement, allowing researchers to
 objectively track activity patterns over days, weeks, or even
 months.</p>
-</div>
 <div class="section level3">
 <h3 id="understanding-accelerometers-and-gyroscopes">Understanding Accelerometers and Gyroscopes<a class="anchor" aria-label="anchor" href="#understanding-accelerometers-and-gyroscopes"></a>
 </h3>
@@ -287,6 +287,286 @@ reports to communicate your findings effectively.</li>
 <p>We encourage you to work through each tutorial to become familiar
 with the ActiGlobe workflow and discover how this tool can enhance your
 actigraphy research.</p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="getting-started-with-r-essential-skills-and-pro-tips">Getting Started with R: Essential Skills and Pro Tips<a class="anchor" aria-label="anchor" href="#getting-started-with-r-essential-skills-and-pro-tips"></a>
+</h2>
+<p>R is a powerful, specialized language for data analysis, statistics,
+and visualization. Whether you are a new user or an experienced analyst,
+mastering R’s ecosystem will streamline your workflow—especially when
+working with packages like ActiGlobe.</p>
+<div class="section level3">
+<h3 id="quick-start-running-r">Quick Start: Running R<a class="anchor" aria-label="anchor" href="#quick-start-running-r"></a>
+</h3>
+<ul>
+<li>
+<strong>Install R:</strong> Download from <a href="https://cran.r-project.org/" class="external-link">CRAN</a>.</li>
+<li>
+<strong>Choose an IDE:</strong> <a href="https://posit.co/" class="external-link">RStudio</a> is the gold standard for R,
+providing an all-in-one interface for scripting, output, packages, and
+visualization.
+<ul>
+<li>Alternatives: <a href="https://code.visualstudio.com/docs/languages/r" class="external-link">Visual Studio
+Code</a> with R extensions, or even Google Colab for running R code via
+Jupyter interface.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Try out a basic calculation:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span></span>
+<span><span class="co">#&gt; [1] 4</span></span></code></pre></div>
+<p><strong>To reuse the value later, assign it to a
+variable:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span></span>
+<span></span>
+<span><span class="co">## We can verify it by printing the stored value in x:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="why-r-robust-and-reliable">Why R? Robust and Reliable<a class="anchor" aria-label="anchor" href="#why-r-robust-and-reliable"></a>
+</h3>
+<p>R’s CRAN committee reviews every package rigorously for compatibility
+and correctness on all major operating systems. This strict review
+process in unique among common programming languages (such as Python’s
+PyPI and MATLAB) in the world of research. In addition, CRAN
+periodically recheck existing packages compatibility to ensure they
+continue to meet standards as R evolves. While these checks may
+introduce some delays in package updates, they provide a crucial layer
+of quality assurance and avoid version-bounded issues (a common issue
+among python libraries). For this reason, the primary development of
+ActiGlobe is and will be in R to ensure long-term stability and
+reliability for users.</p>
+</div>
+<div class="section level3">
+<h3 id="essential-keyboard-shortcuts-rstudio-and-general-use">Essential Keyboard Shortcuts (RStudio and General Use)<a class="anchor" aria-label="anchor" href="#essential-keyboard-shortcuts-rstudio-and-general-use"></a>
+</h3>
+<p>Speed up coding with these shortcuts (useful in RStudio):</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Description</th>
+<th align="left">Windows_Linux</th>
+<th align="left">MacOS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Autocomplete (TAB)</td>
+<td align="left">TAB</td>
+<td align="left">TAB</td>
+</tr>
+<tr class="even">
+<td align="left">Run line/selection</td>
+<td align="left">Ctrl + Enter</td>
+<td align="left">Cmd + Enter</td>
+</tr>
+<tr class="odd">
+<td align="left">Pipe <code>%&gt;%</code>
+</td>
+<td align="left">Ctrl + Shift + M</td>
+<td align="left">Cmd + Shift + M</td>
+</tr>
+<tr class="even">
+<td align="left">Comment/uncomment</td>
+<td align="left">Ctrl + Shift + C</td>
+<td align="left">Cmd + Shift + C</td>
+</tr>
+<tr class="odd">
+<td align="left">Find/replace</td>
+<td align="left">Ctrl + F</td>
+<td align="left">Cmd + F</td>
+</tr>
+<tr class="even">
+<td align="left">Select all</td>
+<td align="left">Ctrl + A</td>
+<td align="left">Cmd + A</td>
+</tr>
+<tr class="odd">
+<td align="left">Save script</td>
+<td align="left">Ctrl + S</td>
+<td align="left">Cmd + S</td>
+</tr>
+<tr class="even">
+<td align="left">Insert new code chunk</td>
+<td align="left">Ctrl + Alt + I</td>
+<td align="left">Cmd + Option + I</td>
+</tr>
+<tr class="odd">
+<td align="left">Go to file/function</td>
+<td align="left">Ctrl + .</td>
+<td align="left">Cmd + .</td>
+</tr>
+<tr class="even">
+<td align="left">Show documentation</td>
+<td align="left">F1</td>
+<td align="left">F1</td>
+</tr>
+</tbody>
+</table>
+<p>Reference: <a href="https://rstudio.github.io/cheatsheets/html/rstudio-ide.html#keyboard-shortcuts" class="external-link">RStudio
+Keyboard Shortcuts</a></p>
+<p><strong>Pro-tip:</strong> Autocomplete (TAB) works for functions,
+arguments, and file names—use it to boost accuracy and speed.</p>
+</div>
+<div class="section level3">
+<h3 id="basic-programming-package-management">Basic Programming &amp; Package Management<a class="anchor" aria-label="anchor" href="#basic-programming-package-management"></a>
+</h3>
+<p>R is built for clarity:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Assign a value</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">42</span></span>
+<span></span>
+<span><span class="co"># Create a vector</span></span>
+<span><span class="va">numbers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span> <span class="op">(</span><span class="va">numbers</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Install and load a package:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span> <span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<p><strong>Install multiple packages at once:</strong></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span> <span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>, <span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>See this <a href="https://www.r-bloggers.com/how-to-start/" class="external-link">R-bloggers intro
+guide</a> for practical examples and tips.</p>
+</div>
+<div class="section level3">
+<h3 id="fundamental-packages-functions">Fundamental Packages &amp; Functions<a class="anchor" aria-label="anchor" href="#fundamental-packages-functions"></a>
+</h3>
+<ul>
+<li>
+<strong>Base R:</strong> <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd()</a></code>,
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, <code><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist()</a></code>
+</li>
+<li>
+<strong>Core Packages:</strong>
+<ul>
+<li>
+<code>stats</code>: Statistical modeling and classic tests.</li>
+<li>
+<code>dplyr</code>: Data wrangling (select, filter, mutate, group,
+summarize).</li>
+<li>
+<code>tidyr</code>: Data tidying (pivot_longer, pivot_wider,
+separate, unite).</li>
+<li>
+<code>ggplot2</code>: Elegant data visualization.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example: Filter and Plot with dplyr &amp;
+ggplot2</strong></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Import libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create sample data</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span> <span class="op">(</span>ID <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">18</span>, <span class="fl">12</span>, <span class="fl">11</span>, <span class="fl">17</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Filter values greater than 12 and plot</span></span>
+<span><span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span> <span class="op">(</span><span class="va">value</span> <span class="op">&gt;</span> <span class="fl">12</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span> <span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span> <span class="op">(</span>x <span class="op">=</span> <span class="va">ID</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span> <span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="data-wrangling-visualization-and-reproducibility-tutorials">Data Wrangling, Visualization, and Reproducibility Tutorials<a class="anchor" aria-label="anchor" href="#data-wrangling-visualization-and-reproducibility-tutorials"></a>
+</h3>
+<ul>
+<li><a href="https://www.r-bloggers.com/2018/05/dplyr-a-beginners-guide/" class="external-link">Data
+Wrangling with <code>dplyr</code></a></li>
+<li><a href="https://www.r-bloggers.com/2020/08/graphics-in-r-with-ggplot2/" class="external-link">Data
+Visualization with ggplot2</a></li>
+<li><a href="https://rmarkdown.rstudio.com/lesson-1.html" class="external-link">Reproducible
+Analyses with RMarkdown</a></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="avoiding-package-duplication-managing--libpaths">Avoiding Package Duplication: Managing .libPaths()<a class="anchor" aria-label="anchor" href="#avoiding-package-duplication-managing--libpaths"></a>
+</h3>
+<p>To avoid duplicate installations and manage shared settings across
+operating systems, we recommend users to customize
+<code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code>:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Display current library locations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span> <span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set a custom/shared R library (adjust for OS)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span> <span class="op">(</span><span class="st">"C:/R/libraries"</span><span class="op">)</span>    <span class="co"># Windows (Out of the `Program Files` folder)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span> <span class="op">(</span><span class="st">"~/R/libraries"</span><span class="op">)</span>     <span class="co"># Linux/MacOS</span></span></code></pre></div>
+<p>To permanently set this path, add the above line to your
+Rprofile.site file:</p>
+<ul>
+<li><p><strong>Windows:</strong><br>
+C:/Program Files/R/R-x.y.z/etc/Rprofile.site</p></li>
+<li><p><strong>Linux/MacOS:</strong><br>
+/usr/lib/R/etc/Rprofile.site</p></li>
+</ul>
+<p><strong>Advanced-setting:</strong> Users with multiple PCs may
+consider storing libraries on a synced drive (Dropbox, OneDrive) when
+switching between computers. This will also require modifying the
+Rprofile.site location.</p>
+<p><em>Try install directly to the new path:</em></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Verify the new library path. The new path should be the first.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span> <span class="op">(</span><span class="fu">.liibPaths</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span> <span class="op">(</span><span class="st">"lubridate"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="common-pitfalls-and-best-practices">Common Pitfalls and Best Practices<a class="anchor" aria-label="anchor" href="#common-pitfalls-and-best-practices"></a>
+</h3>
+<ul>
+<li>
+<strong>Error Handling:</strong><br>
+Use <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> to manage unexpected errors and keep
+analyses running.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span> <span class="op">(</span><span class="st">"a"</span><span class="op">)</span>, error <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="st">"Not a number"</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li><p><strong>Reproducibility:</strong><br>
+Use RMarkdown (<code>.Rmd</code>) to combine code, results, and
+documentation.<br>
+Run <code>knitr::knit("myreport.Rmd")</code> to generate reproducible
+reports.</p></li>
+<li>
+<p><strong>Efficient Code:</strong></p>
+<ul>
+<li>Use vectorized functions: Replace <code>for</code> loops with
+<code>apply</code> or vectorized alternatives when possible.</li>
+<li>Avoid using <code><a href="https://rdrr.io/r/base/attach.html" class="external-link">attach()</a></code> to prevent hidden bugs in
+scope.</li>
+</ul>
+</li>
+<li>
+<p><strong>Debugging:</strong></p>
+<ul>
+<li>Use <code><a href="https://rdrr.io/r/base/browser.html" class="external-link">browser()</a></code>, <code><a href="https://rdrr.io/r/base/traceback.html" class="external-link">traceback()</a></code>, or RStudio’s
+built-in debugger.</li>
+<li>Check the <a href="https://posit.co/resources/knowledge-base/troubleshooting/" class="external-link">RStudio
+Troubleshooting FAQ</a> for solutions to common issues.</li>
+</ul>
+</li>
+<li><p><strong>Learning from the Community:</strong><br>
+Ask questions or find solutions on <a href="https://www.r-bloggers.com/" class="external-link">R-bloggers</a> and <a href="https://stackoverflow.com/questions/tagged/r" class="external-link">Stack
+Overflow</a>.</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="interactive-learning">Interactive Learning<a class="anchor" aria-label="anchor" href="#interactive-learning"></a>
+</h3>
+<p>Besides practice coding locally, we also recommend visiting
+interactive learning platforms such as: - <a href="https://www.datacamp.com/courses/tech:r" class="external-link">DataCamp</a> - <a href="https://www.coursera.org/courses?query=r%20programming" class="external-link">Coursera</a></p>
+<p><strong>Disclaimer:</strong> No, we are not sponsored by any of these
+platforms! We recommend them purely based on their content quality and
+user experience.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

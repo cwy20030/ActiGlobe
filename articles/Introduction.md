@@ -9,7 +9,7 @@ the rest of the tutorials in this package.
 ## Load the Libraries
 
 ``` r
-library(ActiGlobe)
+library (ActiGlobe)
 
 ### Optional Library
 # library(zeallot)
@@ -21,7 +21,7 @@ them using the function
 
 ## Introduction
 
-### What is Actigraphy?
+## What is Actigraphy?
 
 Actigraphy is a non-invasive method used for measuring sleep/wake cycles
 by using a small device, usually in the form of a wrist-worn watch. It
@@ -188,6 +188,235 @@ ActiGlobe package. The following vignettes will guide you through:
 We encourage you to work through each tutorial to become familiar with
 the ActiGlobe workflow and discover how this tool can enhance your
 actigraphy research.
+
+------------------------------------------------------------------------
+
+## Getting Started with R: Essential Skills and Pro Tips
+
+R is a powerful, specialized language for data analysis, statistics, and
+visualization. Whether you are a new user or an experienced analyst,
+mastering R’s ecosystem will streamline your workflow—especially when
+working with packages like ActiGlobe.
+
+### Quick Start: Running R
+
+- **Install R:** Download from [CRAN](https://cran.r-project.org/).
+- **Choose an IDE:** [RStudio](https://posit.co/) is the gold standard
+  for R, providing an all-in-one interface for scripting, output,
+  packages, and visualization.
+  - Alternatives: [Visual Studio
+    Code](https://code.visualstudio.com/docs/languages/r) with R
+    extensions, or even Google Colab for running R code via Jupyter
+    interface.
+
+**Try out a basic calculation:**
+
+``` r
+2 + 2
+#> [1] 4
+```
+
+**To reuse the value later, assign it to a variable:**
+
+``` r
+x <- 
+  2 + 2
+
+## We can verify it by printing the stored value in x:
+print(x)
+#> [1] 4
+```
+
+### Why R? Robust and Reliable
+
+R’s CRAN committee reviews every package rigorously for compatibility
+and correctness on all major operating systems. This strict review
+process in unique among common programming languages (such as Python’s
+PyPI and MATLAB) in the world of research. In addition, CRAN
+periodically recheck existing packages compatibility to ensure they
+continue to meet standards as R evolves. While these checks may
+introduce some delays in package updates, they provide a crucial layer
+of quality assurance and avoid version-bounded issues (a common issue
+among python libraries). For this reason, the primary development of
+ActiGlobe is and will be in R to ensure long-term stability and
+reliability for users.
+
+### Essential Keyboard Shortcuts (RStudio and General Use)
+
+Speed up coding with these shortcuts (useful in RStudio):
+
+| Description           | Windows_Linux    | MacOS            |
+|:----------------------|:-----------------|:-----------------|
+| Autocomplete (TAB)    | TAB              | TAB              |
+| Run line/selection    | Ctrl + Enter     | Cmd + Enter      |
+| Pipe `%>%`            | Ctrl + Shift + M | Cmd + Shift + M  |
+| Comment/uncomment     | Ctrl + Shift + C | Cmd + Shift + C  |
+| Find/replace          | Ctrl + F         | Cmd + F          |
+| Select all            | Ctrl + A         | Cmd + A          |
+| Save script           | Ctrl + S         | Cmd + S          |
+| Insert new code chunk | Ctrl + Alt + I   | Cmd + Option + I |
+| Go to file/function   | Ctrl + .         | Cmd + .          |
+| Show documentation    | F1               | F1               |
+
+Reference: [RStudio Keyboard
+Shortcuts](https://rstudio.github.io/cheatsheets/html/rstudio-ide.html#keyboard-shortcuts)
+
+**Pro-tip:** Autocomplete (TAB) works for functions, arguments, and file
+names—use it to boost accuracy and speed.
+
+### Basic Programming & Package Management
+
+R is built for clarity:
+
+``` r
+# Assign a value
+x <- 42
+
+# Create a vector
+numbers <- c (1, 2, 3, 4, 5)
+
+mean (numbers)
+```
+
+**Install and load a package:**
+
+``` r
+install.packages ("dplyr")
+library (dplyr)
+```
+
+**Install multiple packages at once:**
+
+``` r
+install.packages (c ("dplyr", "tidyr", "ggplot2"))
+```
+
+See this [R-bloggers intro
+guide](https://www.r-bloggers.com/how-to-start/) for practical examples
+and tips.
+
+### Fundamental Packages & Functions
+
+- **Base R:** [`mean()`](https://rdrr.io/r/base/mean.html),
+  [`sd()`](https://rdrr.io/r/stats/sd.html),
+  [`summary()`](https://rdrr.io/r/base/summary.html),
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html),
+  [`hist()`](https://rdrr.io/r/graphics/hist.html)
+- **Core Packages:**
+  - `stats`: Statistical modeling and classic tests.
+  - `dplyr`: Data wrangling (select, filter, mutate, group, summarize).
+  - `tidyr`: Data tidying (pivot_longer, pivot_wider, separate, unite).
+  - `ggplot2`: Elegant data visualization.
+
+**Example: Filter and Plot with dplyr & ggplot2**
+
+``` r
+## Import libraries
+library (dplyr)
+library (ggplot2)
+library (tidyr)
+
+## Create sample data
+df <- tibble (ID = 1:6, value = c(10, 15, 18, 12, 11, 17))
+
+## Filter values greater than 12 and plot
+df %>%
+  filter (value > 12) %>%
+  ggplot (aes (x = ID, y = value)) +
+  geom_col ()
+```
+
+### Data Wrangling, Visualization, and Reproducibility Tutorials
+
+- [Data Wrangling with
+  `dplyr`](https://www.r-bloggers.com/2018/05/dplyr-a-beginners-guide/)
+- [Data Visualization with
+  ggplot2](https://www.r-bloggers.com/2020/08/graphics-in-r-with-ggplot2/)
+- [Reproducible Analyses with
+  RMarkdown](https://rmarkdown.rstudio.com/lesson-1.html)
+
+### Avoiding Package Duplication: Managing .libPaths()
+
+To avoid duplicate installations and manage shared settings across
+operating systems, we recommend users to customize
+[`.libPaths()`](https://rdrr.io/r/base/libPaths.html):
+
+``` r
+# Display current library locations
+.libPaths ()
+
+# Set a custom/shared R library (adjust for OS)
+.libPaths ("C:/R/libraries")    # Windows (Out of the `Program Files` folder)
+.libPaths ("~/R/libraries")     # Linux/MacOS
+```
+
+To permanently set this path, add the above line to your Rprofile.site
+file:
+
+- **Windows:**  
+  C:/Program Files/R/R-x.y.z/etc/Rprofile.site
+
+- **Linux/MacOS:**  
+  /usr/lib/R/etc/Rprofile.site
+
+**Advanced-setting:** Users with multiple PCs may consider storing
+libraries on a synced drive (Dropbox, OneDrive) when switching between
+computers. This will also require modifying the Rprofile.site location.
+
+*Try install directly to the new path:*
+
+``` r
+# Verify the new library path. The new path should be the first.
+print (.liibPaths())
+
+install.packages ("lubridate")
+```
+
+### Common Pitfalls and Best Practices
+
+- **Error Handling:**  
+  Use [`tryCatch()`](https://rdrr.io/r/base/conditions.html) to manage
+  unexpected errors and keep analyses running.
+
+``` r
+tryCatch (log ("a"), error = function (e) "Not a number")
+```
+
+- **Reproducibility:**  
+  Use RMarkdown (`.Rmd`) to combine code, results, and documentation.  
+  Run `knitr::knit("myreport.Rmd")` to generate reproducible reports.
+
+- **Efficient Code:**
+
+  - Use vectorized functions: Replace `for` loops with `apply` or
+    vectorized alternatives when possible.
+  - Avoid using [`attach()`](https://rdrr.io/r/base/attach.html) to
+    prevent hidden bugs in scope.
+
+- **Debugging:**
+
+  - Use [`browser()`](https://rdrr.io/r/base/browser.html),
+    [`traceback()`](https://rdrr.io/r/base/traceback.html), or RStudio’s
+    built-in debugger.
+  - Check the [RStudio Troubleshooting
+    FAQ](https://posit.co/resources/knowledge-base/troubleshooting/) for
+    solutions to common issues.
+
+- **Learning from the Community:**  
+  Ask questions or find solutions on
+  [R-bloggers](https://www.r-bloggers.com/) and [Stack
+  Overflow](https://stackoverflow.com/questions/tagged/r).
+
+### Interactive Learning
+
+Besides practice coding locally, we also recommend visiting interactive
+learning platforms such as: -
+[DataCamp](https://www.datacamp.com/courses/tech:r) -
+[Coursera](https://www.coursera.org/courses?query=r%20programming)
+
+**Disclaimer:** No, we are not sponsored by any of these platforms! We
+recommend them purely based on their content quality and user
+experience.
 
 ## References
 
