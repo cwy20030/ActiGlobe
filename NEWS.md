@@ -7,7 +7,7 @@ Revision history for the R/ActiGlobe package
 
 - Version update and debugged:
 
-## Version: 0.2.1, 2025-11-30
+## Version 0.2.1, 2025-11-30
 
 - New master and class functions added: NA
 
@@ -29,13 +29,13 @@ Revision history for the R/ActiGlobe package
     - augment fail check in Date2TotalT function
     - implement string parsing for time in C2T to avoid automatic TZ adjustment from as.POSXct
 
-## Version: 0.2.0, 2025-10-31
+## Version 0.2.0, 2025-10-31
 
 - New master and class functions added: boot.seci
 
 - Version update and debugged: Description, README, CosinorM.KDE, ggCosinorM
 
-## Version: 0.1.9, 2025-10-27
+## Version 0.1.9, 2025-10-27
 
 - New master and class functions added: NA
 
