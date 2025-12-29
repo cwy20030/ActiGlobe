@@ -53,21 +53,23 @@ install.packages("ActiGlobe")
 
 ``` r
 citation("ActiGlobe")
-#> To cite package 'ActiGlobe' in publications use:
-#> 
-#>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
-#>   <https://github.com/cwy20030/ActiGlobe>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
-#>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
-#>     year = {2025},
-#>     note = {R package version 0.1.9},
-#>     url = {https://github.com/cwy20030/ActiGlobe},
-#>   }
+```
+#### To cite package 'ActiGlobe' in publications use:
+
+  Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
+  Processor for Cross-Continental Travel_. R package version 0.2.1,
+  <https://github.com/cwy20030/ActiGlobe>.
+
+
+#### A BibTeX entry for LaTeX users is
+```
+  @Manual{,
+    title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
+     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
+     year = {2025},
+     note = {R package version 0.2.1},
+     url = {https://github.com/cwy20030/ActiGlobe},
+   }
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
