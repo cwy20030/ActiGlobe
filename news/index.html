@@ -51,6 +51,37 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="version-021-2025-11-30">Version 0.2.1, 2025-11-30<a class="anchor" aria-label="anchor" href="#version-021-2025-11-30"></a></h2>
+<ul><li><p>New master and class functions added: NA</p></li>
+<li><p>New internal function added: Prob.Inact, mIANA, UnitFactor, ValInput</p></li>
+<li><p>Version update and debugged: ggCosinorM, TAdjust, Act2Daily, GuessTZ, UTCwDST, Date2TotalT, write.act, BriefSum, write.act, write.cosinor, C2T</p></li>
+<li>
+<p>Brief Detail:</p>
+<ul><li>piecewise binomial estimation of inactive period using Prob.Inact</li>
+<li>enable internal call function for data through mIANA setting</li>
+<li>implement UnitFactor for generic conversion</li>
+<li>implement ValInput for OS-based switcher to execute C-based serial processing within write.* functions to avoid segfault overflow</li>
+<li>additional parameter created to identify the initial timepoint of each recording period</li>
+<li>augment ggCosinorM legend and reduce code cyclocomplexity</li>
+<li>modify internal uses of IANA in Act2Daily</li>
+<li>enable switches for paralelle process for GuessTZ</li>
+<li>add fallback in UTCwDST: map numeric UTC offsets to IANA Etc/GMT zones when OlsonNames lookup fails</li>
+<li>augment test suits for all internal/helper functions</li>
+<li>augment fail check in Date2TotalT function</li>
+<li>implement string parsing for time in C2T to avoid automatic TZ adjustment from as.POSXct</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="version-020-2025-10-31">Version 0.2.0, 2025-10-31<a class="anchor" aria-label="anchor" href="#version-020-2025-10-31"></a></h2>
+<ul><li><p>New master and class functions added: boot.seci</p></li>
+<li><p>Version update and debugged: Description, README, CosinorM.KDE, ggCosinorM</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.9" id="version-019-2025-10-27">Version 0.1.9, 2025-10-27<a class="anchor" aria-label="anchor" href="#version-019-2025-10-27"></a></h2>
+<ul><li><p>New master and class functions added: NA</p></li>
+<li><p>Version update and debugged: ggActiGlobe, ggCosinorM, vignettes, TAdjust</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.8" id="version-018-2025-09-23">Version 0.1.8, 2025-09-23<a class="anchor" aria-label="anchor" href="#version-018-2025-09-23"></a></h2>
 <ul><li><p>New master and class functions added: NA</p></li>
 <li><p>New internal function added: C2T</p></li>
