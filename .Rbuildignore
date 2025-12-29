@@ -27,4 +27,5 @@
 ^CRAN-SUBMISSION$
 ^_pkgdown\.yml$
 ^([^/]+)\.png$
+^codemeta\.jason$
 ^\.all-contributorsrc$
