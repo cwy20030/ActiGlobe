@@ -5,10 +5,12 @@
 
 <!-- badges: start -->
 
-![version](https://img.shields.io/badge/version-0.2.1-green)
+![ActiGlobe Version](https://img.shields.io/badge/Version-0.2.1-purple)
+![R Version](https://img.shields.io/badge/R-%3E%3D%204.3-navy)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+![GitHub code search count](https://img.shields.io/github/search?query=ActiGlobe)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
@@ -28,19 +30,19 @@ The pre-released version of ActiGlobe can installed from
 
 ``` r
 # If devtools is not available locally, please download it by removing the number symbol before the 'install.packages' code. 
-# install.packages("devtools")
-devtools::install_github("cwy20030/ActiGlobe")
+# install.packages ("devtools")
+devtools::install_github ("cwy20030/ActiGlobe")
 
 
 # To properly install tutorial, please, use the following code
-devtools::install_github("cwy20030/ActiGlobe",
-                         build_vignettes = TRUE)
+devtools::install_github ("cwy20030/ActiGlobe",
+                          build_vignettes = TRUE)
 ```
 
 Coming soon… ActiGlobe-release
 
 ``` r
-install.packages("ActiGlobe")
+install.packages ("ActiGlobe")
 ```
 
 <br>
@@ -51,21 +53,23 @@ install.packages("ActiGlobe")
 
 ``` r
 citation("ActiGlobe")
-#> To cite package 'ActiGlobe' in publications use:
-#> 
-#>   Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
-#>   Processor for Cross-Continental Travel_. R package version 0.1.9,
-#>   <https://github.com/cwy20030/ActiGlobe>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
-#>     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
-#>     year = {2025},
-#>     note = {R package version 0.1.9},
-#>     url = {https://github.com/cwy20030/ActiGlobe},
-#>   }
+```
+#### To cite package 'ActiGlobe' in publications use:
+
+  Yao C, Varesco G, Simonelli G (2025). _ActiGlobe: Wearable Recording
+  Processor for Cross-Continental Travel_. R package version 0.2.1,
+  <https://github.com/cwy20030/ActiGlobe>.
+
+
+#### A BibTeX entry for LaTeX users is
+```
+  @Manual{,
+    title = {ActiGlobe: Wearable Recording Processor for Cross-Continental Travel},
+     author = {C. William Yao and Giorgio Varesco and Guido Simonelli},
+     year = {2025},
+     note = {R package version 0.2.1},
+     url = {https://github.com/cwy20030/ActiGlobe},
+   }
 ```
 
 To convert to an EndNote-compatible format, paste the BibTeX entry in
@@ -75,28 +79,28 @@ To convert to an EndNote-compatible format, paste the BibTeX entry in
 
 ``` r
 ### Load ActiGlobe into R
-library(ActiGlobe)
+library (ActiGlobe)
 ```
 
 ``` r
 ### Replace FlyEast with the dataset and specify sampling rate in SR and the start of the recording. 
-BdfList = 
-BriefSum(df = FlyEast,
-         SR = 1/60,
-         Start = "2017-10-24 13:45:00")
+BdfList <- 
+BriefSum (df    = FlyEast,
+          SR    = 1/60,
+          Start = "2017-10-24 13:45:00")
 
 
 ### Extract the summary report and the enriched data
 Bdf <- BdfList$Bdf
-df <- BdfList$df
+df  <- BdfList$df
 ```
 
 ``` r
 ### Quick overview of the original recording
-ggActiGlobe(df = df, 
-            Bdf = Bdf,
-            VAct = "Activity",
-            VDT = "DateTime")
+ggActiGlobe (df   = df, 
+             Bdf  = Bdf,
+             VAct = "Activity",
+             VDT  = "DateTime")
 ```
 
 <div class="figure">
@@ -114,34 +118,35 @@ epoching misalignment
 
 ``` r
 #### Import the travel log into R and give it a name
-TLog <- read.csv("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
+TLog <- read.csv ("WHERE/YOU/STOREd/THE/TRAVEL/LOG/TEMPLATE/TravelLog_Template.csv")
 
 #### Replace the TLog with the name of the travel log assigned
-Bdf.adj = TAdjust(Bdf = Bdf, 
-                  TLog = TLog)
+Bdf.adj <- TAdjust (Bdf  = Bdf, 
+                    TLog = TLog)
 ```
 
 Take a coffee break if needed because ActiGlobe will adjust time shift
 and anonymize the travel destination to keep participants’ privacy.
 
 ``` r
-dfList = Act2Daily(df = df,
-                   Bdf = Bdf.adj,
-                   VAct = "Activity",
-                   VTm = "Time",
-                   Incomplete = TRUE,
-                   Travel = TRUE)
+dfList <- Act2Daily (df         = df,
+                     Bdf        = Bdf.adj,
+                     VAct       = "Activity",
+                     VTm        = "Time",
+                     Incomplete = TRUE,
+                     Travel     = TRUE)
 ```
 
 #### Review adjustment
 
 ``` r
-df2 <- do.call(rbind, dfList$Daily_df)
+df2 <- do.call (rbind,
+                dfList$Daily_df)
 
-ggActiGlobe(df = df2, 
-            Bdf = Bdf.adj,
-            VAct = "Activity",
-            VDT = "DateTime")
+ggActiGlobe (df   = df2, 
+             Bdf  = Bdf.adj,
+             VAct = "Activity",
+             VDT  = "DateTime")
 ```
 
 <div class="figure">

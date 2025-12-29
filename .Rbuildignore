@@ -29,3 +29,4 @@
 ^([^/]+)\.png$
 ^codemeta\.jason$
 ^\.all-contributorsrc$
+^codemeta\.json$
