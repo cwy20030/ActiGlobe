@@ -36,7 +36,7 @@ objectively track activity patterns over days, weeks, or even months.
 Modern actigraphy devices rely on sophisticated sensors to capture
 movement data:
 
-#### Accelerometers
+### Accelerometers
 
 An **accelerometer** is a sensor that measures acceleration, or more
 simply, motion in one direction. It works by converting physical
@@ -57,7 +57,7 @@ are curled up in bed fast asleep, the magnitude will greatly decrease
 and stabilize, allowing the device to easily discern that you are in a
 period of sleep or rest.
 
-#### Gyroscopes
+### Gyroscopes
 
 While accelerometers measure linear acceleration, **gyroscopes** measure
 angular velocity or rotational movement. Some advanced actigraphy
@@ -73,7 +73,7 @@ To enable prolonged and uninterrupted data collection while managing
 storage limitations, most clinical and research-grade actigraphy devices
 implement **on-device filtering** and data processing:
 
-#### Signal Processing
+### Signal Processing
 
 Raw acceleration signals from the accelerometer are typically sampled at
 high frequencies (e.g., 32 Hz or higher). However, storing raw
@@ -106,7 +106,7 @@ This approach dramatically reduces data storage requirements while
 preserving the essential information needed for sleep/wake analysis and
 circadian rhythm assessment.
 
-#### Time Stamping and Time Zone Considerations
+### Time Stamping and Time Zone Considerations
 
 To allow for prolonged and uninterrupted data collection, most clinical
 and research-grade actigraphy devices record only the time and time zone
@@ -261,8 +261,10 @@ Speed up coding with these shortcuts (useful in RStudio):
 Reference: [RStudio Keyboard
 Shortcuts](https://rstudio.github.io/cheatsheets/html/rstudio-ide.html#keyboard-shortcuts)
 
-**Pro-tip:** Autocomplete (TAB) works for functions, arguments, and file
-names—use it to boost accuracy and speed.
+**\< Pro-tip \>** Autocomplete (TAB) works for functions, arguments, and
+file names—use it to boost accuracy and speed.
+
+  
 
 ### Basic Programming & Package Management
 
@@ -326,7 +328,8 @@ df %>%
   geom_col ()
 ```
 
-### Data Wrangling, Visualization, and Reproducibility Tutorials
+  
+\### Data Wrangling, Visualization, and Reproducibility Tutorials
 
 - [Data Wrangling with
   `dplyr`](https://www.r-bloggers.com/2018/05/dplyr-a-beginners-guide/)
@@ -410,9 +413,11 @@ tryCatch (log ("a"), error = function (e) "Not a number")
 ### Interactive Learning
 
 Besides practice coding locally, we also recommend visiting interactive
-learning platforms such as: -
-[DataCamp](https://www.datacamp.com/courses/tech:r) -
-[Coursera](https://www.coursera.org/courses?query=r%20programming)
+learning platforms such as:
+
+- [DataCamp](https://www.datacamp.com/courses/tech:r)
+
+- [Coursera](https://www.coursera.org/courses?query=r%20programming)
 
 **Disclaimer:** No, we are not sponsored by any of these platforms! We
 recommend them purely based on their content quality and user

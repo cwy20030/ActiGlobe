@@ -128,9 +128,10 @@ months.</p>
 </h3>
 <p>Modern actigraphy devices rely on sophisticated sensors to capture
 movement data:</p>
-<div class="section level4">
-<h4 id="accelerometers">Accelerometers<a class="anchor" aria-label="anchor" href="#accelerometers"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="accelerometers">Accelerometers<a class="anchor" aria-label="anchor" href="#accelerometers"></a>
+</h3>
 <p>An <strong>accelerometer</strong> is a sensor that measures
 acceleration, or more simply, motion in one direction. It works by
 converting physical movement into electrical signals that the device can
@@ -150,9 +151,9 @@ are curled up in bed fast asleep, the magnitude will greatly decrease
 and stabilize, allowing the device to easily discern that you are in a
 period of sleep or rest.</p>
 </div>
-<div class="section level4">
-<h4 id="gyroscopes">Gyroscopes<a class="anchor" aria-label="anchor" href="#gyroscopes"></a>
-</h4>
+<div class="section level3">
+<h3 id="gyroscopes">Gyroscopes<a class="anchor" aria-label="anchor" href="#gyroscopes"></a>
+</h3>
 <p>While accelerometers measure linear acceleration,
 <strong>gyroscopes</strong> measure angular velocity or rotational
 movement. Some advanced actigraphy devices incorporate gyroscopes to
@@ -161,16 +162,16 @@ accelerometers and gyroscopes, these devices can better distinguish
 between different types of activities (e.g., walking vs. cycling) and
 reduce errors caused by device orientation.</p>
 </div>
-</div>
 <div class="section level3">
 <h3 id="on-device-filtering-and-data-acquisition">On-Device Filtering and Data Acquisition<a class="anchor" aria-label="anchor" href="#on-device-filtering-and-data-acquisition"></a>
 </h3>
 <p>To enable prolonged and uninterrupted data collection while managing
 storage limitations, most clinical and research-grade actigraphy devices
 implement <strong>on-device filtering</strong> and data processing:</p>
-<div class="section level4">
-<h4 id="signal-processing">Signal Processing<a class="anchor" aria-label="anchor" href="#signal-processing"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="signal-processing">Signal Processing<a class="anchor" aria-label="anchor" href="#signal-processing"></a>
+</h3>
 <p>Raw acceleration signals from the accelerometer are typically sampled
 at high frequencies (e.g., 32 Hz or higher). However, storing raw
 high-frequency data for weeks or months would require enormous storage
@@ -202,9 +203,9 @@ period.</p></li>
 preserving the essential information needed for sleep/wake analysis and
 circadian rhythm assessment.</p>
 </div>
-<div class="section level4">
-<h4 id="time-stamping-and-time-zone-considerations">Time Stamping and Time Zone Considerations<a class="anchor" aria-label="anchor" href="#time-stamping-and-time-zone-considerations"></a>
-</h4>
+<div class="section level3">
+<h3 id="time-stamping-and-time-zone-considerations">Time Stamping and Time Zone Considerations<a class="anchor" aria-label="anchor" href="#time-stamping-and-time-zone-considerations"></a>
+</h3>
 <p>To allow for prolonged and uninterrupted data collection, most
 clinical and research-grade actigraphy devices record only the time and
 time zone at the initiation of recording. When no travel occurs during
@@ -217,7 +218,6 @@ Europe, they face a difficult choice: Should the watches be set to
 Montreal time (UTC-4) or Paris time (UTC+2)? Unfortunately, most
 actigraphy devices are not flexible enough to automatically adjust for
 time zone changes during recording.</p>
-</div>
 </div>
 <div class="section level3">
 <h3 id="the-need-for-actiglobe">The Need for ActiGlobe<a class="anchor" aria-label="anchor" href="#the-need-for-actiglobe"></a>
@@ -408,8 +408,10 @@ reliability for users.</p>
 </table>
 <p>Reference: <a href="https://rstudio.github.io/cheatsheets/html/rstudio-ide.html#keyboard-shortcuts" class="external-link">RStudio
 Keyboard Shortcuts</a></p>
-<p><strong>Pro-tip:</strong> Autocomplete (TAB) works for functions,
-arguments, and file names—use it to boost accuracy and speed.</p>
+<p><strong>&lt; Pro-tip &gt;</strong> Autocomplete (TAB) works for
+functions, arguments, and file names—use it to boost accuracy and
+speed.</p>
+<p><br></p>
 </div>
 <div class="section level3">
 <h3 id="basic-programming-package-management">Basic Programming &amp; Package Management<a class="anchor" aria-label="anchor" href="#basic-programming-package-management"></a>
@@ -473,10 +475,8 @@ ggplot2</strong></p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span> <span class="op">(</span><span class="va">value</span> <span class="op">&gt;</span> <span class="fl">12</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span> <span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span> <span class="op">(</span>x <span class="op">=</span> <span class="va">ID</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span> <span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="data-wrangling-visualization-and-reproducibility-tutorials">Data Wrangling, Visualization, and Reproducibility Tutorials<a class="anchor" aria-label="anchor" href="#data-wrangling-visualization-and-reproducibility-tutorials"></a>
-</h3>
+<p><br> ### Data Wrangling, Visualization, and Reproducibility
+Tutorials</p>
 <ul>
 <li><a href="https://www.r-bloggers.com/2018/05/dplyr-a-beginners-guide/" class="external-link">Data
 Wrangling with <code>dplyr</code></a></li>
@@ -562,7 +562,11 @@ Overflow</a>.</p></li>
 <h3 id="interactive-learning">Interactive Learning<a class="anchor" aria-label="anchor" href="#interactive-learning"></a>
 </h3>
 <p>Besides practice coding locally, we also recommend visiting
-interactive learning platforms such as: - <a href="https://www.datacamp.com/courses/tech:r" class="external-link">DataCamp</a> - <a href="https://www.coursera.org/courses?query=r%20programming" class="external-link">Coursera</a></p>
+interactive learning platforms such as:</p>
+<ul>
+<li><p><a href="https://www.datacamp.com/courses/tech:r" class="external-link">DataCamp</a></p></li>
+<li><p><a href="https://www.coursera.org/courses?query=r%20programming" class="external-link">Coursera</a></p></li>
+</ul>
 <p><strong>Disclaimer:</strong> No, we are not sponsored by any of these
 platforms! We recommend them purely based on their content quality and
 user experience.</p>
