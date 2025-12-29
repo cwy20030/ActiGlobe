@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-subtitle: "What is actigraphy? How do we use R?"
+subtitle: "What is actigraphy?"
 author: "C. William Yao, Samuel Szocs"
 output: rmarkdown::html_vignette
 vignette: >
