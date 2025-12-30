@@ -37,15 +37,22 @@ jobs:
         with:
           my_token: ${{ secrets.TRAFFIC_TOKEN }}
           #(default) static_list: ${{ github.repository }}
-          #(default) traffic_branch: traffic
-          #(default) views_color: brightgreen
-          #(default) clones_color: brightgreen
-          #(default) views_week_color: brightgreen
-          #(default) clones_week_color: brightgreen
-          #(default) total_views_color: brightgreen
-          #(default) total_clones_color: brightgreen
-          #(default) total_views_week_color: brightgreen
-          #(default) total_clones_week_color: brightgreen
+          # Views (warm coral-rose family)
+          views_color: "#7BAA9E"          # muted emerald
+          views_week_color: "#3F6A63"     # dark desaturated teal
+          
+          # Clones (cool teal-blue family)
+          clones_color: "#8A79B1"             # regal violet 
+          clones_week_color: "#6A5A91"        # imperial plum
+
+          # Total Views (deep warm neutral)
+          total_views_color: "#E27D7A"              # coral rose
+          total_views_week_color: "#B85755"         # deep terracotta
+
+          # Total Clones (deep cool neutral)
+          total_clones_color: "#2A3B57"       # slate navy
+          total_clones_week_color: "#1F2E45"  # navy graphite
+          
           #(default) logo: github
           year: 2021
 
