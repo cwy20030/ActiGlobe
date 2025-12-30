@@ -11,7 +11,9 @@
 <!-- badges: end -->
 
 <!-- badges: start -->
+![views](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/views.svg)
 ![GitHub code search count](https://img.shields.io/github/search?query=ActiGlobe)
+![clones per week](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/clones_per_week.svg)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/cwy20030/ActiGlobe/total)
 ![GitHub forks](https://img.shields.io/github/forks/cwy20030/ActiGlobe)
 <!-- badges: end -->
