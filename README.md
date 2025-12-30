@@ -10,7 +10,12 @@
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<!-- badges: end -->
+
+<!-- badges: start -->
+![views](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/views.svg)
 ![GitHub code search count](https://img.shields.io/github/search?query=ActiGlobe)
+![clones per week](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/clones_per_week.svg)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
