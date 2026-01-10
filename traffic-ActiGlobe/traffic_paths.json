@@ -2,8 +2,8 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 28,
-    "uniques": 12
+    "count": 32,
+    "uniques": 13
   },
   {
     "path": "/cwy20030/ActiGlobe/issues",
@@ -18,18 +18,6 @@
     "uniques": 4
   },
   {
-    "path": "/cwy20030/ActiGlobe/actions/workflows/copilot-swe-agent/copilot",
-    "title": "Copilot coding agent · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 3,
-    "uniques": 3
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
-    "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 3,
-    "uniques": 3
-  },
-  {
     "path": "/cwy20030/ActiGlobe/tree/main",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
     "count": 3,
@@ -38,6 +26,18 @@
   {
     "path": "/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml",
     "title": "R-CMD-check.yaml · Workflow runs · cwy20030/ActiGlobe · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/actions/workflows/copilot-swe-agent/copilot",
+    "title": "Copilot coding agent · Workflow runs · cwy20030/ActiGlobe · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
+    "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe · GitHub",
     "count": 2,
     "uniques": 2
   },
