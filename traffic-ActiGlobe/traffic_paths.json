@@ -2,20 +2,14 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 36,
+    "count": 41,
     "uniques": 15
   },
   {
     "path": "/cwy20030/ActiGlobe/issues",
     "title": "Issues · cwy20030/ActiGlobe · GitHub",
-    "count": 5,
-    "uniques": 5
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
-    "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 3,
-    "uniques": 3
+    "count": 7,
+    "uniques": 7
   },
   {
     "path": "/cwy20030/ActiGlobe/tree/main",
@@ -44,6 +38,12 @@
   {
     "path": "/cwy20030/ActiGlobe/actions/workflows/dependabot/dependabot-updates",
     "title": "Dependabot Updates · Workflow runs · cwy20030/ActiGlobe · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
+    "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe · GitHub",
     "count": 2,
     "uniques": 2
   },
