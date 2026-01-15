@@ -124,7 +124,7 @@ ggCosinorM (fit.ols2)
 ```
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Eocnometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 ```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model"}
 fit.fgls2 <-
     CosinorM (
