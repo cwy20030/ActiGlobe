@@ -30,3 +30,6 @@ package version 0.2.1, <https://github.com/cwy20030/ActiGlobe>.
       note = {R package version 0.2.1},
       url = {https://github.com/cwy20030/ActiGlobe},
     }
+
+To convert to an EndNote-compatible format, paste the BibTeX entry in
+[online bibtex-converter](https://asouqi.github.io/bibtex-converter)
