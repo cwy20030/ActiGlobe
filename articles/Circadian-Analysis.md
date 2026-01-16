@@ -1,5 +1,12 @@
 # Circadian-Analysis
 
+What will be covered in this tutorial? This specific tutorial is
+designed to show users how to use ActiGlobe to perform circadian
+analysis via cosinor models or Gaussian kernel density estimation (KDE).
+For data pre-processing or generation of graphic/excel report of daily
+actigraphy measures, please go to tutorials titled: Time-Shift and
+Graphic-Report.
+
 ## Cosinor Analysis
 
 After we segmented the data by date, we can now model the circadian
@@ -60,7 +67,7 @@ ActiGlobe treats the first time point of the day as `00:00:00`, whereas
 this is sometimes treated as `00:00:00` plus one unit of the device
 sampling rate due to the use of the sequence generator.
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Econometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 
 Besides, the traditional OLS-based cosinor model,`CosinorM` also allows
 users to estimate the model using the FGLS-based method. In ActiGlobe,
@@ -253,6 +260,7 @@ to finish the computation.
 ``` r
 ### For external graphic plot.
 library (ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.5.2
 ```
 
 ##### OLS-Cosinor vs. Kernel Density Estimation

@@ -2,11 +2,11 @@ pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  Introduction: Introduction.html
-  Time-Shift: Time-Shift.html
   Circadian-Analysis: Circadian-Analysis.html
   Graphic-Report: Graphic-Report.html
-last_built: 2025-12-29T22:33Z
+  Introduction: Introduction.html
+  Time-Shift: Time-Shift.html
+last_built: 2026-01-16T18:00Z
 urls:
   reference: https://cwy20030.github.io/ActiGlobe/reference
   article: https://cwy20030.github.io/ActiGlobe/articles

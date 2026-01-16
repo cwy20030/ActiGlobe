@@ -2,10 +2,10 @@
 
 ## What will be covered in this tutorial?
 
-This specific tutorial is designed specifically to show users how to use
-ActiGlobe to preprocess longitudinal actigrpahy recordings affected by
-time shift. For analysis and generation of graphic/excel report of daily
-actigraphy measures, please go to tutorial title: Graphic-Report.
+This specific tutorial is designed to show users how to use ActiGlobe to
+preprocess longitudinal actigrpahy recordings affected by time shift.
+For analysis and generation of graphic/excel report of daily actigraphy
+measures, please go to tutorial title: Graphic-Report.
 
 ## Load the Libraries
 
@@ -315,7 +315,7 @@ generating any output plot to avoid overcrowding this tutorial.
 1.  Unadjusted Original Recording
 
 ``` r
-for (i in seq_along (length (x))) {
+for (i in seq_along (length (x)) {
   x <- Bdf$Cumulative_Start_Second
   y <- Bdf$Cumulative_End_Second
   GX <- df$Activity[(x [i]:y [i]) / 60]

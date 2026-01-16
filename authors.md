@@ -19,14 +19,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/cwy20030/ActiGlobe/blob/HEAD/DESCRIPTION)
 
-Yao C, Varesco G, Bieuzen F, Simonelli G (2025). *ActiGlobe: Wearable
+Yao C, Varesco G, Bieuzen F, Simonelli G (2026). *ActiGlobe: Wearable
 Recording Processor for Time Shift Adjustment and Data Analysis*. R
 package version 0.2.1, <https://github.com/cwy20030/ActiGlobe>.
 
     @Manual{,
       title = {ActiGlobe: Wearable Recording Processor for Time Shift Adjustment and Data Analysis},
       author = {C. William Yao and Giorgio Varesco and François Bieuzen and Guido Simonelli},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.2.1},
       url = {https://github.com/cwy20030/ActiGlobe},
     }

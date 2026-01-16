@@ -44,10 +44,10 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
-    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
-    <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
+<li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time Shift and Pre-processing</a></li>
+    <li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic Report</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -90,6 +90,12 @@ Yao</h4>
 
     
     
+<p>What will be covered in this tutorial? This specific tutorial is
+designed to show users how to use ActiGlobe to perform circadian
+analysis via cosinor models or Gaussian kernel density estimation (KDE).
+For data pre-processing or generation of graphic/excel report of daily
+actigraphy measures, please go to tutorials titled: Time-Shift and
+Graphic-Report.</p>
 <div class="section level2">
 <h2 id="cosinor-analysis">Cosinor Analysis<a class="anchor" aria-label="anchor" href="#cosinor-analysis"></a>
 </h2>
@@ -151,8 +157,8 @@ the day as <code>00:00:00</code>, whereas this is sometimes treated as
 the use of the sequence generator.</p>
 </div>
 <div class="section level4">
-<h4 id="ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls">Ecnometry-modified Cosinor Model with Feasible General Least Sqaure
-(FGLS)<a class="anchor" aria-label="anchor" href="#ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls"></a>
+<h4 id="econometry-modified-cosinor-model-with-feasible-general-least-square-fgls">Econometry-modified Cosinor Model with Feasible General Least Square
+(FGLS)<a class="anchor" aria-label="anchor" href="#econometry-modified-cosinor-model-with-feasible-general-least-square-fgls"></a>
 </h4>
 <p>Besides, the traditional OLS-based cosinor
 model,<code>CosinorM</code> also allows users to estimate the model
@@ -221,8 +227,8 @@ components, each fitted using OLS or FGLS-based methods.</p>
 <p><img src="Circadian-Analysis_files/figure-html/Model%202%20OLS-1.png" class="r-plt" alt="Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model" width="672"></p>
 </div>
 <div class="section level4">
-<h4 id="ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls-1">Ecnometry-modified Cosinor Model with Feasible General Least Sqaure
-(FGLS)<a class="anchor" aria-label="anchor" href="#ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls-1"></a>
+<h4 id="ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls">Ecnometry-modified Cosinor Model with Feasible General Least Sqaure
+(FGLS)<a class="anchor" aria-label="anchor" href="#ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.fgls2</span> <span class="op">&lt;-</span></span>
@@ -329,7 +335,8 @@ to finish the computation.</p>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### For external graphic plot.</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.5.2</span></span></code></pre></div>
 <div class="section level5">
 <h5 id="ols-cosinor-vs--kernel-density-estimation">OLS-Cosinor vs. Kernel Density Estimation<a class="anchor" aria-label="anchor" href="#ols-cosinor-vs--kernel-density-estimation"></a>
 </h5>

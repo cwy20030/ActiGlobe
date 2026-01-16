@@ -19,7 +19,7 @@ If any of the packages have yet to be installed, we can always install
 them using the function
 [`install.packages()`](https://rdrr.io/r/utils/install.packages.html).
 
-## Introduction
+## General Introduction
 
 ## What is Actigraphy?
 

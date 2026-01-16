@@ -44,10 +44,10 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian-Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic-Report</a></li>
-    <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
-    <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time-Shift</a></li>
+<li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/Time-Shift.html">Time Shift and Pre-processing</a></li>
+    <li><a class="dropdown-item" href="../articles/Circadian-Analysis.html">Circadian Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/Graphic-Report.html">Graphic Report</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -93,11 +93,10 @@ Yao</h4>
 <div class="section level2">
 <h2 id="what-will-be-covered-in-this-tutorial">What will be covered in this tutorial?<a class="anchor" aria-label="anchor" href="#what-will-be-covered-in-this-tutorial"></a>
 </h2>
-<p>This specific tutorial is designed specifically to show users how to
-use ActiGlobe to preprocess longitudinal actigrpahy recordings affected
-by time shift. For analysis and generation of graphic/excel report of
-daily actigraphy measures, please go to tutorial title:
-Graphic-Report.</p>
+<p>This specific tutorial is designed to show users how to use ActiGlobe
+to preprocess longitudinal actigrpahy recordings affected by time shift.
+For analysis and generation of graphic/excel report of daily actigraphy
+measures, please go to tutorial title: Graphic-Report.</p>
 </div>
 <div class="section level2">
 <h2 id="load-the-libraries">Load the Libraries<a class="anchor" aria-label="anchor" href="#load-the-libraries"></a>
@@ -1920,13 +1919,12 @@ generating any output plot to avoid overcrowding this tutorial.</p>
 <ol style="list-style-type: decimal">
 <li>Unadjusted Original Recording</li>
 </ol>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span> <span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">Bdf</span><span class="op">$</span><span class="va">Cumulative_Start_Second</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">Bdf</span><span class="op">$</span><span class="va">Cumulative_End_Second</span></span>
-<span>  <span class="va">GX</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">$</span><span class="va">Activity</span><span class="op">[</span><span class="op">(</span><span class="va">x</span> <span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">:</span><span class="va">y</span> <span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">60</span><span class="op">]</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span> <span class="op">(</span><span class="va">GX</span>, main <span class="op">=</span> <span class="va">i</span>, font.lab <span class="op">=</span> <span class="fl">2</span>, ylab <span class="op">=</span> <span class="st">"Activity (counts)"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span> (<span class="fu">length</span> (x)) {</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  x <span class="ot">&lt;-</span> Bdf<span class="sc">$</span>Cumulative_Start_Second</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  y <span class="ot">&lt;-</span> Bdf<span class="sc">$</span>Cumulative_End_Second</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  GX <span class="ot">&lt;-</span> df<span class="sc">$</span>Activity[(x [i]<span class="sc">:</span>y [i]) <span class="sc">/</span> <span class="dv">60</span>]</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">print</span> (<span class="fu">plot</span> (GX, <span class="at">main =</span> i, <span class="at">font.lab =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">"Activity (counts)"</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>}</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Time-shift Adjusted Recording</li>
 </ol>
