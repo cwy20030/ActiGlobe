@@ -2,20 +2,20 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe",
-    "count": 60,
+    "count": 69,
     "uniques": 15
   },
   {
     "path": "/cwy20030/ActiGlobe/actions",
     "title": "Workflow runs · cwy20030/ActiGlobe",
-    "count": 40,
+    "count": 42,
     "uniques": 1
   },
   {
     "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
     "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 13,
-    "uniques": 3
+    "count": 12,
+    "uniques": 2
   },
   {
     "path": "/cwy20030/ActiGlobe/pulls",
@@ -28,6 +28,12 @@
     "title": "Issues · cwy20030/ActiGlobe · GitHub",
     "count": 8,
     "uniques": 8
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/releases",
+    "title": "Releases · cwy20030/ActiGlobe",
+    "count": 8,
+    "uniques": 1
   },
   {
     "path": "/cwy20030/ActiGlobe/tree/main/.github",
@@ -52,11 +58,5 @@
     "title": "Add timezone parameter to DST and DST2GL functions by cwy20030 · Pull Request...",
     "count": 5,
     "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml",
-    "title": "R-CMD-check.yaml · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 4,
-    "uniques": 3
   }
 ]
