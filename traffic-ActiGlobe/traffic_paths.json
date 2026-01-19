@@ -2,14 +2,14 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "pkgcheck · Workflow runs · cwy20030/ActiGlobe",
-    "count": 69,
-    "uniques": 15
+    "count": 70,
+    "uniques": 16
   },
   {
     "path": "/cwy20030/ActiGlobe/actions",
-    "title": "Workflow runs · cwy20030/ActiGlobe",
-    "count": 42,
-    "uniques": 1
+    "title": "Workflow runs · cwy20030/ActiGlobe · GitHub",
+    "count": 43,
+    "uniques": 2
   },
   {
     "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
@@ -24,16 +24,16 @@
     "uniques": 2
   },
   {
-    "path": "/cwy20030/ActiGlobe/issues",
-    "title": "Issues · cwy20030/ActiGlobe · GitHub",
-    "count": 8,
-    "uniques": 8
-  },
-  {
     "path": "/cwy20030/ActiGlobe/releases",
     "title": "Releases · cwy20030/ActiGlobe",
     "count": 8,
     "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/issues",
+    "title": "GitHub · Where software is built",
+    "count": 7,
+    "uniques": 7
   },
   {
     "path": "/cwy20030/ActiGlobe/tree/main/.github",
