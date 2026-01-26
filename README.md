@@ -4,13 +4,18 @@
 # ActiGlobe <a href="https://github.com/cwy20030/ActiGlobe"><img src="man/figures/logo.png" align="right" height="138" alt="ActiGlobe website" /></a>
 
 <!-- badges: start -->
-
 ![version](https://img.shields.io/badge/version-0.2.1-green)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+<!-- badges: end -->
+
+<!-- badges: start -->
+![views](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/views.svg)
+![GitHub code search count](https://img.shields.io/github/search?query=ActiGlobe)
+![clones per week](https://raw.githubusercontent.com/cwy20030/ActiGlobe/traffic/traffic-ActiGlobe/clones_per_week.svg)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/cwy20030/ActiGlobe/total)
+![GitHub forks](https://img.shields.io/github/forks/cwy20030/ActiGlobe)
 <!-- badges: end -->
 
 ActiGlobe is designed to make it easy to pre-process longitudinal
