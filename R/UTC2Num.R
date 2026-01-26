@@ -19,7 +19,7 @@
 #
 #' @title Convert Standard UTC Offset to Numbers
 #'
-#' @param x UTC Offsets <e.g., "UTC+09:30" or "UTC-07:00">
+#' @param x Character string of UTC offsets, e.g., "UTC+09:30" or "UTC-07:00".
 #'
 #' @return Numeric values of UTC offsets
 #'

@@ -23,8 +23,8 @@
 #'
 #'
 #' @param DT The date in the format as "2021-03-05"
-#' @param TZ The time zone when the recording started. (default = "local",
-#' which means user's local time zone)
+#' @param TZ The time zone when the recording started. Default = "local",
+#' which means user's local time zone
 #'
 #' @return A character string indicating the UTC offset, e.g., "UTC-05:00"
 #'

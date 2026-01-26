@@ -11,6 +11,7 @@
 ^Test\.Rmd$
 ^contributing\.Rmd$
 ^contributing\.md$
+^.vscode$
 ^Ref$
 ^Resources$
 ^old$

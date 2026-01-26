@@ -16,8 +16,8 @@ Act2Daily(
 }
 \arguments{
 \item{df}{A data.frame of raw actigraphy recording. Both time and activity
-count should be included in the `df`. See `VAct` and `VTm` for further
-detail.}
+count should be included in the \code{df}. See \code{VAct} and \code{VTm}
+for further detail.}
 
 \item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata
 for the recording. Note, if jet lag occurred during the recording, please,
@@ -25,13 +25,13 @@ update the metadata using \code{\link{TAdjust}} before passing to this
 function.}
 
 \item{TUnit}{Character; time--unit for the x--axis of each day's timeline.
-Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.}
+Must be one of "day", "hour", "minute" or "second".  Default is "hour".}
 
-\item{VAct}{Optional character. Name of the activity column in `df`. If NULL,
-defaults to the second column of `df`.}
+\item{VAct}{Optional character. Name of the activity column in \code{df}.
+If NULL, defaults to the second column of \code{df}.}
 
-\item{VTm}{Optional character.  Name of the date.time index column in `df`.
-If NULL, defaults to the first column of `df`.}
+\item{VTm}{Optional character.  Name of the date.time index column in
+\code{df}.If NULL, defaults to the first column of \code{df}.}
 
 \item{Incomplete}{Logical; if TRUE, days flagged `Incomplete Recording`
 (i.e. <24 h) are retained in the data list with recordings segmented by day.

@@ -25,25 +25,25 @@
 #' requested time unit.
 #'
 #' @param DT
-#'   A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending
+#'   A vector of class \code{Date}, \code{POSIXct}, or \code{POSIXlt}, sorted in ascending
 #'   order. Each entry represents the start of an interval.  Internally, the
 #'   function appends one extra day beyond the last entry so that the final
 #'   interval covers a full 24 h until the next midnight. See \code{as.POSIXct}.
 #'
 #' @param TUnit
 #'   Character string specifying the unit for the output durations.
-#'   Must be one of `"hour"`, `"minute"`, or `"second"`.  Comparison is
-#'   case-insensitive.  Default is `"hour"`, meaning the returned values
+#'   Must be one of "hour", "minute", or "second".  Comparison is
+#'   case-insensitive.  Default is "hour", meaning the returned values
 #'   are in decimal hours.
 #'
 #' @param TZ The time zone when the recording started. (default = "local",
 #' which means user's local time zone)
 #'
 #' @return
-#'   A numeric vector of the same length as `DT`.  Each element is the
-#'   elapsed time between the corresponding entry in `DT` and the next
-#'   boundary (either the next date-time in `Date`, or midnight following
-#'   the last date), expressed in the units given by `TUnit`.
+#'   A numeric vector of the same length as \code{DT}.  Each element is the
+#'   elapsed time between the corresponding entry in \code{DT} and the next
+#'   boundary (either the next date-time in \code{Date}, or midnight following
+#'   the last date), expressed in the units given by \code{TUnit}.
 #'
 #' @examples
 #'

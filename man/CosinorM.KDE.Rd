@@ -4,14 +4,7 @@
 \alias{CosinorM.KDE}
 \title{KDE-based circadian cosinor summary}
 \usage{
-CosinorM.KDE(
-  time,
-  activity,
-  bw = 0.8,
-  grid = 360L,
-  arctan2 = TRUE,
-  dilute = FALSE
-)
+CosinorM.KDE(time, activity, bw = 0.8, arctan2 = TRUE, dilute = FALSE)
 }
 \arguments{
 \item{time}{Numeric vector of time coordinates for each data point. Values
@@ -28,12 +21,8 @@ moothing. bw is interpreted in the same units as the angular scale after
 conversion: the implementation converts `bw` from hours to radians
 internally using \eqn{bw_{rad} = bw * 2\pi / \tau}. Default: 0.8.
 Note, small \code{bw} (approaching 0) can cause numerical instability, while
-arge \code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
+\code{bw} (approaching 1.5) leads a near-uniform kernel and reduces
 temporal resolution.}
-
-\item{grid}{Integer number of evaluation points used for the dense grid on
-\eqn{[0, 2 * \pi)}. The grid excludes the duplicate 2*pi endpoint.
-Default: 360.}
 
 \item{arctan2}{Logical; if TRUE (default) acrophase is computed with
 \code{atan2(gamma, beta)}, resulting in the quadrant interval between
@@ -50,7 +39,7 @@ nonparametric bootstrap}
 A list of class \code{c("CosinorM.KDE")} with elements:
 \itemize{
   \item parm: Parameters specified in the model (list with \code{time},
-  \code{activity}, \code{bw}, \code{grid})
+  \code{activity}, \code{bw})
   \item tau: Period in hours (default to 24hour)
   \item kdf: A data.frame with the following columns:
     \itemize{
@@ -83,31 +72,21 @@ A list of class \code{c("CosinorM.KDE")} with elements:
   \item post.hoc: Post-hoc peak/trough diagnostics derived from
   fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time,
   Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)
-  \item grid: (when \code{dilute = FALSE}) list of grid diagnostics:
-    \itemize{
-      \item theta: evaluation angles on the dense grid (radians)
-      \item density: Grid-level PDF (integrates to 1 over theta)
-      \item trapizoid.weight: Trapezoid integration weights for the grid
-      points
-      \item kernel.weight: Kernel mass (denominator) at each grid point
-      \item fitted.values: Normalized fitted values at grid points
-      (activity-scale)
-      \item fitted.var: Variance propagation through fitted variances on
-      the grid
-      \item fitted.se: Standard error of the fitted values at grid points
-    }
 }
 }
 \description{
-Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
-weighted by activity and extract first-harmonic cosinor summaries.
+Fit an intensity‑weighted Gaussian kernel density estimate (KDE) on circular
+time (hours of day) weighted by activity and extract first-harmonic cosinor
+summaries.
 }
 \details{
-This function builds a circular KDE from event times (hours in \[0,24)) and
-activity. The KDE is computed on a regular angular grid over \[0, 2*pi) using
-a wrapped Gaussian kernel with specified bandwidth. Cosinor summaries (MESOR,
-Beta, Gamma, Amplitude, Acrophase) are obtained by numerical integration of
-the KDE using trapezoid-rule quadrature.
+This function builds a kernel-smoothed circular activity intensity
+from event time (hours in \eqn{[0, 24)}) and activity. The intensity
+is estimated on a regular angular grid over \eqn{[0, 2\pi)} using a
+wrapped Gaussian kernel with specified bandwidth and normalized to
+form a circular density over phase. Cosinor summaries (MESOR, Beta,
+Gamma, Amplitude, Acrophase) are obtained by numerical integration of
+the fitted density using trapezoid-rule quadrature.
 
 Cosinor parameters are obtained by numerical integration of the KDE on the
 grid:
@@ -121,16 +100,15 @@ grid:
   in radians and converted to hours.
 }
 
-The grid integrals are computed with trapezoid weights \eqn{w_g}:
-\deqn{I_0 = \text{area}_g \sum_g \frac{pdf_g \, w_g}{den_g}}
-\deqn{I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\,
-w_g}{den_g}}
-\deqn{I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\,
-w_g}{den_g}}
+The grid integrals are computed with trapezoid weights \eqn{w}:
+\deqn{I_0 = \text{area} \sum \frac{pdf \, w}{den}}
+\deqn{I_{cos} = \text{area} \sum \frac{pdf \cos(\theta)\,
+w}{den}}
+\deqn{I_{sin} = \text{area} \sum \frac{pdf \sin(\theta)\,
+w}{den}}
 
-where \eqn{pdf_g} is the normalized KDE at grid angle \eqn{\theta_g},
-\eqn{den_g}
-is the kernel denominator at that grid point, and \eqn{\text{area}_g}
+where \eqn{pdf} is the normalized KDE at grid angle \eqn{\theta},
+\eqn{den} is the kernel denominator at that grid point, and \eqn{\text{area}}
 rescales the fitted density back to the activity scale.
 
 Notes:

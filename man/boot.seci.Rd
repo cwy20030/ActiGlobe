@@ -9,7 +9,8 @@ boot.seci(object, ci_level = 0.95, n = 500, digits = 2)
 \arguments{
 \item{object}{A fitted `CosinorM` or `CosinorM.KDE` model object.}
 
-\item{ci_level}{Numeric scaler. the confidence ci_level.}
+\item{ci_level}{Numeric scaler. The threshold for the confidence interval.
+Default: 0.95}
 
 \item{n}{Numeric scaler. Numbers of bootstraps required to estimate the
 standard errors and confidence intervals. Default: 500}
@@ -25,9 +26,9 @@ A data.frame with one row per cosinor coefficient and columns:
   resamples.
   \item t value: Ratio of the observed estimate to its bootstrap standard
   error, analogous to a
-    signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
+    signal-to-noise measure: \deqn{t = \hat{\theta}_{obs} / SE_{boot}}
   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
-     where \eqn{\alpha = 1 - ci_level}.
+     where \eqn{\alpha = 1 - ci_{level}}.
   \item upper CI label: Percentile upper bound at \eqn{1 - \frac{\alpha}{2}}.
 }
 }

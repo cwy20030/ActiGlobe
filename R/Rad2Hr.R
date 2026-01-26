@@ -26,7 +26,7 @@
 #' @param tau Numeric scalar. Period length in the same time units you want
 #' returned (for hours use 24). Must be a single numeric value > 0 and <= 24.
 #'
-#' @return Numeric vector of times in [0, tau). NA values propagate.
+#' @return Numeric vector of times in \eqn{[0, tau)}. NA values propagate.
 #'
 #' @examples
 #' Rad2Hr (pi / 2, tau = 24)

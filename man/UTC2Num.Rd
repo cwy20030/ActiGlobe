@@ -7,7 +7,7 @@
 UTC2Num(x)
 }
 \arguments{
-\item{x}{UTC Offsets <e.g., "UTC+09:30" or "UTC-07:00">}
+\item{x}{Character string of UTC offsets, e.g., "UTC+09:30" or "UTC-07:00".}
 }
 \value{
 Numeric values of UTC offsets

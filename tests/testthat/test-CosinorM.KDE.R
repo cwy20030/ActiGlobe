@@ -30,11 +30,11 @@ test_that ("CosinorM.KDE works on FlyEast actigraphy data", {
     # ---- Content checks ----
     # Compare coefficients against expected values with tolerance
     expected <- c (
-        MESOR        = 177.270466,
-        Amplitude.24 = 157.852411,
-        Acrophase.24 = -2.896046,
-        Beta.24      = -153.117574,
-        Gamma.24     = -38.371762
+        MESOR        = 177.327801,
+        Amplitude.24 = 157.744980,
+        Acrophase.24 = -2.895821,
+        Beta.24      = -153.004740,
+        Gamma.24     = -38.380048
     )
     expect_equal (fit$coef.cosinor, expected, tolerance = 1e-6)
 

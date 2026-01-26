@@ -28,20 +28,20 @@
 #' @importFrom ggplot2 scale_y_continuous theme theme_classic
 #'
 #' @param df A data.frame of annotated actigraphy epochs.  Must include:
-#'   - An activity column named by `VAct`.
-#'   - A datetime column named by `VDT`.
+#'   - An activity column named by \code{VAct}.
+#'   - A datetime column named by \code{VTm}.
 #'   - Optionally, a `Note` column to flag affected epochs. See
 #'   \code{\link{BriefSum}} and \code{\link{TAdjust}} for details.
 #' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for
 #' the recording. Note, if jet lag occurred during the recording, please,
 #' update the metadata using \code{\link{TAdjust}} before passing to this
 #' function.
-#' @param VAct Optional character. Name of the activity column in `df`. If NULL,
-#'   defaults to the second column of `df`.
-#' @param VDT Optional character. Name of the POSIXct datetime column in `df`.
-#' If NULL, defaults to "DateTime" of `df`.
+#' @param VAct Optional character. Name of the activity column in \code{df}.
+#' If NULL, defaults to the second column of \code{df}.
+#' @param VDT Optional character. Name of the \code{POSIXct} datetime column in
+#' \code{df}.If NULL, defaults to "DateTime" of \code{df}.
 #'
-#' @return A `ggplot` object showing:
+#' @return A \code{\link[ggplot2]{ggplot}}  object showing:
 #'   - Activity counts vs. time.
 #'   - Dashed vertical lines at each midnight.
 #'   - Points `colored` by whether they were flagged in `Note`.

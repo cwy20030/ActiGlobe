@@ -13,7 +13,7 @@ Rad2Hr(x, tau)
 returned (for hours use 24). Must be a single numeric value > 0 and <= 24.}
 }
 \value{
-Numeric vector of times in [0, tau). NA values propagate.
+Numeric vector of times in \eqn{[0, tau)}. NA values propagate.
 }
 \description{
 Convert `acrophase` in radian to clock time based on tau.
