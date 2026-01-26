@@ -4,13 +4,16 @@
 \alias{UTCwDST}
 \title{Determine if Daylight Saving Transitions may occur in an UTC Offset}
 \usage{
-UTCwDST(UTCs, fork = FALSE)
+UTCwDST(UTCs, DT = NULL, fork = FALSE)
 }
 \arguments{
 \item{UTCs}{A character vector or numeric vector representing UTC offsets.
 Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 offsets using `UTC2Num()`.}
+
+\item{DT}{A POSIXct date/time used as the reference point for offset
+comparison. Defaults to January 1, 2021 UTC if `NULL`.}
 
 \item{fork}{Logical, if TRUE, it will use parallel processing to speed up
 the computation. Default is FALSE.}

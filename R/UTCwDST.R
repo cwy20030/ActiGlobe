@@ -35,6 +35,8 @@
 #' Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
 #' like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
 #' offsets using `UTC2Num()`.
+#' @param DT A POSIXct date/time used as the reference point for offset
+#'   comparison. Defaults to January 1, 2021 UTC if `NULL`.
 #' @param fork Logical, if TRUE, it will use parallel processing to speed up
 #' the computation. Default is FALSE.
 #'
@@ -60,7 +62,7 @@
 #'
 #' @export
 
-UTCwDST <- function (UTCs, fork = FALSE) {
+UTCwDST <- function (UTCs, DT = NULL, fork = FALSE) {
     # Extract Essential -------------------
     OF <- UTCs
 
@@ -77,9 +79,16 @@ UTCwDST <- function (UTCs, fork = FALSE) {
     aOF <- format_offset (x = OF)
 
     # Determine if DST exists using time offset on January 1st of 2021
-    JAN1 <- as.POSIXct ("2021-01-01", tz = "UTC")
+    if (is.null (DT))
+        ## Default determine if DST exists using time offset on
+        ## January 1st of 2021
+        DT <- "2021-01-01"
+        JAN1 <- as.POSIXct (DT, tz = "UTC")
 
-    pTZs <- GuessTZ (aOF = aOF, fork = fork)
+    pTZs <- GuessTZ (aOF = aOF,
+                     DT = DT,
+                     All = TRUE,
+                     fork = fork)
 
     ## Check points for mispecified UTC offsets ------------
     if (any (lengths (pTZs) == 0L)) {

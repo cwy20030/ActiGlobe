@@ -38,7 +38,7 @@
 #' @param DT A POSIXct date/time used as the reference point for offset
 #'   comparison. Defaults to January 1, 2021 UTC if `NULL`.
 #' @param iTZ An initial time zone to prioritize. If `"local"`, the system
-#'   time zone (`Sys.timezone()`) is used. If `NULL`, no initial preference
+#'   time zone (`Sys.timezone ()`) is used. If `NULL`, no initial preference
 #'   is applied.
 #' @param All Logical. If `TRUE` (default), return all matching time zones
 #'   for each offset. If `FALSE`, return only the first match per offset.
@@ -46,9 +46,33 @@
 #'   \pkg{parallel} package to compute offsets across all Olson time zones.
 #'   Defaults to `FALSE` (sequential).
 #'
-#' @return A character vector or list of character vectors containing
-#'   candidate time zones corresponding to each offset in `aOF`.
-#'   If `All = FALSE`,only the first match is returned per offset.
+#' @return One of the following, depending on the inputs:
+#' 
+#'  \itemize{
+#'   \item If \code{length (aOF) == 1} and \code{All = TRUE}:
+#'     \itemize{
+#'       \item When multiple matches are found: a character matrix with one
+#'       column. The column name is the offset and there is one row per
+#'       matching time zone.
+#'       \item When a single match is found: a named character vector of
+#'       length 1, with the name set to the offset.
+#'     }
+#' 
+#'   \item If \code{length (aOF) > 1} and \code{All = TRUE}: a named list
+#'   (names are the offsets in \code{aOF}). Each element is a character
+#'   vector of matching time zones. Elements may be \code{character (0)} if
+#'   no matches are found.
+#' 
+#'   \item If \code{All = FALSE}:
+#'     \itemize{
+#'       \item When \code{length (aOF) == 1}: a single character scalar (the
+#'       first match).
+#'       \item When \code{length (aOF) > 1}: a named character vector (one
+#'       element per offset) giving the first match for each offset.
+#'     }
+#' }
+#' In all cases the returned values represent candidate Olson/IANA time
+#' zone identifiers corresponding to the supplied offset(s).
 #'
 #' @examples
 #'
@@ -132,21 +156,50 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
 
 
     ## Step 1 Guess all possible TZ indicators -----------
-    pTZs <- sapply (aOF, function (x) oTZs [Toffs %in% x])
+    pTZs <-  if (length (aOF) == 1) {
+        res <- oTZs [Toffs %in% aOF]
+        if (length (res) > 1) {
+
+            matrix (res, ncol = 1, dimnames = list (NULL, aOF))
+
+        } else {
+            setNames (res, aOF)
+        }
+
+    } else {
+        setNames (
+        lapply (aOF, function (x) {
+            oTZs [Toffs %in% x]
+        }),
+        aOF
+        )
+    }
 
     ## Step 2 Check if the initial time zone is included
     if (!is.null (TZ1)) {
         if (length (aOF) == 1) {
-            pTZs <- ifelse (TZ1 %in% pTZs, TZ1, pTZs)
+             if (TZ1 %in% pTZs) {
+            pTZs <-
+                matrix (TZ1,
+                        nrow = 1,
+                        ncol = 1,
+                        dimnames = dimnames (pTZs))
+             }
+
         } else {
-            pTZs <- sapply (pTZs, function (x) ifelse (TZ1 %in% x, TZ1, x))
+            pTZs <- setNames (
+                lapply( pTZs, function (i) {
+                if (TZ1 %in% i) TZ1 else i
+                }),
+                aOF
+            )
         }
     }
 
     ## Step 3 Keep only the first one if the All is set to FALSE
     if (!All) {
         if (length (aOF) > 1) {
-            pTZs <- sapply (pTZs, function (x) x [[1]])
+            pTZs <- vapply (pTZs, function (x) x [[1]], character (1))
         } else {
             pTZs <- pTZs [[1]]
         }

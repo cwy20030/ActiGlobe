@@ -5,7 +5,10 @@ Revision history for the R/ActiGlobe package
 
 - New internal function added:
 
-- Version update and debugged:
+- Version update and debugged: BriefSum
+
+- Brief Detail: 
+    - resolve internal tz conflicts in BriefSum
 
 ## Version 0.2.1, 2025-11-30
 

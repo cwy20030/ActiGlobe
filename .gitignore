@@ -2,6 +2,7 @@
 .Rproj.user
 ActiGlobe.Rproj
 Build.Rmd
+README.Rmd
 Test.Rmd
 Test.nb.html
 .Rhistory
@@ -24,6 +25,7 @@ Undone/
 .quarto
 vignettes/*.html
 /vignettes/*.R
+.vscode
 
 docs
 /doc/

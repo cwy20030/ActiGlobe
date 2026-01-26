@@ -77,7 +77,7 @@ If we process `FlyEast` using the `cosinor::cosinor.lm`, we will notice that the
 
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Econometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 Besides, the traditional OLS-based cosinor model,`CosinorM` also allows users to estimate the model using the FGLS-based method. In ActiGlobe, the FGLS was implemented via a weighted residual least square approximation. This two-step process often produces a better representation of the "border" between sleep and wakefulness than traditional OLS. Nevertheless, neither method can realistically capture our activity patterns, given that they are simply single-phase cosinor models.
 ```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 2: Fitting of FGLS-based Cosinor Model"}
 fit.fgls <-

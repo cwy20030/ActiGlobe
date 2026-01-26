@@ -41,7 +41,8 @@ data (FlyEast)
 BdfList <- BriefSum (
     df = FlyEast,
     SR = 1 / 60,
-    Start = "2017-10-19 13:45:00"
+    Start = "2017-10-19 13:45:00",
+    TZ = 'America/New_York'
 )
 
 # Extract only the summary report
@@ -51,7 +52,9 @@ Bdf <- BdfList$Bdf
 data (TLog)
 
 # Adjust time shift based on travel log
-Bdf.adj <- TAdjust (Bdf, TLog)
+Bdf.adj <- TAdjust (Bdf  = Bdf,
+                    TLog = TLog,
+                    TZ   = 'America/New_York')
 
 # Display the summary
 View (Bdf)

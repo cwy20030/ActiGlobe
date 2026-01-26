@@ -103,13 +103,7 @@ ggActiGlobe(df = df,
 
 <div class="figure">
 
-<<<<<<< HEAD
 <img src="vignettes/images/Unadjusted_Overview.png" alt="&lt;b&gt; Figure 1. &lt;/b&gt; Overview of the raw recording with clear day‑to‑day epoching misalignment" width="1707" />
-=======
-<img src="vignettes/images/Unadjusted_Overview.png" alt="&lt;b&gt; Figure 1. &lt;/b&gt; Overview of the raw recording with clear day‑to‑day epoching misalignment" width="546" />
->>>>>>> 4286eb0af04c4a8b1c96b9d8e09a9ec946bfea51
-<p class="caption">
-
 <b> Figure 1. </b> Overview of the raw recording with clear day‑to‑day
 epoching misalignment
 </p>

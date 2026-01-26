@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-subtitle: "What is actigraphy? How do we use R?"
+subtitle: "What is actigraphy?"
 author: "C. William Yao, Samuel Szocs"
 output: rmarkdown::html_vignette
 vignette: >
@@ -42,7 +42,7 @@ them using the function `install.packages()`.
 
 ## Introduction
 
-### What is Actigraphy?
+## What is Actigraphy?
 
 Actigraphy is a non-invasive method used for measuring sleep/wake
 cycles by using a small device, usually in the form of a wrist-worn
@@ -206,6 +206,8 @@ ActiGlobe package. The following vignettes will guide you through:
 We encourage you to work through each tutorial to become familiar with
 the ActiGlobe workflow and discover how this tool can enhance your
 actigraphy research.
+
+
 
 ## References
 
