@@ -2,20 +2,20 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 29,
+    "count": 20,
     "uniques": 8
   },
   {
     "path": "/cwy20030/ActiGlobe/actions",
     "title": "Workflow runs · cwy20030/ActiGlobe",
-    "count": 11,
+    "count": 9,
     "uniques": 5
   },
   {
     "path": "/cwy20030/ActiGlobe/issues",
     "title": "GitHub · Where software is built",
-    "count": 9,
-    "uniques": 7
+    "count": 8,
+    "uniques": 6
   },
   {
     "path": "/cwy20030/ActiGlobe/blob/main/.github/workflows/R-CMD-check.yaml",
@@ -42,10 +42,10 @@
     "uniques": 5
   },
   {
-    "path": "/cwy20030/ActiGlobe/releases",
-    "title": "Releases · cwy20030/ActiGlobe",
-    "count": 5,
-    "uniques": 1
+    "path": "/cwy20030/ActiGlobe/pulls",
+    "title": "Pull requests · cwy20030/ActiGlobe · GitHub",
+    "count": 4,
+    "uniques": 2
   },
   {
     "path": "/cwy20030/ActiGlobe/blob/main/README.md",
