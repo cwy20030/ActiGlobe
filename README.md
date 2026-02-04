@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-![ActiGlobe Version](https://img.shields.io/badge/Version-0.2.1-purple)
+![ActiGlobe Version](https://img.shields.io/badge/Version-0.2.2-purple)
 ![R Version](https://img.shields.io/badge/R-%3E%3D%204.3-navy)
 [![R-CMD-check](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/R-CMD-check.yaml)
 [![pkgcheck](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml/badge.svg)](https://github.com/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml)
