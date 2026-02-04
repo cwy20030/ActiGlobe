@@ -7,7 +7,7 @@ Revision history for the R/ActiGlobe package
 
 - Version update and debugged:
 
-## Version: 0.2.2, 2026-02-04
+## Version 0.2.2, 2026-02-04
 - New master and class functions added:  NA
 
 - New internal function added:  NA
