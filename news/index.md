@@ -1,5 +1,29 @@
 # Changelog
 
+## Version 0.2.2, 2026-02-04
+
+- New master and class functions added: NA
+
+- New internal function added: NA
+
+- Version update and debugged: GuessTZ, UTCwDST, CosinorM.KDE,
+  boot.seci, ggCosinorM
+
+- Brief Detail:
+
+  - add README.Rmd to .gitignore.
+  - CI workflow: tighten matrix (fewer OS/R versions), change
+    concurrency grouping to use head_ref
+  - remove the use of sapply in GuessTZ to improve functional stability
+  - minor Roxygen documentation edits in DST, Date2TotalT, Rad2Hr,
+    TZ2UTC, UTC2Num, ValInput, ggActiGlobe, ggCosinorM, TAdjust
+  - improve UTCwDST functional flexibility by allowing users to specify
+    date input through DT (defaults to 2021-01-01)
+  - simplify CosinorM.KDE internals (Pdf/kIF computation) by removing
+    dense-grid evaluation to reduce memory consumption
+    - update boot.seci and ggCosinorM to remove support of dense-grid
+      evaluation output from CosinorM.KDE
+
 ## Version 0.2.1, 2025-11-30
 
 - New master and class functions added: NA

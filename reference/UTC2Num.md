@@ -12,7 +12,7 @@ UTC2Num(x)
 
 - x:
 
-  UTC Offsets \<e.g., "UTC+09:30" or "UTC-07:00"\>
+  Character string of UTC offsets, e.g., "UTC+09:30" or "UTC-07:00".
 
 ## Value
 

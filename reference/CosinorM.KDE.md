@@ -1,19 +1,13 @@
 # KDE-based circadian cosinor summary
 
-Fit a Gaussian kernel density estimate (KDE) on circular time (hours of
-day) weighted by activity and extract first-harmonic cosinor summaries.
+Fit an intensity‑weighted Gaussian kernel density estimate (KDE) on
+circular time (hours of day) weighted by activity and extract
+first-harmonic cosinor summaries.
 
 ## Usage
 
 ``` r
-CosinorM.KDE(
-  time,
-  activity,
-  bw = 0.8,
-  grid = 360L,
-  arctan2 = TRUE,
-  dilute = FALSE
-)
+CosinorM.KDE(time, activity, bw = 0.8, arctan2 = TRUE, dilute = FALSE)
 ```
 
 ## Arguments
@@ -38,14 +32,8 @@ CosinorM.KDE(
   conversion: the implementation converts \`bw\` from hours to radians
   internally using \\bw\_{rad} = bw \* 2\pi / \tau\\. Default: 0.8.
   Note, small `bw` (approaching 0) can cause numerical instability,
-  while arge `bw` (approaching 1.5) leads a near-uniform kernel and
-  reduces temporal resolution.
-
-- grid:
-
-  Integer number of evaluation points used for the dense grid on \\\[0,
-  2 \* \pi)\\. The grid excludes the duplicate 2\*pi endpoint. Default:
-  360.
+  while `bw` (approaching 1.5) leads a near-uniform kernel and reduces
+  temporal resolution.
 
 - arctan2:
 
@@ -67,7 +55,7 @@ CosinorM.KDE(
 A list of class `c("CosinorM.KDE")` with elements:
 
 - parm: Parameters specified in the model (list with `time`, `activity`,
-  `bw`, `grid`)
+  `bw`)
 
 - tau: Period in hours (default to 24hour)
 
@@ -114,31 +102,15 @@ A list of class `c("CosinorM.KDE")` with elements:
   at observation angles (MESOR.ph, Bathyphase.ph.time, Trough.ph,
   Acrophase.ph.time, Peak.ph, Amplitude.ph)
 
-- grid: (when `dilute = FALSE`) list of grid diagnostics:
-
-  - theta: evaluation angles on the dense grid (radians)
-
-  - density: Grid-level PDF (integrates to 1 over theta)
-
-  - trapizoid.weight: Trapezoid integration weights for the grid points
-
-  - kernel.weight: Kernel mass (denominator) at each grid point
-
-  - fitted.values: Normalized fitted values at grid points
-    (activity-scale)
-
-  - fitted.var: Variance propagation through fitted variances on the
-    grid
-
-  - fitted.se: Standard error of the fitted values at grid points
-
 ## Details
 
-This function builds a circular KDE from event times (hours in \\0,24))
-and activity. The KDE is computed on a regular angular grid over \\0,
-2\*pi) using a wrapped Gaussian kernel with specified bandwidth. Cosinor
-summaries (MESOR, Beta, Gamma, Amplitude, Acrophase) are obtained by
-numerical integration of the KDE using trapezoid-rule quadrature.
+This function builds a kernel-smoothed circular activity intensity from
+event time (hours in \\\[0, 24)\\) and activity. The intensity is
+estimated on a regular angular grid over \\\[0, 2\pi)\\ using a wrapped
+Gaussian kernel with specified bandwidth and normalized to form a
+circular density over phase. Cosinor summaries (MESOR, Beta, Gamma,
+Amplitude, Acrophase) are obtained by numerical integration of the
+fitted density using trapezoid-rule quadrature.
 
 Cosinor parameters are obtained by numerical integration of the KDE on
 the grid:
@@ -155,16 +127,14 @@ the grid:
 - Acrophase: peak time, \\\phi = atan2(-\gamma, \beta)\\, expressed in
   radians and converted to hours.
 
-The grid integrals are computed with trapezoid weights \\w_g\\: \$\$I_0
-= \text{area}\_g \sum_g \frac{pdf_g \\ w_g}{den_g}\$\$ \$\$I\_{cos} =
-\text{area}\_g \sum_g \frac{pdf_g \cos(\theta_g)\\ w_g}{den_g}\$\$
-\$\$I\_{sin} = \text{area}\_g \sum_g \frac{pdf_g \sin(\theta_g)\\
-w_g}{den_g}\$\$
+The grid integrals are computed with trapezoid weights \\w\\: \$\$I_0 =
+\text{area} \sum \frac{pdf \\ w}{den}\$\$ \$\$I\_{cos} = \text{area}
+\sum \frac{pdf \cos(\theta)\\ w}{den}\$\$ \$\$I\_{sin} = \text{area}
+\sum \frac{pdf \sin(\theta)\\ w}{den}\$\$
 
-where \\pdf_g\\ is the normalized KDE at grid angle \\\theta_g\\,
-\\den_g\\ is the kernel denominator at that grid point, and
-\\\text{area}\_g\\ rescales the fitted density back to the activity
-scale.
+where \\pdf\\ is the normalized KDE at grid angle \\\theta\\, \\den\\ is
+the kernel denominator at that grid point, and \\\text{area}\\ rescales
+the fitted density back to the activity scale.
 
 Notes:
 

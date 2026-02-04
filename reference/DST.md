@@ -20,7 +20,8 @@ DST(DT, TZ = "local")
 
   A single string naming an IANA time zone (e.g. \`America/New_York\`).
   If \`"local"\`, it will extract local time zone using
-  \`Sys.timezone()\`. Must match one entry in \`OlsonNames()\`.
+  [`Sys.timezone`](https://rdrr.io/r/base/timezones.html). Must match
+  one entry in [`OlsonNames`](https://rdrr.io/r/base/timezones.html).
 
 ## Value
 

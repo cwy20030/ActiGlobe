@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,23 @@
       <small>Source: <a href="https://github.com/cwy20030/ActiGlobe/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.2" id="version-022-2026-02-04">Version 0.2.2, 2026-02-04<a class="anchor" aria-label="anchor" href="#version-022-2026-02-04"></a></h2>
+<ul><li><p>New master and class functions added: NA</p></li>
+<li><p>New internal function added: NA</p></li>
+<li><p>Version update and debugged: GuessTZ, UTCwDST, CosinorM.KDE, boot.seci, ggCosinorM</p></li>
+<li>
+<p>Brief Detail:</p>
+<ul><li>add README.Rmd to .gitignore.</li>
+<li>CI workflow: tighten matrix (fewer OS/R versions), change concurrency grouping to use head_ref</li>
+<li>remove the use of sapply in GuessTZ to improve functional stability</li>
+<li>minor Roxygen documentation edits in DST, Date2TotalT, Rad2Hr, TZ2UTC, UTC2Num, ValInput, ggActiGlobe, ggCosinorM, TAdjust</li>
+<li>improve UTCwDST functional flexibility by allowing users to specify date input through DT (defaults to 2021-01-01)</li>
+<li>simplify CosinorM.KDE internals (Pdf/kIF computation) by removing dense-grid evaluation to reduce memory consumption
+<ul><li>update boot.seci and ggCosinorM to remove support of dense-grid evaluation output from CosinorM.KDE</li>
+</ul></li>
+</ul></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="version-021-2025-11-30">Version 0.2.1, 2025-11-30<a class="anchor" aria-label="anchor" href="#version-021-2025-11-30"></a></h2>
 <ul><li><p>New master and class functions added: NA</p></li>

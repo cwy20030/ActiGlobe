@@ -19,8 +19,7 @@ BriefSum(df, SR, Start, TZ = "local")
 - df:
 
   A data.frame of raw actigraphy recording. Both time and activity count
-  should be included in the \`df\`. See \`VAct\` and \`VTm\` for further
-  detail.
+  should be included in the `df`.
 
 - SR:
 
@@ -64,7 +63,9 @@ A named list with two elements:
 
   - Recording_End latest recorded time for the day (HH:MM:SS)
 
-  - GL_Offset numeric offset returned by DST2GL() for the day
+  - GL_Offset numeric offset returned by
+    [`DST2GL`](https://cwy20030.github.io/ActiGlobe/reference/DST2GL.md)
+    for the day
 
   - nDataPoints number of epochs observed for the day
 

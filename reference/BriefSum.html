@@ -25,7 +25,7 @@ epochs for a full day."><meta property="og:image" content="https://cwy20030.gith
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,8 +84,7 @@ epochs for a full day.</p>
 
 <dl><dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
 <dd><p>A data.frame of raw actigraphy recording. Both time and activity
-count should be included in the `df`. See `VAct` and `VTm` for further
-detail.</p></dd>
+count should be included in the <code>df</code>.</p></dd>
 
 
 <dt id="arg-sr">SR<a class="anchor" aria-label="anchor" href="#arg-sr"></a></dt>
@@ -115,7 +114,8 @@ which means user's local time zone)</p></dd>
 <li><p>Daylight_Saving logical flag indicating DST for the day</p></li>
 <li><p>Recording_Start earliest recorded time for the day (HH:MM:SS)</p></li>
 <li><p>Recording_End latest recorded time for the day (HH:MM:SS)</p></li>
-<li><p>GL_Offset numeric offset returned by DST2GL() for the day</p></li>
+<li><p>GL_Offset numeric offset returned by <code><a href="DST2GL.html">DST2GL</a></code> for the
+    day</p></li>
 <li><p>nDataPoints number of epochs observed for the day</p></li>
 <li><p>Cumulative_Start_Second cumulative start second from midnight
     for the day's first epoch</p></li>

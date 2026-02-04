@@ -19,7 +19,7 @@ requested time unit."><meta property="og:image" content="https://cwy20030.github
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@ requested time unit.</p>
 
 
 <dl><dt id="arg-dt">DT<a class="anchor" aria-label="anchor" href="#arg-dt"></a></dt>
-<dd><p>A vector of class `Date`, `POSIXct` or `POSIXlt`, sorted in ascending
+<dd><p>A vector of class <code>Date</code>, <code>POSIXct</code>, or <code>POSIXlt</code>, sorted in ascending
 order. Each entry represents the start of an interval.  Internally, the
 function appends one extra day beyond the last entry so that the final
 interval covers a full 24 h until the next midnight. See <code>as.POSIXct</code>.</p></dd>
@@ -82,8 +82,8 @@ interval covers a full 24 h until the next midnight. See <code>as.POSIXct</code>
 
 <dt id="arg-tunit">TUnit<a class="anchor" aria-label="anchor" href="#arg-tunit"></a></dt>
 <dd><p>Character string specifying the unit for the output durations.
-Must be one of `"hour"`, `"minute"`, or `"second"`.  Comparison is
-case-insensitive.  Default is `"hour"`, meaning the returned values
+Must be one of "hour", "minute", or "second".  Comparison is
+case-insensitive.  Default is "hour", meaning the returned values
 are in decimal hours.</p></dd>
 
 
@@ -94,10 +94,10 @@ which means user's local time zone)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric vector of the same length as `DT`.  Each element is the
-  elapsed time between the corresponding entry in `DT` and the next
-  boundary (either the next date-time in `Date`, or midnight following
-  the last date), expressed in the units given by `TUnit`.</p>
+    <p>A numeric vector of the same length as <code>DT</code>.  Each element is the
+  elapsed time between the corresponding entry in <code>DT</code> and the next
+  boundary (either the next date-time in <code>Date</code>, or midnight following
+  the last date), expressed in the units given by <code>TUnit</code>.</p>
     </div>
 
     <div class="section level2">

@@ -17,7 +17,8 @@ boot.seci(object, ci_level = 0.95, n = 500, digits = 2)
 
 - ci_level:
 
-  Numeric scaler. the confidence ci_level.
+  Numeric scaler. The threshold for the confidence interval. Default:
+  0.95
 
 - n:
 
@@ -40,10 +41,10 @@ A data.frame with one row per cosinor coefficient and columns:
 
 - t value: Ratio of the observed estimate to its bootstrap standard
   error, analogous to a signal-to-noise measure: \$\$t =
-  \hat{\theta}\_obs / SE_boot\$\$
+  \hat{\theta}\_{obs} / SE\_{boot}\$\$
 
 - lower CI label: Percentile lower bound at \\\frac{\alpha}{2}\\, where
-  \\\alpha = 1 - ci_level\\.
+  \\\alpha = 1 - ci\_{level}\\.
 
 - upper CI label: Percentile upper bound at \\1 - \frac{\alpha}{2}\\.
 

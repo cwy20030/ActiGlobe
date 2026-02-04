@@ -21,15 +21,12 @@ Source:
 
 Yao C, Varesco G, Bieuzen F, Simonelli G (2026). *ActiGlobe: Wearable
 Recording Processor for Time Shift Adjustment and Data Analysis*. R
-package version 0.2.1, <https://github.com/cwy20030/ActiGlobe>.
+package version 0.2.2, <https://github.com/cwy20030/ActiGlobe>.
 
     @Manual{,
       title = {ActiGlobe: Wearable Recording Processor for Time Shift Adjustment and Data Analysis},
       author = {C. William Yao and Giorgio Varesco and François Bieuzen and Guido Simonelli},
       year = {2026},
-      note = {R package version 0.2.1},
+      note = {R package version 0.2.2},
       url = {https://github.com/cwy20030/ActiGlobe},
     }
-
-To convert to an EndNote-compatible format, paste the BibTeX entry in
-[online bibtex-converter](https://asouqi.github.io/bibtex-converter)

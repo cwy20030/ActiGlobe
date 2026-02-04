@@ -2,10 +2,10 @@
 
 ## What will be covered in this tutorial?
 
-This specific tutorial is designed to show users how to use ActiGlobe to
-preprocess longitudinal actigrpahy recordings affected by time shift.
-For analysis and generation of graphic/excel report of daily actigraphy
-measures, please go to tutorial title: Graphic-Report.
+This specific tutorial is designed specifically to show users how to use
+ActiGlobe to preprocess longitudinal actigrpahy recordings affected by
+time shift. For analysis and generation of graphic/excel report of daily
+actigraphy measures, please go to tutorial title: Graphic-Report.
 
 ## Load the Libraries
 
@@ -229,8 +229,13 @@ stored in `Bdf`. This design allows us to quickly scan through the
 summary file, just in case any adjustment is not properly addressed.
 
 ``` r
-Bdf.adj <- TAdjust (Bdf, TLog)
+Bdf.adj <- TAdjust (Bdf  = Bdf, 
+                    TLog = TLog,
+                    TZ   = "America/New_York")
 ```
+
+\*\*\* When executed locally, it is recommended to set `fork = TRUE` to
+speed up the adjustment process using parallel computing. \*\*\*
 
 When we put it side-by-side with the initial brief summary, we can see
 clear changes across the various documents regarding the recordings and

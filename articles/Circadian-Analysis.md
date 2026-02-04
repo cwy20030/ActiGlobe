@@ -139,7 +139,7 @@ ggCosinorM (fit.ols2)
 ![Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor
 Model](Circadian-Analysis_files/figure-html/Model%202%20OLS-1.png)
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Eocnometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 
 ``` r
 fit.fgls2 <-
@@ -207,7 +207,7 @@ fit.KDE <-
 ### Look at the parameters
 fit.KDE$coef.cosinor
 #>        MESOR Amplitude.24 Acrophase.24      Beta.24     Gamma.24 
-#>   177.270466   157.852411    -2.896046  -153.117574   -38.371762
+#>   177.327801   157.744980    -2.895821  -153.004740   -38.380048
 fit.KDE$post.hoc
 #>           MESOR.ph Bathyphase.ph.time          Trough.ph  Acrophase.ph.time 
 #>         296.160217           5.433333           9.099325          10.483333 
@@ -238,11 +238,11 @@ boot.seci (
     n = 100
 ) ### for demonstration, the number of bootstraps was limited to 100.
 #>                    Estimate Std Error t value    2.5%   97.5%
-#> MESOR                177.24      4.60   38.55  168.93  185.37
-#> Amplitude.24         157.66      7.15   22.08  145.51  171.65
-#> Acrophase.24          -2.89      0.04  -73.22   -2.96   -2.82
-#> Beta.24             -152.48      7.90  -19.39 -167.73 -138.96
-#> Gamma.24             -39.60      5.28   -7.27  -48.30  -29.41
+#> MESOR                177.30      4.60   38.56  168.99  185.45
+#> Amplitude.24         157.54      7.15   22.06  145.39  171.51
+#> Acrophase.24          -2.89      0.04  -73.15   -2.96   -2.82
+#> Beta.24             -152.35      7.90  -19.38 -167.59 -138.84
+#> Gamma.24             -39.61      5.28   -7.27  -48.31  -29.42
 #> MESOR.ph             295.55     14.50   20.43  266.18  324.46
 #> Bathyphase.ph.time     4.35      1.83    2.96    0.60    6.13
 #> Trough.ph              8.12      1.84    4.93    5.09   11.66
@@ -260,7 +260,6 @@ to finish the computation.
 ``` r
 ### For external graphic plot.
 library (ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.5.2
 ```
 
 ##### OLS-Cosinor vs. Kernel Density Estimation

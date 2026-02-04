@@ -15,7 +15,7 @@ and post-hoc parameters via non-parametric bootstrap"><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,8 @@ and post-hoc parameters via non-parametric bootstrap</p>
 
 
 <dt id="arg-ci-level">ci_level<a class="anchor" aria-label="anchor" href="#arg-ci-level"></a></dt>
-<dd><p>Numeric scaler. the confidence ci_level.</p></dd>
+<dd><p>Numeric scaler. The threshold for the confidence interval.
+Default: 0.95</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -92,9 +93,9 @@ standard errors and confidence intervals. Default: 500</p></dd>
   resamples.</p></li>
 <li><p>t value: Ratio of the observed estimate to its bootstrap standard
   error, analogous to a
-    signal-to-noise measure: $$t = \hat{\theta}_obs / SE_boot$$</p></li>
+    signal-to-noise measure: $$t = \hat{\theta}_{obs} / SE_{boot}$$</p></li>
 <li><p>lower CI label: Percentile lower bound at \(\frac{\alpha}{2}\),
-     where \(\alpha = 1 - ci_level\).</p></li>
+     where \(\alpha = 1 - ci_{level}\).</p></li>
 <li><p>upper CI label: Percentile upper bound at \(1 - \frac{\alpha}{2}\).</p></li>
 </ul></div>
     <div class="section level2">

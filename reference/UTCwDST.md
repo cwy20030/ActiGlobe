@@ -8,7 +8,7 @@ whether a time change occurs between winter and summer timestamps.
 ## Usage
 
 ``` r
-UTCwDST(UTCs, fork = FALSE)
+UTCwDST(UTCs, DT = NULL, fork = FALSE)
 ```
 
 ## Arguments
@@ -16,9 +16,15 @@ UTCwDST(UTCs, fork = FALSE)
 - UTCs:
 
   A character vector or numeric vector representing UTC offsets.
-  Accepted formats include \`"UTC+08:00"\`, \`"UTC-05:00"\`, or numeric
-  values like \`+8\`, \`-5\`, etc. The function internally maps UTC
-  strings to numeric offsets using \`UTC2Num()\`.
+  Accepted formats include "UTC+08:00", "UTC-05:00", or numeric values
+  like "+8", "-5", etc. The function internally maps UTC strings to
+  numeric offsets using
+  [`UTC2Num`](https://cwy20030.github.io/ActiGlobe/reference/UTC2Num.md).
+
+- DT:
+
+  A POSIXct date/time used as the reference point for offset comparison.
+  Defaults to January 1, 2021 UTC if \`NULL\`.
 
 - fork:
 
@@ -27,14 +33,14 @@ UTCwDST(UTCs, fork = FALSE)
 
 ## Value
 
-A logical vector the same length as \`UTCs\`. Each entry is \`TRUE\` if
-at least one time zone at the specified offset undergoes a DST
-transition, \`FALSE\` otherwise.
+A logical vector the same length as `UTCs`. Each entry is \`TRUE\` if at
+least one time zone at the specified offset undergoes a DST transition,
+\`FALSE\` otherwise.
 
 ## Details
 
-For each value in \`UTCs\`, the function retrieves the corresponding
-IANA time zones whose offset matches the specified UTC string or numeric
+For each value in `UTCs`, the function retrieves the corresponding IANA
+time zones whose offset matches the specified UTC string or numeric
 hour. It then compares the DST status of each zone on January 1 and July
 15. If at least one zone shows a shift in DST status between the two
 dates, the function returns \`TRUE\` for that offset.

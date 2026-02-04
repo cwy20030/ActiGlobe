@@ -19,7 +19,7 @@ change occurs between winter and summer timestamps."><meta property="og:image" c
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@ change occurs between winter and summer timestamps.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">UTCwDST</span><span class="op">(</span><span class="va">UTCs</span>, fork <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">UTCwDST</span><span class="op">(</span><span class="va">UTCs</span>, DT <span class="op">=</span> <span class="cn">NULL</span>, fork <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,9 +75,14 @@ change occurs between winter and summer timestamps.</p>
 
 <dl><dt id="arg-utcs">UTCs<a class="anchor" aria-label="anchor" href="#arg-utcs"></a></dt>
 <dd><p>A character vector or numeric vector representing UTC offsets.
-Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
-like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
-offsets using `UTC2Num()`.</p></dd>
+Accepted formats include "UTC+08:00", "UTC-05:00", or numeric values
+like "+8", "-5", etc. The function internally maps UTC strings to numeric
+offsets using <code><a href="UTC2Num.html">UTC2Num</a></code>.</p></dd>
+
+
+<dt id="arg-dt">DT<a class="anchor" aria-label="anchor" href="#arg-dt"></a></dt>
+<dd><p>A POSIXct date/time used as the reference point for offset
+comparison. Defaults to January 1, 2021 UTC if `NULL`.</p></dd>
 
 
 <dt id="arg-fork">fork<a class="anchor" aria-label="anchor" href="#arg-fork"></a></dt>
@@ -87,13 +92,13 @@ the computation. Default is FALSE.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
+    <p>A logical vector the same length as <code>UTCs</code>. Each entry is `TRUE` if at
  least one time zone at the specified offset undergoes a DST transition,
  `FALSE` otherwise.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For each value in `UTCs`, the function retrieves the corresponding IANA
+    <p>For each value in <code>UTCs</code>, the function retrieves the corresponding IANA
 time zones whose offset matches the specified UTC string or numeric hour.
 It then compares the DST status of each zone on January 1 and July 15.
 If at least one zone shows a shift in DST status between the two dates,

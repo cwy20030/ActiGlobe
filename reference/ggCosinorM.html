@@ -21,7 +21,7 @@ labelled parameter values when requested."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,29 +92,29 @@ labelled parameter values when requested.</p>
 
 
 <dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
-<dd><p>Logical; Default `TRUE` places repelled labels on
+<dd><p>Logical; Default: TRUE, which places repelled labels on
 the plot with MESOR, amplitude(s), and acrophase(s).</p></dd>
 
 
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
-<dd><p>Logical; Default `TRUE` computes and draws pointwise
+<dd><p>Logical; Default: TRUE, which computes and draws pointwise
 parametric confidence bands for the fitted cosinor curve using
 the model covariance.</p></dd>
 
 
 <dt id="arg-ci-level">ci_level<a class="anchor" aria-label="anchor" href="#arg-ci-level"></a></dt>
-<dd><p>Confidence level for the pointwise bands, expressed
-in numeric value between 0 and 1 (default: `0.95`).</p></dd>
+<dd><p>Numeric scaler. The range of the confidence interval,
+expressed in numeric value between 0 and 1. Default: 0.95</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>Integer; number of points on the fine prediction grid used
-to draw the fitted cosinor and confidence ribbon (default: `400`).</p></dd>
+<dd><p>Integer scaler. Number of points on the fine prediction grid used
+to draw the fitted cosinor and confidence ribbon. Default: 400</p></dd>
 
 
 <dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
-<dd><p>Numeric; plotting size for observed points
-(default: `0.5`).</p></dd>
+<dd><p>Numeric scaler. Plotting size for observed points.
+Default: 0.5</p></dd>
 
 
 <dt id="arg-title-extra">title_extra<a class="anchor" aria-label="anchor" href="#arg-title-extra"></a></dt>
@@ -124,7 +124,7 @@ title for extra context.</p></dd>
 
 <dt id="arg-legend-position">legend.position<a class="anchor" aria-label="anchor" href="#arg-legend-position"></a></dt>
 <dd><p>Position of the legend on the plot; default
-is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`,
+is "right". Other options include "top", "bottom", "left",
 or a numeric vector of length two specifying x and y coordinates.</p></dd>
 
 

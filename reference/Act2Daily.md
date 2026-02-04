@@ -22,7 +22,7 @@ Act2Daily(
 - df:
 
   A data.frame of raw actigraphy recording. Both time and activity count
-  should be included in the \`df\`. See \`VAct\` and \`VTm\` for further
+  should be included in the `df`. See `VAct` and `VTm` for further
   detail.
 
 - Bdf:
@@ -37,18 +37,17 @@ Act2Daily(
 - TUnit:
 
   Character; time–unit for the x–axis of each day's timeline. Must be
-  one of \`day\`, \`hour\`, \`minute\` or \`second\`. Default is
-  \`hour\`.
+  one of "day", "hour", "minute" or "second". Default is "hour".
 
 - VAct:
 
-  Optional character. Name of the activity column in \`df\`. If NULL,
-  defaults to the second column of \`df\`.
+  Optional character. Name of the activity column in `df`. If NULL,
+  defaults to the second column of `df`.
 
 - VTm:
 
-  Optional character. Name of the date.time index column in \`df\`. If
-  NULL, defaults to the first column of \`df\`.
+  Optional character. Name of the date.time index column in `df`.If
+  NULL, defaults to the first column of `df`.
 
 - Incomplete:
 

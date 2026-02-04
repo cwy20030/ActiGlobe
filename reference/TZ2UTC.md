@@ -16,8 +16,8 @@ TZ2UTC(DT, TZ = "local")
 
 - TZ:
 
-  The time zone when the recording started. (default = "local", which
-  means user's local time zone)
+  The time zone when the recording started. Default = "local", which
+  means user's local time zone
 
 ## Value
 

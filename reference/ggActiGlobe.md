@@ -16,8 +16,8 @@ ggActiGlobe(df, Bdf, VAct = NULL, VDT = "DateTime")
 - df:
 
   A data.frame of annotated actigraphy epochs. Must include: - An
-  activity column named by \`VAct\`. - A datetime column named by
-  \`VDT\`. - Optionally, a \`Note\` column to flag affected epochs. See
+  activity column named by `VAct`. - A datetime column named by `VTm`. -
+  Optionally, a \`Note\` column to flag affected epochs. See
   [`BriefSum`](https://cwy20030.github.io/ActiGlobe/reference/BriefSum.md)
   and
   [`TAdjust`](https://cwy20030.github.io/ActiGlobe/reference/TAdjust.md)
@@ -34,19 +34,19 @@ ggActiGlobe(df, Bdf, VAct = NULL, VDT = "DateTime")
 
 - VAct:
 
-  Optional character. Name of the activity column in \`df\`. If NULL,
-  defaults to the second column of \`df\`.
+  Optional character. Name of the activity column in `df`. If NULL,
+  defaults to the second column of `df`.
 
 - VDT:
 
-  Optional character. Name of the POSIXct datetime column in \`df\`. If
-  NULL, defaults to "DateTime" of \`df\`.
+  Optional character. Name of the `POSIXct` datetime column in `df`.If
+  NULL, defaults to "DateTime" of `df`.
 
 ## Value
 
-A \`ggplot\` object showing: - Activity counts vs. time. - Dashed
-vertical lines at each midnight. - Points \`colored\` by whether they
-were flagged in \`Note\`.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object
+showing: - Activity counts vs. time. - Dashed vertical lines at each
+midnight. - Points \`colored\` by whether they were flagged in \`Note\`.
 
 ## Examples
 

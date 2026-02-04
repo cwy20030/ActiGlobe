@@ -21,7 +21,7 @@ Rad2Hr(x, tau)
 
 ## Value
 
-Numeric vector of times in \[0, tau). NA values propagate.
+Numeric vector of times in \\\[0, tau)\\. NA values propagate.
 
 ## Examples
 

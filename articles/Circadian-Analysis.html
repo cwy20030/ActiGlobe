@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,8 +227,8 @@ components, each fitted using OLS or FGLS-based methods.</p>
 <p><img src="Circadian-Analysis_files/figure-html/Model%202%20OLS-1.png" class="r-plt" alt="Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model" width="672"></p>
 </div>
 <div class="section level4">
-<h4 id="ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls">Ecnometry-modified Cosinor Model with Feasible General Least Sqaure
-(FGLS)<a class="anchor" aria-label="anchor" href="#ecnometry-modified-cosinor-model-with-feasible-general-least-sqaure-fgls"></a>
+<h4 id="eocnometry-modified-cosinor-model-with-feasible-general-least-square-fgls">Eocnometry-modified Cosinor Model with Feasible General Least Square
+(FGLS)<a class="anchor" aria-label="anchor" href="#eocnometry-modified-cosinor-model-with-feasible-general-least-square-fgls"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.fgls2</span> <span class="op">&lt;-</span></span>
@@ -289,7 +289,7 @@ projecting the model onto an imaginary cosinor plane.</p>
 <span><span class="co">### Look at the parameters</span></span>
 <span><span class="va">fit.KDE</span><span class="op">$</span><span class="va">coef.cosinor</span></span>
 <span><span class="co">#&gt;        MESOR Amplitude.24 Acrophase.24      Beta.24     Gamma.24 </span></span>
-<span><span class="co">#&gt;   177.270466   157.852411    -2.896046  -153.117574   -38.371762</span></span>
+<span><span class="co">#&gt;   177.327801   157.744980    -2.895821  -153.004740   -38.380048</span></span>
 <span><span class="va">fit.KDE</span><span class="op">$</span><span class="va">post.hoc</span></span>
 <span><span class="co">#&gt;           MESOR.ph Bathyphase.ph.time          Trough.ph  Acrophase.ph.time </span></span>
 <span><span class="co">#&gt;         296.160217           5.433333           9.099325          10.483333 </span></span>
@@ -316,11 +316,11 @@ intervals.</p>
 <span>    n <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span> <span class="co">### for demonstration, the number of bootstraps was limited to 100.</span></span>
 <span><span class="co">#&gt;                    Estimate Std Error t value    2.5%   97.5%</span></span>
-<span><span class="co">#&gt; MESOR                177.24      4.60   38.55  168.93  185.37</span></span>
-<span><span class="co">#&gt; Amplitude.24         157.66      7.15   22.08  145.51  171.65</span></span>
-<span><span class="co">#&gt; Acrophase.24          -2.89      0.04  -73.22   -2.96   -2.82</span></span>
-<span><span class="co">#&gt; Beta.24             -152.48      7.90  -19.39 -167.73 -138.96</span></span>
-<span><span class="co">#&gt; Gamma.24             -39.60      5.28   -7.27  -48.30  -29.41</span></span>
+<span><span class="co">#&gt; MESOR                177.30      4.60   38.56  168.99  185.45</span></span>
+<span><span class="co">#&gt; Amplitude.24         157.54      7.15   22.06  145.39  171.51</span></span>
+<span><span class="co">#&gt; Acrophase.24          -2.89      0.04  -73.15   -2.96   -2.82</span></span>
+<span><span class="co">#&gt; Beta.24             -152.35      7.90  -19.38 -167.59 -138.84</span></span>
+<span><span class="co">#&gt; Gamma.24             -39.61      5.28   -7.27  -48.31  -29.42</span></span>
 <span><span class="co">#&gt; MESOR.ph             295.55     14.50   20.43  266.18  324.46</span></span>
 <span><span class="co">#&gt; Bathyphase.ph.time     4.35      1.83    2.96    0.60    6.13</span></span>
 <span><span class="co">#&gt; Trough.ph              8.12      1.84    4.93    5.09   11.66</span></span>
@@ -335,8 +335,7 @@ to finish the computation.</p>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### For external graphic plot.</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.5.2</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span> <span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level5">
 <h5 id="ols-cosinor-vs--kernel-density-estimation">OLS-Cosinor vs. Kernel Density Estimation<a class="anchor" aria-label="anchor" href="#ols-cosinor-vs--kernel-density-estimation"></a>
 </h5>

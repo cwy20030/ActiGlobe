@@ -12,7 +12,7 @@ data(FlyEast_adj)
 
 ## Format
 
-An adjusted FlyEast data with 40 thousands plus rows and 3 variables:
+An adjusted FlyEast data with 40 thousands plus rows and 6 variables:
 
 - DateTime:
 

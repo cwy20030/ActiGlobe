@@ -33,28 +33,28 @@ ggCosinorM(
 
 - labels:
 
-  Logical; Default \`TRUE\` places repelled labels on the plot with
+  Logical; Default: TRUE, which places repelled labels on the plot with
   MESOR, amplitude(s), and acrophase(s).
 
 - ci:
 
-  Logical; Default \`TRUE\` computes and draws pointwise parametric
+  Logical; Default: TRUE, which computes and draws pointwise parametric
   confidence bands for the fitted cosinor curve using the model
   covariance.
 
 - ci_level:
 
-  Confidence level for the pointwise bands, expressed in numeric value
-  between 0 and 1 (default: \`0.95\`).
+  Numeric scaler. The range of the confidence interval, expressed in
+  numeric value between 0 and 1. Default: 0.95
 
 - n:
 
-  Integer; number of points on the fine prediction grid used to draw the
-  fitted cosinor and confidence ribbon (default: \`400\`).
+  Integer scaler. Number of points on the fine prediction grid used to
+  draw the fitted cosinor and confidence ribbon. Default: 400
 
 - point_size:
 
-  Numeric; plotting size for observed points (default: \`0.5\`).
+  Numeric scaler. Plotting size for observed points. Default: 0.5
 
 - title_extra:
 
@@ -63,9 +63,9 @@ ggCosinorM(
 
 - legend.position:
 
-  Position of the legend on the plot; default is \`"right"\`. Other
-  options include \`"top"\`, \`"bottom"\`, \`"left"\`, or a numeric
-  vector of length two specifying x and y coordinates.
+  Position of the legend on the plot; default is "right". Other options
+  include "top", "bottom", "left", or a numeric vector of length two
+  specifying x and y coordinates.
 
 - ...:
 

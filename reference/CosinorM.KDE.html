@@ -5,9 +5,11 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="KDE-based circadian cosinor summary — CosinorM.KDE"><meta name="description" content="Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
-weighted by activity and extract first-harmonic cosinor summaries."><meta property="og:description" content="Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
-weighted by activity and extract first-harmonic cosinor summaries."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="KDE-based circadian cosinor summary — CosinorM.KDE"><meta name="description" content="Fit an intensity‑weighted Gaussian kernel density estimate (KDE) on circular
+time (hours of day) weighted by activity and extract first-harmonic cosinor
+summaries."><meta property="og:description" content="Fit an intensity‑weighted Gaussian kernel density estimate (KDE) on circular
+time (hours of day) weighted by activity and extract first-harmonic cosinor
+summaries."><meta property="og:image" content="https://cwy20030.github.io/ActiGlobe/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -15,7 +17,7 @@ weighted by activity and extract first-harmonic cosinor summaries."><meta proper
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,20 +56,14 @@ weighted by activity and extract first-harmonic cosinor summaries."><meta proper
     </div>
 
     <div class="ref-description section level2">
-    <p>Fit a Gaussian kernel density estimate (KDE) on circular time (hours of day)
-weighted by activity and extract first-harmonic cosinor summaries.</p>
+    <p>Fit an intensity‑weighted Gaussian kernel density estimate (KDE) on circular
+time (hours of day) weighted by activity and extract first-harmonic cosinor
+summaries.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CosinorM.KDE</span><span class="op">(</span></span>
-<span>  <span class="va">time</span>,</span>
-<span>  <span class="va">activity</span>,</span>
-<span>  bw <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>  grid <span class="op">=</span> <span class="fl">360L</span>,</span>
-<span>  arctan2 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  dilute <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CosinorM.KDE</span><span class="op">(</span><span class="va">time</span>, <span class="va">activity</span>, bw <span class="op">=</span> <span class="fl">0.8</span>, arctan2 <span class="op">=</span> <span class="cn">TRUE</span>, dilute <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -93,14 +89,8 @@ moothing. bw is interpreted in the same units as the angular scale after
 conversion: the implementation converts `bw` from hours to radians
 internally using \(bw_{rad} = bw * 2\pi / \tau\). Default: 0.8.
 Note, small <code>bw</code> (approaching 0) can cause numerical instability, while
-arge <code>bw</code> (approaching 1.5) leads a near-uniform kernel and reduces
+<code>bw</code> (approaching 1.5) leads a near-uniform kernel and reduces
 temporal resolution.</p></dd>
-
-
-<dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
-<dd><p>Integer number of evaluation points used for the dense grid on
-\([0, 2 * \pi)\). The grid excludes the duplicate 2*pi endpoint.
-Default: 360.</p></dd>
 
 
 <dt id="arg-arctan-">arctan2<a class="anchor" aria-label="anchor" href="#arg-arctan-"></a></dt>
@@ -121,7 +111,7 @@ nonparametric bootstrap</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list of class <code>c("CosinorM.KDE")</code> with elements:</p><ul><li><p>parm: Parameters specified in the model (list with <code>time</code>,
-  <code>activity</code>, <code>bw</code>, <code>grid</code>)</p></li>
+  <code>activity</code>, <code>bw</code>)</p></li>
 <li><p>tau: Period in hours (default to 24hour)</p></li>
 <li><p>kdf: A data.frame with the following columns:</p><ul><li><p>theta: Angular positions (radians) at the observation angles</p></li>
 <li><p>density: Estimated PDF values at the observation angles
@@ -150,25 +140,16 @@ nonparametric bootstrap</p></dd>
 <li><p>post.hoc: Post-hoc peak/trough diagnostics derived from
   fitted.values at observation angles (MESOR.ph, Bathyphase.ph.time,
   Trough.ph, Acrophase.ph.time, Peak.ph, Amplitude.ph)</p></li>
-<li><p>grid: (when <code>dilute = FALSE</code>) list of grid diagnostics:</p><ul><li><p>theta: evaluation angles on the dense grid (radians)</p></li>
-<li><p>density: Grid-level PDF (integrates to 1 over theta)</p></li>
-<li><p>trapizoid.weight: Trapezoid integration weights for the grid
-      points</p></li>
-<li><p>kernel.weight: Kernel mass (denominator) at each grid point</p></li>
-<li><p>fitted.values: Normalized fitted values at grid points
-      (activity-scale)</p></li>
-<li><p>fitted.var: Variance propagation through fitted variances on
-      the grid</p></li>
-<li><p>fitted.se: Standard error of the fitted values at grid points</p></li>
-</ul></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function builds a circular KDE from event times (hours in \[0,24)) and
-activity. The KDE is computed on a regular angular grid over \[0, 2*pi) using
-a wrapped Gaussian kernel with specified bandwidth. Cosinor summaries (MESOR,
-Beta, Gamma, Amplitude, Acrophase) are obtained by numerical integration of
-the KDE using trapezoid-rule quadrature.</p>
+    <p>This function builds a kernel-smoothed circular activity intensity
+from event time (hours in \([0, 24)\)) and activity. The intensity
+is estimated on a regular angular grid over \([0, 2\pi)\) using a
+wrapped Gaussian kernel with specified bandwidth and normalized to
+form a circular density over phase. Cosinor summaries (MESOR, Beta,
+Gamma, Amplitude, Acrophase) are obtained by numerical integration of
+the fitted density using trapezoid-rule quadrature.</p>
 <p>Cosinor parameters are obtained by numerical integration of the KDE on the
 grid:</p><ul><li><p>MESOR: mean level of the fitted curve, \(M = I_0 / (2\pi)\).</p></li>
 <li><p>\(\beta\): cosine coefficient, \(\beta = I_{cos} / \pi\).</p></li>
@@ -177,15 +158,14 @@ grid:</p><ul><li><p>MESOR: mean level of the fitted curve, \(M = I_0 / (2\pi)\).
   \gamma^2}\).</p></li>
 <li><p>Acrophase: peak time, \(\phi = atan2(-\gamma, \beta)\), expressed
   in radians and converted to hours.</p></li>
-</ul><p>The grid integrals are computed with trapezoid weights \(w_g\):
-$$I_0 = \text{area}_g \sum_g \frac{pdf_g \, w_g}{den_g}$$
-$$I_{cos} = \text{area}_g \sum_g \frac{pdf_g \cos(\theta_g)\,
-w_g}{den_g}$$
-$$I_{sin} = \text{area}_g \sum_g \frac{pdf_g \sin(\theta_g)\,
-w_g}{den_g}$$</p>
-<p>where \(pdf_g\) is the normalized KDE at grid angle \(\theta_g\),
-\(den_g\)
-is the kernel denominator at that grid point, and \(\text{area}_g\)
+</ul><p>The grid integrals are computed with trapezoid weights \(w\):
+$$I_0 = \text{area} \sum \frac{pdf \, w}{den}$$
+$$I_{cos} = \text{area} \sum \frac{pdf \cos(\theta)\,
+w}{den}$$
+$$I_{sin} = \text{area} \sum \frac{pdf \sin(\theta)\,
+w}{den}$$</p>
+<p>where \(pdf\) is the normalized KDE at grid angle \(\theta\),
+\(den\) is the kernel denominator at that grid point, and \(\text{area}\)
 rescales the fitted density back to the activity scale.</p>
 <p>Notes:</p><ul><li><p>Normalization factors \(1/\pi\) and \(1/(2\pi)\) follow from the
   orthogonality of sine and cosine on \([0,2\pi)\).</p></li>

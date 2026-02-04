@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ActiGlobe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,10 +93,11 @@ Yao</h4>
 <div class="section level2">
 <h2 id="what-will-be-covered-in-this-tutorial">What will be covered in this tutorial?<a class="anchor" aria-label="anchor" href="#what-will-be-covered-in-this-tutorial"></a>
 </h2>
-<p>This specific tutorial is designed to show users how to use ActiGlobe
-to preprocess longitudinal actigrpahy recordings affected by time shift.
-For analysis and generation of graphic/excel report of daily actigraphy
-measures, please go to tutorial title: Graphic-Report.</p>
+<p>This specific tutorial is designed specifically to show users how to
+use ActiGlobe to preprocess longitudinal actigrpahy recordings affected
+by time shift. For analysis and generation of graphic/excel report of
+daily actigraphy measures, please go to tutorial title:
+Graphic-Report.</p>
 </div>
 <div class="section level2">
 <h2 id="load-the-libraries">Load the Libraries<a class="anchor" aria-label="anchor" href="#load-the-libraries"></a>
@@ -1208,7 +1209,12 @@ adjust the brief summary stored in <code>Bdf</code>. This design allows
 us to quickly scan through the summary file, just in case any adjustment
 is not properly addressed.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TAdjust.html">TAdjust</a></span> <span class="op">(</span><span class="va">Bdf</span>, <span class="va">TLog</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Bdf.adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TAdjust.html">TAdjust</a></span> <span class="op">(</span>Bdf  <span class="op">=</span> <span class="va">Bdf</span>, </span>
+<span>                    TLog <span class="op">=</span> <span class="va">TLog</span>,</span>
+<span>                    TZ   <span class="op">=</span> <span class="st">"America/New_York"</span><span class="op">)</span></span></code></pre></div>
+<p>*** When executed locally, it is recommended to set
+<code>fork = TRUE</code> to speed up the adjustment process using
+parallel computing. ***</p>
 <p>When we put it side-by-side with the initial brief summary, we can
 see clear changes across the various documents regarding the recordings
 and their annotations.</p>

@@ -15,18 +15,16 @@ Date2TotalT(DT, TUnit = "hour", TZ = "local")
 
 - DT:
 
-  A vector of class \`Date\`, \`POSIXct\` or \`POSIXlt\`, sorted in
-  ascending order. Each entry represents the start of an interval.
-  Internally, the function appends one extra day beyond the last entry
-  so that the final interval covers a full 24 h until the next midnight.
-  See `as.POSIXct`.
+  A vector of class `Date`, `POSIXct`, or `POSIXlt`, sorted in ascending
+  order. Each entry represents the start of an interval. Internally, the
+  function appends one extra day beyond the last entry so that the final
+  interval covers a full 24 h until the next midnight. See `as.POSIXct`.
 
 - TUnit:
 
   Character string specifying the unit for the output durations. Must be
-  one of \`"hour"\`, \`"minute"\`, or \`"second"\`. Comparison is
-  case-insensitive. Default is \`"hour"\`, meaning the returned values
-  are in decimal hours.
+  one of "hour", "minute", or "second". Comparison is case-insensitive.
+  Default is "hour", meaning the returned values are in decimal hours.
 
 - TZ:
 
@@ -35,10 +33,10 @@ Date2TotalT(DT, TUnit = "hour", TZ = "local")
 
 ## Value
 
-A numeric vector of the same length as \`DT\`. Each element is the
-elapsed time between the corresponding entry in \`DT\` and the next
-boundary (either the next date-time in \`Date\`, or midnight following
-the last date), expressed in the units given by \`TUnit\`.
+A numeric vector of the same length as `DT`. Each element is the elapsed
+time between the corresponding entry in `DT` and the next boundary
+(either the next date-time in `Date`, or midnight following the last
+date), expressed in the units given by `TUnit`.
 
 ## Examples
 
