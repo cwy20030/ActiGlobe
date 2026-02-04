@@ -23,7 +23,8 @@
 #' @importFrom stats sd quantile
 #'
 #' @param object A fitted `CosinorM` or `CosinorM.KDE` model object.
-#' @param ci_level Numeric scaler. the confidence ci_level.
+#' @param ci_level Numeric scaler. The threshold for the confidence interval.
+#' Default: 0.95
 #' @param n Numeric scaler. Numbers of bootstraps required to estimate the
 #' standard errors and confidence intervals. Default: 500
 #' @param digits Numeric scaler. Integer indicating the number of decimal places
@@ -37,9 +38,9 @@
 #'   resamples.
 #'   \item t value: Ratio of the observed estimate to its bootstrap standard
 #'   error, analogous to a
-#'     signal-to-noise measure: \deqn{t = \hat{\theta}_obs / SE_boot}
+#'     signal-to-noise measure: \deqn{t = \hat{\theta}_{obs} / SE_{boot}}
 #'   \item lower CI label: Percentile lower bound at \eqn{\frac{\alpha}{2}},
-#'      where \eqn{\alpha = 1 - ci_level}.
+#'      where \eqn{\alpha = 1 - ci_{level}}.
 #'   \item upper CI label: Percentile upper bound at \eqn{1 - \frac{\alpha}{2}}.
 #' }
 #'
@@ -140,7 +141,6 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
 
     if (inherits (object, "CosinorM.KDE")) {
         bw <- object$bw
-        grid <- object$grid.size
 
         for (b in seq_len (n)) {
             idx <- sample.int (length (time), size = length (time),
@@ -153,7 +153,6 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
                 time = Time,
                 activity = Act,
                 bw = bw,
-                grid = grid,
                 arctan2 = arctan2,
                 dilute = TRUE
             )

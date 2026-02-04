@@ -1,7 +1,7 @@
 Package: ActiGlobe
 Type: Package
 Title: Wearable Recording Processor for Time Shift Adjustment and Data Analysis
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person("C. William", "Yao", email = "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut","cre","cph"), comment = c(ORCID="0000-0002-7234-7375")),
              person("Giorgio", "Varesco", email = "giorgio.varesco@umontreal.ca", role = c("aut","ctb"), comment = c(ORCID="0000-0001-9385-6972")),
 			 person("François", "Bieuzen", email = "fbieuzen@insquebec.org", role = c("aut","ctb"), comment = c(ORCID="0000-0002-9690-9168")),

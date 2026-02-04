@@ -5,7 +5,7 @@
 \alias{FlyEast_adj}
 \title{Adjusted Travel East Sample Data}
 \format{
-An adjusted FlyEast data with 40 thousands plus rows and 3 variables:
+An adjusted FlyEast data with 40 thousands plus rows and 6 variables:
 \describe{
 \item{DateTime}{The time coordinates of each recorded activies in the
 standard date and time joint format}

@@ -29,8 +29,8 @@
 #' @param DT A vector of class `Date`, `POSIXct`, or `POSIXlt`, representing
 #'   the dates/times to test.  These need not be sorted.
 #' @param TZ A single string naming an IANA time zone (e.g. `America/New_York`).
-#'  If `"local"`, it will extract local time zone using `Sys.timezone()`.
-#'  Must match one entry in `OlsonNames()`.
+#'  If `"local"`, it will extract local time zone using \code{\link[base]{Sys.timezone}}.
+#'  Must match one entry in \code{\link[base]{OlsonNames}}.
 #'
 #' @return
 #'   A logical vector of the same length as `DT`.
@@ -51,7 +51,7 @@
 #'
 #' # Using the local system time zone
 #' DST (as.POSIXct ("2023-07-01 12:00:00"), TZ = "local")
-#' 
+#'
 #' @keywords daylight dst
 #' @export
 

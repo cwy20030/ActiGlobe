@@ -108,7 +108,7 @@ utils::globalVariables (c ("IANA"))
 #' @keywords FlyEast_adj adjust
 #' @name FlyEast_adj
 #' @usage data(FlyEast_adj)
-#' @format An adjusted FlyEast data with 40 thousands plus rows and 3 variables:
+#' @format An adjusted FlyEast data with 40 thousands plus rows and 6 variables:
 #' \describe{
 #' \item{DateTime}{The time coordinates of each recorded activies in the
 #' standard date and time joint format}

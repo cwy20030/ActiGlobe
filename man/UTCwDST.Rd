@@ -4,19 +4,22 @@
 \alias{UTCwDST}
 \title{Determine if Daylight Saving Transitions may occur in an UTC Offset}
 \usage{
-UTCwDST(UTCs, fork = FALSE)
+UTCwDST(UTCs, DT = NULL, fork = FALSE)
 }
 \arguments{
 \item{UTCs}{A character vector or numeric vector representing UTC offsets.
-Accepted formats include `"UTC+08:00"`, `"UTC-05:00"`, or numeric values
-like `+8`, `-5`, etc. The function internally maps UTC strings to numeric
-offsets using `UTC2Num()`.}
+Accepted formats include "UTC+08:00", "UTC-05:00", or numeric values
+like "+8", "-5", etc. The function internally maps UTC strings to numeric
+offsets using \code{\link{UTC2Num}}.}
+
+\item{DT}{A POSIXct date/time used as the reference point for offset
+comparison. Defaults to January 1, 2021 UTC if `NULL`.}
 
 \item{fork}{Logical, if TRUE, it will use parallel processing to speed up
 the computation. Default is FALSE.}
 }
 \value{
-A logical vector the same length as `UTCs`. Each entry is `TRUE` if at
+A logical vector the same length as \code{UTCs}. Each entry is `TRUE` if at
  least one time zone at the specified offset undergoes a DST transition,
  `FALSE` otherwise.
 }
@@ -27,7 +30,7 @@ all zones matching the specified UTC offset and evaluates whether a time
 change occurs between winter and summer timestamps.
 }
 \details{
-For each value in `UTCs`, the function retrieves the corresponding IANA
+For each value in \code{UTCs}, the function retrieves the corresponding IANA
 time zones whose offset matches the specified UTC string or numeric hour.
 It then compares the DST status of each zone on January 1 and July 15.
 If at least one zone shows a shift in DST status between the two dates,

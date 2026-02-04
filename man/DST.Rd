@@ -11,8 +11,8 @@ DST(DT, TZ = "local")
 the dates/times to test.  These need not be sorted.}
 
 \item{TZ}{A single string naming an IANA time zone (e.g. `America/New_York`).
-If `"local"`, it will extract local time zone using `Sys.timezone()`.
-Must match one entry in `OlsonNames()`.}
+If `"local"`, it will extract local time zone using \code{\link[base]{Sys.timezone}}.
+Must match one entry in \code{\link[base]{OlsonNames}}.}
 }
 \value{
 A logical vector of the same length as `DT`.

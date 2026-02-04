@@ -48,7 +48,8 @@
 #' BdfList <- BriefSum (
 #'     df = FlyEast,
 #'     SR = 1 / 60,
-#'     Start = "2017-10-19 13:45:00"
+#'     Start = "2017-10-19 13:45:00",
+#'     TZ = 'America/New_York'
 #' )
 #'
 #' # Extract only the summary report
@@ -58,7 +59,9 @@
 #' data (TLog)
 #'
 #' # Adjust time shift based on travel log
-#' Bdf.adj <- TAdjust (Bdf, TLog)
+#' Bdf.adj <- TAdjust (Bdf  = Bdf,
+#'                     TLog = TLog,
+#'                     TZ   = 'America/New_York')
 #'
 #' # Display the summary
 #' View (Bdf)
@@ -211,7 +214,6 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
     Tl <- as.numeric (as.POSIXct (Dl, tz = gTZ [Idxl]))
 
     Epl <- as.numeric (Epc [[1]])
-
     Timel <- seq (
         from = Tl,
         by = Epl,

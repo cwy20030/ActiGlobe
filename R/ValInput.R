@@ -20,21 +20,21 @@
 #'
 #' @description
 #' A generic helper function that validates and converts input vectors
-#' depending on the specified type. Supported types are `"Act"` for activity
-#' values and `"Tm"` for time coordinates.
+#' depending on the specified type. Supported types are "Act" for activity
+#' values and "Tm" for time coordinates.
 #'
 #' @param x A vector of values to validate and convert.
 #' @param type Character string specifying the input type. Must be either
-#'   `"Act"` or `"Tm"`.
+#'   "Act" or "Tm".
 #'
 #' @details
-#' - For `type = "Act"`:
+#' - For \code{type = "Act"}:
 #'   * Converts non-numeric input to numeric.
 #'   * Stops if all values are zero.
 #'   * Stops if any values are `NA`, `NaN`, or `Inf`.
 #'
-#' - For `type = "Tm"`:
-#'   * Converts non-numeric input using `C2T ()` with `Discrete = TRUE`.
+#' - For \code{type = "Tm"}:
+#'   * Converts non-numeric input via \code{\link{C2T}} with `Discrete = TRUE`.
 #'   * Uses OS-specific dispatch (`Darwin`, `Linux`, `Windows`) via
 #'   `Sys.info ()[["sysname"]]`.
 #'   * Stops if any values fall outside the range `[0, 24]`.
@@ -48,6 +48,7 @@
 #' # Time validation (requires C2T defined)
 #' # ValInput (c ("12:00", "13:00"), type = "Tm")
 #'
+#' @seealso \code{\link[base]{Sys.info}}
 #' @noRd
 
 

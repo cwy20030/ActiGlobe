@@ -20,27 +20,27 @@ ggCosinorM(
 \item{object}{A fitted model of class \code{\link{CosinorM}} or
 \code{\link{CosinorM.KDE}}.}
 
-\item{labels}{Logical; Default `TRUE` places repelled labels on
+\item{labels}{Logical; Default: TRUE, which places repelled labels on
 the plot with MESOR, amplitude(s), and acrophase(s).}
 
-\item{ci}{Logical; Default `TRUE` computes and draws pointwise
+\item{ci}{Logical; Default: TRUE, which computes and draws pointwise
 parametric confidence bands for the fitted cosinor curve using
 the model covariance.}
 
-\item{ci_level}{Confidence level for the pointwise bands, expressed
-in numeric value between 0 and 1 (default: `0.95`).}
+\item{ci_level}{Numeric scaler. The range of the confidence interval,
+expressed in numeric value between 0 and 1. Default: 0.95}
 
-\item{n}{Integer; number of points on the fine prediction grid used
-to draw the fitted cosinor and confidence ribbon (default: `400`).}
+\item{n}{Integer scaler. Number of points on the fine prediction grid used
+to draw the fitted cosinor and confidence ribbon. Default: 400}
 
-\item{point_size}{Numeric; plotting size for observed points
-(default: `0.5`).}
+\item{point_size}{Numeric scaler. Plotting size for observed points.
+Default: 0.5}
 
 \item{title_extra}{Optional character string appended to the plot
 title for extra context.}
 
 \item{legend.position}{Position of the legend on the plot; default
-is `"right"`. Other options include `"top"`, `"bottom"`, `"left"`,
+is "right". Other options include "top", "bottom", "left",
 or a numeric vector of length two specifying x and y coordinates.}
 
 \item{...}{Additional arguments (currently ignored) kept for future

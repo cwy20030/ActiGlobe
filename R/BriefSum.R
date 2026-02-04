@@ -30,8 +30,7 @@
 #' @importFrom lubridate hour minute second dst ymd
 #'
 #' @param df A data.frame of raw actigraphy recording. Both time and activity
-#' count should be included in the `df`. See `VAct` and `VTm` for further
-#' detail.
+#' count should be included in the \code{df}.
 #' @param SR The sampling rate of the actigraphy (unit at Hz). Note that Hz
 #' should be equal to or less than 1.
 #' @param Start The starting date and time of the recording in the format
@@ -53,7 +52,8 @@
 #'     \item Daylight_Saving logical flag indicating DST for the day
 #'     \item Recording_Start earliest recorded time for the day (HH:MM:SS)
 #'     \item Recording_End latest recorded time for the day (HH:MM:SS)
-#'     \item GL_Offset numeric offset returned by DST2GL() for the day
+#'     \item GL_Offset numeric offset returned by \code{\link{DST2GL}} for the
+#'     day
 #'     \item nDataPoints number of epochs observed for the day
 #'     \item Cumulative_Start_Second cumulative start second from midnight
 #'     for the day's first epoch
