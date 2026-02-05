@@ -1,8 +1,8 @@
 [
   {
     "referrer": "github.com",
-    "count": 9,
-    "uniques": 2
+    "count": 16,
+    "uniques": 1
   },
   {
     "referrer": "dashboard.ropensci.org",
@@ -15,13 +15,13 @@
     "uniques": 3
   },
   {
-    "referrer": "cwy20030.github.io",
+    "referrer": "Bing",
     "count": 3,
     "uniques": 1
   },
   {
-    "referrer": "Bing",
-    "count": 1,
+    "referrer": "cwy20030.github.io",
+    "count": 3,
     "uniques": 1
   },
   {
