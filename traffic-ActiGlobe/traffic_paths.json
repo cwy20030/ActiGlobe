@@ -2,8 +2,8 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 29,
-    "uniques": 9
+    "count": 27,
+    "uniques": 6
   },
   {
     "path": "/cwy20030/ActiGlobe/actions",
@@ -13,27 +13,15 @@
   },
   {
     "path": "/cwy20030/ActiGlobe/blob/main/.github/workflows/R-CMD-check.yaml",
-    "title": "ActiGlobe/.github/workflows/R-CMD-check.yaml at main · cwy20030/ActiGlobe",
-    "count": 7,
-    "uniques": 4
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/blob/main/vignettes/.gitignore",
-    "title": "ActiGlobe/vignettes/.gitignore at main · cwy20030/ActiGlobe",
-    "count": 6,
+    "title": "ActiGlobe/.github/workflows/R-CMD-check.yaml at main · cwy20030/ActiGlobe · G...",
+    "count": 5,
     "uniques": 4
   },
   {
     "path": "/cwy20030/ActiGlobe/issues",
     "title": "GitHub · Where software is built",
-    "count": 6,
-    "uniques": 2
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/tree/main/vignettes/images",
-    "title": "ActiGlobe/vignettes/images at main · cwy20030/ActiGlobe · GitHub",
     "count": 5,
-    "uniques": 4
+    "uniques": 1
   },
   {
     "path": "/cwy20030/ActiGlobe/issues/101",
@@ -58,5 +46,17 @@
     "title": "Pull requests · cwy20030/ActiGlobe · GitHub",
     "count": 4,
     "uniques": 2
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/blob/main/vignettes/.gitignore",
+    "title": "ActiGlobe/vignettes/.gitignore at main · cwy20030/ActiGlobe · GitHub",
+    "count": 3,
+    "uniques": 3
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/tree/main/vignettes/images",
+    "title": "ActiGlobe/vignettes/images at main · cwy20030/ActiGlobe · GitHub",
+    "count": 3,
+    "uniques": 3
   }
 ]
