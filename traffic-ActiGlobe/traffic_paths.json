@@ -2,31 +2,13 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 26,
+    "count": 24,
     "uniques": 4
   },
   {
     "path": "/cwy20030/ActiGlobe/actions",
     "title": "Workflow runs · cwy20030/ActiGlobe",
     "count": 16,
-    "uniques": 2
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/issues",
-    "title": "GitHub · Where software is built",
-    "count": 5,
-    "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/issues/101",
-    "title": "rOpenSci Review History · Issue #101 · cwy20030/ActiGlobe",
-    "count": 5,
-    "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/pulls",
-    "title": "Pull requests · cwy20030/ActiGlobe · GitHub",
-    "count": 4,
     "uniques": 2
   },
   {
@@ -48,6 +30,12 @@
     "uniques": 1
   },
   {
+    "path": "/cwy20030/ActiGlobe/issues/101",
+    "title": "rOpenSci Review History · Issue #101 · cwy20030/ActiGlobe",
+    "count": 3,
+    "uniques": 1
+  },
+  {
     "path": "/cwy20030/ActiGlobe/actions/runs/21367593075",
     "title": "Merge branch 'Test' of https://github.com/cwy20030/ActiGlobe into Test · cwy2...",
     "count": 2,
@@ -57,6 +45,18 @@
     "path": "/cwy20030/ActiGlobe/blob/main/.github/workflows/R-CMD-check.yaml",
     "title": "ActiGlobe/.github/workflows/R-CMD-check.yaml at main · cwy20030/ActiGlobe",
     "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/issues",
+    "title": "GitHub · Where software is built",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/actions/runs/21367593075/job/61503461001",
+    "title": "Merge branch 'Test' of https://github.com/cwy20030/ActiGlobe into Test · cwy2...",
+    "count": 1,
     "uniques": 1
   }
 ]
