@@ -6,12 +6,6 @@
     "uniques": 4
   },
   {
-    "path": "/cwy20030/ActiGlobe/tree/main/R",
-    "title": "ActiGlobe/R at main · cwy20030/ActiGlobe",
-    "count": 3,
-    "uniques": 1
-  },
-  {
     "path": "/cwy20030/ActiGlobe/issues",
     "title": "GitHub · Where software is built",
     "count": 2,
@@ -24,6 +18,12 @@
     "uniques": 1
   },
   {
+    "path": "/cwy20030/ActiGlobe/tree/main/R",
+    "title": "ActiGlobe/R at main · cwy20030/ActiGlobe",
+    "count": 2,
+    "uniques": 1
+  },
+  {
     "path": "/cwy20030/ActiGlobe/actions/workflows/traffic-to-badge.yaml",
     "title": "traffic2badge · Workflow runs · cwy20030/ActiGlobe · GitHub",
     "count": 1,
@@ -32,12 +32,6 @@
   {
     "path": "/cwy20030/ActiGlobe/blob/main/CODE_OF_CONDUCT.md",
     "title": "ActiGlobe/CODE_OF_CONDUCT.md at main · cwy20030/ActiGlobe · GitHub",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/blob/main/R/CosinorM.KDE.R",
-    "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
     "count": 1,
     "uniques": 1
   },
@@ -56,6 +50,12 @@
   {
     "path": "/cwy20030/ActiGlobe/graphs/contributors",
     "title": "Contributors to cwy20030/ActiGlobe",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/issues/94",
+    "title": "pkgcheck results - cwy20030-patch-1 · Issue #94 · cwy20030/ActiGlobe",
     "count": 1,
     "uniques": 1
   }
