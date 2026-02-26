@@ -2,14 +2,8 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
-    "count": 21,
-    "uniques": 5
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/issues",
-    "title": "GitHub · Where software is built",
-    "count": 2,
-    "uniques": 2
+    "count": 20,
+    "uniques": 4
   },
   {
     "path": "/cwy20030/ActiGlobe/blob/main/.github/workflows/R-CMD-check.yaml",
@@ -27,12 +21,6 @@
     "path": "/cwy20030/ActiGlobe/tree/main/R",
     "title": "ActiGlobe/R at main · cwy20030/ActiGlobe",
     "count": 2,
-    "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/actions/workflows/traffic-to-badge.yaml",
-    "title": "traffic2badge · Workflow runs · cwy20030/ActiGlobe · GitHub",
-    "count": 1,
     "uniques": 1
   },
   {
@@ -56,6 +44,18 @@
   {
     "path": "/cwy20030/ActiGlobe/graphs/contributors",
     "title": "Contributors to cwy20030/ActiGlobe",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/issues",
+    "title": "GitHub · Where software is built",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/tree/main",
+    "title": "cwy20030/ActiGlobe: A package designed to make easy to pre-process longitudin...",
     "count": 1,
     "uniques": 1
   }
