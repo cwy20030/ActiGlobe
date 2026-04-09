@@ -2,8 +2,8 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "Overview",
-    "count": 12,
-    "uniques": 4
+    "count": 13,
+    "uniques": 5
   },
   {
     "path": "/cwy20030/ActiGlobe/commits/main",
@@ -14,6 +14,12 @@
   {
     "path": "/cwy20030/ActiGlobe/commit/987e96dbb2121a4942ace2ba3c72b9adad0c1712",
     "title": "/commit/987e96dbb2121a4942ace2ba3c72b9adad0c1712",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/issues/12",
+    "title": "/issues/12",
     "count": 1,
     "uniques": 1
   },
