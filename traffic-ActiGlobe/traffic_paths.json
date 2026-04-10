@@ -2,7 +2,7 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "Overview",
-    "count": 13,
+    "count": 10,
     "uniques": 5
   },
   {
@@ -32,6 +32,12 @@
   {
     "path": "/cwy20030/ActiGlobe/releases",
     "title": "/releases",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/cwy20030/ActiGlobe/stargazers",
+    "title": "/stargazers",
     "count": 1,
     "uniques": 1
   }
