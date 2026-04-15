@@ -56,26 +56,26 @@ test_that ("C2T non-discrete time  time conversion works", {
 
 test_that ("C2T continuous time conversion works", {
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
-    df <- BdfList$df
+    data <- BdfList$data
     Bdf <- BdfList$Bdf
 
     # Extract actigraphy data from the second day ------------------------------
     fnDP <- Bdf$nDataPoints [1]
     fDP <- fnDP + 1 # Midnight of the second day
     eDP <- sum (Bdf$nDataPoints [c (1, 2)])
-    df <- df [fDP:eDP, ]
+    data <- data [fDP:eDP, ]
 
-    res <- C2T (time = df$Time, Discrete = TRUE)
+    res <- C2T (time = data$Time, Discrete = TRUE)
 
     # ---- Structure checks ----
     # Result should be numeric and same length as the extracted data
     expect_true (is.numeric (res))
-    expect_equal (length (res), nrow (df))
+    expect_equal (length (res), nrow (data))
 
     # ---- Relationship checks ----
     # Sequence should correspond to minutes across a 24-hour day

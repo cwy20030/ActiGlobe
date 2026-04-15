@@ -16,20 +16,23 @@ knitr::opts_chunk$set (
 )
 ```
 
+What will be covered in this tutorial?
+This specific tutorial is designed to show users how to use ActiGlobe to perform circadian analysis via cosinor models or Gaussian kernel density estimation (KDE). For data pre-processing or generation of graphic/excel report of daily actigraphy measures, please go to tutorials titled: Time-Shift and Graphic-Report.
+
 ```{r setup, include = FALSE}
 library (ActiGlobe)
 ```
 
 
 ## Cosinor Analysis
-After we segmented the data by date, we can now model the circadian rhythm using the activity scores. For this, we will use the pre-travel recording on the 27<sup>th</sup> of October. Since the recording was not affected by the time change. We can simply store the unaffected segments in a new variable called `df`, which stands for data frame.
+After we segmented the data by date, we can now model the circadian rhythm using the activity scores. For this, we will use the pre-travel recording on the 27<sup>th</sup> of October. Since the recording was not affected by the time change. We can simply store the unaffected segments in a new variable called `data`, which stands for data frame.
 ```{r Import 20171027, message=FALSE, warning=FALSE, results='asis'}
 # Import data
 data ("FlyEast")
 
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
@@ -37,8 +40,8 @@ BdfList <-
 
 
 # Let's extract actigraphy data from a single day
-df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-27")
+data <- BdfList$data
+data <- subset (data, data$Date == "2017-10-27")
 ```
 
 
@@ -56,10 +59,10 @@ df <- subset (df, df$Date == "2017-10-27")
 ```{r Model 1 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 1: Fitting of OLS-based Cosinor Model"}
 fit.ols <-
     CosinorM (
-        time = df$Time,
-        activity = df$Activity,
+        time = data$Time,
+        activity = data$Activity,
         tau = 24,
-        method = "OLS",
+        method = "OLS"
     )
 
 ### Look at the parameters
@@ -82,8 +85,8 @@ Besides, the traditional OLS-based cosinor model,`CosinorM` also allows users to
 ```{r Model 1 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 2: Fitting of FGLS-based Cosinor Model"}
 fit.fgls <-
     CosinorM (
-        time = df$Time,
-        activity = df$Activity,
+        time = data$Time,
+        activity = data$Activity,
         tau = 24,
         method = "FGLS"
     )
@@ -105,8 +108,8 @@ While certain circadian measures, such as melatonin, often follow a roughly 24-h
 ```{r Model 2 OLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 3: Fitting of the Dual-phase OLS-based Multi-comopnent Cosinor Model"}
 fit.ols2 <-
     CosinorM (
-        time = df$Time,
-        activity = df$Activity,
+        time = data$Time,
+        activity = data$Activity,
         tau = c (12, 24),
         method = "OLS"
     )
@@ -121,12 +124,12 @@ ggCosinorM (fit.ols2)
 ```
 
 
-#### Ecnometry-modified Cosinor Model with Feasible General Least Sqaure (FGLS)
+#### Eocnometry-modified Cosinor Model with Feasible General Least Square (FGLS)
 ```{r Model 2 FGLS, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 4: Fitting of the Dual-phase FGLS-based Multi-comopnent Cosinor Model"}
 fit.fgls2 <-
     CosinorM (
-        time = df$Time,
-        activity = df$Activity,
+        time = data$Time,
+        activity = data$Activity,
         tau = c (12, 24),
         method = "FGLS"
     )
@@ -225,8 +228,8 @@ Besides the traditional cosinor rhythmetry, ActiGlobe also offers Gaussian kerne
 ```{r Model 1 KDE, message=FALSE, warning=FALSE, fig.height=5, fig.width=7, fig.alt=  "Figure 6: Fitting of Circularized Gaussian Kernel Density Estimation"}
 fit.KDE <-
     CosinorM.KDE (
-        time = df$Time,
-        activity = df$Activity
+        time = data$Time,
+        activity = data$Activity
     )
 
 ### Look at the parameters
@@ -266,13 +269,13 @@ n <- length (fit.ols$fitted.values)
 plot_df <- data.frame (
     hour = seq (0, 24, length.out = n),
     fitted = as.numeric (fit.ols$fitted.values),
-    activity = df$Activity
+    activity = data$Activity
 )
 
 # Cosinor and true-peak hours
 phi <- fit.ols$coef.cosinor [3]
 cosinor_peak_hour <- (phi %% (2 * pi)) * 24 / (2 * pi) %% 24
-true_peak_hour <- plot_df$hour [which.max (df$Activity)]
+true_peak_hour <- plot_df$hour [which.max (data$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
 kdf_plot <- 
@@ -365,13 +368,13 @@ n <- length (fit.fgls$fitted.values)
 plot_df <- data.frame (
     hour = seq (0, 24, length.out = n),
     fitted = as.numeric (fit.fgls$fitted.values),
-    activity = df$Activity
+    activity = data$Activity
 )
 
 # Cosinor and true-peak hours
 phi <- fit.fgls$coef.cosinor [3]
 cosinor_peak_hour <- ((phi * 24 / (2 * pi)) %% 24)
-true_peak_hour <- plot_df$hour [which.max (df$Activity)]
+true_peak_hour <- plot_df$hour [which.max (data$Activity)]
 
 # Kernel density (assumes kdf$hour in hours)
 kdf_plot <- 

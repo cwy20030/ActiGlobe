@@ -36,12 +36,11 @@
 #' CSV file
 #'
 #' @examples
-#' \dontrun{
 #'
 #' sIANA <- mIANA (Wirte = FALSE)
 #'
 #' print (sIANA)
-#' }
+#' 
 #'
 #' @keywords Travel Log Template Timezone Shift
 #' @noRd
@@ -173,7 +172,7 @@ mIANA <- function (Write = FALSE, Dir = NULL) {
 
     # Prepare Output -----------
 
-    df <-
+    data <-
         data.frame (
             Timezone_IANA = Timezone_IANA,
             TZ_Code = TZ_Code,
@@ -190,11 +189,11 @@ mIANA <- function (Write = FALSE, Dir = NULL) {
             stop ("A directory must be provided to export the template.")
         }
 
-        write.csv (df, paste0 (Dir, "/Mini_IANA_Table.csv"), row.names = FALSE)
+        write.csv (data, paste0 (Dir, "/Mini_IANA_Table.csv"), row.names = FALSE)
     }
 
 
     if (!Write) {
-        return (df)
+        return (data)
     }
 }

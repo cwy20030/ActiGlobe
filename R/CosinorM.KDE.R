@@ -198,42 +198,34 @@
 #' @seealso \code{\link{CosinorM}}  \code{\link{ggCosinorM}}
 #'
 #' @examples
-#' \dontrun{
+#'
 #' # Import data
-#' FlyEast
 #'
 #' BdfList <-
 #'     BriefSum (
-#'         df = FlyEast,
+#'         data = FlyEast,
 #'         SR = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
 #'
 #' # Let's extract actigraphy data from a single day
-#' df <- BdfList$df
-#' df <- subset (
-#'     x = df,
-#'     subset = df$Date == "2017-10-27"
+#' data <- BdfList$data
+#' data <- subset (
+#'     x = data,
+#'     subset = data$Date == "2017-10-27"
 #' )
 #'
 #'
 #' fit <- CosinorM.KDE (
-#'     time = df$Time,
-#'     activity = df$Activity
+#'     time = data$Time,
+#'     activity = data$Activity
 #' )
 #'
 #' # inspect coefficients
 #' fit$coef.cosinor
 #'
 #' # plot KDE in hours
-#' plot (
-#'     x = fit$kdf$hour,
-#'     y = fit$kdf$density,
-#'     type = "l",
-#'     xlab = "Hour",
-#'     ylab = "KDE"
-#' )
-#' }
+#' ggCosinorM (object = fit)
 #'
 #' @keywords circular cosinor KDE circadian
 #' @export
@@ -242,7 +234,7 @@ CosinorM.KDE <- function (time, activity, bw = 0.8,
                           arctan2 = TRUE, dilute = FALSE) {
     # Check Point and Input Validation -------------------------
     activity <- ValInput (x = activity, type = "Act")
-    time <- ValInput (x = time, type = "Tm")
+    time     <- ValInput (x = time, type = "Tm")
     if (!is.numeric (bw) || length (bw) != 1 || bw <= 0) {
         stop ("bw must be a positive numeric scalar")
     }
@@ -250,28 +242,31 @@ CosinorM.KDE <- function (time, activity, bw = 0.8,
     ## Get Essential Info -----------------
     ### Assume tau = 24 hours
     tau <- 24
-    dt <- diff (time)
-    dt <- dt [dt > 0]
+    dt  <- diff (time)
+    dt  <- dt [dt > 0]
     Epc <- 1 / min (dt)
+    SR  <- Epc / 3600
 
 
     ## convert hours to radian in [0,2*pi)
     theta <- (time %% tau) * 2 * pi / tau
-    n <- length (activity)
+    n     <- length (activity)
 
     ### Trapzoid weight - radian on observation points
-    w <- trap_weights (theta = theta)
+    w     <- trap_weights (theta = theta)
 
     ### Pairwise wrapped angular differences and kernel matrix
     ### (observations x observations)
     diffs_mat <- wrap_diff (outer (theta, theta, "-")) # n x n
-    bw_rad <- bw * 2 * pi / tau
-    K <- dnorm (diffs_mat, mean = 0, sd = bw_rad) # kernel matrix (obs x obs)
+    bw_rad    <- bw * 2 * pi / tau
+
+    ### kernel matrix (obs x obs)
+    K         <- dnorm (diffs_mat, mean = 0, sd = bw_rad)
 
     ## Density at observation angles (numerator and denom => fitted y_h)
-    den <- as.numeric ((K %*% w)) # length n
+    den  <- as.numeric ((K %*% w)) # length n
     dens <- as.numeric (K %*% (activity * w)) # length n
-    y_h <- dens / den # fitted at observation angles (length n)
+    y_h  <- dens / den # fitted at observation angles (length n)
 
     ### integrate area on observation angles (coarse check)
     area <- trap_int (theta, y_h)
@@ -289,51 +284,49 @@ CosinorM.KDE <- function (time, activity, bw = 0.8,
                      byrow = FALSE)
 
     resid <- activity - y_h
-    RS <- resid^2
-    RSS <- sum (RS)
+    RS    <- resid^2
+    RSS   <- sum (RS)
 
-    trW <- sum (diag (W))
-    trWW <- sum (W * W)
+    trW      <- sum (diag (W))
+    trWW     <- sum (W * W)
     df_denom <- n - (2 * trW) + trWW
     if (df_denom <= 0) {
         stop ("Nonpositive denominator for sigma^2 estimate;
               increase bw or check W")
     }
 
-    sigma_hat <- RSS / df_denom
+    sigma_hat  <- RSS / df_denom
     var_fitted <- sigma_hat * rowSums (W^2)
-    se_fitted <- sqrt (var_fitted)
+    se_fitted  <- sqrt (var_fitted)
 
 
 
     ## compute activity-scale integrals using grid pdf (stable) -------------
-    I0_act <- area * sum ((Pdf * w) / den, na.rm = TRUE)
+    I0_act   <- area * sum ((Pdf * w) / den, na.rm = TRUE)
     Icos_act <-
         area * sum ((Pdf * cos (theta) * w) / den, na.rm = TRUE)
     Isin_act <-
         area * sum ((Pdf * sin (theta) * w) / den, na.rm = TRUE)
 
     # cosinor activity-scale parameters from grid integrals
-    mesor <- I0_act / (2 * pi)
-    beta <- Icos_act / pi
-    gamma <- Isin_act / pi
+    mesor     <- I0_act / (2 * pi)
+    beta      <- Icos_act / pi
+    gamma     <- Isin_act / pi
     amplitude <- sqrt (beta^2 + gamma^2)
 
 
     if (arctan2) {
         acrophase <- atan2 (gamma, beta)
     } else {
-        thta <- atan (abs (gamma) / beta)
-
+        thta      <- atan (abs (gamma) / beta)
         Bs <- beta
         Gs <- gamma
-        acrophase <- ifelse (Bs >= 0 & Gs > 0, -thta,
-            ifelse (Bs < 0 & Gs >= 0, thta - pi,
-                ifelse (Bs <= 0 & Gs < 0, -thta - pi,
-                    ifelse (Bs > 0 & Gs <= 0, thta - (2 * pi), NA)
-                )
-            )
-        )
+        acrophase <-
+            ifelse (Bs >= 0 & Gs > 0, -thta,
+                    ifelse (Bs < 0 & Gs >= 0, thta - pi,
+                            ifelse (Bs <= 0 & Gs < 0, -thta - pi,
+                                    ifelse (Bs > 0 & Gs <= 0, thta - (2 * pi),
+                                            NA))))
     }
 
     ### Prepare Output -------------------------
@@ -345,65 +338,62 @@ CosinorM.KDE <- function (time, activity, bw = 0.8,
         paste0 ("Gamma.", 24)
     )
 
-    coef.cosinor <- unname (c (mesor, amplitude, acrophase, beta, gamma))
+    coef.cosinor         <- unname ( c(mesor, amplitude, acrophase,
+                                       beta, gamma))
     names (coef.cosinor) <- coef_names
 
-
-    # For post-hoc and multicomponent cosinor-------------------
-
+    ### Extract post-hoc and multicomponent cosinor -------------------
     ### Initial process; post-hoc peak/trough using fitted y_h
     M1 <- which.max (y_h)
     m1 <- which.min (y_h)
 
-    acro.ph <- M1 * Epc / (3600)
-    bathy.ph <- m1 * Epc / (3600)
+    acro.ph  <- M1 * SR
+    bathy.ph <- m1 * SR
 
-    peak_value <- y_h [M1]
+    peak_value   <- y_h [M1]
     trough_value <- y_h [m1]
-    mesor_vlaue <- mean (c (trough_value, peak_value))
+    mesor_vlaue  <- mean ( c(trough_value, peak_value))
 
-    Amp <- (peak_value - trough_value) / 2
+    Amp         <- (peak_value - trough_value) / 2
     names (Amp) <- "Amplitude.post-hoc"
 
-    post.hoc <- c (mesor_vlaue, bathy.ph, trough_value,
-                   acro.ph, peak_value, Amp)
-    names (post.hoc) <- c (
-        "MESOR.ph", "Bathyphase.ph.time", "Trough.ph",
-        "Acrophase.ph.time", "Peak.ph", "Amplitude.ph"
-    )
+    post.hoc         <- c(mesor_vlaue, bathy.ph, trough_value, acro.ph,
+                          peak_value, Amp)
+    names (post.hoc) <- c("MESOR.ph", "Bathyphase.ph.time", "Trough.ph",
+                          "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
 
 
-    # Generate Output ---------------
+    # Generate Organized Output ---------------
+    ## Inherit the output format of lm ----------------------
     if (dilute) {
-        fit <- list (coef.cosinor = c (coef.cosinor, post.hoc))
-
-        class (fit) <- c ("CosinorM.KDE")
+        fit         <- list (coef.cosinor = c(coef.cosinor, post.hoc))
+        class (fit) <- c("CosinorM.KDE")
     } else {
         # prepare kdf for output (fitted at observation angles)
         kdf <- data.frame (
-            theta = theta,
-            density = Pdf, # pdf at observation angles (coarse)
+            theta            = theta,
+            density          = Pdf, # pdf at observation angles (coarse)
             trapizoid.weight = w,
-            kernel.weight = den,
-            fitted.values = y_h,
-            fitted.var = var_fitted,
-            fitted.se = se_fitted
+            kernel.weight    = den,
+            fitted.values    = y_h,
+            fitted.var       = var_fitted,
+            fitted.se        = se_fitted
         )
-        fit <- list ()
-        fit$model <- data.frame (activity = activity, time = time)
-        fit$tau <- tau
-        fit$bw <- bw
-        fit$arctan2 <- arctan2
-        fit$dilute <- dilute
-        fit$residuals <- resid
+        fit              <- list ()
+        fit$model        <- data.frame (activity = activity, time = time)
+        fit$tau          <- tau
+        fit$bw           <- bw
+        fit$arctan2      <- arctan2
+        fit$dilute       <- dilute
+        fit$residuals    <- resid
         fit$edf.residual <- df_denom
-        fit$kdf <- kdf
+        fit$kdf          <- kdf
         fit$coef.cosinor <- coef.cosinor
-        fit$post.hoc <- post.hoc
+        fit$post.hoc     <- post.hoc
 
     }
 
-    class (fit) <- c ("CosinorM.KDE")
+    class (fit) <- c("CosinorM.KDE")
     return (fit)
 }
 
@@ -427,17 +417,21 @@ trap_weights <- function (theta, ext = FALSE) {
         return (1)
     }
     dx <- diff (theta)
+
     if (isTRUE (ext)) {
-        n2 <- n - 1
-        w <- numeric (n2)
+        n2    <- n - 1
+        w     <- numeric (n2)
         w [1] <- (dx [1] + dx [n2]) / 2
-        if (n2 > 2) w [2:(n2 - 1)] <- (dx [1:(n2 - 2)] + dx [2:(n2 - 1)]) / 2
+
+        if (n2 > 2)
+            w [2:(n2 - 1)] <- (dx [1:(n2 - 2)] + dx [2:(n2 - 1)]) / 2
         w [n2] <- (dx [n2 - 1] + dx [n2]) / 2
     } else {
-        w <- numeric (n)
+        w     <- numeric (n)
         w [1] <- dx [1] / 2
         w [n] <- dx [n - 1] / 2
-        if (n > 2) w [2:(n - 1)] <- (dx [-length (dx)] + dx [-1]) / 2
+        if (n > 2)
+            w [2:(n - 1)] <- (dx [-length (dx)] + dx [-1]) / 2
     }
-    w
+    return (w)
 }

@@ -57,24 +57,24 @@ MESOR line, acrophase verticals, amplitude annotation segments, and
 labelled parameter values when requested.
 }
 \examples{
-\dontrun{
+
 # Import data
 data (FlyEast)
 
 BdfList <-
   BriefSum (
-    df = FlyEast,
+    data = FlyEast,
     SR = 1 / 60,
     Start = "2017-10-24 13:45:00"
   )
 
 # Let's extract actigraphy data from a single day
-df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-28")
+data <- BdfList$data
+data <- subset (data, data$Date == "2017-10-28")
 
 fit <- CosinorM (
-  time = df$Time,
-  activity = df$Activity,
+  time = data$Time,
+  activity = data$Activity,
   tau = 24,
   method = "OLS"
 )
@@ -88,7 +88,7 @@ p <- ggCosinorM (
   title_extra = "2017-10-24"
 )
 print (p)
-}
+
 
 }
 \seealso{

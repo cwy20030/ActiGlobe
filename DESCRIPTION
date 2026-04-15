@@ -24,8 +24,12 @@ Imports:
     sandwich,
     utils,
     viridis,
-	parallel,
-	scales
+    parallel,
+    scales,
+    cld3,
+    httr2,
+    jsonlite,
+    lutz
 Suggests:
     spelling, 
     ggthemes,

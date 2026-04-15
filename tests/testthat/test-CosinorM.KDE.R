@@ -1,20 +1,20 @@
 test_that ("CosinorM.KDE works on FlyEast actigraphy data", {
     # Summarize FlyEast dataset ----------------------------------------------
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
 
     # Extract actigraphy data for a single day
-    df <- BdfList$df
-    df <- subset (df, df$Date == "2017-10-27")
+    data <- BdfList$data
+    data <- subset (data, data$Date == "2017-10-27")
 
     # Fit cosinor model
     fit <- CosinorM.KDE (
-        time = df$Time,
-        activity = df$Activity
+        time = data$Time,
+        activity = data$Activity
     )
 
     # ---- Structure checks ----
@@ -42,8 +42,8 @@ test_that ("CosinorM.KDE works on FlyEast actigraphy data", {
     # Invalid inputs should trigger errors
     expect_error (tryCatch (
         CosinorM.KDE (
-            time = df$Time,
-            activity = df$Activity,
+            time = data$Time,
+            activity = data$Activity,
             bw = -1
         )
     ))

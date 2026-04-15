@@ -7,7 +7,7 @@
 write.act(
   Dir,
   ID,
-  df,
+  data,
   Bdf,
   TUnit = "hour",
   VAct = NULL,
@@ -23,8 +23,8 @@ write.act(
 
 \item{ID}{The subject's ID which would be used to create a folder.}
 
-\item{df}{A data.frame of raw actigraphy recording. Both time and activity
-count should be included in the `df`. See `VAct` and `VTm` for further
+\item{data}{A data.frame of raw actigraphy recording. Both time and activity
+count should be included in the `data`. See `VAct` and `VTm` for further
 detail.}
 
 \item{Bdf}{A \code{\link{BriefSum}} object. Note, if jet lag occurred during
@@ -34,11 +34,11 @@ before passing to this function.}
 \item{TUnit}{Character; time--unit for the x--axis of each day's timeline.
 Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.}
 
-\item{VAct}{Optional character.  Name of the activity column in `df`.
-If NULL, defaults to the second column of `df`.}
+\item{VAct}{Optional character.  Name of the activity column in `data`.
+If NULL, defaults to the second column of `data`.}
 
-\item{VTm}{Optional character.  Name of the time index column in `df`.
-If NULL, defaults to the first column of `df`.}
+\item{VTm}{Optional character.  Name of the time index column in `data`.
+If NULL, defaults to the first column of `data`.}
 
 \item{Incomplete}{Logical; if TRUE, days flagged `Incomplete Recording`
 (i.e. <24 h) are retained in the data list with recordings segmented by day.
@@ -50,7 +50,7 @@ some data points from an earlier adjacent calendar day may be duplicated
 excluded. Default = TRUE.}
 
 \item{Simple}{Logical; if TRUE, only columns stored in the original
-recordings will be exported. If FALSE, all information stored in `df` will
+recordings will be exported. If FALSE, all information stored in `data` will
 be generated. Default = FALSE}
 }
 \value{
@@ -78,7 +78,7 @@ data (FlyEast)
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
@@ -92,13 +92,13 @@ Bdf <- BdfList$Bdf
 ## To avoid time shift due to travelling, we will keep only the first 8 days.
 Bdf <- Bdf [1:8, ]
 
-df <- BdfList$df
+data <- BdfList$data
 # Export daily recordings and the summary report
 
 write.act (
     Dir = getwd (), ## Export to the current working directory
     ID = "JD",
-    df = df,
+    data = data,
     Bdf = Bdf,
     VAct = "Activity",
     VTm = "Time"

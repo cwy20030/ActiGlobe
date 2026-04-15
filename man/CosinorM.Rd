@@ -131,29 +131,21 @@ Amplitude is calculated from fitted sine and cosine coefficients as:
 \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 }
 \examples{
-require (stats)
-require (graphics)
-
-\dontrun{
-# Import data
-data( FlyEast)
-
-
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
   BriefSum (
-  df = FlyEast,
+  data = FlyEast,
   SR = 1 / 60,
   Start = "2017-10-24 13:45:00"
   )
 
 # Let's extract actigraphy data from a single day
-df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-27")
+data <- BdfList$data
+data <- subset (data, data$Date == "2017-10-27")
 
 fit <- CosinorM (
-  time = df$Time,
-  activity = df$Activity,
+  time = data$Time,
+  activity = data$Activity,
   tau = 24,
   method = "OLS"
 )
@@ -164,12 +156,8 @@ fit$coef.cosinor
 
 
 # plot Cosinor in hours
-plot(fit$time,
-   fit$fitted.values,
-   type = "l",
-   xlab = "Hour",
-   ylab = "24-Hour Cosinor Model")
-}
+ggCosinorM (fit)
+
 
 }
 \references{

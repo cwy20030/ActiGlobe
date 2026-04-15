@@ -29,8 +29,8 @@
 #'
 #' @importFrom lubridate hour minute second dst ymd
 #'
-#' @param df A data.frame of raw actigraphy recording. Both time and activity
-#' count should be included in the \code{df}.
+#' @param data A data.frame of raw actigraphy recording. Both time and activity
+#' count should be included in the \code{data}.
 #' @param SR The sampling rate of the actigraphy (unit at Hz). Note that Hz
 #' should be equal to or less than 1.
 #' @param Start The starting date and time of the recording in the format
@@ -65,7 +65,7 @@
 #'     "Incomplete Recording", "Time Change")
 #'     }
 #'
-#'   \item df The original input df augmented with additional columns (class
+#'   \item data The original input data augmented with additional columns (class
 #'   ActiGlobe, data.frame):
 #'     \itemize{
 #'     \item DateTime POSIXct timestamp for each epoch (tz = TZ)
@@ -76,16 +76,12 @@
 #'     \item nPoint cumulative epoch index
 #'     }
 #' }
-#' The function returns a list with both Bdf df = df) and sets classes
+#' The function returns a list with both Bdf data = data) and sets classes
 #' c("ActiGlobe","data.frame") on both returned data.frames.
 #'
 #' @examples
-#'
-#' # Import data
-#' data (FlyEast)
-#'
 #' BdfList <- BriefSum (
-#'     df = FlyEast,
+#'     data = FlyEast,
 #'     SR = 1 / 60,
 #'     Start = "2017-10-19 13:45:00"
 #' )
@@ -95,8 +91,8 @@
 #'
 #' ## install library "zeallot"
 #' ## library(zeallot)
-#' ## c(Bdf, df) %<-%
-#' ## BriefSum(df = FlyEast,
+#' ## c(Bdf, data) %<-%
+#' ## BriefSum(data = FlyEast,
 #' ##          SR = 1/60,
 #' ##          Start = "2017-10-24 13:45:00")
 #'
@@ -104,36 +100,35 @@
 #' @keywords summary actigraphy
 #' @export
 
-BriefSum <- function (df, SR, Start, TZ = "local") {
+BriefSum <- function (data, SR, Start, TZ = "local") {
     ## Checkpoint -----------------------
     if (!is.numeric (SR) || SR <= 0) {
         stop ("Sampling rate must be a positive numeric value")
     }
 
     # Prepare Basic Variables ------------------
-    # MN <- hms::as_hms("00:00:00")
-    # MN2 <- hms::as_hms("24:00:00")
     if (TZ == "local") TZ <- Sys.timezone ()
-    Epc <- 1 / SR # Compute epoch length
-    # DP <- nrow(df) # Number of Data Points
-    # TT <- DP * Epc # Total time of recordings in seconds
-
+    Epc   <- 1 / SR # Compute epoch length
     nDPHr <- 3600 / Epc # Compute numbers of data points per hour
+
+    # MN    <- hms::as_hms("00:00:00")
+    # MN2   <- hms::as_hms("24:00:00")
+    # DP    <- nrow(data) # Number of Data Points
+    # TT    <- DP * Epc # Total time of recordings in seconds
     # nDPMn <- 60 / Epc # Compute numbers of data points per minute
     # nDPSc <- 1 / Epc # Compute numbers of data points per second
-
-    # FDP <- SR * 3600 * 24 # Total data points per 24 hours
+    # FDP   <- SR * 3600 * 24 # Total data points per 24 hours
 
     # Define the last time point of the day ------------------
     # Subtractor = hms::as_hms(as.difftime(Epc, units = "secs"))
-
     ## Subtract Epoch converted time point from MN2
     # LstP <- MN2 - Subtractor
     # LstT = hms::as_hms(LstP)
 
     ## Compute All time points for the recording.
     Tm <- as.numeric (as.POSIXct (Start, tz = TZ)) +
-        (0:(nrow (df) - 1) * Epc)
+        (0:(nrow (data) - 1) * Epc)
+
     ### Convert date time
     AllT <- if (is.numeric (Tm)) {
         as.POSIXct (x = Tm, origin = "1970-01-01", tz = TZ)
@@ -143,53 +138,50 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
 
 
     ##### Extract date
-    Ds <- format (AllT, "%Y-%m-%d")
+    Ds  <- format (AllT, "%Y-%m-%d")
     ADs <- unique (Ds)
 
     ##### Extract Time
     Ts <- format (AllT, "%H:%M:%S")
-    G <- data.frame ("Ds" = Ds, "Ts" = Ts)
+    G  <- data.frame ("Ds" = Ds, "Ts" = Ts)
 
-    aTs <- aggregate (Ts ~ Ds, data = G, FUN = min)
+    aTs         <- aggregate (Ts ~ Ds, data = G, FUN = min)
     names (aTs) <- c ("Date", "Ini")
-    aTs$End <- aggregate (Ts ~ Ds, data = G, FUN = max) [[2]]
+    aTs$End     <- aggregate (Ts ~ Ds, data = G, FUN = max) [[2]]
 
     ##### Daylight Saving
-    DSTs <- lubridate::dst (AllT)
+    DSTs  <- lubridate::dst (AllT)
     ### Use negative to prioritize non-daylight saving time.
     aDSTs <- DST (ADs, TZ = TZ)
     ### Alternative code: ifelse(ADs %in% unique(Ds[!DSTs]), FALSE, TRUE)
 
     ###### Determine the influence of Daylight Saving
-    GL <- DST2GL (ADs, TZ = TZ)
+    GL    <- DST2GL (ADs, TZ = TZ)
 
     ##### Extract Time Zone
-    TZ3 <- format (AllT, "%Z")
-
-    K <- as.data.frame.matrix (table (TZ3, Ds))
-    aTZs <- as.data.frame (t (K))
+    TZ3      <- format (AllT, "%Z")
+    K        <- as.data.frame.matrix (table (TZ3, Ds))
+    aTZs     <- as.data.frame (t (K))
     aTZs$TZ3 <- names (aTZs) [[1]]
     ###### When daylight saving occurs, dynamically change UTCs based on the
     ###### dominant TZ.
     if (length (aTZs) > 1) {
         aTZs$TZ3 <- ifelse (aTZs [[1]] > aTZs [[2]],
-            names (aTZs) [[1]], names (aTZs) [[2]]
-        )
-    }
+                            names (aTZs) [[1]], names (aTZs) [[2]])
+        }
 
 
     ###### Get and Convert TZ into UTC value
-    TZs <- format (AllT, "%z")
-    UTCs <- paste0 (
-        "UTC",
-        substr (TZs, 1, 1),
-        substr (TZs, 2, 3),
-        ":",
-        substr (TZs, 4, 5)
-    )
+    TZs  <- format (AllT, "%z")
+    UTCs <- paste0 ("UTC",
+                    substr (TZs, 1, 1),
+                    substr (TZs, 2, 3),
+                    ":",
+                    substr (TZs, 4, 5)
+                    )
 
-    B <- as.data.frame.matrix (table (UTCs, Ds))
-    aUTCs <- as.data.frame (t (B))
+    B          <- as.data.frame.matrix (table (UTCs, Ds))
+    aUTCs      <- as.data.frame (t (B))
     aUTCs$UTCs <- names (aUTCs) [[1]]
 
     ###### When daylight saving occurs, dynamically change UTCs based on the
@@ -204,43 +196,43 @@ BriefSum <- function (df, SR, Start, TZ = "local") {
     ###### DataPoints
     nDP <- unlist (colSums (B))
 
-    # Add the New Information Back to the df ---------------
-    df$DateTime <- AllT ### Date Time
-    df$Date <- Ds ### Date in string
-    df$Time <- Ts ### Time in string
-    df$UTC <- UTCs ### UTC in string
-    df$DaylightSaving <- DSTs ### Daylight saving indicator in logical
+    # Add the New Information Back to the data ---------------
+    data$DateTime       <- AllT ### Date Time
+    data$Date           <- Ds ### Date in string
+    data$Time           <- Ts ### Time in string
+    data$UTC            <- UTCs ### UTC in string
+    data$DaylightSaving <- DSTs ### Daylight saving indicator in logical
     ### cumulative data point index in numeric.
-    df$nPoint <-
-        seq_len (length.out = nrow (df))
+    data$nPoint         <- seq_len (length.out = nrow (data))
 
 
     # Initialize Report ------------
-    Summary <- data.frame (ADs)
+    Summary         <- data.frame (ADs)
     names (Summary) <- "Date"
-    Summary$Epoch <- Epc
-    Summary$UTC <- aUTCs$UTCs
-    Summary$TZ_code <- aTZs$TZ3
+    Summary$Epoch           <- Epc
+    Summary$UTC             <- aUTCs$UTCs
+    Summary$TZ_code         <- aTZs$TZ3
     Summary$Daylight_Saving <- aDSTs
     Summary$Recording_Start <- aTs$Ini
-    Summary$Recording_End <- aTs$End
-    Summary$GL_Offset <- GL
+    Summary$Recording_End   <- aTs$End
+    Summary$GL_Offset       <- GL
 
     #### Data Points and Summary
-    Summary$nDataPoints <- nDP
+    Summary$nDataPoints             <- nDP
     Summary$Cumulative_Start_Second <-
         cumsum ((c (0, nDP [-length (nDP)])) * Epc) + Epc
-    Summary$Cumulative_End_Second <- cumsum (nDP * Epc)
+
+    Summary$Cumulative_End_Second   <- cumsum (nDP * Epc)
 
     #### Set Exclusion and Warning
     Summary$Excluded <- ifelse (!nDP == 24 * nDPHr, TRUE, FALSE)
-    Summary$Warning <- ifelse (Summary$Excluded, "Incomplete Recording", "")
-    Summary$Warning <- ifelse (nDP > 24 * nDPHr, "Time Change",
-                               Summary$Warning)
+    Summary$Warning  <- ifelse (Summary$Excluded, "Incomplete Recording", "")
+    Summary$Warning  <- ifelse (nDP  > 24  * nDPHr, "Time Change",
+                                Summary$Warning)
 
 
-    class (df) <- c ("ActiGlobe", "data.frame")
+    class (data)    <- c ("ActiGlobe", "data.frame")
     class (Summary) <- c ("ActiGlobe", "data.frame")
 
-    return (list ("Bdf" = Summary, "df" = df))
+    return (list ("Bdf" = Summary, "data" = data))
 }

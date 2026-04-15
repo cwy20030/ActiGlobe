@@ -4,7 +4,7 @@ test_that ("write.act exports daily recordings and summary correctly", {
 
     BdfList <-
         BriefSum (
-            df = FlyEast,
+            data = FlyEast,
             SR = 1 / 60,
             Start = "2017-10-24 13:45:00",
             TZ = "America/New_York"
@@ -12,7 +12,7 @@ test_that ("write.act exports daily recordings and summary correctly", {
 
     # Let's extract the quick summary of the recording
     Bdf <- BdfList$Bdf
-    df <- BdfList$df
+    data <- BdfList$data
 
 
     Bdf <- Bdf [1:5, ]
@@ -22,7 +22,7 @@ test_that ("write.act exports daily recordings and summary correctly", {
     write.act (
         Dir = tmpdir, ## Export to the current working directory
         ID = "JD",
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "Activity",
         VTm = "Time",

@@ -59,7 +59,7 @@
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
 #'     BriefSum (
-#'         df = FlyEast,
+#'         data = FlyEast,
 #'         SR = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
@@ -67,7 +67,7 @@
 #' # Let's extract actigraphy data from a single day
 #' Bdf <- BdfList$Bdf
 #'
-#' df <- BdfList$df
+#' data <- BdfList$data
 #'
 #' # Let's extract actigraphy data from a single day
 #' ## Extract Second day -------------
@@ -76,13 +76,13 @@
 #' eDP <- sum (Bdf$nDataPoints [c (1, 2)])
 #'
 #'
-#' df <- df [fDP:eDP, ]
+#' data <- data [fDP:eDP, ]
 #'
 #'
 #' # return logical vector
 #' inactive_flags <- Prob.Inact (
-#'     y = df$Activity,
-#'     time = df$Time,
+#'     y = data$Activity,
+#'     time = data$Time,
 #'     k = 12,
 #'     threshold = 3,
 #'     logical = TRUE
@@ -92,8 +92,8 @@
 #'
 #' # return summary table
 #' inactive_summary <- Prob.Inact (
-#'     y = df$Activity,
-#'     time = df$Time,
+#'     y = data$Activity,
+#'     time = data$Time,
 #'     k = 12,
 #'     threshold = 3,
 #'     logical = FALSE
@@ -112,15 +112,15 @@ Prob.Inact <- function (y, time, k = 12, threshold = 3, logical = TRUE) {
     Epc <- min (diff (time), na.rm = TRUE)
 
 
-    df <- data.frame (
+    data <- data.frame (
         Act = y,
         Time = time
     )
-    df$y_log <- log (y)
-    df$y_ina <-
-        ifelse (is.infinite (df$y_log) & df$y_log < 0, 1, 0) # Inactive is 1
+    data$y_log <- log (y)
+    data$y_ina <-
+        ifelse (is.infinite (data$y_log) & data$y_log < 0, 1, 0) # Inactive is 1
 
-    fit_glm <- glm (y_ina ~ poly (Time, k), data = df, family = binomial)
+    fit_glm <- glm (y_ina ~ poly (Time, k), data = data, family = binomial)
 
     # predict on original times (discrete epochs)
     pred <- predict (fit_glm,

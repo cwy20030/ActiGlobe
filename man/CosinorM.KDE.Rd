@@ -177,42 +177,34 @@ where,
 }
 
 \examples{
-\dontrun{
+
 # Import data
-FlyEast
 
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
 # Let's extract actigraphy data from a single day
-df <- BdfList$df
-df <- subset (
-    x = df,
-    subset = df$Date == "2017-10-27"
+data <- BdfList$data
+data <- subset (
+    x = data,
+    subset = data$Date == "2017-10-27"
 )
 
 
 fit <- CosinorM.KDE (
-    time = df$Time,
-    activity = df$Activity
+    time = data$Time,
+    activity = data$Activity
 )
 
 # inspect coefficients
 fit$coef.cosinor
 
 # plot KDE in hours
-plot (
-    x = fit$kdf$hour,
-    y = fit$kdf$density,
-    type = "l",
-    xlab = "Hour",
-    ylab = "KDE"
-)
-}
+ggCosinorM (object = fit)
 
 }
 \references{

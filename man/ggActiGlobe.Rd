@@ -4,10 +4,10 @@
 \alias{ggActiGlobe}
 \title{Plot an Overview of an `ActiGlobe` Activity Time Series}
 \usage{
-ggActiGlobe(df, Bdf, VAct = NULL, VDT = "DateTime")
+ggActiGlobe(data, Bdf, VAct = NULL, VDT = "DateTime")
 }
 \arguments{
-\item{df}{A data.frame of annotated actigraphy epochs.  Must include:
+\item{data}{A data.frame of annotated actigraphy epochs.  Must include:
 - An activity column named by \code{VAct}.
 - A datetime column named by \code{VTm}.
 - Optionally, a `Note` column to flag affected epochs. See
@@ -18,11 +18,11 @@ the recording. Note, if jet lag occurred during the recording, please,
 update the metadata using \code{\link{TAdjust}} before passing to this
 function.}
 
-\item{VAct}{Optional character. Name of the activity column in \code{df}.
-If NULL, defaults to the second column of \code{df}.}
+\item{VAct}{Optional character. Name of the activity column in \code{data}.
+If NULL, defaults to the second column of \code{data}.}
 
 \item{VDT}{Optional character. Name of the \code{POSIXct} datetime column in
-\code{df}.If NULL, defaults to "DateTime" of \code{df}.}
+\code{data}.If NULL, defaults to "DateTime" of \code{data}.}
 }
 \value{
 A \code{\link[ggplot2]{ggplot}}  object showing:
@@ -38,39 +38,36 @@ epochs).
 }
 \examples{
 \dontrun{
-library(ActiGlobe)
 
-# Overview the Uncorrected Longitudinal Recording
-data(FlyEast)
-
+# Pre-processing and Simple Summary
 BdfList <-
-  BriefSum(
-    df = FlyEast,
+  BriefSum (
+    data = FlyEast,
     SR = 1 / 60,
     Start = "2017-10-24 13:45:00"
   )
 
-p <- ggActiGlobe(
-  df = BdfList$df,
+p <- ggActiGlobe (
+  data = BdfList$data,
   Bdf = BdfList$Bdf,
   VAct = "Activity",
   VDT = "DateTime"
 )
 
-print(p)
+print (p)
 
 
 # Overview the Corrected Longitudinal Recording
-data(TLog)
+data (TLog)
 
-BdfList$Bdf.adj <- TAdjust(BdfList$Bdf, TLog)
-p2 <- ggActiGlobe(
-  df = BdfList$df,
+BdfList$Bdf.adj <- TAdjust (BdfList$Bdf, TLog)
+p2 <- ggActiGlobe (
+  data = BdfList$data,
   Bdf = BdfList$Bdf,
   VAct = "Activity",
   VDT = "DateTime"
 )
-print(p2)
+print  (p2)
 
 # Pro-tip: [`cowplot`] can help stack the time series graphs in one
 # single plot

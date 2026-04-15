@@ -39,7 +39,7 @@ data (FlyEast)
 
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <- BriefSum (
-    df = FlyEast,
+    data = FlyEast,
     SR = 1 / 60,
     Start = "2017-10-19 13:45:00",
     TZ = 'America/New_York'

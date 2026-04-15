@@ -4,11 +4,11 @@
 \alias{BriefSum}
 \title{Summarize the Actigraphy Recording by Day}
 \usage{
-BriefSum(df, SR, Start, TZ = "local")
+BriefSum(data, SR, Start, TZ = "local")
 }
 \arguments{
-\item{df}{A data.frame of raw actigraphy recording. Both time and activity
-count should be included in the \code{df}.}
+\item{data}{A data.frame of raw actigraphy recording. Both time and activity
+count should be included in the \code{data}.}
 
 \item{SR}{The sampling rate of the actigraphy (unit at Hz). Note that Hz
 should be equal to or less than 1.}
@@ -47,7 +47,7 @@ A named list with two elements:
     "Incomplete Recording", "Time Change")
     }
 
-  \item df The original input df augmented with additional columns (class
+  \item data The original input data augmented with additional columns (class
   ActiGlobe, data.frame):
     \itemize{
     \item DateTime POSIXct timestamp for each epoch (tz = TZ)
@@ -58,7 +58,7 @@ A named list with two elements:
     \item nPoint cumulative epoch index
     }
 }
-The function returns a list with both Bdf df = df) and sets classes
+The function returns a list with both Bdf data = data) and sets classes
 c("ActiGlobe","data.frame") on both returned data.frames.
 }
 \description{
@@ -71,12 +71,8 @@ start/end times (HH:MM:SS), any warning labels (e.g. `Travel`,
 epochs for a full day.
 }
 \examples{
-
-# Import data
-data (FlyEast)
-
 BdfList <- BriefSum (
-    df = FlyEast,
+    data = FlyEast,
     SR = 1 / 60,
     Start = "2017-10-19 13:45:00"
 )
@@ -86,8 +82,8 @@ str (BdfList)
 
 ## install library "zeallot"
 ## library(zeallot)
-## c(Bdf, df) \%<-\%
-## BriefSum(df = FlyEast,
+## c(Bdf, data) \%<-\%
+## BriefSum(data = FlyEast,
 ##          SR = 1/60,
 ##          Start = "2017-10-24 13:45:00")
 

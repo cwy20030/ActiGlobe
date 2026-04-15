@@ -6,7 +6,7 @@ test_that ("write.cosinor exports PDF and summary CSV correctly", {
 
     BdfList <-
         BriefSum (
-            df = FlyEast,
+            data = FlyEast,
             SR = 1 / 60,
             Start = "2017-10-24 13:45:00",
             TZ = "America/New_York"
@@ -14,7 +14,7 @@ test_that ("write.cosinor exports PDF and summary CSV correctly", {
 
     # Let's extract the quick summary of the recording
     Bdf <- BdfList$Bdf
-    df <- BdfList$df
+    data <- BdfList$data
 
 
     Bdf <- Bdf [5:8, ]
@@ -22,7 +22,7 @@ test_that ("write.cosinor exports PDF and summary CSV correctly", {
 
     dfList <-
         Act2Daily (
-            df = df,
+            data = data,
             Bdf = Bdf,
             VAct = "Activity",
             VTm = "Time"

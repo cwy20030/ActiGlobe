@@ -1,24 +1,24 @@
 test_that ("Act2Daily Test Completed", {
     # Summarize FlyEast dataset
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
 
     # Extract actigraphy data for a single day
-    df <- BdfList$df
+    data <- BdfList$data
 
     # Quick summary of the recording
     Bdf <- BdfList$Bdf
 
     # Reduce the data size to only the first 3 days
     Bdf <- Bdf [1:3, ]
-    df <- df [1:sum (Bdf$nDataPoints), ]
+    data <- data [1:sum (Bdf$nDataPoints), ]
 
     dfList <- Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "Activity",
         VTm = "Time",
@@ -30,7 +30,7 @@ test_that ("Act2Daily Test Completed", {
     # ---- Structure checks ----
     # Verify that the returned object has the expected structure
     expect_true (is.list (dfList))
-    expect_equal (names (dfList), c ("Daily_df", "df"))
+    expect_equal (names (dfList), c ("Daily_df", "data"))
 
     # ---- Relationship checks ----
     # Daily_df should correspond to the subset of Bdf (3 days)
@@ -45,19 +45,19 @@ test_that ("Act2Daily Test Completed", {
 test_that ("Act2Daily handles Incomplete recordings when Incomplete = TRUE", {
     # Summarize FlyEast dataset
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
-    df <- BdfList$df
+    data <- BdfList$data
     Bdf <- BdfList$Bdf
 
     # Take first day which is incomplete
     Bdf <- Bdf [1, ]
-    df <- df [1:Bdf$nDataPoints [1], ]
+    data <- data [1:Bdf$nDataPoints [1], ]
     dfList <- Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "Activity",
         VTm = "Time",
@@ -66,7 +66,7 @@ test_that ("Act2Daily handles Incomplete recordings when Incomplete = TRUE", {
     )
     # ---- Structure checks ----
     expect_true (is.list (dfList))
-    expect_equal (names (dfList), c ("Daily_df", "df"))
+    expect_equal (names (dfList), c ("Daily_df", "data"))
 
     # ---- Content checks ----
     # Should include the incomplete day
@@ -75,19 +75,19 @@ test_that ("Act2Daily handles Incomplete recordings when Incomplete = TRUE", {
 
 test_that ("Act2Daily handles different TUnit parameters", {
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
-    df <- BdfList$df
+    data <- BdfList$data
     Bdf <- BdfList$Bdf
     Bdf <- Bdf [1:2, ]
-    df <- df [1:sum (Bdf$nDataPoints), ]
+    data <- data [1:sum (Bdf$nDataPoints), ]
     # Test with different TUnit values
     for (unit in c ("day", "minute", "second")) {
         dfList <- Act2Daily (
-            df = df,
+            data = data,
             Bdf = Bdf,
             TUnit = unit,
             VAct = "Activity",
@@ -96,32 +96,32 @@ test_that ("Act2Daily handles different TUnit parameters", {
 
         # ---- Structure checks ----
         expect_true (is.list (dfList))
-        expect_equal (names (dfList), c ("Daily_df", "df"))
+        expect_equal (names (dfList), c ("Daily_df", "data"))
     }
 })
 
 test_that ("Act2Daily handles custom VAct and VTm column names", {
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
-    df <- BdfList$df
+    data <- BdfList$data
     Bdf <- BdfList$Bdf
     Bdf <- Bdf [1:2, ]
-    df <- df [1:sum (Bdf$nDataPoints), ]
+    data <- data [1:sum (Bdf$nDataPoints), ]
 
     # Rename columns
-    names (df) [1] <- "CustomTime"
-    names (df) [2] <- "CustomActivity"
+    names (data) [1] <- "CustomTime"
+    names (data) [2] <- "CustomActivity"
     dfList <- Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "CustomActivity",
         VTm = "CustomTime"
     )
     # ---- Structure checks ----
     expect_true (is.list (dfList))
-    expect_equal (names (dfList), c ("Daily_df", "df"))
+    expect_equal (names (dfList), c ("Daily_df", "data"))
 })

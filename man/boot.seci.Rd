@@ -37,25 +37,24 @@ Computes standard errors and confidence intervals for cosinor
 and post-hoc parameters via non-parametric bootstrap
 }
 \examples{
-\dontrun{
 # Import data
 FlyEast
 
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
 # Let's extract actigraphy data from a single day
-df <- BdfList$df
-df <- subset (df, df$Date == "2017-10-27")
+data <- BdfList$data
+data <- subset (data, data$Date == "2017-10-27")
 
 # Multicomponent Cosinor Model
 fit <- CosinorM (
-    time = df$Time,
-    activity = df$Activity,
+    time = data$Time,
+    activity = data$Activity,
     tau = c (12, 24),
     method = "OLS"
 )
@@ -71,8 +70,8 @@ boot.seci (
 
 # Gaussian Kernel Density Estimation
 fit2 <- CosinorM.KDE (
-    time = df$Time,
-    activity = df$Activity
+    time = data$Time,
+    activity = data$Activity
 )
 
 # inspect coefficients
@@ -82,7 +81,7 @@ boot.seci (
     ci_level = 0.95,
     n = 500
 )
-}
+
 
 }
 \seealso{

@@ -47,25 +47,24 @@
 #' @seealso \code{\link[boot]{boot}}
 #'
 #' @examples
-#' \dontrun{
 #' # Import data
 #' FlyEast
 #'
 #' BdfList <-
 #'     BriefSum (
-#'         df = FlyEast,
+#'         data = FlyEast,
 #'         SR = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
 #'
 #' # Let's extract actigraphy data from a single day
-#' df <- BdfList$df
-#' df <- subset (df, df$Date == "2017-10-27")
+#' data <- BdfList$data
+#' data <- subset (data, data$Date == "2017-10-27")
 #'
 #' # Multicomponent Cosinor Model
 #' fit <- CosinorM (
-#'     time = df$Time,
-#'     activity = df$Activity,
+#'     time = data$Time,
+#'     activity = data$Activity,
 #'     tau = c (12, 24),
 #'     method = "OLS"
 #' )
@@ -81,8 +80,8 @@
 #'
 #' # Gaussian Kernel Density Estimation
 #' fit2 <- CosinorM.KDE (
-#'     time = df$Time,
-#'     activity = df$Activity
+#'     time = data$Time,
+#'     activity = data$Activity
 #' )
 #'
 #' # inspect coefficients
@@ -92,7 +91,7 @@
 #'     ci_level = 0.95,
 #'     n = 500
 #' )
-#' }
+#' 
 #'
 #' @keywords boot bootstrap ci se
 #' @export
@@ -135,8 +134,8 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
     Coefs <- c (object$coef.cosinor, object$post.hoc)
 
     ## Output data.frame -----------------------
-    boot.df <- data.frame (matrix (nrow = n, ncol = length (Coefs)))
-    names (boot.df) <- names (Coefs)
+    boot.data <- data.frame (matrix (nrow = n, ncol = length (Coefs)))
+    names (boot.data) <- names (Coefs)
 
 
     if (inherits (object, "CosinorM.KDE")) {
@@ -157,7 +156,7 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
                 dilute = TRUE
             )
 
-            boot.df [b, ] <- mdl$coef.cosinor
+            boot.data [b, ] <- mdl$coef.cosinor
         }
     }
 
@@ -181,14 +180,14 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
                 dilute = TRUE
             )
 
-            boot.df [b, ] <- mdl$coef.cosinor
+            boot.data [b, ] <- mdl$coef.cosinor
         }
     }
 
-    Est <- unlist (lapply (boot.df, mean, na.rm = TRUE))
-    SEs <- unlist (lapply (boot.df, sd, na.rm = TRUE))
-    lci <- unlist (lapply (boot.df, quantile, 0.025))
-    uci <- unlist (lapply (boot.df, quantile, 0.975))
+    Est <- unlist (lapply (boot.data, mean, na.rm = TRUE))
+    SEs <- unlist (lapply (boot.data, sd, na.rm = TRUE))
+    lci <- unlist (lapply (boot.data, quantile, 0.025))
+    uci <- unlist (lapply (boot.data, quantile, 0.975))
 
 
     ## t-values (observed / SE)

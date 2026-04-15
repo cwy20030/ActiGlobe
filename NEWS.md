@@ -5,12 +5,25 @@ Revision history for the R/ActiGlobe package
 
 - New internal function added:
 
-- Version update and debugged: BriefSum
+- Version update and debugged: 
+
+- Brief Detail: 
+
+## Next Version: 0.2.3, 2026-02-04
+- New master and class functions added: 
+
+- New internal function added:
+
+- Version update and debugged: BriefSum, write.cosinor
 
 - Brief Detail: 
     - resolve internal tz conflicts in BriefSum
+    - improve namespace clarity for ggplot2 functions (ggplot2::) in write.cosinor, and resolve the graphic rendering issue.
+    - Add flow control in Valinput to switch off checking of value. This edit was later adapted in 
+        - write.cosinor
 
-## Next Version: 0.2.2
+
+## Version 0.2.2, 2026-02-04
 - New master and class functions added:  NA
 
 - New internal function added:  NA

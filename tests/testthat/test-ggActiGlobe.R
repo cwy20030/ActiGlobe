@@ -1,13 +1,13 @@
 test_that ("ggActiGlobe returns a ggplot object with expected structure", {
   BdfList <- BriefSum (
-    df = FlyEast,
+    data = FlyEast,
     SR = 1 / 60,
     Start = "2017-10-24 13:45:00",
     TZ = "America/New_York"
   )
 
   p <- ggActiGlobe (
-    df = BdfList$df,
+    data = BdfList$data,
     Bdf = BdfList$Bdf,
     VAct = "Activity",
     VDT = "DateTime"

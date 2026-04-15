@@ -1,4 +1,7 @@
 test_that ("Demand returns proper response", {
+
+    skip_if_not_installed ("mockery")
+
     # mock readline to always return "1"
     mockery::stub (Demand, "readline", function (prompt = "") "1")
 
@@ -20,6 +23,9 @@ test_that ("Demand returns proper response", {
 
 
 test_that ("Demand handles 'Other' option with custom input", {
+
+    skip_if_not_installed ("mockery")
+
     # Mock readline to return "3" first (select "Other"), then a custom path
     call_count <- 0
     mockery::stub (Demand, "readline", function (prompt = "") {

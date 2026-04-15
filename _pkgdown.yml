@@ -4,13 +4,18 @@ template:
   math-rendering: mathjax
   light-switch: yes
   bootswatch: sketchy
-  articles:
-  - title: "Tutorials"
-    desc: >
-      Step-by-step guides to help you learn the package.
-    contents:
-      - vignette("Introduction")
-      - vignette("Time-Shift")
-      - vignette("Circadian-Analysis")
-      - vignette("Graphic-Report")
+navbar:
+  components:
+    articles:
+      text: "Articles"
+      menu:
+        - text: "Introduction"
+          href: articles/Introduction.html
+        - text: "Time Shift and Pre-processing"
+          href: articles/Time-Shift.html
+        - text: "Circadian Analysis"
+          href: articles/Circadian-Analysis.html
+        - text: "Graphic Report"
+          href: articles/Graphic-Report.html
+
 

@@ -23,7 +23,7 @@ Compute UTC offset based on Time Zone and Date
 x <- as.Date (c ("2017-10-24", "2017-11-20"))
 TZ2UTC (DT = x, TZ = "America/New_York") ## Expect two different UTCs
 
-\dontrun{
+
 # A vector of dates
 x <-
     seq.Date (
@@ -32,11 +32,13 @@ x <-
         by = "day"
     )
 
+
 # If the user resides in a country that follows daylight saving time
 TZ2UTC (DT = x, TZ = "local")
 
+\dontrun{
 # If not
-# TZ2UTC(DT = x, TZ = "America/New_York")
+ TZ2UTC(DT = x, TZ = "America/New_York")
 }
 
 }

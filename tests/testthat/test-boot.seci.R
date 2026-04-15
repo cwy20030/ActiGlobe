@@ -1,19 +1,19 @@
 test_that ("boot.seci successfully run for OLS multicosinor and KDE", {
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
     # Extract actigraphy data from a single day
-    df <- BdfList$df
-    df <- subset (df, df$Date == "2017-10-27")
+    data <- BdfList$data
+    data <- subset (data, data$Date == "2017-10-27")
 
 
     # Test Multicomponent Cosinor Model (OLS)
     fit <- CosinorM (
-        time = df$Time,
-        activity = df$Activity,
+        time = data$Time,
+        activity = data$Activity,
         tau = c (12, 24),
         method = "OLS"
     )
@@ -59,8 +59,8 @@ test_that ("boot.seci successfully run for OLS multicosinor and KDE", {
 
     # Test Gaussian Kernel Density Estimation (KDE)
     fit2 <- CosinorM.KDE (
-        time = df$Time,
-        activity = df$Activity
+        time = data$Time,
+        activity = data$Activity
     )
     BCI2 <- boot.seci (object = fit2, ci_level = 0.95, n = 100)
 

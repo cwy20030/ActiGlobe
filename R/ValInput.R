@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title Validate and convert input vectors for activity or time
+#' @title Validate and Convert Input Vectors for Activity or Time
 #'
 #' @description
 #' A generic helper function that validates and converts input vectors
@@ -26,7 +26,9 @@
 #' @param x A vector of values to validate and convert.
 #' @param type Character string specifying the input type. Must be either
 #'   "Act" or "Tm".
-#'
+#' @param AllZero Logical scalar. If `TRUE`, the function will check if all
+#'   values in `x` are zero (applicable only for `type = "Act"`). Default =
+#'   TRUE.
 #' @details
 #' - For \code{type = "Act"}:
 #'   * Converts non-numeric input to numeric.
@@ -52,7 +54,7 @@
 #' @noRd
 
 
-ValInput <- function (x, type = c ("Act", "Tm")) {
+ValInput <- function (x, type = c ("Act", "Tm"), AllZero = TRUE) {
     # Step 0 Argument matching and system info Extraction ---------------------
     type <- match.arg (type)
 
@@ -62,8 +64,11 @@ ValInput <- function (x, type = c ("Act", "Tm")) {
         ## Activity validation ---------------------
         "Act" = {
             if (!inherits (x, "numeric")) x <- as.numeric (as.character (x))
-            if (all (x == 0)) stop ("All activity values are zero.")
             if (any (!is.finite (x))) stop ("Activity contains NA/NaN/Inf.")
+            if (AllZero) {
+                if (all (x == 0)) stop ("All activity values are zero.")
+            }
+
 
             return (x)
         },

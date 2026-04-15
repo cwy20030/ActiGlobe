@@ -32,18 +32,18 @@
 #' @param Dir The directory where the recordings to be exported <e.g.
 #' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
 #' @param ID The subject's ID which would be used to create a folder.
-#' @param df A data.frame of raw actigraphy recording. Both time and activity
-#' count should be included in the `df`. See `VAct` and `VTm` for further
+#' @param data A data.frame of raw actigraphy recording. Both time and activity
+#' count should be included in the `data`. See `VAct` and `VTm` for further
 #' detail.
 #' @param Bdf A \code{\link{BriefSum}} object. Note, if jet lag occurred during
 #' the recording, please, update the metadata using \code{\link{TAdjust}}
 #' before passing to this function.
 #' @param TUnit Character; time--unit for the x--axis of each day's timeline.
 #'   Must be one of `day`, `hour`, `minute` or `second`.  Default is `hour`.
-#' @param VAct Optional character.  Name of the activity column in `df`.
-#' If NULL, defaults to the second column of `df`.
-#' @param VTm Optional character.  Name of the time index column in `df`.
-#' If NULL, defaults to the first column of `df`.
+#' @param VAct Optional character.  Name of the activity column in `data`.
+#' If NULL, defaults to the second column of `data`.
+#' @param VTm Optional character.  Name of the time index column in `data`.
+#' If NULL, defaults to the first column of `data`.
 #' @param Incomplete Logical; if TRUE, days flagged `Incomplete Recording`
 #' (i.e. <24 h) are retained in the data list with recordings segmented by day.
 #' Default = FALSE (these days are removed).
@@ -52,7 +52,7 @@
 #'   (a warning is issued). If FALSE, travel days and the day before/after are
 #'   excluded. Default = TRUE.
 #' @param Simple Logical; if TRUE, only columns stored in the original
-#' recordings will be exported. If FALSE, all information stored in `df` will
+#' recordings will be exported. If FALSE, all information stored in `data` will
 #' be generated. Default = FALSE
 #'
 #' @returns
@@ -73,7 +73,7 @@
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
 #'     BriefSum (
-#'         df = FlyEast,
+#'         data = FlyEast,
 #'         SR = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
@@ -87,13 +87,13 @@
 #' ## To avoid time shift due to travelling, we will keep only the first 8 days.
 #' Bdf <- Bdf [1:8, ]
 #'
-#' df <- BdfList$df
+#' data <- BdfList$data
 #' # Export daily recordings and the summary report
 #'
 #' write.act (
 #'     Dir = getwd (), ## Export to the current working directory
 #'     ID = "JD",
-#'     df = df,
+#'     data = data,
 #'     Bdf = Bdf,
 #'     VAct = "Activity",
 #'     VTm = "Time"
@@ -108,21 +108,21 @@
 #' @export
 
 
-write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL,
+write.act <- function (Dir, ID, data, Bdf, TUnit = "hour", VAct = NULL,
                        VTm = NULL, Incomplete = FALSE, Travel = TRUE,
                        Simple = FALSE) {
     ##### Get Variable Names -------------
-    if (is.null (VTm)) VTm <- names (df) [[1]]
-    if (is.null (VAct)) VAct <- names (df) [[2]]
+    if (is.null (VTm))  VTm  <- names (data) [[1]]
+    if (is.null (VAct)) VAct <- names (data) [[2]]
 
 
     # Check Point and Input Validation -------------------------
-    df [[VAct]] <- ValInput (x = df [[VAct]], type = "Act")
-    df [[VTm]] <- ValInput (x = df [[VTm]], type = "Tm")
+    data [[VAct]] <- ValInput (x = data [[VAct]], type = "Act")
+    data [[VTm]]  <- ValInput (x = data [[VTm]], type = "Tm")
 
     #### Use Act2Daily ------------------
     dfList <- Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         TUnit = TUnit,
         VAct = VAct,
@@ -133,7 +133,7 @@ write.act <- function (Dir, ID, df, Bdf, TUnit = "hour", VAct = NULL,
 
 
     Daily_df <- dfList$Daily_df
-    Date <- names (Daily_df)
+    Date     <- names (Daily_df)
 
 
     ## Check Directory ----------------

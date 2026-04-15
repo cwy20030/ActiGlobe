@@ -1,6 +1,6 @@
 test_that ("BriefSum returns expected structure and TZ_code values", {
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-19 13:45:00",
         TZ = "America/New_York"
@@ -9,7 +9,7 @@ test_that ("BriefSum returns expected structure and TZ_code values", {
     # ---- Structure checks ----
     # Should be a list with two elements
     expect_true (is.list (BdfList))
-    expect_equal (names (BdfList), c ("Bdf", "df"))
+    expect_equal (names (BdfList), c ("Bdf", "data"))
 
     # ---- Relationship checks ----
     # TZ_code values should relate correctly to the time zone transitions
@@ -24,7 +24,7 @@ test_that ("BriefSum returns expected structure and TZ_code values", {
     # Invalid SR argument should trigger an error
     expect_error (tryCatch (
         BriefSum (
-            df = FlyEast,
+            data = FlyEast,
             SR = -1,
             Start = "2017-10-19 13:45:00",
             TZ = "America/New_York"

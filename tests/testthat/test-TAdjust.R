@@ -1,14 +1,14 @@
 test_that ("TAdjust Test Completed", {
     # Summarize FlyEast dataset ----------------------------------------------
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
     )
 
     # Extract actigraphy data for a single day
-    df <- BdfList$df
+    data <- BdfList$data
 
     # Quick summary of the recording
     Bdf <- BdfList$Bdf

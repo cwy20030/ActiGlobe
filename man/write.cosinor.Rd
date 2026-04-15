@@ -30,12 +30,12 @@ the recording, please, update the metadata using \code{\link{TAdjust}}
 before passing to this function.}
 
 \item{VAct}{Optional character. Name of the activity column in each
-data.frame object (`df`) in `DailyAct`. If NULL,
-  defaults to the second column of `df`.}
+data.frame object (`data`) in `DailyAct`. If NULL,
+  defaults to the second column of `data`.}
 
 \item{VTm}{Optional character. Name of the activity column in each
-data.frame object (`df`) in `DailyAct`. If NULL,
-  defaults to the first column of `df`.}
+data.frame object (`data`) in `DailyAct`. If NULL,
+  defaults to the first column of `data`.}
 
 \item{method}{Character string specifying estimation method
 \itemize{
@@ -53,7 +53,7 @@ phases can be supplied via [c()].}
 
 \item{ph}{Optional logical scaler; if only a single period is assigned to
 tau, TRUE will force the function to append the post-hoc circadian estimates
-instead of the model estimates. (default: FALSE)}
+instead of the model estimates. Default = FALSE}
 
 \item{overwrite}{Logical; if TRUE, existing files with the same name will be
 overwritten. Default = FALSE.}
@@ -89,7 +89,7 @@ data (FlyEast)
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
@@ -97,7 +97,7 @@ BdfList <-
 
 # Let's extract the quick summary of the recording
 Bdf <- BdfList$Bdf
-df <- BdfList$df
+data <- BdfList$data
 
 ### Note that since the original data was affected by travel-induced time
 ### shift, the recordings would not be properly segmented from 2017-11-02.
@@ -109,7 +109,7 @@ Bdf <- Bdf [1:8, ]
 ## Segment Data by Day
 dfList <-
     Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "Activity",
         VTm = "Time",

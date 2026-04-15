@@ -36,7 +36,7 @@ data ("FlyEast")
 ```{r BriefSum, message=FALSE, warning=FALSE, include=FALSE, eval=FALSE}
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
@@ -48,8 +48,8 @@ BdfList <-
 Bdf <- BdfList$Bdf
 ```
 
-```{r View df, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-df <- BdfList$df
+```{r View data, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+data <- BdfList$data
 ```
 
 ```{r View TLog, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
@@ -58,9 +58,7 @@ data (TLog)
 
 
 ```{r TAdjust, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-Bdf.adj <- TAdjust (Bdf = Bdf, 
-                    TLog = TLog,
-                    )
+Bdf.adj <- TAdjust (Bdf, TLog)
 ```
 
 ## Step 0: Pre-requisits
@@ -69,7 +67,7 @@ For this tutorial, it is essential that the recording be properly pre-processed 
 
 ```{r eval=FALSE, include=FALSE}
 dfList <- Act2Daily (
-    df = df,
+    data = data,
     Bdf = Bdf.adj,
     VAct = "Activity",
     VTm = "Time",
@@ -84,7 +82,7 @@ An example of the adjusted longitudinal recording.
 df2 <- do.call (rbind, dfList$Daily_df)
 
 ggActiGlobe (
-    df = df2,
+    data = df2,
     Bdf = Bdf.adj,
     VAct = "Activity",
     VDT = "DateTime"
@@ -104,12 +102,12 @@ To segment the recording by day, ActiGlobe uses `Act2Daily()` to segment the dat
 ### Here, we selectively generate graphs at random for day 11 and day 12.
 for (i in names (dfList$Daily_df) [11:12]) {
     ggActiGlobe (
-        df = dfList$Daily_df [[i]],
+        data = dfList$Daily_df [[i]],
         Bdf = Bdf.adj,
         VAct = "Activity",
         VDT = "DateTime"
     ) +
-        scale_colour_grey () #### Change the graph colour
+        scale_color_grey () #### Change the graph colour
 }
 ```
 
@@ -124,7 +122,7 @@ Once the recordings are segmented, we can export daily recordings using the `wri
 dfList <- write.act (
     Dir = "The_PATH_in_the_computer_WHERE_the_daily_recordings_will_be_stored",
     ID = "JD",
-    df = df,
+    data = data,
     Bdf = Bdf.adj,
     VAct = "Activity",
     VTm = "Time"

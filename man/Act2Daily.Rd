@@ -5,7 +5,7 @@
 \title{Split and Annotate Actigraphy Data into Daily Records}
 \usage{
 Act2Daily(
-  df,
+  data,
   Bdf,
   TUnit = "hour",
   VAct = NULL,
@@ -15,8 +15,8 @@ Act2Daily(
 )
 }
 \arguments{
-\item{df}{A data.frame of raw actigraphy recording. Both time and activity
-count should be included in the \code{df}. See \code{VAct} and \code{VTm}
+\item{data}{A data.frame of raw actigraphy recording. Both time and activity
+count should be included in the \code{data}. See \code{VAct} and \code{VTm}
 for further detail.}
 
 \item{Bdf}{A \code{\link{BriefSum}} object containing per-day metadata
@@ -27,11 +27,11 @@ function.}
 \item{TUnit}{Character; time--unit for the x--axis of each day's timeline.
 Must be one of "day", "hour", "minute" or "second".  Default is "hour".}
 
-\item{VAct}{Optional character. Name of the activity column in \code{df}.
-If NULL, defaults to the second column of \code{df}.}
+\item{VAct}{Optional character. Name of the activity column in \code{data}.
+If NULL, defaults to the second column of \code{data}.}
 
 \item{VTm}{Optional character.  Name of the date.time index column in
-\code{df}.If NULL, defaults to the first column of \code{df}.}
+\code{data}.If NULL, defaults to the first column of \code{data}.}
 
 \item{Incomplete}{Logical; if TRUE, days flagged `Incomplete Recording`
 (i.e. <24 h) are retained in the data list with recordings segmented by day.
@@ -71,7 +71,6 @@ offset, a brief gap appears on "Travel Day", with labeling - "Unallocated",
 which represents "time lose".
 }
 \examples{
-\dontrun{
 
 # Import data
 data (FlyEast)
@@ -80,7 +79,7 @@ data (FlyEast)
 # Create quick summary of the recording with adjustment for daylight saving.
 BdfList <-
     BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
@@ -94,12 +93,12 @@ Bdf <- BdfList$Bdf
 
 ## To avoid time shift due to travelling, we will keep only the first 8 days.
 Bdf <- Bdf [1:8, ]
-df <- BdfList$df
+data  <- BdfList$data
 
 # Segment Data by Day
 dfList <-
     Act2Daily (
-        df = df,
+        data = data,
         Bdf = Bdf,
         VAct = "Activity",
         VTm = "Time",
@@ -108,8 +107,6 @@ dfList <-
     )
 
 str (dfList) ### Look at the output structure
-View (dfList)
-}
 
 }
 \seealso{

@@ -1,7 +1,7 @@
 test_that ("Prob.Inact runs on FlyEast data and returns logical vector", {
     # Create quick summary of the recording with adjustment for daylight saving
     BdfList <- BriefSum (
-        df = FlyEast,
+        data = FlyEast,
         SR = 1 / 60,
         Start = "2017-10-24 13:45:00",
         TZ = "America/New_York"
@@ -9,19 +9,19 @@ test_that ("Prob.Inact runs on FlyEast data and returns logical vector", {
 
     # Extract actigraphy data for a single day --------------------------------
     Bdf <- BdfList$Bdf
-    df <- BdfList$df
+    data <- BdfList$data
 
     ## Extract Fourth day
     fnDP <- sum (Bdf$nDataPoints [seq_len (3)])
     fDP <- fnDP + 1 # Midnight of the second day
     eDP <- sum (Bdf$nDataPoints [seq_len (4)])
-    df <- df [fDP:eDP, ]
+    data <- data [fDP:eDP, ]
 
 
     # Fit GLM and return logical vector
     inactive_flags <- Prob.Inact (
-        y = df$Activity,
-        time = df$Time,
+        y = data$Activity,
+        time = data$Time,
         k = 12,
         threshold = 3,
         logical = TRUE
@@ -29,7 +29,7 @@ test_that ("Prob.Inact runs on FlyEast data and returns logical vector", {
 
     # ---- Structure checks ----
     expect_type (inactive_flags, "logical")
-    expect_length (inactive_flags, nrow (df))
+    expect_length (inactive_flags, nrow (data))
 
     # ---- Relationship checks ----
     # Must contain logical values TRUE/FALSE
@@ -38,8 +38,8 @@ test_that ("Prob.Inact runs on FlyEast data and returns logical vector", {
     # ---- Content checks ----
     # Fit GLM and return summary table
     inactive_summary <- Prob.Inact (
-        y = df$Activity,
-        time = df$Time,
+        y = data$Activity,
+        time = data$Time,
         k = 12,
         threshold = 3,
         logical = FALSE
@@ -58,5 +58,5 @@ test_that ("Prob.Inact runs on FlyEast data and returns logical vector", {
 
     # ---- Error checks ----
     # 0 activity vector should trigger an error
-    expect_error (tryCatch (Prob.Inact (y = 0, T = df$Time)))
+    expect_error (tryCatch (Prob.Inact (y = 0, T = data$Time)))
 })

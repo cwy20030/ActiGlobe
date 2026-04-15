@@ -28,7 +28,7 @@
 #' also generated to update the original `Bdf` with cosinor model coefficients
 #' for each day.
 #'
-#' @import gridExtra ggplot2 grDevices utils stats
+#' @import grid gridExtra ggplot2 grDevices utils stats
 #'
 #' @param Dir The directory where the recordings to be exported <e.g.
 #' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
@@ -38,11 +38,11 @@
 #' the recording, please, update the metadata using \code{\link{TAdjust}}
 #' before passing to this function.
 #' @param VAct Optional character. Name of the activity column in each
-#' data.frame object (`df`) in `DailyAct`. If NULL,
-#'   defaults to the second column of `df`.
+#' data.frame object (`data`) in `DailyAct`. If NULL,
+#'   defaults to the second column of `data`.
 #' @param VTm Optional character. Name of the activity column in each
-#' data.frame object (`df`) in `DailyAct`. If NULL,
-#'   defaults to the first column of `df`.
+#' data.frame object (`data`) in `DailyAct`. If NULL,
+#'   defaults to the first column of `data`.
 #' @param method Character string specifying estimation method
 #' \itemize{
 #'   \item "OLS": Ordinary least square cosinor model via
@@ -57,7 +57,7 @@
 #' phases can be supplied via [c()].
 #' @param ph Optional logical scaler; if only a single period is assigned to
 #' tau, TRUE will force the function to append the post-hoc circadian estimates
-#' instead of the model estimates. (default: FALSE)
+#' instead of the model estimates. Default = FALSE
 #' @param overwrite Logical; if TRUE, existing files with the same name will be
 #' overwritten. Default = FALSE.
 #'
@@ -86,7 +86,7 @@
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
 #'     BriefSum (
-#'         df = FlyEast,
+#'         data = FlyEast,
 #'         SR = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
@@ -94,7 +94,7 @@
 #'
 #' # Let's extract the quick summary of the recording
 #' Bdf <- BdfList$Bdf
-#' df <- BdfList$df
+#' data <- BdfList$data
 #'
 #' ### Note that since the original data was affected by travel-induced time
 #' ### shift, the recordings would not be properly segmented from 2017-11-02.
@@ -106,7 +106,7 @@
 #' ## Segment Data by Day
 #' dfList <-
 #'     Act2Daily (
-#'         df = df,
+#'         data = data,
 #'         Bdf = Bdf,
 #'         VAct = "Activity",
 #'         VTm = "Time",
@@ -144,8 +144,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
     U <- Bdf$UTC
 
     ### Set default variable names for activity and time columns
-    if (is.null (VAct)) VAct <- names (df) [[2]] # Default: second column of df
-    if (is.null (VTm)) VTm <- names (df) [[1]] # Default: first column of df
+    if (is.null (VAct)) VAct <- names (data) [[2]] # Default: second column of data
+    if (is.null (VTm)) VTm <- names (data) [[1]] # Default: first column of data
 
     ## Initialize all cosinor results -----------------------
     if (all (length (tau) == 1, isFALSE (ph))) {
@@ -173,20 +173,24 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
         if (dir.exists (pdfDir)) pdfDir <- paste0 (pdfDir, " ", Sys.time ())
     }
 
-    grDevices::pdf (pdfDir, onefile = TRUE, paper = "a4r")
+    grDevices::pdf (pdfDir, onefile = TRUE)
 
 
     ### Plot ----------------
     for (d in D) {
         # print (d) ## For fail-check function purposes
-        df <- DailyAct [[d]]
+        data <- DailyAct [[d]]
 
-        if (!is.null (df)) {
-            Act <- ValInput (x = df [[VAct]], type = "Act")
-            Tm <- ValInput (x = df [[VTm]], type = "Tm")
 
-            df [[VAct]] <- Act
-            df [[VTm]] <- Tm
+        tryCatch ( {
+
+        if (!is.null (data)) {
+            #### Note: switch off zero check to improve report.
+            Act <- ValInput (x = data [[VAct]], type = "Act", AllZero = FALSE)
+            Tm <- ValInput (x = data [[VTm]], type = "Tm")
+
+            data [[VAct]] <- Act
+            data [[VTm]] <- Tm
 
             #### Get the time zone for the current ID and date
             TZ <- U [D == d]
@@ -197,16 +201,16 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
             if (!all (Act == 0)) {
                 ### Create activity trend for the top panel ---------------
                 top.plot <-
-                    ggplot2::ggplot (df, aes (x = Tm, y = Act)) +
-                    geom_point (aes (color = "Original Measure")) +
-                    geom_smooth (aes (color = "Smoothed Trend")) +
-                    labs (
+                    ggplot2::ggplot (data = data, aes (x = Tm, y = Act)) +
+                    ggplot2::geom_point (aes (color = "Original Measure")) +
+                    ggplot2::geom_smooth (aes (color = "Smoothed Trend"),
+                                          method = "gam") +
+                    ggplot2::labs (
                         title = d,
                         subtitle = TZ,
                         x = "Hour",
                         y = "Activity"
                     ) +
-                    theme (plot.title = element_text (hjust = 0.5)) +
                     ggplot2::scale_colour_manual (
                         values = c (
                             "Original Measure" = "black",
@@ -214,7 +218,8 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                         ),
                         name = "Legend Title"
                     ) +
-                    ggplot2::theme_bw ()
+                    ggplot2::theme_bw () +
+                    ggplot2::theme (plot.title = element_text (hjust = 0.5))
 
 
                 ### Fit cosinor models with 24Hr period  ----------------------
@@ -249,32 +254,37 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
 
                 #### Create the bottom plot for cosinor models -----------
                 bottom.plot <- ggCosinorM (m1, title_extra = d)
+
+
+
             } else { ### If no activity recorded
 
                 ### Create activity trend for the top panel ---------------
-                top.plot <- ggplot (df, aes (x = Tm, y = Act)) +
-                    geom_point (color = "red") +
-                    labs (
+                top.plot <- ggplot2::ggplot (data, aes (x = Tm, y = Act)) +
+                    ggplot2::geom_point (color = "red") +
+                    ggplot2::labs (
                         title = d,
                         subtitle = " No activity recorded",
                         x = "Hour",
                         y = "Activity"
                     ) +
-                    ggplot2::theme_bw ()
+                    ggplot2::theme_bw () +
+                    ggplot2::theme (plot.title = element_text (hjust = 0.5))
 
 
                 ### No update the report with cosinor model coefficients
 
                 #### Create the bottom plot for cosinor models -----------
-                bottom.plot <- ggplot () +
-                    labs (
+                bottom.plot <-
+                    ggplot2::ggplot () +
+                    ggplot2::labs (
                         title = d,
                         subtitle = " No activity recorded",
                         x = "Hour",
                         y = "Activity"
                     ) +
-                    theme_minimal () +
-                    theme (
+                    ggplot2::theme_minimal () +
+                    ggplot2::theme (
                         plot.title       = element_text (hjust = 0.5),
                         # keep legend space but show nothing
                         legend.position  = "right"
@@ -285,16 +295,20 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
                         values = c ("dummy" = NA),
                         breaks = NULL
                     ) +
-                    scale_fill_manual (
+                    ggplot2::scale_fill_manual (
                         name = "",
                         values = c ("dummy" = NA),
                         breaks = NULL
                     )
 
-                # Arrange the top and bottom plots in a grid
-                grid.arrange (top.plot, bottom.plot)
             }
+            # Arrange the top and bottom plots in a grid
+            PDF.plot <- gridExtra::arrangeGrob (top.plot, bottom.plot)
+            grid::grid.newpage ()
+            grid::grid.draw (PDF.plot)
         }
+        }, silent = TRUE)
+
     }
 
     ## Close the PDF file -------------
