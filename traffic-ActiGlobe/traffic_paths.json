@@ -24,6 +24,12 @@
     "uniques": 1
   },
   {
+    "path": "/cwy20030/ActiGlobe/discussions",
+    "title": "/discussions",
+    "count": 2,
+    "uniques": 2
+  },
+  {
     "path": "/cwy20030/ActiGlobe/actions/workflows/pkgcheck.yaml",
     "title": "/actions/workflows/pkgcheck.yaml",
     "count": 2,
@@ -50,12 +56,6 @@
   {
     "path": "/cwy20030/ActiGlobe/blob/main/R/TAdjust.R",
     "title": "/blob/main/R/TAdjust.R",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/discussions",
-    "title": "/discussions",
     "count": 1,
     "uniques": 1
   }
