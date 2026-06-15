@@ -2,20 +2,14 @@
   {
     "path": "/cwy20030/ActiGlobe",
     "title": "Overview",
-    "count": 4,
-    "uniques": 4
+    "count": 3,
+    "uniques": 3
   },
   {
     "path": "/cwy20030/ActiGlobe/issues",
     "title": "/issues",
     "count": 2,
     "uniques": 2
-  },
-  {
-    "path": "/cwy20030/ActiGlobe/graphs/contributors",
-    "title": "/graphs/contributors",
-    "count": 1,
-    "uniques": 1
   },
   {
     "path": "/cwy20030/ActiGlobe/tree/Test",
