@@ -51,47 +51,46 @@
 #' FlyEast
 #'
 #' BdfList <-
-#'     BriefSum (
-#'         data = FlyEast,
-#'         SR = 1 / 60,
+#'     BriefSum(
+#'         data  = FlyEast,
+#'         SR    = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
 #'
 #' # Let's extract actigraphy data from a single day
 #' data <- BdfList$data
-#' data <- subset (data, data$Date == "2017-10-27")
+#' data <- subset(data, data$Date == "2017-10-27")
 #'
 #' # Multicomponent Cosinor Model
-#' fit <- CosinorM (
-#'     time = data$Time,
+#' fit <- CosinorM(
+#'     time     = data$Time,
 #'     activity = data$Activity,
-#'     tau = c (12, 24),
-#'     method = "OLS"
+#'     tau      = c(12, 24),
+#'     method   = "OLS"
 #' )
 #'
 #' # inspect coefficients
 #'
-#' boot.seci (
-#'     object = fit,
+#' boot.seci(
+#'     object   = fit,
 #'     ci_level = 0.95,
-#'     n = 500
+#'     n        = 500
 #' )
 #'
 #'
 #' # Gaussian Kernel Density Estimation
-#' fit2 <- CosinorM.KDE (
-#'     time = data$Time,
+#' fit2 <- CosinorM.KDE(
+#'     time     = data$Time,
 #'     activity = data$Activity
 #' )
 #'
 #' # inspect coefficients
 #'
-#' boot.seci (
-#'     object = fit2,
+#' boot.seci(
+#'     object   = fit2,
 #'     ci_level = 0.95,
-#'     n = 500
+#'     n        = 500
 #' )
-#' 
 #'
 #' @keywords boot bootstrap ci se
 #' @export
@@ -129,7 +128,7 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
 
     ## Extract parameters  -----------
     activity <- object$model$activity
-    time <- object$model$time
+    Tm <- object$model$time
     arctan2 <- object$arctan2
     Coefs <- c (object$coef.cosinor, object$post.hoc)
 
@@ -142,10 +141,10 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
         bw <- object$bw
 
         for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time),
+            idx <- sample.int (length (Tm), size = length (Tm),
                                replace = TRUE)
             idx <- idx [order (idx)]
-            Time <- as.numeric (time [idx])
+            Time <- as.numeric (Tm [idx])
             Act <- as.numeric (activity [idx])
 
             mdl <- CosinorM.KDE (
@@ -168,11 +167,11 @@ boot.seci <- function (object, ci_level = 0.95, n = 500, digits = 2) {
 
 
         for (b in seq_len (n)) {
-            idx <- sample.int (length (time), size = length (time),
+            idx <- sample.int (length (Tm), size = length (Tm),
                                replace = TRUE)
             idx <- idx [order (idx)]
             mdl <- CosinorM (
-                time = time [idx],
+                time = Tm [idx],
                 activity = activity [idx],
                 tau = tau,
                 method = method,

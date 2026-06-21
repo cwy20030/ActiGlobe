@@ -23,19 +23,23 @@
 #' the recording. Note, if jet lag occurred during the recording, please,
 #'  update the metadata using \code{\link{TAdjust}} before passing to this
 #'  function.
-#' @param D The date travelling by plane.
+#' @param Ds The date travelling by plane.
 #' @param U The UTC offset values <e.g., "UTC+09:30" or "UTC-07:00">
+#' @param has.DST Logical scalar indicating local practice of daylight saving
+#' time.
 #'
 #' @returns
 #' A data frame containing the following columns:
 #' \itemize{
 #'   \item \code{Date} — The recording dates.
-#'   \item \code{Recording_Period} — An integer index indicating the travel
+#'   \item \code{Prd} — An integer index indicating the travel
 #'         period (e.g., before/after flight segments).
 #'   \item \code{UTC} — The updated UTC offset string for each date.
-#'   \item \code{Hour_to_Adjust} — Numeric values representing the difference
+#'   \item \code{H2J} — Numeric values representing the difference
 #'         in hours between the old and new UTC offsets, used for time
 #'         adjustment.
+#'   \item \code{hsDST} — A logical vector indicating whether daylight saving
+#'         time is observed for each date.
 #' }
 #'
 #' @examples
@@ -52,24 +56,22 @@
 #'
 #' # Let's extract actigraphy data from a single day
 #' Bdf <- BdfList$Bdf
-#'
-#' data (TLog)
 #' R2P (
-#'     Bdf = Bdf,
-#'     D = TLog$date_Start,
-#'     U = TLog$UTC_Offset
+#'     Bdf     = Bdf,
+#'     Ds      = TLog$Date_Start,
+#'     U       = TLog$UTC_Offset
+#'     has.DST = TLog$Country_with_Daylight_Saving
 #' )
 #'
 #' @noRd
 
 
-R2P <- function (Bdf, D, U) {
+R2P <- function (Bdf, Ds, U, has.DST = NULL) {
     ## Extract Date info from summary
     DT <- Bdf$Date ## All Recording Dates
     DT <- DateFormat (DT)
     MinDate <- min (DT) ## First Date
     MaxDate <- max (DT) ## Last Date
-
 
     ## Check if UTC is in the Bdf
     if (!"UTC" %in% names (Bdf)) {
@@ -81,18 +83,30 @@ R2P <- function (Bdf, D, U) {
 
 
     #### Double check for date coherence ---------
-    D <- DateFormat (D)
+    Ds <- suppressWarnings (DateFormat (Ds))
+
+
+    ## Identify DST based on the initial summary----------------
+    Bdf$has_DST <- UTCwDST (UTCs = Bdf$UTC [1],
+                            TZ   = Bdf$TZ_code [1])
+
+
+    ## Guess if the UTC may experience Time Change due to daylight saving
+    ## calender
+    if (all (is.null (has.DST)) || all (is.na (has.DST)) ||
+        all (has.DST == ""))
+        has.DST <- UTCwDST (UTCs = U)
 
 
     # Process UTC and Time adjustment -------------
 
     Bdf$UTC.old <- Bdf$UTC [[1]]
 
-    for (d in seq_len (length (D))) {
-        if (d < length (D)) {
-            Period <- as.Date (D [d]:(D [d + 1] - 1))
+    for (i in seq_len (length (Ds))) {
+        if (i < length (Ds)) {
+            Period <- as.Date (Ds [i]:(Ds [i + 1] - 1))
         } else {
-            fD <- as.integer (which (DT == D [d]))
+            fD <- as.integer (which (DT == Ds [i]))
             eD <- as.integer (which (DT == MaxDate))
 
             nD <- (eD - fD) + 1
@@ -106,8 +120,9 @@ R2P <- function (Bdf, D, U) {
             Period <- as.Date (DT [idx])
         }
 
-        Bdf$Recording_Period [DT %in% Period] <- d
-        Bdf$UTC [DT %in% Period] <- Num2UTC (U [d])
+        Bdf$Recording_Period [DT %in% Period] <- i
+        Bdf$UTC [DT %in% Period]              <- Num2UTC (U [i])
+        Bdf$has_DST [DT %in% Period]          <- has.DST [i]
     }
 
     ### Compute Changes in Hours -------------
@@ -115,7 +130,7 @@ R2P <- function (Bdf, D, U) {
 
 
     ## Update Recording Period
-    if (!MinDate %in% D) {
+    if (!MinDate %in% Ds) {
         Bdf$Recording_Period <- ifelse (is.na (Bdf$Recording_Period), 1,
             Bdf$Recording_Period + 1
         )
@@ -123,6 +138,11 @@ R2P <- function (Bdf, D, U) {
 
 
     # Output --------
-    Out <- Bdf [c ("Date", "Recording_Period", "UTC", "Hour_to_Adjust")]
+    Out <- setNames (
+        Bdf [c ("Date", "Recording_Period", "UTC", "Hour_to_Adjust",
+                   "has_DST")],
+        c ("Date", "Prd", "UTC", "H2J", "hsDST")
+    )
+
     return (Out)
 }

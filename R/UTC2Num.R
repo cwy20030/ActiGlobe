@@ -17,11 +17,13 @@
 #
 #
 #
-#' @title Convert Standard UTC Offset to Numbers
+#' @title Convert Coordinated Universal Time (UTC) Offset to Numeric Values
 #'
 #' @param x Character string of UTC offsets, e.g., "UTC+09:30" or "UTC-07:00".
 #'
 #' @return Numeric values of UTC offsets
+#'
+#' @seealso \code{\link{Num2UTC}}
 #'
 #' @examples
 #' # Convert UTC to numeric values
@@ -31,7 +33,8 @@
 #'
 #' print (x)
 #'
-#' @keywords UTC num offset
+#'
+#' @keywords UTC offset conversion
 #' @export
 
 UTC2Num <- function (x) {
@@ -61,4 +64,35 @@ UTC2Num <- function (x) {
     x <- mp * (b + c)
 
     return (x)
+}
+
+
+
+
+#' @title Helper converting the portable operating system interface to offset
+#'
+#' @param x Character string of POSIX Time or offset (e.g., "+0930")
+#'
+#'
+#' @return Numeric values of UTC offsets
+#'
+#'
+#' @examples
+#' .offset2Num (c ("+0930", "-0700"))
+#'
+#'
+#' @noRd
+
+.offset2Num <- function (x) {
+
+  if (inherits (x, "POSIXct") || inherits (x, "POSIXlt"))
+    x <- format (x, "%z")
+
+    Sign <- sign (as.numeric(x))
+    num  <- abs (as.numeric (substr (x, 1, 3))) +
+            abs (as.numeric (substr (x, 4, 5))) / 60
+
+    Ecl <- Sign == 0
+    num <- ifelse (Ecl, 0, Sign * num)
+    return (num)
 }

@@ -81,8 +81,8 @@
 #'
 #' @examples
 #' BdfList <- BriefSum (
-#'     data = FlyEast,
-#'     SR = 1 / 60,
+#'     data  = FlyEast,
+#'     SR    = 1 / 60,
 #'     Start = "2017-10-19 13:45:00"
 #' )
 #'
@@ -92,8 +92,8 @@
 #' ## install library "zeallot"
 #' ## library(zeallot)
 #' ## c(Bdf, data) %<-%
-#' ## BriefSum(data = FlyEast,
-#' ##          SR = 1/60,
+#' ## BriefSum(data  = FlyEast,
+#' ##          SR    = 1/60,
 #' ##          Start = "2017-10-24 13:45:00")
 #'
 #'
@@ -107,7 +107,7 @@ BriefSum <- function (data, SR, Start, TZ = "local") {
     }
 
     # Prepare Basic Variables ------------------
-    if (TZ == "local") TZ <- Sys.timezone ()
+    TZ <- ValInput (TZ, type = "TZ")
     Epc   <- 1 / SR # Compute epoch length
     nDPHr <- 3600 / Epc # Compute numbers of data points per hour
 
@@ -152,11 +152,11 @@ BriefSum <- function (data, SR, Start, TZ = "local") {
     ##### Daylight Saving
     DSTs  <- lubridate::dst (AllT)
     ### Use negative to prioritize non-daylight saving time.
-    aDSTs <- DST (ADs, TZ = TZ)
+    aDSTs <- DST (Date = ADs, TZ = TZ)
     ### Alternative code: ifelse(ADs %in% unique(Ds[!DSTs]), FALSE, TRUE)
 
     ###### Determine the influence of Daylight Saving
-    GL    <- DST2GL (ADs, TZ = TZ)
+    GL    <- DST2GL (Date = ADs, TZ = TZ)
 
     ##### Extract Time Zone
     TZ3      <- format (AllT, "%Z")
@@ -234,5 +234,6 @@ BriefSum <- function (data, SR, Start, TZ = "local") {
     class (data)    <- c ("ActiGlobe", "data.frame")
     class (Summary) <- c ("ActiGlobe", "data.frame")
 
-    return (list ("Bdf" = Summary, "data" = data))
+    return (list ("Bdf" = Summary,
+                  "data" = data))
 }

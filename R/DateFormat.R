@@ -15,13 +15,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#' @title Detect Possible DT Format
-#'
-#' @description
-#' This function will automatically detect possible date format. Users can
-#' choose to either reformat the date or report the datetime format detected.
-#'
-#' @title Format Recognition and Conversion of Date-Time Strings
+#' @title Format Recognition and Conversion of Date Strings
 #'
 #' @description
 #' Identifies the likely date format used in character strings and
@@ -31,14 +25,18 @@
 #' month-day ordering), the function defaults to the first compatible format
 #' unless explicitly guided by a delimiter or by manual correction.
 #'
-#' @param DT A character vector containing date or date-time strings.
+#' @importFrom lifecycle badge
 #'
+#' @param Date A character vector containing **date** OR **date-time** strings.
 #' @param as.date Logical. If TRUE (default), returns converted Date objects.
 #'   If FALSE, returns the detected format string (e.g., \code{"\%d/\%m/\%Y"}).
-#'
 #' @param Delim Optional. A single character (e.g., \code{"."}, \code{"-"},
 #'   or \code{"/"}) to override default date delimiters. Requited when input
 #'   strings may contain nonstandard separators (e.g., \code{"$"}, \code{"~"}).
+#' @param Guess Logical. If TRUE, the function will attempt to guess
+#' the delimiter used in the input strings if not provided. If FALSE (default),
+#' it will rely solely on the specified \code{Delim} or default delimiters.
+#' @param DT `r lifecycle::badge("deprecated")` Use `Date` instead.
 #'
 #' @return
 #' If \code{as.date = TRUE}, returns a vector of class \code{Date}.
@@ -49,94 +47,195 @@
 #'
 #' If no format matches, returns \code{NA} and issues a warning.
 #'
+#' @seealso \code{\link{DateFormat}} \code{\link{as.posIXct}}
+#'
 #' @examples
-#' # Consistent format across all strings
-#' DT <- c ("2017/05/02", "2000/02/28", "1970/01/02")
-#' DateFormat (DT, as.date = FALSE) # returns parsed Date vector
+#' # Case 1. Detect date format from the string:
+#' ## Consistent format across all strings
+#' ### We will store all these strings in a variable called DT, short for
+#' ### date-time.
+#' DT <- c("2017/05/02", "2000/02/28", "1970/01/02")
+#' DateFormat(DT, as.date = FALSE) # returns parsed Date vector
 #'
-#' 
-#' # DateFormat requires consistent numeration of date, 
-#' # month and year. when handling mixed formats
-#' DT <- c (
-#'     "2017/05/02", "2000.02.28", "1970-11-02",
-#'     "01, 01, 2025", "12, 12, 1980"
-#' )
-#'
-#' ## list-based element-wise parsing:
-#' lapply (DT, DateFormat, Delim = ",") 
-#'
-#' ## vector-based serial-processing:
-#' for (x in DT) {
-#'     print (DateFormat (x, Delim = ","))
-#' } # displays format/warning per entry
-#'
-#'
-#'
-#' # Caution: 
+#' # Caution:
 #' ## It would likely fail if the vector contains
 #' ## mixtures of string and numeric values.
-#' DT <- c (
+#' DT1 <- c(
 #'     "2017/05/02", "2000.Feb.28", "1970-11-02",
 #'     "January 01, 2025", "December 12, 1980"
 #' )
-#' lapply (DT, DateFormat) # element-wise parsing
+#' lapply(DT1, DateFormat, as.date = FALSE) # element-wise parsing
 #'
-#' ## Avoid using sapply, because it will 
-#' ## convert them into numeric form
-#' sapply (DT, DateFormat)
-#' 
 #'
+#' # version > 0.3.0:
+#' ## As of version 0.3.0 DateFormat can now bulk detect mixed date formats
+#' DT2 <- c(
+#'     "2017/05/02", "2000.02.28", "1970-11-02",
+#'     "01, 01, 2025", "12, 12, 1980"
+#' )
+#' DateFormat(Date = DT2, Guess = TRUE)
+#'
+#'
+#'
+#' # Case 2. Convert string to date object:
+#' ## version > 0.3.0:
+#' ### As of version 0.3.0 DateFormat can now bulk convert date strings with
+#' ### mixed format by using the `Guess` argument to detect the deliminator.
+#'
+#' DateFormat(Date = DT2, as.date = TRUE, Guess = TRUE)
+#'
+#' # *** Users should still be caution about the order of date and month
+#' in the converted date string, because it is likely to be misinterpreted
+#' when the the numeric month value is less than 13.
+#'
+#'
+#' ## version < 0.3.0
+#' ### list-based element-wise parsing:
+#' lapply(DT2, DateFormat, Delim = ",")
+#'
+#' ### vector-based serial-processing:
+#' for(x in DT2){
+#'     print(
+#'     DateFormat(x, Delim = ","))
+#' } # displays format/warning per entry
+#'
+#'
+#' # *** Avoid using sapply, because it will turn the date into a
+#' numeric value
+#' sapply(DT, DateFormat)
+#'
+#' @keywords date convert format
 #' @export
 
 
-DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
-    fmts <- c (
-        "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
-        "%Y-%m", "%m-%Y",
-        "%Y/%m/%d", "%m/%d/%Y", "%d/%m/%Y",
-        "%Y/%m", "%m/%Y",
-        "%Y.%m.%d", "%m.%d.%Y", "%d.%m.%Y",
-        "%Y.%m", "%m.%Y"
-    ) # Add more formats as needed
+DateFormat <- function (Date, as.date = TRUE, Delim = NULL, Guess = TRUE,
+                        DT = NULL) {
 
-    if (!is.null (Delim)) {
-        Base <- c (
-            "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
-            "%Y-%m", "%m-%Y"
-        )
-        Base <- gsub ("-", Delim, Base) # Only one deliminator is allowed.
-        fmts <- c (fmts, Base)
+  # Step 0. Input Validation and Parameter Extraction -----------
+  if (all (c (is.null (Date), !is.null (DT)))) {
+    lifecycle::deprecate_soft (
+      when = "0.3.1",
+      what = "DateFormat(DT)",
+      with = "DateFormat(Date)"
+    )
+    Date <- DT
+  }
+  Date <- sub ("\\s.*$", "", as.character (Date))
+
+  # Step 1.x Optional Step ----------------------------------
+  if (Guess) {
+    x <- unlist (
+      regmatches (Date, gregexpr ("[^0-9A-Za-z]+", Date))
+    )
+    x <- unique (x)
+
+    x <- x [!x %in% ":"]
+
+    if (length (unique (x)) > 1) {
+      warning ("Multiple deliminators detected in the input.
+               The first detected symbol of each substring
+               will be assumed as the deliminator.")
+
+      if (is.null (Delim)) {
+        Delim <- x
+      } else {
+        Delim <- unique (c (x, Delim))
+      }
     }
+  }
 
-    formatedDate <- tryCatch (as.Date (DT, format = fmts))
+  # Step 2 Build Format List ---------------
+  fmts <- c (
+    "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
+    "%Y-%m", "%m-%Y",
+    "%Y/%m/%d", "%m/%d/%Y", "%d/%m/%Y",
+    "%Y/%m", "%m/%Y",
+    "%Y.%m.%d", "%m.%d.%Y", "%d.%m.%Y",
+    "%Y.%m", "%m.%Y"
+  ) # Add more formats as needed
 
-    Format <- fmts [which (!is.na (formatedDate))] # Extract Possible format
+  if (!is.null (Delim)) {
+    Base <- c (
+      "%Y-%m-%d", "%m-%d-%Y", "%d-%m-%Y",
+      "%Y-%m", "%m-%Y"
+    )
 
-    ## Extract the time format generated
-    formatedDate <- formatedDate [!is.na (formatedDate)]
+    fmts_new <- unlist (
+      lapply (Delim, function (d) gsub ("-", d, Base, fixed = TRUE)),
+      use.names = FALSE
+    ) # Only one deliminator is allowed.
 
-    ## See which time format works for this
-    if (length (Format) > 1) {
-        Format <- unlist (lapply (seq_len (length (formatedDate)),
-                                  function (d) {
-            temp <- as.character (formatedDate [d])
-            temp <- unlist (strsplit (temp, split = "-"))
+    fmts <- unique (c (fmts, fmts_new))
+  }
 
-            if (all (as.numeric (temp) < 1000)) {
-                NA
-            } else {
-                Format [d]
-            }
-        }))
+  # Step 3. Test Date Formats ---------------
+  if (length (Date) == 1) {
+    formatedDate <- tryCatch (as.Date (Date, format = fmts))
+    Format <- fmts [which (!is.na (formatedDate))]
 
-        Format <- Format [!is.na (Format)]
+  } else {
+    ## Test Date Formats
+    DFormat <-
+      vapply (
+        fmts,
+        function (fmt) as.Date (Date, format = fmt),
+        FUN.VALUE = as.Date (rep (NA, length (Date)))
+      )
+    ## Remove Unmatched Date Formats
+    formatedDate <- DFormat [, colSums (!is.na (DFormat)) > 0, drop = FALSE]
+
+    ## Remove columns with all negative values (invalid date formats)
+    formatedDate <-
+      formatedDate [,
+                    !apply (formatedDate, 2, function (col) {
+                      v  <- as.numeric (col)
+                      nv <- v [!is.na (v)]
+
+                      if (length (nv) == 0) FALSE else all (nv < 0)
+                    }), drop = FALSE]
+
+
+    ## Check if any fulfills all
+    nNA <- colSums (is.na (formatedDate)) == 0
+
+    if (any (nNA)) {
+      Format <- colnames (formatedDate) [nNA]
+    } else {
+
+      Format <- colnames (formatedDate)
+
+      ## See which time format works for this
+      if (length (Format) > 1) {
+        Format <- vapply(
+        seq_len (nrow (formatedDate)),
+        function (i) {
+          row <- formatedDate [i, ]
+          nn <- names (row) [!is.na (row)]
+
+          if (length (nn) == 0)
+            return (NA_character_)
+
+
+          if (length (nn) > 1) {
+            warning (sprintf(
+              "Row %d has multiple possible formats: %s. Using the first.",
+              i, paste (nn, collapse = ", ")
+            ))
+          }
+
+          nn [1]
+        },
+        FUN.VALUE = character (1)
+      )
+    }
+    }
     }
 
     if (!as.date) {
         # Post-process Check...
         if (length (Format) == 0) {
             warning (paste0 ("Possible illegal datetime format detected in ",
-            DT, ".
+            Date, ".
       Please, ensure that...
          1. the year is recorded as full four digits (i.e., 19xx).
          ==> Please, manually correct the year and try again.
@@ -154,11 +253,11 @@ DateFormat <- function (DT, as.date = TRUE, Delim = NULL) {
               month number to name.")
         }
     }
-
-
-    Format <- Format [1]
+  # Step 4. Conversion & Return ---------------
     if (as.date) {
-        return (as.Date (DT, format = Format))
+        x <- as.Date (Date, format = Format)
+        class (x) <- "Date"
+        return (x)
     } else {
         return (Format)
     }

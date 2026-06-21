@@ -35,8 +35,8 @@
 #'
 #' @param aOF A character vector of observed time offsets (e.g., `"+0100"`,
 #'   `"-0500"`). Each element is matched against known time zone offsets.
-#' @param DT A POSIXct date/time used as the reference point for offset
-#'   comparison. Defaults to January 1, 2021 UTC if `NULL`.
+#' @param DT A POSIXct date or datetime vector used as the reference point for
+#'   offset comparison. Defaults to January 1, 2021 UTC if `NULL`.
 #' @param iTZ An initial time zone to prioritize. If `"local"`, the system
 #'   time zone (`Sys.timezone ()`) is used. If `NULL`, no initial preference
 #'   is applied.
@@ -47,7 +47,7 @@
 #'   Defaults to `FALSE` (sequential).
 #'
 #' @return One of the following, depending on the inputs:
-#' 
+#'
 #'  \itemize{
 #'   \item If \code{length (aOF) == 1} and \code{All = TRUE}:
 #'     \itemize{
@@ -57,12 +57,12 @@
 #'       \item When a single match is found: a named character vector of
 #'       length 1, with the name set to the offset.
 #'     }
-#' 
+#'
 #'   \item If \code{length (aOF) > 1} and \code{All = TRUE}: a named list
 #'   (names are the offsets in \code{aOF}). Each element is a character
 #'   vector of matching time zones. Elements may be \code{character (0)} if
 #'   no matches are found.
-#' 
+#'
 #'   \item If \code{All = FALSE}:
 #'     \itemize{
 #'       \item When \code{length (aOF) == 1}: a single character scalar (the
@@ -102,8 +102,11 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     if (is.null (iTZ)) {
         TZ1 <- NULL
     } else if (iTZ == "local") {
-       TZ1 <- Sys.timezone ()
-    } else if (!iTZ %in% oTZs) {
+        TZ1 <- Sys.timezone ()
+    } else {
+        iTZ <- ValInput(iTZ, "TZ")
+
+     if (!iTZ %in% oTZs) {
         stop (sprintf (
             "The provided time zone \"%s\" is not recognized.\n",
             iTZ
@@ -112,6 +115,12 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     } else {
         TZ1 <- iTZ
     }
+    }
+
+    if (length (iTZ) == 1 && length (aOF) == 1) {
+        return (iTZ)
+    } else {
+
 
     ## Process DT
     if (is.null (DT)) {
@@ -132,7 +141,8 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
         cl <- parallel::makeCluster (max (1, NCore - 2))
 
         ### Step 2: Export variables
-        parallel::clusterExport (cl, varlist = c ("DT"), envir = environment ())
+        parallel::clusterExport (cl, varlist = c ("DT"),
+                                 envir = environment ())
 
         ### Step 3: Run parallelized task
         Toffs <- parallel::parLapply (cl, oTZs, function (tz) {
@@ -206,4 +216,5 @@ GuessTZ <- function (aOF, DT = NULL, iTZ = NULL, All = TRUE, fork = FALSE) {
     }
 
     return (pTZs)
+    }
 }

@@ -111,7 +111,7 @@ where \eqn{pdf} is the normalized KDE at grid angle \eqn{\theta},
 \eqn{den} is the kernel denominator at that grid point, and \eqn{\text{area}}
 rescales the fitted density back to the activity scale.
 
-Notes:
+\strong{Notes}
 \itemize{
   \item Normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from the
   orthogonality of sine and cosine on \eqn{[0,2\pi)}.
@@ -182,21 +182,21 @@ where,
 
 BdfList <-
     BriefSum (
-        data = FlyEast,
-        SR = 1 / 60,
+        data  = FlyEast,
+        SR    = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
 # Let's extract actigraphy data from a single day
 data <- BdfList$data
-data <- subset (
-    x = data,
+data <- subset(
+    x      = data,
     subset = data$Date == "2017-10-27"
 )
 
 
-fit <- CosinorM.KDE (
-    time = data$Time,
+fit <- CosinorM.KDE(
+    time     = data$Time,
     activity = data$Activity
 )
 
@@ -204,7 +204,7 @@ fit <- CosinorM.KDE (
 fit$coef.cosinor
 
 # plot KDE in hours
-ggCosinorM (object = fit)
+ggCosinorM(object = fit)
 
 }
 \references{

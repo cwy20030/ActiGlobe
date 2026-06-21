@@ -56,8 +56,8 @@ Num2UTC <- function (x) {
     mp <- ifelse (x < 0, "-", "+") ### Check positive or negative
 
     C <- ifelse (abs (A) < 10, paste0 (mp, "0", abs (A)), paste0 (mp, A))
+    C <- gsub ("--", "-", C)
     D <- ifelse (B == 0, "00", B)
-
 
     Out <- paste0 ("UTC", C, ":", D)
 

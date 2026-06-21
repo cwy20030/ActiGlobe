@@ -27,6 +27,7 @@
 #' time based on the detection or the time format. (default: FALSE, which
 #' returns time format)
 #'
+#'
 #' @returns
 #' If \code{as.time = TRUE}, returns a character vector of the input times
 #' reformatted according to the detected format. Each element corresponds to
@@ -37,8 +38,24 @@
 #'
 #' If no format matches, returns NA and issues a warning.
 #'
+#'
+#' @seealso \code{\link{DateFormat}} \code{\link{as.posIXct}}
+#'
+#'
 #' @examples
 #'
+#' # Case 1.  Convert mixed time format to a consistent format
+#' # Example 3: When all dates have the same format
+#' ## Create and store a date in a variable called Time
+#' Time <- c (
+#'     "2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02",
+#'     "2022/11/28 08:35 PM"
+#' )
+#'
+#' TimeFormat (time = Time, as.time = TRUE)
+#'
+#'
+#' # Case 2. Extract the format of the time string from each item in the vector
 #' # Example 1: When all dates have the same format
 #' ## Create and store a date in a variable called Time
 #' Time <- c (
@@ -71,9 +88,17 @@
 #' ### print(TimeFormat(time = Time))
 #' ### Note, this process will fail because there are multiple formats
 #'
+#'
 #' @export
 
 TimeFormat <- function (time, as.time = FALSE) {
+    # Step 0. Input Conversion and Parameter Extraction --------------
+    if (all (!grepl ("00:00:00|00:00:00.0|OO:00 AM", time)))
+        time <- as.character (time)
+
+
+
+
     # Define a vector of time formats
     fmts <- c (
         "%H:%M:%S", "%I:%M:%S %p",
@@ -83,12 +108,36 @@ TimeFormat <- function (time, as.time = FALSE) {
     ## Control for microsecond
     fmts.micro <- c ("%H:%M:%OS", "%I:%M:%OS %p")
 
+
+
+    # Step 1. Unification and Remove Date String ---------------
+    DateF <- suppressWarnings (tryCatch (DateFormat (time, as.date = FALSE)))
+
+    #### If the string contains date, remove it.
+    if (!DateF == "") {
+        #### Extract DateFormat
+        D <- tryCatch (
+            as.character (format (suppressWarnings (
+                as.POSIXlt (time, DateF)), DateF))
+        )
+
+
+        # Remove the date part from the time string
+        Tm  <- gsub (paste0 (unique (D), collapse = "|"), "", time)
+
+        # Tm [Tm == ""] <- "00:00:00"
+    } else {
+        Tm <- time
+    }
+
+
+    # Step 2. Time Format Detection ---------------
     ### Check if any time string has period symbol
-    if (any (grepl ("\\.", time))) {
-        idx <- grep ("\\.", time)
+    if (any (grepl ("\\.", Tm))) {
+        idx <- grep ("\\.", Tm)
 
         ### Break up parts of the time string by colon
-        parts <- strsplit (time [idx], ":")
+        parts <- strsplit (Tm [idx], ":")
         lens <- lengths (parts)
 
 
@@ -110,30 +159,12 @@ TimeFormat <- function (time, as.time = FALSE) {
     }
 
 
-    # Unify to Date-Time format
-    DateF <- suppressWarnings (tryCatch (DateFormat (time, as.date = FALSE)))
-
-
-    #### If the string contains date, remove it.
-    if (!DateF == "") {
-        #### Extract DateFormat
-        D <- tryCatch (
-            format (as.POSIXct (time), DateF)
-        )
-
-        # Remove the date part from the time string
-        Tm <- gsub (paste0 (unique (D), collapse = "|"), "", time)
-    } else {
-        Tm <- time
-    }
-
-
     # Remove any leading or trailing whitespace
     Tm <- trimws (Tm)
 
-
     # Test Time Formats
     formatedTime <- strptime (Tm, format = fmts)
+    formatedTime <- strftime(formatedTime, fmts)
 
     ## Remove Unmatched Time Formats
     Format <- fmts [which (!is.na (formatedTime))]
@@ -149,25 +180,43 @@ TimeFormat <- function (time, as.time = FALSE) {
         TFormat <- Format [which.max (Length)]
     }
 
+    # Step 3. Return Time Format or Reformatted Time ---------------
+    if (as.time) {
+        if (TFormat == "%H:%M:%OS"){
+            options (digits.secs = 3)
+        }
 
-    if (!as.time) {
-        ### Return time format
-        return (TFormat)
-    } else {
         # Test Time Formats
+        if ((TFormat == "%H:%M:%S" | TFormat == "%H:%M:%OS") &
+            !any (grepl ("I|p", Format))) {
 
-        for (i in seq_along (Tm)) {
-            if (!Tm [[i]] == "") {
-                x <- TimeFormat (Tm [[i]], as.time = FALSE)
+            Tm <-
+                invisible (
+                    format (strptime (Tm, TFormat), TFormat)
+                )
+
+        } else {
+
+            for (i in seq_along (Tm)) {
+                if (!Tm [[i]] == "") {
+                    x <- TimeFormat (Tm [[i]], as.time = FALSE)
 
 
-                Tm [[i]] <-
-                    invisible (
-                        format (strptime (Tm [[i]], x), TFormat)
-                    )
+                    Tm [[i]] <-
+                        invisible (
+                            format (strptime (Tm [[i]], x), TFormat)
+                        )
+                }
+
             }
+
         }
 
         return (Tm)
+
+    } else {
+
+        ### Return time format
+        return (TFormat)
     }
 }

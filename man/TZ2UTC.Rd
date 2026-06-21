@@ -4,13 +4,16 @@
 \alias{TZ2UTC}
 \title{Compute UTC offset based on Time Zone and Date}
 \usage{
-TZ2UTC(DT, TZ = "local")
+TZ2UTC(Date = NULL, TZ = "local", DT = NULL)
 }
 \arguments{
-\item{DT}{The date in the format as "2021-03-05"}
+\item{Date}{A POSIXct date used as the reference point for offset
+comparison. Defaults to January 1, 2021 UTC if `NULL`.}
 
 \item{TZ}{The time zone when the recording started. Default = "local",
 which means user's local time zone}
+
+\item{DT}{`r lifecycle::badge("deprecated")` Use `Date` instead.}
 }
 \value{
 A character string indicating the UTC offset, e.g., "UTC-05:00"
@@ -19,26 +22,22 @@ A character string indicating the UTC offset, e.g., "UTC-05:00"
 Compute UTC offset based on Time Zone and Date
 }
 \examples{
-
-x <- as.Date (c ("2017-10-24", "2017-11-20"))
-TZ2UTC (DT = x, TZ = "America/New_York") ## Expect two different UTCs
+x <- as.Date(c("2017-10-24", "2017-11-20"))
+TZ2UTC(Date = x, TZ = "America/New_York") ## Expect two different UTCs
 
 
 # A vector of dates
-x <-
-    seq.Date (
-        from = as.Date ("2017-10-24"),
-        to = as.Date ("2017-11-27"),
-        by = "day"
-    )
+x <- seq.Date(from = as.Date("2017-03-15"),
+              to   = as.Date("2017-11-27"),
+              by   = "day")
 
 
 # If the user resides in a country that follows daylight saving time
-TZ2UTC (DT = x, TZ = "local")
+TZ2UTC(Date = x, TZ = "local")
 
 \dontrun{
 # If not
- TZ2UTC(DT = x, TZ = "America/New_York")
+ TZ2UTC(Date = x, TZ = "America/New_York")
 }
 
 }

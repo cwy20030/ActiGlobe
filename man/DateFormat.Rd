@@ -2,12 +2,12 @@
 % Please edit documentation in R/DateFormat.R
 \name{DateFormat}
 \alias{DateFormat}
-\title{Detect Possible DT Format}
+\title{Format Recognition and Conversion of Date Strings}
 \usage{
-DateFormat(DT, as.date = TRUE, Delim = NULL)
+DateFormat(Date, as.date = TRUE, Delim = NULL, Guess = TRUE, DT = NULL)
 }
 \arguments{
-\item{DT}{A character vector containing date or date-time strings.}
+\item{Date}{A character vector containing **date** OR **date-time** strings.}
 
 \item{as.date}{Logical. If TRUE (default), returns converted Date objects.
 If FALSE, returns the detected format string (e.g., \code{"\%d/\%m/\%Y"}).}
@@ -15,6 +15,12 @@ If FALSE, returns the detected format string (e.g., \code{"\%d/\%m/\%Y"}).}
 \item{Delim}{Optional. A single character (e.g., \code{"."}, \code{"-"},
 or \code{"/"}) to override default date delimiters. Requited when input
 strings may contain nonstandard separators (e.g., \code{"$"}, \code{"~"}).}
+
+\item{Guess}{Logical. If TRUE, the function will attempt to guess
+the delimiter used in the input strings if not provided. If FALSE (default),
+it will rely solely on the specified \code{Delim} or default delimiters.}
+
+\item{DT}{`r lifecycle::badge("deprecated")` Use `Date` instead.}
 }
 \value{
 If \code{as.date = TRUE}, returns a vector of class \code{Date}.
@@ -26,9 +32,6 @@ detected, warnings are issued and default behavior is applied.
 If no format matches, returns \code{NA} and issues a warning.
 }
 \description{
-This function will automatically detect possible date format. Users can
-choose to either reformat the date or report the datetime format detected.
-
 Identifies the likely date format used in character strings and
 optionally converts these strings to Date objects. This utility is
 intended to support pre-processing of timestamp data with varied or
@@ -37,40 +40,64 @@ month-day ordering), the function defaults to the first compatible format
 unless explicitly guided by a delimiter or by manual correction.
 }
 \examples{
-# Consistent format across all strings
-DT <- c ("2017/05/02", "2000/02/28", "1970/01/02")
-DateFormat (DT, as.date = FALSE) # returns parsed Date vector
+# Case 1. Detect date format from the string:
+## Consistent format across all strings
+### We will store all these strings in a variable called DT, short for
+### date-time.
+DT <- c("2017/05/02", "2000/02/28", "1970/01/02")
+DateFormat(DT, as.date = FALSE) # returns parsed Date vector
 
-
-# DateFormat requires consistent numeration of date, 
-# month and year. when handling mixed formats
-DT <- c (
-    "2017/05/02", "2000.02.28", "1970-11-02",
-    "01, 01, 2025", "12, 12, 1980"
-)
-
-## list-based element-wise parsing:
-lapply (DT, DateFormat, Delim = ",") 
-
-## vector-based serial-processing:
-for (x in DT) {
-    print (DateFormat (x, Delim = ","))
-} # displays format/warning per entry
-
-
-
-# Caution: 
+# Caution:
 ## It would likely fail if the vector contains
 ## mixtures of string and numeric values.
-DT <- c (
+DT1 <- c(
     "2017/05/02", "2000.Feb.28", "1970-11-02",
     "January 01, 2025", "December 12, 1980"
 )
-lapply (DT, DateFormat) # element-wise parsing
+lapply(DT1, DateFormat, as.date = FALSE) # element-wise parsing
 
-## Avoid using sapply, because it will 
-## convert them into numeric form
-sapply (DT, DateFormat)
 
+# version > 0.3.0:
+## As of version 0.3.0 DateFormat can now bulk detect mixed date formats
+DT2 <- c(
+    "2017/05/02", "2000.02.28", "1970-11-02",
+    "01, 01, 2025", "12, 12, 1980"
+)
+DateFormat(Date = DT2, Guess = TRUE)
+
+
+
+# Case 2. Convert string to date object:
+## version > 0.3.0:
+### As of version 0.3.0 DateFormat can now bulk convert date strings with
+### mixed format by using the `Guess` argument to detect the deliminator.
+
+DateFormat(Date = DT2, as.date = TRUE, Guess = TRUE)
+
+# *** Users should still be caution about the order of date and month
+in the converted date string, because it is likely to be misinterpreted
+when the the numeric month value is less than 13.
+
+
+## version < 0.3.0
+### list-based element-wise parsing:
+lapply(DT2, DateFormat, Delim = ",")
+
+### vector-based serial-processing:
+for(x in DT2){
+    print(
+    DateFormat(x, Delim = ","))
+} # displays format/warning per entry
+
+
+# *** Avoid using sapply, because it will turn the date into a
+numeric value
+sapply(DT, DateFormat)
 
 }
+\seealso{
+\code{\link{DateFormat}} \code{\link{as.posIXct}}
+}
+\keyword{convert}
+\keyword{date}
+\keyword{format}

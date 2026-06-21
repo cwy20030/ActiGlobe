@@ -1,7 +1,6 @@
 test_that ("C2T discrete time conversion works", {
     times <- c ("01:00:00", "02:30:00", "03:15:00")
-
-    res <- C2T (time = times, Discrete = TRUE)
+    res   <- C2T (times, Discrete = TRUE)
 
     # ---- Structure checks ----
     # Result should be a numeric vector of same length as input
@@ -34,7 +33,7 @@ test_that ("C2T discrete time conversion works", {
 test_that ("C2T non-discrete time  time conversion works", {
     times <- c ("01:00:00", "02:30:00", "03:15:00")
 
-    res <- C2T (time = times, Discrete = FALSE)
+    res <- C2T (times, Discrete = FALSE)
 
     # ---- Structure checks ----
     # Result should be a numeric vector of same length as input
@@ -56,21 +55,21 @@ test_that ("C2T non-discrete time  time conversion works", {
 
 test_that ("C2T continuous time conversion works", {
     BdfList <- BriefSum (
-        data = FlyEast,
-        SR = 1 / 60,
+        data  = FlyEast,
+        SR    = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
     data <- BdfList$data
-    Bdf <- BdfList$Bdf
+    Bdf  <- BdfList$Bdf
 
     # Extract actigraphy data from the second day ------------------------------
     fnDP <- Bdf$nDataPoints [1]
-    fDP <- fnDP + 1 # Midnight of the second day
-    eDP <- sum (Bdf$nDataPoints [c (1, 2)])
+    fDP  <- fnDP + 1 # Midnight of the second day
+    eDP  <- sum (Bdf$nDataPoints [c (1, 2)])
     data <- data [fDP:eDP, ]
 
-    res <- C2T (time = data$Time, Discrete = TRUE)
+    res <- C2T (data$Time, Discrete = TRUE)
 
     # ---- Structure checks ----
     # Result should be numeric and same length as the extracted data

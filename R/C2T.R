@@ -23,13 +23,13 @@
 #' directly. If the input is a time string, it is parsed into hours, minutes,
 #' and seconds, then converted to decimal hours relative to the first entry.
 #'
-#' @param time A vector of time values. Can be numeric, character, or factor.
-#'   Examples include `"13:45:00"` or `"01:30:15"`. If numeric, values are
-#'   returned as-is (after coercion). If character/factor, values are parsed
-#'   using \code{\link{TimeFormat}}.
-#' @param Discrete Logical scaler; if TRUE, each input in `Time` is converted
-#'   individually without subtraction for the prior time. Default FALSE will
-#'   subtract from the first time point.
+#' @param Time A vector of time values. Can be numeric, character, or
+#'  factor. If numeric (i.e., 9.0 or 10.5), values are returned as-is
+#'  (after coercion). If character/factor, values are parsed using
+#'  \code{\link{TimeFormat}}.
+#' @param Discrete Logical scaler; Default TRUE, each input in `Time` is
+#'  converted individually without subtraction for the prior time. If
+#'  FALSE, it will subtract from the first time point.
 #'
 #' @returns
 #' A numeric vector of time values expressed in decimal hours. If the input
@@ -43,29 +43,38 @@
 #' @examples
 #'
 #' # Character input
-#' times <- c ("01:00:00", "02:30:00", "03:15:00")
-#' C2T (times, Discrete = TRUE)
+#' times <- c("01:00:00", "02:30:00", "03:15:00")
+#' C2T(times, Discrete = TRUE)
 #'
 #' @noRd
 
-C2T <- function (time, Discrete = FALSE) {
+C2T <- function (Time, Discrete = TRUE) {
     # Check Point ------------------------
-    if (any (grepl ("^[A-Za-z]+$", time)) || any (is.numeric (time))) {
+    if (any (grepl ("^[A-Za-z]+$", Time)) || any (is.numeric (Time))) {
         stop ("Input 'time' must be a pure character time string with no
     timezone label. Please, check the input using TimeFormat().")
     }
 
-
     # First Attempt to Coerce to Numeric -------------
-    x <- suppressWarnings (as.numeric (as.character (time)))
+    x <- suppressWarnings (as.numeric (as.character (Time)))
 
     # If All NAs, Parse as Time Strings -------------
     if (length (na.omit (x)) == 0) {
-        Fmt <- TimeFormat (time, as.time = FALSE)
+
+        ## Check if date exists in the time string
+        DForm <- suppressWarnings (
+            tryCatch (DateFormat (Time, as.date = FALSE))
+        )
+
+        if (!DForm == "")
+            Time  <- TimeFormat (Time, as.time = TRUE)
+
+
+        TForm <- TimeFormat (Time, as.time = FALSE)
 
         decimal_hours <- vapply (
-            time, function (Tm) {
-                ParseT (time = Tm, fmt = Fmt)
+            Time, function (Tm) {
+                ParseT (Time = Tm, fmt = TForm)
             },
             numeric (1)
         )
@@ -80,13 +89,15 @@ C2T <- function (time, Discrete = FALSE) {
         x <- x - ini ## For duration
     }
 
-    if (any (x < 0) || any (x > 24)) {
+
+    if (any (is.na (x)))
+        warning (paste0 ("NAs introduced by coercion"))
+
+    if (any (x > 24 | x < 0))
         stop ("Negative or uut of range (0-24) value detected.
               Please check your input 'time' values.")
-    }
 
 
-    if (any (is.na (x))) warning (paste0 ("NAs introduced by coercion"))
 
 
     # Return Result ------------------------
@@ -94,24 +105,30 @@ C2T <- function (time, Discrete = FALSE) {
 }
 
 
+
+
+
 #' @title Parse Time Strings into Decimal Hours
 #'
 #' @param time A character vector of time strings (e.g., "13:45:00").
 #' @param fmt A character string specifying the format of the time strings,
 #'
+#' @return A numeric value representing the time in decimal hours.
+#'
 #' @noRd
 
-ParseT <- function (time, fmt) {
+ParseT <- function (Time, fmt) {
     # Step 1. Check if "%I" exists (12-hour clock)
     is12 <- grepl ("%I", fmt)
-    has_ampm <- grepl ("AM|PM", time, ignore.case = TRUE)
+    has_ampm <- grepl ("AM|PM", Time, ignore.case = TRUE)
 
     # Step 2. Count how many ":" exist
-    colon_count <- lengths (regmatches (time, gregexpr (":", time)))
+    colon_count <- lengths (regmatches (Time, gregexpr (":", Time)))
 
     # Step 3. Split the time string by ":"
-    parts <- unlist (strsplit (gsub ("AM|PM", "", time, ignore.case = TRUE),
-                               ":"))
+    parts <- unlist (strsplit (
+        gsub ("AM|PM", "", Time, ignore.case = TRUE),
+        ":"))
 
     # Step 4. Extract Hour, Minute, Second
     hour <- as.numeric (parts [1])
@@ -120,9 +137,9 @@ ParseT <- function (time, fmt) {
 
     # Adjust for 12-hour format if needed
     if (is12 && has_ampm) {
-        if (grepl ("PM", time, ignore.case = TRUE) && hour < 12)
+        if (grepl ("PM", Time, ignore.case = TRUE) && hour < 12)
             hour <- hour + 12
-        if (grepl ("AM", time, ignore.case = TRUE) && hour == 12)
+        if (grepl ("AM", Time, ignore.case = TRUE) && hour == 12)
             hour <- 0
     }
 

@@ -16,7 +16,7 @@ Geo2TZ(
 \arguments{
 \item{Date}{A POSIXct time used to compute "current" offset. Note that
 when processing location with daylight saving time, it is crucial to be
-specific about the date. Default uses \code{Sys.time}}
+specific about the date. Default uses \code{Sys.time}.}
 
 \item{Translate}{Logical; whether to translate suggestion labels
 (default = FALSE).}
@@ -51,13 +51,19 @@ database. Note that time zone abbreviations may vary by the local operating
 system.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+# Minimum usage
+Geo2TZ ()
 
-  Geo2TZ ()
+# Try typing Taipei after running the following code
+Geo2TZ (Translate = FALSE, Lang = "es")
 
-  # Try typing Taipei after running the following code
-  Geo2TZ (Translate = FALSE, Lang = "es")
+# To specify a date, useful when a location practice daylight saving time
+## For instance
+### Montreal daylight saving time
+Geo2TZ (Date = 2024-07-01) # In the console window, type in Montreal
 
-}
-
+### Montreal standard time
+Geo2TZ (Date = 2024-01-01)
+\dontshow{\}) # examplesIf}
 }

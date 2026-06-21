@@ -44,7 +44,7 @@
 #'
 #'
 #' \strong{Linearized form}:
-#'    \deqn{\hat{y} = M + \beta x + \gamma z + \epsilon }
+#'    \deqn{\hat{y} = M + \beta x + \gamma z + \epsilon}
 #' \itemize{
 #'   \item \eqn{\beta = A * cos(\phi)}, estimated coefficient for the cosine
 #'   term
@@ -52,7 +52,7 @@
 #'   \item \eqn{\gamma = A * sin(\phi)}, estimated coefficient for the sine
 #'   term
 #'   \item \eqn{z = sin(\frac{2 * \pi * t} {\tau})}, sine-transformed time
-#'   \item \eqn{\epsilon }: error term
+#'   \item \eqn{\epsilon}: error term
 #' }
 #'
 #' Model parameters are estimated by minimizing the residual sum of squares:
@@ -62,24 +62,22 @@
 #' @details
 #' \strong{Acrophase \eqn{\phi} interpretation}:
 #'  \eqn{\phi } is derived from
-#'  \deqn{\phi = \arctan2(\frac{\gamma} {\beta}) }
+#'  \deqn{\phi = \arctan2(\frac{\gamma} {\beta})}
 #'
-#'  Note,
+#' Note,
 #' \itemize{
-#'   \item \eqn{\phi } can be converted to clock time to identify the peak
+#'   \item \eqn{\phi} can be converted to clock time to identify the peak
 #'   activity time AFTER midnight.
-#'   \item if the model is not a mono-phase (i.e., more than one \eqn{\tau }),
-#'   there will be \eqn{\frac{24 (hours)} {\tau} } number of peaks within a day.
+#'   \item if the model is not a mono-phase (i.e., more than one \eqn{\tau}),
+#'   there will be \eqn{\frac{24 (hours)} {\tau}} number of peaks within a day.
 #' }
 #'
-#' \strong{Amplitude \eqn{(A) } estimation}:
+#' \strong{Amplitude \eqn{(A)} estimation}:
 #' Amplitude is calculated from fitted sine and cosine coefficients as:
 #' \deqn{A= \sqrt {(\beta^2 + \gamma^2)}}
 #'
-#'
 #' @importFrom stats lm coef resid predict update as.formula vcov
 #' @importFrom sandwich vcovHC
-#'
 #'
 #' @param time Numeric vector of time coordinates for each data point
 #' @param activity Numeric vector of activity counts from an actigraphy device
@@ -106,7 +104,6 @@
 #'   post-hoc processes, such as computing confidence interval via
 #'   nonparametric bootstrap
 #' }
-#'
 #'
 #' @returns
 #' A list of class c("CosinorM", "lm") containing:
@@ -148,6 +145,7 @@
 #' Harvey, A. C. (1976). Estimating Regression Models with Multiplicative
 #' Heteroscedasticity. Econometrica, 44(3), 461-465. doi:10.2307/1913974
 #'
+#'
 #' @seealso
 #' \code{\link[stats]{lm}}  \code{\link{CosinorM.KDE}}  \code{\link{ggCosinorM}}
 #'
@@ -155,21 +153,21 @@
 #' @examples
 #' # Create quick summary of the recording with adjustment for daylight saving.
 #' BdfList <-
-#'   BriefSum (
-#'   data = FlyEast,
-#'   SR = 1 / 60,
+#'   BriefSum(
+#'   data  = FlyEast,
+#'   SR    = 1 / 60,
 #'   Start = "2017-10-24 13:45:00"
 #'   )
 #'
 #' # Let's extract actigraphy data from a single day
 #' data <- BdfList$data
-#' data <- subset (data, data$Date == "2017-10-27")
+#' data <- subset(data, data$Date == "2017-10-27")
 #'
-#' fit <- CosinorM (
-#'   time = data$Time,
+#' fit <- CosinorM(
+#'   time     = data$Time,
 #'   activity = data$Activity,
-#'   tau = 24,
-#'   method = "OLS"
+#'   tau      = 24,
+#'   method   = "OLS"
 #' )
 #'
 #'
@@ -178,54 +176,59 @@
 #'
 #'
 #' # plot Cosinor in hours
-#' ggCosinorM (fit)
+#' ggCosinorM(fit)
 #'
 #'
 #' @keywords cosinor
 #' @export
 
 
-CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
-           type = "HC3", dilute = FALSE) {
+CosinorM <- function (time, activity, tau,
+                      method  = "OLS",
+                      arctan2 = TRUE,
+                      type    = "HC3",
+                      dilute  = FALSE) {
 
-  # Check Point and Input Validation -------------------------
+  # Step 0. Check Point and Input Validation -------------------------
   activity <- ValInput (x = activity, type = "Act")
-  time     <- ValInput (x = time, type = "Tm")
-  if (!method %in% c ("OLS", "FGLS")) stop ("Unsupported method specified!")
+  Tm       <- ValInput (x = time, type = "Time")
+  if (!method %in% c ("OLS", "FGLS"))
+    stop ("Unsupported method specified!")
 
 
   # Get Essential Info -----------------
   nT     <- length (tau) ### Number of assumed rhythms
-  Vars   <- as.vector (outer ( c("C", "S"),
-                             1:nT,
-                             paste0)) # C = x and S = z in the linear equation
+  Vars   <- as.vector (outer ( c ("C", "S"),
+                               1:nT,
+                               paste0)) # C = x and S = z in linear equation
   day    <- 24 # 24 hours per-day for now
   factor <- day / tau
-  dt     <- diff (time)
+  dt     <- diff (Tm)
   dt     <- dt [dt > 0]
   Epc    <- 1 / min (dt)
   SR     <- Epc / 3600
 
-  # Build cosine and sine columns for each period -------------------
+  # Step 1. Build cosine and sine columns for each period -------------------
   ## Create a model data.frame
-  Mdf        <- data.frame (matrix (nrow = length (time),
+  Mdf        <- data.frame (matrix (nrow = length (Tm),
                                     ncol = nT * 2))
-  names(Mdf) <- Vars
+  names (Mdf) <- Vars
 
   for (i in 1:nT) {
-    Mdf [[paste0 ("C", i)]] <- cos (2 * pi * time / tau [i])
-    Mdf [[paste0 ("S", i)]] <- sin (2 * pi * time / tau [i])
+    Mdf [[paste0 ("C", i)]] <- cos (2 * pi * Tm / tau [i])
+    Mdf [[paste0 ("S", i)]] <- sin (2 * pi * Tm / tau [i])
   }
 
-  # OLS -----------------------------
-  #@ Assemble data frame and formula ------------------
-  fm <- as.formula (paste ("activity ~", paste0 (Vars, collapse = " + ")))
+  # Step 2. OLS -----------------------------
+  ## Assemble data frame and formula
+  fm   <- stats::as.formula (paste ("activity ~",
+                                    paste0 (Vars, collapse = " + ")))
   data <- data.frame (activity = activity, Mdf)
 
-  #@ Fit linear model ----------------------------------------
+  ## Fit linear model
   model <- stats::lm (fm, data = data)
 
-  # Case Switch Between OLS and FGLS ----------------------------------------
+  # Step 3. Case Switch Between OLS and FGLS -----------------------------
   ## Feasible GLS via weighted least square with log-variance
   ## https://stats.stackexchange.com/questions/97437/
   ## feasible-generalized-least-square-in-r
@@ -233,18 +236,19 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
     ##  Step 0: Keep the OLS model.
 
     ## Step 1: Fit a variance model (log-variance)
-    data$e2  <- resid (model)^2 ## Squared residual
+    data$e2  <- stats::resid (model)^2 ## Squared residual
 
     ### Create a log-variance model
-    fm2    <- as.formula (paste ("log(e2) ~", paste0 (Vars, collapse = " + ")))
+    fm2    <- stats::as.formula (paste ("log(e2) ~",
+                                        paste0 (Vars, collapse = " + ")))
     varmod <- stats::lm (fm2, data = data)
 
     ## Step 2: compute weight based on the log-variance model
-    data$sigma2_hat <- exp (predict (varmod, data))
-    w             <- 1 / data$sigma2_hat
+    data$sigma2_hat <- exp (stats::predict (varmod, data))
+    w <- 1 / data$sigma2_hat
 
     ## Step 3: Weighted least squares approximates FGLS
-    model <- update (model, data = data, weights = w)
+    model <- stats::update (model, data = data, weights = w)
   }
 
 
@@ -253,8 +257,8 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
 
   ## Extract MESOR, beta, gamma
   mesor <- Coef ["(Intercept)"]
-  beta  <- Coef [Vars[grepl ("^C", Vars)]]
-  gamma <- Coef [Vars[grepl ("^S", Vars)]]
+  beta  <- Coef [Vars [grepl ("^C", Vars)]]
+  gamma <- Coef [Vars [grepl ("^S", Vars)]]
 
   ## Compute amplitude and acrophase
   amplitude <- sqrt (beta^2 + gamma^2)
@@ -276,7 +280,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
 
 
   ## Prepare Model-based Output ---------------
-  coef_names <- c(
+  coef_names <- c (
     "MESOR",
     paste0 ("Amplitude.", tau),
     paste0 ("Acrophase.", tau),
@@ -284,7 +288,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
     paste0 ("Gamma.", tau)
   )
 
-  coef.cosinor <- unname ( c(mesor, amplitude, acrophase, beta, gamma))
+  coef.cosinor <- unname (c (mesor, amplitude, acrophase, beta, gamma))
   names (coef.cosinor) <- coef_names
 
   ## Prepare Derived Outputs ----------------
@@ -306,8 +310,8 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
     if (factor == round (factor)) {
       f.list <-
         seq.int (from = 1,
-        to = factor,
-        by = 1
+                 to   = factor,
+                 by   = 1
       )
       f.list <- f.list - 1
 
@@ -337,9 +341,9 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
 
 
   ### Store Output
-  post.hoc        <- c(mesor_vlaue, bathy.ph, trough_value,
+  post.hoc        <- c (mesor_vlaue, bathy.ph, trough_value,
                        acro.ph, peak_value, Amp)
-  names(post.hoc) <- c("MESOR.ph", "Bathyphase.ph.time", "Trough.ph",
+  names(post.hoc) <- c ("MESOR.ph", "Bathyphase.ph.time", "Trough.ph",
                        "Acrophase.ph.time", "Peak.ph", "Amplitude.ph")
 
 
@@ -348,10 +352,10 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
   if (dilute) {
     ### for bootstrap
     fit         <- list (coef.cosinor = c(coef.cosinor, post.hoc))
-    class (fit) <- c("CosinorM") ## Assign Class
+    class (fit) <- c ("CosinorM") ## Assign Class
   } else {
-    fit <- model
-    fit$model$time   <- time
+    fit              <- model
+    fit$model$time   <- Tm
     fit$epoch        <- Epc
     fit$tau          <- tau
     fit$arctan2      <- arctan2
@@ -375,7 +379,7 @@ CosinorM <- function(time, activity, tau, method = "OLS", arctan2 = TRUE,
 
 
     ## Assign Class
-    class (fit) <- c("CosinorM", "lm")
+    class (fit) <- c ("CosinorM", "lm")
   }
 
 

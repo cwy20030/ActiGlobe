@@ -14,31 +14,25 @@ A modified IANA 2025b database
  "America/Montreal").}
  \item{TimeZone_Identifiers}{Alternative or historical identifiers linked
  to the IANA timezone.}
- \item{TZ_Code}{Short code or identifier representing the timezone, often
- aligned with ISO or custom dataset conventions (e.g., "EST", "PST").}
- \item{Offset}{Numeric UTC offset in hours, representing the difference from
- Coordinated Universal Time (e.g., -5, +9).}
- \item{Observes_DST}{Logical flag indicating whether the timezone observes
- daylight saving time (TRUE/FALSE).}
- \item{Current_DST_Status}{Current daylight saving time status at the time
- of data capture (e.g., "DST Active").}
- \item{Current_Abbreviation}{Abbreviation in effect at the reference
- date/time, which may be a daylight saving abbreviation (e.g., "EDT") or a
- standard abbreviation (e.g., "EST").}
- \item{Current_Time_Zone_long_name}{Human-readable name of the timezone
- currently in effect, reflecting whether daylight saving time is active
-  (e.g., "Eastern Daylight Time" in summer, "Eastern Standard Time" in
-  winter).}
- \item{Current_Offset}{UTC offset in hours at the reference date/time,
- including any daylight saving adjustment if applicable (e.g., -4 during
- EDT, -5 during EST).}
- \item{Standard_Abbreviation}{Abbreviation used during standard
- (non-daylight saving) time only (e.g., "EST").}
  \item{Standard_Time_Zone_long_name}{Human-readable name of the timezone
  during standard time, without daylight saving adjustment (e.g., "Eastern
  Standard Time").}
- \item{Standard_Offset}{UTC offset in hours during standard time, excluding
- daylight saving adjustment (e.g., -5).}
+ \item{Standard_TZ_Code}{Abbreviation used during standard
+ (non-daylight saving) time only (e.g., "EST").}
+ \item{Standard_Offset}{UTC offset in clock time during standard time,
+ excluding daylight saving adjustment (e.g., +03:00).}
+ \item{Standard_Offset_Numeric}{Numeric UTC offset in hours during standard
+ time (e.g., 3.00).}
+ \item{Observes_DST}{Logical flag indicating whether the timezone observes}
+ \item{DST_Time_Zone_long_name}{Human-readable name of the timezone
+ during daylight saving time or other recurrent practice of time shift
+ (e.g., "Australian Central Daylight Time").}
+ \item{DST_TZ_Code}{Abbreviation used during daylight saving time or other
+ recurrent practice of time shift only (e.g., "ACDT").}
+ \item{DST_Offset}{UTC offset in clock time during daylight saving or
+ recurrent time change (e.g., +10:30).}
+ \item{DST_Offset_Numeric}{Numeric UTC offset in hours during daylight
+ saving or recurrent time change (e.g., 10.5)}
  }
 }
 \usage{
@@ -47,5 +41,8 @@ data(IANA)
 \description{
 A dictionary for standard abbreviation and labels of time-zone and their
 corresponding UTC offset.
+}
+\seealso{
+\code{\link{TZwDST}} \code{\link{MapTZ}}
 }
 \keyword{IANA}

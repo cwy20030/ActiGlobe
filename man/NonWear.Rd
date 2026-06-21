@@ -9,7 +9,9 @@ NonWear(
   VAct = NULL,
   VTm = NULL,
   method = "Choi",
-  HyperP = list(ScreenEpoch = 90, ArtEpoch = 2, TraceEpoch = 30)
+  HyperP = list(ScreenEpoch = 90, ArtEpoch = 2, TraceEpoch = 30),
+  Bdf = NULL,
+  AddRatio = FALSE
 )
 }
 \arguments{
@@ -20,18 +22,26 @@ for further detail.}
 \item{VAct}{Optional character. Name of the activity column in \code{data}.
 If NULL, defaults to the second column of \code{data}.}
 
-\item{VTm}{Optional character. Name of the date.time index column in
+\item{VTm}{Optional character. Name of the time or date.time index column in
 \code{data}.If NULL, defaults to the first column of \code{data}.}
 
-\item{method}{Character string specifying detection method
+\item{method}{Character string specifying detection method. Algorithm-
+specific hyperparameters can be passedd through the \code{HyperP} argument.
+Available methods include:
 \itemize{
   \item "Choi": A modified Troiano algorithm designed to detect possible
-  non-wear time using moving window approach. The algorithm considers the
-  following hyperparameters:
+  non-wear time based on time-dependent threshold of inactive period. This
+  is currently the only supported method.
+}}
+
+\item{HyperP}{A list of hyperparameters used to tune the non-wear detection
+algorithm. The default values are set for the Choi algorithm, which is
+currently the only supported method.
+\itemize{
+  \item "Choi": All hyperparameters require units in minutes.
    \itemize{
      \item ScreenEpoch: minimum threshold to classifying a segment as
-     probable non-wear time; Default = 90
-     (minutes per epoch).
+     probable non-wear time; Default = 90 (minutes per epoch).
      \item Artifact Control:
       \itemize{
        \item ArtEpoch: The maximum interval of spontaneous activity
@@ -44,21 +54,39 @@ If NULL, defaults to the second column of \code{data}.}
        }
 }}
 
-\item{HyperP}{a list of hyperparameters used to tune the non-wear detection
-algorithm. The default values are set for the Choi algorithm, which is
-currently the only supported method.}
+\item{Bdf}{Optional; a \code{\link{BriefSum}} object containing per-day
+metadata for the recording. Note, if jet lag occurred during the recording,
+please, update the metadata using \code{\link{TAdjust}} before passing to
+this function.}
+
+\item{AddRatio}{Logical scalar. If `TRUE`, the function will calculate and
+add Percent_Nonwear to data. Default = FALSE}
 }
 \value{
-An amended data.frame with non-wearer detection results storing in a new
-column:
-  \item \code{pNonWear}, which stands for possible non-wear time. The values
+An amended raw recording data.frame with non-wearer detection results
+storing in a new column:
+  \code{pNonwear}, which stands for possible non-wear time. The values
   are logical, where \code{TRUE} indicates a possible non-wear period
   according to the specified method (e.g., Choi algorithm).
+
+When \code{Bdf} is provided, the function also returns an updated
+\code{BriefSum} object with two additional columns:
+\itemize{
+  \item Possible_Nonwear_Time: total duration of possible non-wear time per
+  day (in minutes).
+  \item Percentage_Nonwear: a quality control indice based on the ratio
+  of total wear time to possible nonwear time.
+  }
 }
 \description{
-`NonWear()` is a function that detects possible non-wearing periods within
-a longitudinal recording. Currently, it supports only the Choi algorithm and
-require \eqn{1/60}Hz sampling rate.
+The function detects possible non-wearing periods within a longitudinal
+recording. Currently, it supports only the Choi algorithm, which is a
+threshold-based classifier using activity count.
+}
+\note{
+With Choi algorithm, the default resolution is \eqn{1/60}Hz (i.e., 1-minute
+epoch). For recordings of higher resolution, \code{NonWear} will
+automatically adjust the hyperparameters multiplicatively.
 }
 \examples{
 
@@ -86,6 +114,7 @@ plot (y = data$Activity, x = data$DateTime, type = "l")
 points (y = data$pNonWear * 1000,
         x = data$DateTime,
         col = "red", pch = 16, cex = 0.5)
+
 
 }
 \references{

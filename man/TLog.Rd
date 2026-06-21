@@ -11,9 +11,9 @@ A data frame with over 40,000 rows and 5 variables:
   \item{UTC_Offset}{UTC offset of the wearer's location or destination.}
   \item{Country_with_Daylight_Saving}{Binary indicator (TRUE/FALSE) for
   whether daylight saving time is observed at the location or destination.}
-  \item{date_Start}{Start date of the wearer's initial location or date of
+  \item{Date_Start}{Start date of the wearer's initial location or date of
    departure.}
-  \item{date_End}{Optional date when the wearer departs again from the
+  \item{Date_End}{Optional date when the wearer departs again from the
   initial location or previous destination.}
 }
 }

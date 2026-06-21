@@ -40,10 +40,10 @@
 #'
 #' @examples
 #'
-#' Demand (c ("Option A", "Option B", "Other"), "option")
+#' Demand(c("Option A", "Option B", "Other"), "option")
 #'
+#' @keywords prompt ask demand
 #' @noRd
-
 
 Demand <- function (options, MESSAGE) {
     # Print the options for the user
@@ -74,4 +74,75 @@ Demand <- function (options, MESSAGE) {
 
     # Return the selected option
     return (options [as.numeric (selected_option)])
+}
+
+
+
+
+
+
+#' @title Obtain query suggestions based on input
+#'
+#' @importFrom httr2 request req_url_query req_user_agent req_timeout
+#' @importFrom httr2 req_perform resp_check_status resp_body_string
+#' @importFrom jsonlite fromJSON
+#'
+#' @param Query The search query string.
+#' @param URL The base URL for the search API
+#' @param UA User agent string for the HTTP request.
+#' @param Limit Maximum number of suggestions to return.
+#' @param Timeout Request timeout in seconds.
+#' @param Translate Logical; whether to translate suggestion labels.
+#' @param Lang Target language code for translation (e.g., "en", "es
+#'
+#' @noRd
+
+Suggest <- function (Query,
+                     URL       = "https://nominatim.openstreetmap.org/search",
+                     UA        = Default_UA (),
+                     Limit     = 8,
+                     Timeout   = 20,
+                     Translate = TRUE,
+                     Lang      = "en") {
+
+    # Request suggestions from the search API -----------------
+    Req <-
+        httr2::request (URL) |>
+        httr2::req_url_query (
+            q = Query,
+            format = "jsonv2",
+            addressdetails = 1,
+            limit = Limit
+        ) |>
+        httr2::req_user_agent (UA) |>
+        httr2::req_timeout (Timeout)
+
+    Resp <- httr2::req_perform (Req)
+    httr2::resp_check_status (Resp)
+
+    Txt <- httr2::resp_body_string (Resp)
+    X   <- jsonlite::fromJSON (Txt)
+
+    # Prepare Output ------------------------------
+
+    if (length (X) == 0) {
+        return (data.frame ())
+    }
+
+    Lab <- X$display_name
+
+    if (isTRUE (Translate) && !is.null (Lang) && nzchar (Lang)) {
+        Lab <-
+            vapply (Lab, function (x) {
+                Translator (Text = x, Lang = Lang)
+            }, FUN.VALUE = character (1))
+    }
+
+    # Output -------------------
+    data.frame (
+        Label = Lab,
+        Lat   = as.numeric (X$lat),
+        Lon   = as.numeric (X$lon),
+        stringsAsFactors = FALSE
+    )
 }

@@ -41,47 +41,46 @@ and post-hoc parameters via non-parametric bootstrap
 FlyEast
 
 BdfList <-
-    BriefSum (
-        data = FlyEast,
-        SR = 1 / 60,
+    BriefSum(
+        data  = FlyEast,
+        SR    = 1 / 60,
         Start = "2017-10-24 13:45:00"
     )
 
 # Let's extract actigraphy data from a single day
 data <- BdfList$data
-data <- subset (data, data$Date == "2017-10-27")
+data <- subset(data, data$Date == "2017-10-27")
 
 # Multicomponent Cosinor Model
-fit <- CosinorM (
-    time = data$Time,
+fit <- CosinorM(
+    time     = data$Time,
     activity = data$Activity,
-    tau = c (12, 24),
-    method = "OLS"
+    tau      = c(12, 24),
+    method   = "OLS"
 )
 
 # inspect coefficients
 
-boot.seci (
-    object = fit,
+boot.seci(
+    object   = fit,
     ci_level = 0.95,
-    n = 500
+    n        = 500
 )
 
 
 # Gaussian Kernel Density Estimation
-fit2 <- CosinorM.KDE (
-    time = data$Time,
+fit2 <- CosinorM.KDE(
+    time     = data$Time,
     activity = data$Activity
 )
 
 # inspect coefficients
 
-boot.seci (
-    object = fit2,
+boot.seci(
+    object   = fit2,
     ci_level = 0.95,
-    n = 500
+    n        = 500
 )
-
 
 }
 \seealso{

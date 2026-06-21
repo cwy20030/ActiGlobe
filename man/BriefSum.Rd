@@ -72,8 +72,8 @@ epochs for a full day.
 }
 \examples{
 BdfList <- BriefSum (
-    data = FlyEast,
-    SR = 1 / 60,
+    data  = FlyEast,
+    SR    = 1 / 60,
     Start = "2017-10-19 13:45:00"
 )
 
@@ -83,8 +83,8 @@ str (BdfList)
 ## install library "zeallot"
 ## library(zeallot)
 ## c(Bdf, data) \%<-\%
-## BriefSum(data = FlyEast,
-##          SR = 1/60,
+## BriefSum(data  = FlyEast,
+##          SR    = 1/60,
 ##          Start = "2017-10-24 13:45:00")
 
 

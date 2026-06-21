@@ -23,8 +23,8 @@ test_that ("TAdjust Test Completed", {
         ID = c ("Jane Doe", "Jane Doe"),
         UTC_Offset = c ("UTC -04:00", "UTC +08:00"),
         Country_with_Daylight_Saving = c (TRUE, FALSE),
-        date_Start = as.Date (c ("2017/10/31", "2017/11/02")),
-        date_End = as.Date (c (NA, NA))
+        Date_Start = as.Date (c ("2017/10/31", "2017/11/02")),
+        Date_End = as.Date (c (NA, NA))
     )
 
     Nadj <- TAdjust (
@@ -46,5 +46,6 @@ test_that ("TAdjust Test Completed", {
 
     # ---- Error checks ----
     # Invalid TZ should trigger an error
-    expect_error (tryCatch (TAdjust (Bdf = Bdf, TLog = tz_db, TZ = "Invalid/TZ")))
+    expect_error (tryCatch (TAdjust (Bdf = Bdf, TLog = tz_db,
+                                     TZ = "Invalid/TZ")))
 })

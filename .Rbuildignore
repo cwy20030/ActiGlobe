@@ -30,3 +30,5 @@
 ^([^/]+)\.png$
 ^\.all-contributorsrc$
 ^codemeta\.json$
+^\.positai$
+^\.claude$

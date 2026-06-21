@@ -30,18 +30,18 @@ test_that ("ValInput handles Act, Tm correctly", {
     # ---- Structure checks ----
     # Mock C2T for testing
     C2T <- function (x, Discrete = TRUE) as.numeric (x)
-    tm <- ValInput (c ("1", "2", "3"), type = "Tm")
+    tm <- ValInput (c ("1", "2", "3"), type = "Time")
     expect_true (is.numeric (tm))
 
     # ---- Content checks ----
     # ---- Relationship checks ----
-    tm <- ValInput (c ("1", "2", "3"), type = "Tm")
+    tm <- ValInput (c ("1", "2", "3"), type = "Time")
     expect_equal (unname (tm), c (1, 2, 3))
 
 
     # ---- Error checks ----
     # Tm rejects out-of-range values
     expect_error (
-        tryCatch (ValInput (c (25, 1, 2), type = "Tm"))
+        tryCatch (ValInput (c (25, 1, 2), type = "Time"))
     )
 })

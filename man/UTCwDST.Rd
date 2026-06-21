@@ -4,7 +4,7 @@
 \alias{UTCwDST}
 \title{Determine if Daylight Saving Transitions may occur in an UTC Offset}
 \usage{
-UTCwDST(UTCs, DT = NULL, fork = FALSE)
+UTCwDST(UTCs, Date = NULL, TZ = NULL, fork = FALSE, DT = NULL, Detail = FALSE)
 }
 \arguments{
 \item{UTCs}{A character vector or numeric vector representing UTC offsets.
@@ -12,32 +12,62 @@ Accepted formats include "UTC+08:00", "UTC-05:00", or numeric values
 like "+8", "-5", etc. The function internally maps UTC strings to numeric
 offsets using \code{\link{UTC2Num}}.}
 
-\item{DT}{A POSIXct date/time used as the reference point for offset
+\item{Date}{A POSIXct date used as the reference point for offset
 comparison. Defaults to January 1, 2021 UTC if `NULL`.}
+
+\item{TZ}{A vector of time zone to prioritize. If `"local"`, the system
+time zone (`Sys.timezone ()`) is used. If `NULL`, no initial preference
+is applied.}
 
 \item{fork}{Logical, if TRUE, it will use parallel processing to speed up
 the computation. Default is FALSE.}
+
+\item{DT}{`r lifecycle::badge("deprecated")` Use `Date` instead.}
+
+\item{Detail}{Logical, if TRUE, it will return a list with detailed
+information about DST transitions for each time zone. Default is FALSE,
+which returns only the summary of whether any DST transition occurs for
+the respective UTC offset.}
 }
 \value{
-A logical vector the same length as \code{UTCs}. Each entry is `TRUE` if at
- least one time zone at the specified offset undergoes a DST transition,
- `FALSE` otherwise.
+\itemize{
+ \item If \code{Detail = FALSE} (default): A logical vector the same
+ length as \code{UTCs}. Each entry is `TRUE` if at least one time zone
+ at the specified offset undergoes a DST transition, `FALSE` otherwise.
+
+ \item If \code{Detail = TRUE}: A list containing:
+  \itemize{
+   \item \code{any_dst}: A logical vector indicating whether any DST
+   transition occurs for each UTC offset.
+   \item \code{mixed_dst}: A logical vector indicating whether there are
+   mixed DST practices within the same UTC offset (i.e., some zones shift
+   while others do not).
+   \item \code{by_tz}: A list of logical vectors for each UTC offset,
+   showing the DST transition status for each associated time zone.
+  }
+}
 }
 \description{
 Tests whether any IANA time zone associated with a given UTC offset
 undergoes daylight saving time (DST) transitions. The function identifies
-all zones matching the specified UTC offset and evaluates whether a time
-change occurs between winter and summer timestamps.
+all zones matching the specified UTC offset and evaluates whether time
+change may occur between winter and summer timestamps.
 }
 \details{
-For each value in \code{UTCs}, the function retrieves the corresponding IANA
-time zones whose offset matches the specified UTC string or numeric hour.
-It then compares the DST status of each zone on January 1 and July 15.
+For each value in \code{UTCs}, the function retrieves the corresponding
+IANA time zones whose offset matches the specified UTC string or numeric
+hour. It then compares the DST status of each zone on January 1 and
+July 15.
+
+**Important Note**
 If at least one zone shows a shift in DST status between the two dates,
 the function returns `TRUE` for that offset.
+
+To accommodate cases where mixed practices of DST within the same UTC
+offset. Set Detail to `TRUE` to return a list with detailed information
+about DST transitions for each time zone.
 }
 \examples{
-
 # Check for DST transitions in UTC+1 and UTC+8
 UTCwDST (UTCs = c ("UTC+01:00", "UTC+08:00"))
 
@@ -50,5 +80,5 @@ UTCwDST (UTCs = -5)
 
 }
 \seealso{
-\code{\link{DST}} \code{\link{UTC2Num}} \code{\link{OlsonNames}}
+\code{\link{DST}} \code{\link{UTC2Num}} \code{\link{GuessTZ}}
 }

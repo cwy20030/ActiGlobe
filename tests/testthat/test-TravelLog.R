@@ -16,7 +16,7 @@ test_that ("TravelLog returns a data frame when Write = FALSE", {
         names (res),
         c (
             "ID", "UTC_Offset", "Country_with_Daylight_Saving",
-            "date_Start", "date_End"
+            "Date_Start", "Date_End"
         )
     )
 
@@ -24,8 +24,8 @@ test_that ("TravelLog returns a data frame when Write = FALSE", {
     expect_equal (res$ID, "ExampleID")
     expect_equal (res$UTC_Offset, "+05:00")
     expect_equal (res$Country_with_Daylight_Saving, "TRUE")
-    expect_equal (res$date_Start, as.character (Sys.Date ()))
-    expect_equal (res$date_End, as.character (Sys.Date () + 1))
+    expect_equal (res$Date_Start, as.character (Sys.Date ()))
+    expect_equal (res$Date_End, as.character (Sys.Date () + 1))
 
     # ---- Error checks ----
     # Invalid arguments should trigger errors

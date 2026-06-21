@@ -104,7 +104,7 @@ head(Bdf)
 
 
 <div class="fullsize-scroll">
-  <h5 class="image-title">Table 2 The Header of Bdf</h3>
+  <h5 class="image-title">Table 2 The Header of Bdf</h5>
   <img src="images/Bdf_head.png" alt="Table 2 The Header of Bdf">
 </div>
 
@@ -150,6 +150,9 @@ head(IANA)
 ```{r message=FALSE, warning=FALSE, echo=FALSE, out.width="30%", paged.print=TRUE, tab.cap = "Table 5. An Overview of the 2024 IANA Time Zone Database"}
 knitr::kable(head(IANA), format = "html", table.attr = "style='width:800px;'")
 ```
+
+
+
 ## Step 2: Adjust time change based on the travel diary
 ###  {.scrollable}
 Before `ActiGlobe` directly modify information stored in the enriched longitudinal recording - `data`, we will need to adjust the brief summary stored in `Bdf`. This design allows us to quickly scan through the summary file, just in case any adjustment is not properly addressed.
@@ -174,7 +177,7 @@ knitr::kable(Bdf[10:15, ]) ### Only display 6 days
 
 
 <div class="fullsize-scroll">
-  <h5 class="image-title">Table 6 Initial Brief Summary of the Recording</h3>
+  <h5 class="image-title">Table 6 Initial Brief Summary of the Recording</h5>
   <img src="images/Bdf_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
 </div>
 
@@ -191,7 +194,7 @@ knitr::kable(Bdf.adj[10:15, ]) ### Only display 6 days
 
 
 <div class="fullsize-scroll">
-  <h5 class="image-title"> Table 7. Adjusted Brief Summary of the Recording</h3>
+  <h5 class="image-title"> Table 7. Adjusted Brief Summary of the Recording</h5>
   <img src="images/Bdf.adj_demo.png" alt="Table 6 Initial Brief Summary of the Recording">
 </div>
 

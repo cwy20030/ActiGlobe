@@ -29,6 +29,18 @@ choose to either reformat the date or report the datetime format detected.
 }
 \examples{
 
+# Case 1.  Convert mixed time format to a consistent format
+# Example 3: When all dates have the same format
+## Create and store a date in a variable called Time
+Time <- c (
+    "2017/05/02 23:00:01", "2000/02/28 07:00", "1970/01/02",
+    "2022/11/28 08:35 PM"
+)
+
+TimeFormat (time = Time, as.time = TRUE)
+
+
+# Case 2. Extract the format of the time string from each item in the vector
 # Example 1: When all dates have the same format
 ## Create and store a date in a variable called Time
 Time <- c (
@@ -61,4 +73,8 @@ for (x in Time) {
 ### print(TimeFormat(time = Time))
 ### Note, this process will fail because there are multiple formats
 
+
+}
+\seealso{
+\code{\link{DateFormat}} \code{\link{as.posIXct}}
 }

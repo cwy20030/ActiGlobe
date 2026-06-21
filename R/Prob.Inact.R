@@ -24,6 +24,7 @@
 #' is used as a predictor, and inactivity is classified based on the predicted
 #' probability exceeding a threshold multiple times.
 #'
+#'
 #' @details
 #' The GLM is fit using `stats::glm()` with a polynomial term of degree `k`
 #'   applied to the time indices. Predicted probabilities of inactivity are
@@ -31,20 +32,27 @@
 #'   actigraphy or similar time‑series activity data where identifying inactive
 #'   bouts is important.
 #'
+#'
 #' @import stats
+#'
 #'
 #' @param y Numeric vector of observed activity counts. Typically represents
 #'   activity levels measured over time.
+#'
 #' @param time Numeric vector of time indices corresponding to `y`. Must be
 #' the same length as `y`.
+#'
 #' @param k Integer; degree of polynomial for time in the GLM. Higher values
 #'  allow more flexible time trends. Default = 12.
+#'
 #' @param threshold Integer; number of consecutive times the predicted
 #' probability of inactivity must exceed 0.5 to classify the period as inactive.
 #' Default = 3.
+#'
 #' @param logical Logical scalar; if `TRUE`, the function returns a logical
 #' vector indicating inactive periods. If `FALSE`, a summary table of
 #' inactivity classification results is returned.
+#'
 #'
 #' @return
 #' - If `logical = TRUE`: a logical vector of the same length as `y`, where
@@ -52,6 +60,7 @@
 #' - If `logical = FALSE`: a summary table (data frame) containing
 #'   classification results, including predicted probabilities and inactivity
 #'   flags.
+#'
 #'
 #' @examples
 #' data (FlyEast)
@@ -100,12 +109,13 @@
 #' )
 #' print (inactive_summary)
 #'
+#'
 #' @noRd
 
 Prob.Inact <- function (y, time, k = 12, threshold = 3, logical = TRUE) {
     # Check Point and Input Validation -------------------------
-    y <- ValInput (x = y, type = "Act")
-    time <- ValInput (x = time, type = "Tm")
+    y    <- ValInput (x = y, type = "Act")
+    time <- ValInput (x = time, type = "Time")
 
 
     # Parameters -------------------
@@ -117,8 +127,8 @@ Prob.Inact <- function (y, time, k = 12, threshold = 3, logical = TRUE) {
         Time = time
     )
     data$y_log <- log (y)
-    data$y_ina <-
-        ifelse (is.infinite (data$y_log) & data$y_log < 0, 1, 0) # Inactive is 1
+    data$y_ina <- ifelse (is.infinite (data$y_log) & data$y_log < 0, 1,
+                          0) # Inactive is 1
 
     fit_glm <- glm (y_ina ~ poly (Time, k), data = data, family = binomial)
 
@@ -155,7 +165,24 @@ Prob.Inact <- function (y, time, k = 12, threshold = 3, logical = TRUE) {
 
 
 #' @title Table for Inactive Period
+#'
+#' @description
+#' This function creates a summary table of inactive periods based on a
+#' logical vector indicating inactivity, corresponding time indices, and
+#' epoch duration. It identifies the start and end times of inactive bouts and
+#' calculates their duration.
+#'
+#'
+#' @param inatv Logical vector indicating inactive periods (TRUE for inactive).
+#'
+#' @param time Numeric vector of time indices corresponding to activity count.
+#'
+#' @param Epc Numeric scalar representing the epoch duration (time interval of
+#' between each recorded activity count)
+#'
+#'
 #' @noRd
+
 Table.Inact <- function (inatv, time, Epc) {
     ### Segment s ----------------
     x <- seq_len (length (inatv))

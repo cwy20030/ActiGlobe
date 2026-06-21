@@ -23,6 +23,8 @@ If NULL, defaults to the second column of \code{data}.}
 
 \item{VDT}{Optional character. Name of the \code{POSIXct} datetime column in
 \code{data}.If NULL, defaults to "DateTime" of \code{data}.}
+
+\item{df}{[lifecycle::deprecated] Use \code{data} instead.}
 }
 \value{
 A \code{\link[ggplot2]{ggplot}}  object showing:
@@ -37,7 +39,7 @@ data.frame,marking each midnight boundary with a vertical dashed line and
 epochs).
 }
 \examples{
-\dontrun{
+\donttest{
 
 # Pre-processing and Simple Summary
 BdfList <-
@@ -58,8 +60,6 @@ print (p)
 
 
 # Overview the Corrected Longitudinal Recording
-data (TLog)
-
 BdfList$Bdf.adj <- TAdjust (BdfList$Bdf, TLog)
 p2 <- ggActiGlobe (
   data = BdfList$data,
@@ -67,11 +67,14 @@ p2 <- ggActiGlobe (
   VAct = "Activity",
   VDT = "DateTime"
 )
-print  (p2)
+print (p2)
 
-# Pro-tip: [`cowplot`] can help stack the time series graphs in one
-# single plot
+
+# Pro-tip: [`cowplot`] can help stack the graphs of time series from
+# multiple files into one single plot
+
 }
+
 
 }
 \keyword{actigraphy}

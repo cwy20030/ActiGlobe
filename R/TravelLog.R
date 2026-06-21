@@ -25,17 +25,78 @@
 #' the package vignette to learn how to use the travel log template.
 #'
 #' @details
-#' The travel log template can be generated in two formats: "UTC" and "CC".
-#' The "UTC" (coordinated universal time) template is general recommended as it
-#' aims to protect personal privacy of participants without compromising
-#' reproducibility. Note that the "CC" (city-country) template should be
-#' avoided when analyzing data containing sensitive information.
+#' The travel log template can be generated in two formats: "TZ", "UTC" and
+#' "Geo", ranking by their levels of performance and security.
+#'
+#' \tabular{lcccl}{
+#' Type
+#'  \tab Security Level
+#'  \tab Performance
+#'  \tab
+#'  \tab Common or Potential Issues \cr
+#'
+#' \stong{TZ}
+#'   \tab Moderate–High
+#'   \tab High
+#'   \tab
+#'   \tab Rare renaming issue \cr
+#'
+#' \strong{UTC}
+#'   \tab High
+#'   \tab Moderate–High
+#'   \tab
+#'   \tab Not suited for travels during DST transition for Zone 2. \cr
+#'
+#' \strong{Geo}
+#'   \tab Poor
+#'   \tab Moderate–High
+#'   \tab
+#'   \tab Spelling errors; high risk of violating localized regulations \cr
+#' }
+#'
+#'
+#'
+#'
+#'
+#' \describe{
+#' \strong{TZ Template}:
+#'
+#' The time zone template (default) requires users to input the IANA time zone
+#' identifiers of the local or travel destination time zone. This template
+#' has the best performance as it allows the most accurate time shift
+#' adjustment by directly using the time zone information. It also has
+#' the modest security level as certain time zone identifiers may be
+#' unique to specific geological location.
+#'
+#'
+#'
+#' \strong{UTC Template}:
+#' The coordinated universal time template requires users to input the UTC
+#' offset of the local or travel destination. This format is generally
+#' recommended for analysis of highly sensitive data as it aims to maximize
+#' the protection of geological location information. It is worth noting that
+#' both indication of local practice of daylight saving time and zone
+#' compromising reproducibility.
+#'
+#'
+#' Note that the "Geo" (city-country)
+#' template should be avoided when analyzing data containing sensitive
+#' information.
+#' }
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 #'
 #' For UTC offset, users may consult the IANA database \code{View(IANA)},
 #' already installed with the package. Alternatively, users may also use
 #' \code{\link{TZ2UTC}} or \code{\link{Geo2TZ}} to obtain the UTC offset.
 #'
-#' Spelling check is recommended when using the "CC" template, as mistakes can
+#' Spelling check is recommended when using the "Geo" template, as
+#' mistakes can
 #' halt the process of time shift adjustment. It is recommended to keep the
 #' documentation in English since accents may not be recognized by the default
 #' encoding system depending on the operating system.
@@ -47,14 +108,19 @@
 #' @param Type A character string to indicate the type of template to create.
 #' Options are
 #' \itemize{
+#'  \item "TZ": a template that requires users to input the IANA time zone
+#'  identifiers (e.g., "America/New_York" or "Asia/Tokyo") of the local or
+#'  travel destination time zone. This template is recommended for general
+#'  usage. Users may use \code{\link{Geo2TZ}} to obtain the IANA time zone
+#'  identifiers.
 #'  \item "UTC": the default template that requires users to input the UTC
 #'  offset (e.g., "UTC +09:30" or "+9.5") of the local or travel destination
 #'  time zone.
-#'  \item "CC": a template that requires users to input both city and country
-#'  names of the location. This template is not suited for analysis involving
-#'  sensitive information. In rare cases that multiple cities share the same in
-#'  one country, users should input the correct corresponding state or province
-#'  names.
+#'  \item "Geo": a template that requires users to input both city and
+#'  country names of the location. This template is not suited for analysis
+#'  involving sensitive information. In rare cases that multiple cities share
+#'  the same in one country, users should input the correct corresponding
+#'  state or province names.
 #' }
 #' @param Write A binary code to indicate whether to write a .csv file
 #' containing the template needed for the travel log. (default = FLASE)
@@ -64,15 +130,54 @@
 #' @param Dir The directory where the travel log template to be exported <e.g.
 #' "C:/Users/___YOUR USERNAME___/UPSTREAM FOLDER/.../FOLDER NAME/">
 #'
+#'
 #' @return a travel-log template as a data.frame or written as a CSV file
+#' depending on the value of \code{Write}.
+#' \itemize{
+#'  \item TZ: a data frame with columns
+#'   \itemize{
+#'    \item ID: Assigned identification of the participant
+#'    \item IANA_TZ_Identifiers: The IANA time zone identifier of the local
+#'    or travel destination time zone (e.g., "America/New_York"
+#'    or "Asia/Tokyo"). Users may use \code{\link{Geo2TZ}} or
+#'    \code{\link{IANA}} to help filling this column.
+#'    \item Date_Start: The date when the participant started to be in the
+#'    local or travel destination.
+#'    \item Date_End: The date when the participant ended being in the local
+#'    or travel destination. Default to no input, which will uses the
+#'    following start date of the destination.
+#'    }
+#'
+#'    \item UTC: a data frame with columns
+#'     \itemize{
+#'      \item ID: As described above.
+#'      \item UTC_Offset: The UTC offset of the local or travel destination
+#'      time zone. Users may use \code{\link{Geo2TZ}} or \code{\link{IANA}}
+#'      to help filling this column.
+#'      \item Country_with_Daylight_Saving: Whether the local or travel
+#'      destination practices daylight saving time (DST). Users may use
+#'      \code{\link{Geo2TZ}}, \code{\link{TZwDST}} or \code{\link{UTCwDST}}
+#'      when filling in the DST information.
+#'      \item Date_Start: As described above.
+#'      \item Date_End: As described above.
+#'      }
+#' }
+#'
+#'
+#'
+#' @seealso
+#' \code{\link{Geo2TZ}} \code{\link{IANA}} \code{\link{TZwDST}}
+#'
 #'
 #' @examples
-#'
 #' Tlg <- TravelLog (Write = FALSE)
 #'
 #' print (Tlg)
 #'
+#'
 #' @keywords Travel Log Template Timezone Shift
+#'
+#'
 #' @export
 
 TravelLog <- function (Type = "UTC", Write = FALSE, Dir = NULL) {
@@ -81,12 +186,27 @@ TravelLog <- function (Type = "UTC", Write = FALSE, Dir = NULL) {
 
     switch (
         Type,
+        "TZ"  = {
+
+            data <- data.frame (matrix (ncol = 4, nrow = 1))
+
+            names (data) <- c (
+                "ID", "IANA_TZ_Identifiers",
+                "Date_Start", "Date_End"
+            )
+
+            data [1, ] <- c (
+                "ExampleID", "America/New_York", "TRUE",
+                as.character (Sys.Date ()),
+                as.character (Sys.Date () + 1)
+            )
+        },
         "UTC" = {
             data <- data.frame (matrix (ncol = 5, nrow = 1))
 
             names (data) <- c (
                 "ID", "UTC_Offset", "Country_with_Daylight_Saving",
-                "date_Start", "date_End"
+                "Date_Start", "Date_End"
             )
 
             data [1, ] <- c (
@@ -96,29 +216,60 @@ TravelLog <- function (Type = "UTC", Write = FALSE, Dir = NULL) {
             )
 
         },
-        "CC" = {
+        "Geo" = {
 
             data <- data.frame (matrix (ncol = 6, nrow = 2))
 
             names (data) <- c (
-                "ID", "City", "Province_or_State" ,"Country",
-                "date_Start", "date_End"
+                "ID", "Municipal_or_Intermediate_Unit",
+                "First_Order_Division",
+                "Country",
+                "Date_Start", "Date_End"
             )
 
             data [1, ] <- c (
-                "ExampleID", "Paris", "" ,"France",
+                "ExampleID", "Île-de-France", "Metropolitan France",
+                "France",
                 as.character (Sys.Date () - 15),
                 as.character (Sys.Date () - 10)
-                )
+            )
 
             data [2, ] <- c (
-                "ExampleID", "Paris", "Ontario" ,"Canada",
+                "ExampleID", "Paris","Ontario" ,"Canada",
+                as.character (Sys.Date ()),
+                as.character (Sys.Date () + 1)
+            )
+
+
+            data [3, ] <- c (
+                "ExampleID", "Montréal", "Québec" ,"Canada",
+                as.character (Sys.Date ()),
+                as.character (Sys.Date () + 1)
+            )
+
+            data [4, ] <- c (
+                "ExampleID", "雲林縣","" ,"臺灣",
+                as.character (Sys.Date ()),
+                as.character (Sys.Date () + 1)
+            )
+
+            data [5, ] <- c (
+                "ExampleID", "Buenos Aires",
+                "Ciudad Autónoma de Buenos Aires" ,"Argentina",
+                as.character (Sys.Date ()),
+                as.character (Sys.Date () + 1)
+            )
+
+            data [6, ] <- c (
+                "ExampleID", "Tesero",
+                "Provincia di Trento" ,"Italia",
                 as.character (Sys.Date ()),
                 as.character (Sys.Date () + 1)
             )
 
         },
-        stop ("Invalid Type. Please choose either \"UTC\" or \"CC\".")
+        stop ("Invalid Type. Please choose \"TZ\", \"UTC\" or
+              \"Geo\".")
     )
 
 

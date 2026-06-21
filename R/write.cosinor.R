@@ -187,7 +187,7 @@ write.cosinor <- function (Dir, ID, DailyAct, Bdf, VAct = NULL, VTm = NULL,
         if (!is.null (data)) {
             #### Note: switch off zero check to improve report.
             Act <- ValInput (x = data [[VAct]], type = "Act", AllZero = FALSE)
-            Tm <- ValInput (x = data [[VTm]], type = "Tm")
+            Tm <- ValInput (x = data [[VTm]], type = "Time")
 
             data [[VAct]] <- Act
             data [[VTm]] <- Tm

@@ -35,8 +35,9 @@ test_that ("Translator translates on success between langauges", {
   # Wrong type of object should trigger an error
   expect_error (Translator (Text = 123, Lang = "en"))
 
-  # Empty string should trigger a warning and return NA
+  # Empty string should trigger a stop
   expect_error (Translator (Text = "", Lang = "en"))
+
 
   # Should fail due to punctuation difference)
   expect_failure (expect_equal (out.ES, out.ES2))
@@ -48,22 +49,19 @@ test_that ("Translator translates on success between langauges", {
 
 
 test_that ("LangDetect returns expected values (mocked cld3)", {
-
   skip_if_not_installed ("mockery")
 
   fake_detect_language <- function (Text) "en"
   mockery::stub (LangDetect, "cld3::detect_language", fake_detect_language)
 
+  # ---- Content checks ----
   expect_equal (LangDetect ("Hello, world!"), "en")
 
-  # Empty / whitespace returns NA
-  expect_true (is.na (LangDetect ("")))
-  expect_true (is.na (LangDetect ("   ")))
-
-  # "und" should return NA
-  fake_detect_language2 <- function (Text) "und"
-  mockery::stub (LangDetect, "cld3::detect_language", fake_detect_language2)
-  expect_true (is.na (LangDetect ("???")))
+  # ---- Error checks ----
+  expect_error (expect_failure (LangDetect ("")))
+  expect_error (expect_failure (LangDetect ("   ")))
+  expect_error (expect_failure (LangDetect ("???")))
+  expect_error (expect_failure (LangDetect ("12345")))
 })
 
 

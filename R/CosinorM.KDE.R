@@ -55,7 +55,7 @@
 #' \eqn{den} is the kernel denominator at that grid point, and \eqn{\text{area}}
 #' rescales the fitted density back to the activity scale.
 #'
-#' Notes:
+#' \strong{Notes}
 #' \itemize{
 #'   \item Normalization factors \eqn{1/\pi} and \eqn{1/(2\pi)} follow from the
 #'   orthogonality of sine and cosine on \eqn{[0,2\pi)}.
@@ -203,21 +203,21 @@
 #'
 #' BdfList <-
 #'     BriefSum (
-#'         data = FlyEast,
-#'         SR = 1 / 60,
+#'         data  = FlyEast,
+#'         SR    = 1 / 60,
 #'         Start = "2017-10-24 13:45:00"
 #'     )
 #'
 #' # Let's extract actigraphy data from a single day
 #' data <- BdfList$data
-#' data <- subset (
-#'     x = data,
+#' data <- subset(
+#'     x      = data,
 #'     subset = data$Date == "2017-10-27"
 #' )
 #'
 #'
-#' fit <- CosinorM.KDE (
-#'     time = data$Time,
+#' fit <- CosinorM.KDE(
+#'     time     = data$Time,
 #'     activity = data$Activity
 #' )
 #'
@@ -225,17 +225,20 @@
 #' fit$coef.cosinor
 #'
 #' # plot KDE in hours
-#' ggCosinorM (object = fit)
+#' ggCosinorM(object = fit)
 #'
 #' @keywords circular cosinor KDE circadian
 #' @export
 
-CosinorM.KDE <- function (time, activity, bw = 0.8,
-                          arctan2 = TRUE, dilute = FALSE) {
+CosinorM.KDE <- function (time,
+                          activity,
+                          bw      = 0.8,
+                          arctan2 = TRUE,
+                          dilute  = FALSE) {
     # Check Point and Input Validation -------------------------
     activity <- ValInput (x = activity, type = "Act")
-    time     <- ValInput (x = time, type = "Tm")
-    if (!is.numeric (bw) || length (bw) != 1 || bw <= 0) {
+    time     <- ValInput (x = time, type = "Time")
+    if (any (!is.numeric (bw), length (bw) != 1, bw <= 0)) {
         stop ("bw must be a positive numeric scalar")
     }
 
@@ -398,19 +401,38 @@ CosinorM.KDE <- function (time, activity, bw = 0.8,
 }
 
 
+
 # Pre-defined helper functions -------------------------------
 #' @title mapping angular differences into the principal interval (-pi, pi]
+#'
+#' @param a Numeric vector of angular differences (in radians)
+#'
 #' @noRd
+
 wrap_diff <- function (a) {
     (a + pi) %% (2 * pi) - pi
 }
 
+
+
 #' @title trapizoid integeral
+#'
+#' @param x Numeric vector of x coordinates (angles in radians)
+#' @param y Numeric vector of y coordinates (density or fitted values)
+#'
 #' @noRd
+
 trap_int <- function (x, y) sum ((y [-1] + y [-length (y)]) * diff (x)) / 2
 
+
+
 #' @title trapizoid weight
+#'
+#' @param theta Numeric vector of angles (in radians) at which the KDE
+#' is evaluated
+#'
 #' @noRd
+
 trap_weights <- function (theta, ext = FALSE) {
     n <- length (theta)
     if (n == 1) {

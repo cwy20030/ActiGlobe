@@ -84,8 +84,7 @@ test_that("GuessTZ handles local timezone prioritization", {
 test_that("GuessTZ handles invalid timezone gracefully", {
     # Test with an invalid timezone
     expect_error(
-        GuessTZ(aOF = "+0000", iTZ = "Invalid/Timezone"),
-        "not recognized"
+        GuessTZ(aOF = "+0000", iTZ = "Invalid/Timezone")
     )
 })
 

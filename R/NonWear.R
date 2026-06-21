@@ -19,26 +19,38 @@
 #' @title Detection for Possible Non-wearer Periods
 #'
 #' @description
-#' `NonWear()` is a function that detects possible non-wearing periods within
-#' a longitudinal recording. Currently, it supports only the Choi algorithm and
-#' require \eqn{1/60}Hz sampling rate.
+#' The function detects possible non-wearing periods within a longitudinal
+#' recording. Currently, it supports only the Choi algorithm, which is a
+#' threshold-based classifier using activity count.
+#'
 #'
 #' @param data A data.frame of raw actigraphy recording. Both time and activity
 #' count should be included in the \code{data}. See \code{VAct} and \code{VTm}
 #' for further detail.
+#'
 #' @param VAct Optional character. Name of the activity column in \code{data}.
 #'  If NULL, defaults to the second column of \code{data}.
-#' @param VTm Optional character. Name of the date.time index column in
+#'
+#' @param VTm Optional character. Name of the time or date.time index column in
 #' \code{data}.If NULL, defaults to the first column of \code{data}.
-#' @param method Character string specifying detection method
+#'
+#' @param method Character string specifying detection method. Algorithm-
+#' specific hyperparameters can be passedd through the \code{HyperP} argument.
+#' Available methods include:
 #' \itemize{
 #'   \item "Choi": A modified Troiano algorithm designed to detect possible
-#'   non-wear time using moving window approach. The algorithm considers the
-#'   following hyperparameters:
+#'   non-wear time based on time-dependent threshold of inactive period. This
+#'   is currently the only supported method.
+#' }
+#'
+#' @param HyperP A list of hyperparameters used to tune the non-wear detection
+#' algorithm. The default values are set for the Choi algorithm, which is
+#' currently the only supported method.
+#' \itemize{
+#'   \item "Choi": All hyperparameters require units in minutes.
 #'    \itemize{
 #'      \item ScreenEpoch: minimum threshold to classifying a segment as
-#'      probable non-wear time; Default = 90
-#'      (minutes per epoch).
+#'      probable non-wear time; Default = 90 (minutes per epoch).
 #'      \item Artifact Control:
 #'       \itemize{
 #'        \item ArtEpoch: The maximum interval of spontaneous activity
@@ -49,22 +61,44 @@
 #'        the entire segment as possible non-wear. Default = 30 (minutes).
 #'        }
 #'        }
-#' }
-#' @param HyperP a list of hyperparameters used to tune the non-wear detection
-#' algorithm. The default values are set for the Choi algorithm, which is
-#' currently the only supported method.
+#'}
+#'
+#' @param Bdf Optional; a \code{\link{BriefSum}} object containing per-day
+#' metadata for the recording. Note, if jet lag occurred during the recording,
+#' please, update the metadata using \code{\link{TAdjust}} before passing to
+#' this function.
+#'
+#' @param AddRatio Logical scalar. If `TRUE`, the function will calculate and
+#'  add Percent_Nonwear to data. Default = FALSE
+#'
+#' @note
+#' With Choi algorithm, the default resolution is \eqn{1/60}Hz (i.e., 1-minute
+#' epoch). For recordings of higher resolution, \code{NonWear} will
+#' automatically adjust the hyperparameters multiplicatively.
+#'
 #'
 #' @returns
-#' An amended data.frame with non-wearer detection results storing in a new
-#' column:
-#'   \item \code{pNonWear}, which stands for possible non-wear time. The values
+#' An amended raw recording data.frame with non-wearer detection results
+#' storing in a new column:
+#'   \code{pNonwear}, which stands for possible non-wear time. The values
 #'   are logical, where \code{TRUE} indicates a possible non-wear period
 #'   according to the specified method (e.g., Choi algorithm).
+#'
+#' When \code{Bdf} is provided, the function also returns an updated
+#' \code{BriefSum} object with two additional columns:
+#' \itemize{
+#'   \item Possible_Nonwear_Time: total duration of possible non-wear time per
+#'   day (in minutes).
+#'   \item Percentage_Nonwear: a quality control indice based on the ratio
+#'   of total wear time to possible nonwear time.
+#'   }
+#'
 #'
 #' @references
 #' Choi L, Liu Z, Matthews CE, Buchowski MS. Validation of accelerometer wear
 #' and nonwear time classification algorithm. Med Sci Sports Exerc. Feb 2011;
 #' 43(2):357-64. doi:10.1249/MSS.0b013e3181ed61a3
+#'
 #'
 #' @seealso
 #' \code{\link[PhysicalActivity]{wearingMarking}}
@@ -97,15 +131,17 @@
 #'         x = data$DateTime,
 #'         col = "red", pch = 16, cex = 0.5)
 #'
+#'
 #' @keywords cosinor
 #' @export
 
 NonWear <- function (data, VAct = NULL, VTm = NULL,
-                      method = "Choi",
-                      HyperP = list (ScreenEpoch = 90,
-                                     ArtEpoch    = 2,
-                                     TraceEpoch  = 30)
-                      ) {
+                     method = "Choi",
+                     HyperP = list (ScreenEpoch = 90,
+                                    ArtEpoch    = 2,
+                                    TraceEpoch  = 30),
+                     Bdf  = NULL,
+                     AddRatio = FALSE) {
 
   # Check Point and Input Validation -------------------------
   ## Get Variable Names -------------
@@ -114,29 +150,77 @@ NonWear <- function (data, VAct = NULL, VTm = NULL,
 
   ## Validate Input -------------------
   activity <- ValInput (x = data [[VAct]], type = "Act")
-  time     <- ValInput (x = data [[VTm]], type = "Tm")
+  Tm       <- ValInput (x = data [[VTm]], type = "Time")
+
 
   ## Extract Additional Input ---------------------
-  dt     <- diff (time)
+  dt     <- diff (Tm)
   dt     <- dt [dt > 0]
   Epc    <- 1 / min (dt)
   SR     <- Epc / 3600
   Factor <- SR * 60 # Multiplicative Factor for the hyperparameters
+  nPoint <- as.integer (round (24 * 3600 / Epc, 0))
 
-  base::switch (method,
-    "Choi" = {
-      Label  <- Choi (x           = activity,
-                      ScreenEpoch = HyperP$ScreenEpoch * Factor,
-                      ArtEpoch    = HyperP$ArtEpoch    * Factor,
-                      TraceEpoch  = HyperP$TraceEpoch  * Factor,
-                      newcolname  = "wearing"
-                      )
-    },
+  ## Check incomplete in time ------------------
+  Index <- SeqFill (x      = Tm,
+                    Step   = 1/Epc,
+                    Format = "Index")
+
+  nRep   <- ceiling (max (Index) / nPoint)
+  tPoint <- as.integer (nPoint * nRep)
+
+  if (!length (activity) == tPoint) {
+    tSeq  <- seq_len (tPoint + 1)
+    ToRm  <- tSeq [!tSeq %in% Index]
+    TClr  <- TRUE
+    y     <- rep (NA, tPoint)
+    y [Index] <- activity
+
+ } else {
+   y <- activity
+   TClr  <- FALSE
+ }
+  ## Detection ------------------
+  Label  <- base::switch (method,
+    "Choi" = Choi (y           = y,
+                   ScreenEpoch = HyperP$ScreenEpoch * Factor,
+                   ArtEpoch    = HyperP$ArtEpoch    * Factor,
+                   TraceEpoch  = HyperP$TraceEpoch  * Factor),
     stop ("Invalid method specified. Please set to 'Choi'.")
   )
 
+  ## Prepare Output -------------------------
+  if (!is.null (Bdf) | AddRatio){
+    GID <- rep (seq_len (nRep), each = nPoint)
+    nNW <- tapply (Label, GID, function (x)
+      sum (as.integer (x), na.rm = TRUE))
+    pNW <-  100 * nNW / nPoint
+  }
+
+  if (TClr)  Label <- Label [-ToRm]
   data$pNonWear <- Label
-  return (data)
+
+  if (AddRatio) {
+    QC.Idx   <- rep (pNW, each = nPoint)
+
+    if (TClr)
+      QC.Idx <- QC.Idx [-ToRm]
+    data$pNW <- QC.Idx
+  }
+
+
+  # Return -------------------------
+  if (is.null (Bdf)){
+
+    return (data)
+
+  } else {
+
+    Bdf$Possible_Nonwear_Time <- nNW
+    Bdf$Percentage_Nonwear    <- pNW
+
+    return (list (data = data, Bdf = Bdf))
+  }
 
 }
 
@@ -152,6 +236,7 @@ NonWear <- function (data, VAct = NULL, VTm = NULL,
 #' the algorithm is a two-step classification system. See detail for more
 #' information. In contrast to the original package, the function relies on
 #' run length encoding \code{rle} algorithm to perform step-wise classification.
+#'
 #'
 #' @details
 #' Code Assumptions:
@@ -170,50 +255,57 @@ NonWear <- function (data, VAct = NULL, VTm = NULL,
 #'  \code{ScreenEpoch} minutes long).
 #' }
 #'
-#' @param x A numeric vector of activity counts.
+#'
+#' @param y Numeric vector of observed activity counts. Typically represents
+#'   activity levels measured over time.
+#'
 #' @param ScreenEpoch \code{frame} hyperparameter for the Choi algorithm,
 #' representing the minimum length of non-wear time to be detected (in minutes).
 #' Default is 90 minutes.
+#'
 #' @param ArtEpoch \code{allowanceFrame} hyperparameter for the Choi algorithm,
 #' representing the maximum length of activity allowed within a non-wear period
 #' (in minutes). Default is 2 minutes.
+#'
 #' @param TraceEpoch \code{streamFrame} hyperparameter for the Choi algorithm,
 #' representing the interval of the upstream and downstream windows adjacent to
 #' the \code{ArtEpoch}. This aims to check for activity around potential
 #' non-wear periods (in minutes). Default is 30 minutes.
 #'
+#'
 #' @returns
 #' A logical vector of the same length as \code{x}, where \code{TRUE} indicates
 #' a possible non-wear period according to the Choi algorithm.
+#'
 #'
 #' @references
 #' Choi L, Beck C, Liu Z, Moore R, Matthews C, Buchowski M (2021).
 #' _PhysicalActivity: Process Accelerometer Data for Physical Activity
 #' Measurement_. doi:10.32614/CRAN.package.PhysicalActivity
 #'
+#'
 #' @noRd
 
-Choi <- function (x,
+Choi <- function (y,
                   ScreenEpoch = 90,
                   ArtEpoch    = 2,
-                  TraceEpoch  = 30,
-                  newcolname  = "pNonWear") {
+                  TraceEpoch  = 30) {
   # Check Point and Input Validation -------------------------
     if (is.null (TraceEpoch) || is.na (TraceEpoch)) {
       TraceEpoch <- round (0.5 * ScreenEpoch)
     }
 
-    Mark.na <- is.na (x)
-    x       <- ifelse (Mark.na, 0, x)
-    ln      <- length (x)
+    Mark.na <- is.na (y)
+    y       <- ifelse (Mark.na, 0, y)
+    ln      <- length (y)
 
     # Classification -------------------------
     ## Step 0. Parameter Extraction (Note 1) ---------------------------------
-    x.Pos  <- ifelse (x > 0, 1, 0)
+    y.Pos  <- ifelse (y > 0, 1, 0)
 
     ### Segment the recording into consecutive series of zeros and non-zeros
     ### (active)
-    Seg     <- rle (x.Pos)
+    Seg     <- rle (y.Pos)
     Segln   <- Seg$lengths
     #### Epoch length
     Segln.us <- c (TraceEpoch + 1, Segln [-length (Segln)]) # adjacent upstream
@@ -238,13 +330,14 @@ Choi <- function (x,
 
 
     ## Step 4. Classify non-wearing time
-    x.Act    <- rep (Seg$ActWear, Segln)
-    ActSeg   <- rle (x.Act)
+    y.Act    <- rep (Seg$ActWear, as.integer (Segln))
+    ActSeg   <- rle (y.Act)
     ### Classify non-wear time based on the gap between active segments
     ActSeg$LongInAct <- !ActSeg$values & ActSeg$lengths >= ScreenEpoch
 
+
     # Prepare Output -------------------------
-    Out <- rep (ActSeg$LongInAct, ActSeg$lengths)
+    Out <- rep (ActSeg$LongInAct, as.integer (ActSeg$lengths))
 
     return (Out)
 }

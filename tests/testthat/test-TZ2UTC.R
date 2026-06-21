@@ -2,7 +2,7 @@ test_that ("TZ2UTC converts dates to correct UTC offsets for America/New_York", 
     # Input dates: one in DST (October 24, 2017) and
     # one after DST ends (November 20, 2017)
     x <- as.Date (c ("2017-10-24", "2017-11-20"))
-    result <- TZ2UTC (DT = x, TZ = "America/New_York")
+    result <- TZ2UTC (Date = x, TZ = "America/New_York")
 
     # ---- Structure checks ----
     # Result should be a character vector of same length as input
@@ -20,5 +20,6 @@ test_that ("TZ2UTC converts dates to correct UTC offsets for America/New_York", 
 
     # ---- Error checks ----
     # Invalid timezone should trigger an error
-    expect_error (tryCatch (TZ2UTC (DT = x, TZ = "Invalid/TZ")))
+    expect_error (tryCatch (TZ2UTC (Date = x, TZ = "Invalid/TZ")))
+    expect_warning(tryCatch (TZ2UTC (DT = x, TZ = "America/New_York")))
 })

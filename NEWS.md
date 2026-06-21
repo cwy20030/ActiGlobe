@@ -6,21 +6,29 @@ Revision history for the R/ActiGlobe package
 - New internal function added:
 
 - Version update and debugged: 
+  To allow Geo format, requires Encryption 
 
 - Brief Detail: 
 
-## Next Version: 0.2.3, 2026-02-04
-- New master and class functions added: 
+## Next Version: 0.3.1, 2026-06-04
+- New master and class functions added: TZwDST, MapTZ, Geo2TZ, SleepWake, NonWear
 
-- New internal function added:
+- New internal function added: Suggest, Translator, WhenTransit, .WhenTS, FormatTransitOutput, ColeKripke, eCircaCP, Oakley, Choi
 
-- Version update and debugged: BriefSum, write.cosinor
+- Version update and debugged: data, ValInput, BriefSum, write.cosinor, TimeFormat, DateFormat, TAdjust
 
 - Brief Detail: 
-    - resolve internal tz conflicts in BriefSum
-    - improve namespace clarity for ggplot2 functions (ggplot2::) in write.cosinor, and resolve the graphic rendering issue.
-    - Add flow control in Valinput to switch off checking of value. This edit was later adapted in 
-        - write.cosinor
+    - data(IANA): IANA references were reorganized to standard vs. DST format.
+    - BriefSum: resolve internal tz conflicts 
+    - improve namespace clarity for ggplot2 functions (ggplot2) in write.cosinor, and resolve the graphic rendering issue.
+    - Add flow control in Valinput to switch off checking of value. 
+    - TimeFormat: augment processing speed and consistency
+    - TAdjust: augment processing speed 
+    - Internal: 
+        - ValInput: 
+            - additional validation for date, datetime and time zone code/identifier
+            - parameter renaming
+
 
 
 ## Version 0.2.2, 2026-02-04

@@ -1,48 +1,62 @@
 Package: ActiGlobe
 Type: Package
-Title: Wearable Recording Processor for Time Shift Adjustment and Data Analysis
-Version: 0.2.2
-Authors@R: c(person("C. William", "Yao", email = "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut","cre","cph"), comment = c(ORCID="0000-0002-7234-7375")),
-             person("Giorgio", "Varesco", email = "giorgio.varesco@umontreal.ca", role = c("aut","ctb"), comment = c(ORCID="0000-0001-9385-6972")),
-			       person("François", "Bieuzen", email = "fbieuzen@insquebec.org", role = c("aut","ctb"), comment = c(ORCID="0000-0002-9690-9168")),
-             person("Guido", "Simonelli", email = "guido.simonelli@umontreal.ca", role = c("aut","ctb","fnd"), comment = c(ORCID="0000-0002-5400-319X")))
+Title: Wearable Recording Processor for Time Shift Adjustment and
+  Data Analysis
+Version: 0.3.1
+Authors@R: c(
+    person("C. William", "Yao", , "chun.william.yao.cnmtl@ssss.gouv.qc.ca", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-7234-7375")),
+    person("Giorgio", "Varesco", , "giorgio.varesco@umontreal.ca", role = c("aut", "ctb"),
+           comment = c(ORCID = "0000-0001-9385-6972")),
+    person("François", "Bieuzen", , "fbieuzen@insquebec.org", role = c("aut", "ctb"),
+           comment = c(ORCID = "0000-0002-9690-9168")),
+    person("Guido", "Simonelli", , "guido.simonelli@umontreal.ca", role = c("aut", "ctb", "fnd"),
+           comment = c(ORCID = "0000-0002-5400-319X"))
+  )
 Maintainer: C. William Yao <chun.william.yao.cnmtl@ssss.gouv.qc.ca>
-Description: Cross-continental travel and local practices of daylight saving time can induce time shift. When left unadjusted, it can lead to biases in interpreting wearable measures. This research tool streamlines data processing and analysis (e.g., cosinor analysis, circularized kernel density estimation) for longitudinal recordings. Together with additional features such as exporting daily wearable measures and creating visual reports, it aims to facilitate research on longitudinal wearable measurements. To learn its application, please refer to the provided vignettes for a brief tutorial. This tool is developed based on the methodology detailed in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F., (2024) <doi:10.1113/ep092195>.
+Description: Cross-Continental travel and local daylight saving practice can introduce time shift, leading to biases in interpretation of the wearable measures when left without proper adjustment. This package streamlines data processing and analyses for longitudinal recordings. Together with additional features such as exporting daily wearable measures and visual reports, it aims to facilitate research on longitudinal wearable measures. To learn how to use it, check the vignettes for a quick tutorial. This tool is developed based on the methodology described in: Varesco, G. Yao, C. W., Dubé, E., Simonelli, G., Bieuzen, F. (2024) <doi:10.1113/ep092195>.
 License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
 Depends: 
-    R (>= 4.2.0)
+    R (>= 4.5.0)
 Imports: 
+    cld3,
+    curl,
     ggplot2,
     ggrepel,
     grDevices,
     gridExtra,
-    lubridate,
-    readr,
-    sandwich,
-    utils,
-    viridis,
-    parallel,
-    scales,
-    cld3,
     httr2,
     jsonlite,
-    lutz
+    leaflet,
+    lifecycle,
+    lubridate,
+    lutz,
+    parallel,
+    readr,
+    sandwich,
+    scales,
+    sf,
+    stats,
+    utils,
+    viridis
 Suggests:
-    spelling, 
     ggthemes,
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    zeallot,
     hms,
-    mockery
-URL: https://github.com/cwy20030/ActiGlobe, https://cwy20030.github.io/ActiGlobe/
+    knitr,
+    mockery,
+    spelling,
+    rmarkdown,
+    spelling,
+    testthat,
+    zeallot
+URL: https://github.com/cwy20030/ActiGlobe
 BugReports: https://github.com/cwy20030/ActiGlobe/issues
 ByteCompile: true
 Config/testthat/edition: 3
 NeedsCompilation: no
 VignetteBuilder: knitr
 Language: en-US
+Config/roxygen2/version: 8.0.0
+Date: 2026-06-21

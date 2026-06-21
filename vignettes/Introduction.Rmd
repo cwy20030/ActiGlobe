@@ -128,6 +128,7 @@ This approach dramatically reduces data storage requirements while
 preserving the essential information needed for sleep/wake analysis and
 circadian rhythm assessment.
 
+
 ### Time Stamping and Time Zone Considerations
 
 To allow for prolonged and uninterrupted data collection, most clinical

@@ -118,7 +118,7 @@ write.act <- function (Dir, ID, data, Bdf, TUnit = "hour", VAct = NULL,
 
     # Check Point and Input Validation -------------------------
     data [[VAct]] <- ValInput (x = data [[VAct]], type = "Act")
-    data [[VTm]]  <- ValInput (x = data [[VTm]], type = "Tm")
+    data [[VTm]]  <- ValInput (x = data [[VTm]], type = "Time")
 
     #### Use Act2Daily ------------------
     dfList <- Act2Daily (

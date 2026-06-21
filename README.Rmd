@@ -175,11 +175,30 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 
 <tr>
 <td align="center">
-<a href="https://github.com/cwy20030">
-<img src="https://avatars.githubusercontent.com/u/35785225?v=4" width="100px;" alt=""/>
+<a href="https://github.com/antoine-stpierre">
+<img src="https://avatars.githubusercontent.com/u/289257727?v=4" width="50px;" alt=""/>
 </a><br>
-<a href="https://github.com/cwy20030/ActiGlobe/commits?author=cwy20030">cwy20030</a>
+<a href="https://github.com/cwy20030/ActiGlobe/commits?author=antoine-stpierre">St-Pierre A</a>
 </td>
+
+
+<td align="center">
+<a href="https://github.com/KarenPPaz">
+<img src="https://avatars.githubusercontent.com/u/290791983?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/cwy20030/ActiGlobe/commits?author=KarenPPaz">Padilla Paz K</a>
+</td>
+
+
+<td align="center">
+<a href="https://github.com/ElyYaoD">
+<img src="https://avatars.githubusercontent.com/u/294926926?v=4" width="100px;" alt=""/>
+</a><br>
+<a href="https://github.com/cwy20030/ActiGlobe/commits?author=ElyYaoD">Dogbevi EY</a>
+</td>
+
+
+
 </tr>
 
 </table>

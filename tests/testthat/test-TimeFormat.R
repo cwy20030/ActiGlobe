@@ -83,3 +83,4 @@ test_that ("TimeFormat returns NA for invalid format with warning", {
     expect_warning (res <- TimeFormat (Time))
     expect_true (is.na (res))
 })
+

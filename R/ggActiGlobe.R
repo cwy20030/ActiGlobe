@@ -23,31 +23,40 @@
 #' `coloring` points that were flagged (e.g. travel overlaps or unallocated
 #' epochs).
 #'
+#'
 #' @importFrom ggplot2 ggplot aes element_line element_text geom_point
 #' @importFrom ggplot2 geom_vline labs margin scale_x_continuous
 #' @importFrom ggplot2 scale_y_continuous theme theme_classic
+#'
 #'
 #' @param data A data.frame of annotated actigraphy epochs.  Must include:
 #'   - An activity column named by \code{VAct}.
 #'   - A datetime column named by \code{VTm}.
 #'   - Optionally, a `Note` column to flag affected epochs. See
 #'   \code{\link{BriefSum}} and \code{\link{TAdjust}} for details.
+#'
 #' @param Bdf A \code{\link{BriefSum}} object containing per-day metadata for
 #' the recording. Note, if jet lag occurred during the recording, please,
 #' update the metadata using \code{\link{TAdjust}} before passing to this
 #' function.
+#'
 #' @param VAct Optional character. Name of the activity column in \code{data}.
 #' If NULL, defaults to the second column of \code{data}.
+#'
 #' @param VDT Optional character. Name of the \code{POSIXct} datetime column in
 #' \code{data}.If NULL, defaults to "DateTime" of \code{data}.
+#'
+#' @param df [lifecycle::deprecated] Use \code{data} instead.
+#'
 #'
 #' @return A \code{\link[ggplot2]{ggplot}}  object showing:
 #'   - Activity counts vs. time.
 #'   - Dashed vertical lines at each midnight.
 #'   - Points `colored` by whether they were flagged in `Note`.
 #'
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' # Pre-processing and Simple Summary
 #' BdfList <-
@@ -68,8 +77,6 @@
 #'
 #'
 #' # Overview the Corrected Longitudinal Recording
-#' data (TLog)
-#'
 #' BdfList$Bdf.adj <- TAdjust (BdfList$Bdf, TLog)
 #' p2 <- ggActiGlobe (
 #'   data = BdfList$data,
@@ -77,47 +84,44 @@
 #'   VAct = "Activity",
 #'   VDT = "DateTime"
 #' )
-#' print  (p2)
+#' print (p2)
 #'
-#' # Pro-tip: [`cowplot`] can help stack the time series graphs in one
-#' # single plot
+#'
+#' # Pro-tip: [`cowplot`] can help stack the graphs of time series from
+#' # multiple files into one single plot
+#'
 #' }
+#'
 #'
 #' @keywords visualization actigraphy
 #' @export
 
 
 ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
-    ## Ensure Note column exists --------------
-    if  (!"Note" %in% names (data)) {
-        data$Note <- ""
-    }
 
+    # Step 0. Input Validation -------------------------
     ## Internal function parameter preparation
     NR <- seq_len (nrow (data))
-    A  <- data [[VAct]]
+    A  <- ValInput (data [[VAct]], type = "Act")
     Mx <- round (max (A, na.rm = TRUE))
     mn <- round (min (A, na.rm = TRUE))
-
-
-    VD <- "Date"
-    D  <- data [[VD]]
-    DT <- data [[VDT]]
+    DT <- ValInput (data [[VDT]], type = "DT", SplitDT = FALSE)
+    D  <- DateFormat (data [[VDT]])
 
     ### Extract time component from the datetime string
     Tc <- sub ("^\\S+\\s+", "", as.character (DT))
-
-
-    if  (!inherits (DT, c ("POSIXct", "POSIXlt"))) {
-        DT <- as.POSIXct (DT)
-    }
-
 
     ## Identify midnight boundaries
     MdN <- as.factor (ifelse (grepl ("00:00:00", Tc) | !grepl (":", Tc), "1",
                               "0"))
 
 
+    ## Ensure Note column exists
+    if  (!"Note" %in% names (data)) {
+        data$Note <- ""
+    }
+
+    # Step 1. Prepare Markers and X-axis Ticks and Labels ------------------
     ##### X Tick Control -----------------
     if (length (unique (D)) > 1) { #### Multiple Days
         NTicks <- 0.2
@@ -127,7 +131,7 @@ ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
 
         NTicks <- 0.2
         D <- C2T (
-            time     = Tc,
+            Time     = Tc,
             Discrete = TRUE
         )
         Ds   <- unique (ceiling (D))
@@ -148,6 +152,7 @@ ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
     Xtx  <- XTicks$values ### Selected x ticks label
 
 
+
     ## Flag points with any Note (e.g. travel overlap or unallocated) ---------
     if ("Note" %in% names (data)) {
         Nt <- data$Note
@@ -160,31 +165,28 @@ ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
 
 
     ## Flag possible non-wear time  -------------------------
-    rects <- NULL
+    NWmarker <- NULL
     if ("pNonWear" %in% names(data)) {
         # Ensure logical
-        pn <- as.logical (data$pNonWear)
-        if (any (is.na (pn))) pn [is.na (pn)] <- TRUE
-
-        if (any (pn)) {
-            r <- rle (pn)
-            ends  <- cumsum(r$lengths)
-            starts <- ends - r$lengths + 1
-            keep <- which(r$values == TRUE)
+        pNW <- as.logical (data$pNonWear)
+        if (any (pNW)) {
+            Seg  <- rle (pNW)
+            Segln   <- Seg$lengths
+            ## Extract the start and end indices of each segment
+            End  <- cumsum (Segln)
+            Ini  <- c(1,(End [-length (Segln)] + 1))
+            keep <- which(Seg$values == TRUE)
             if (length(keep) > 0) {
-                rects <- data.frame(
-                    xmin = starts[keep] - 0.5,
-                    xmax = ends[keep]   + 0.5,
-                    ymin = mn,
-                    ymax = Mx
-                )
+                NWmarker <- data.frame(xmin = Ini[keep],
+                                       xmax = End[keep],
+                                       ymin = mn,
+                                       ymax = Mx)
             }
         }
     }
 
 
-
-    ## Create ggplot object -------------
+    ## Step 3. Create ggplot object -------------
     g <-
         ggplot2::ggplot (mapping = ggplot2::aes (x = NR, y = A, colour = E)) +
         ggplot2::geom_point (alpha = 0.5, shape = 16) +
@@ -194,7 +196,7 @@ ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
             color      = "blue",
             linewidth  = 0.8
         ) +
-        ggplot2::scale_y_continuous (limits = c (mn, Mx)) +
+        ggplot2::scale_y_continuous (limits = c (mn, Mx),  expand = c(0, 0)) +
         ggplot2::scale_x_continuous (
             breaks = Xcrd, # numeric positions on the NR axis
             labels = Xtx # text to show at those positions
@@ -210,6 +212,21 @@ ggActiGlobe <- function (data, Bdf, VAct = NULL, VDT = "DateTime") {
                                                     face = "bold"),
             legend.position = "none"
         )
+
+
+
+
+    # Add non-wear shaded windows behind points
+    if (!is.null(NWmarker) && nrow(NWmarker) > 0) {
+        g <- g + ggplot2::geom_rect(
+            data = NWmarker,
+            mapping = ggplot2::aes(xmin = xmin, xmax = xmax,
+                                   ymin = ymin, ymax = ymax),
+            inherit.aes = FALSE,
+            fill = "grey20",
+            alpha = 0.50
+        )
+    }
 
 
     return (g)

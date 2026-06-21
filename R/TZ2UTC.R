@@ -15,62 +15,82 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-#
 #' @title
 #' Compute UTC offset based on Time Zone and Date
 #'
 #' @importFrom lubridate ymd_hms with_tz
+#' @importFrom lifecycle deprecate_soft badge
 #'
-#'
-#' @param DT The date in the format as "2021-03-05"
+#' @param Date A POSIXct date used as the reference point for offset
+#'   comparison. Defaults to January 1, 2021 UTC if `NULL`.
 #' @param TZ The time zone when the recording started. Default = "local",
 #' which means user's local time zone
+#' @param DT `r lifecycle::badge("deprecated")` Use `Date` instead.
 #'
 #' @return A character string indicating the UTC offset, e.g., "UTC-05:00"
 #'
+#'
 #' @examples
+#' x <- as.Date(c("2017-10-24", "2017-11-20"))
+#' TZ2UTC(Date = x, TZ = "America/New_York") ## Expect two different UTCs
 #'
-#' x <- as.Date (c ("2017-10-24", "2017-11-20"))
-#' TZ2UTC (DT = x, TZ = "America/New_York") ## Expect two different UTCs
 #'
-#' 
 #' # A vector of dates
-#' x <-
-#'     seq.Date (
-#'         from = as.Date ("2017-10-24"),
-#'         to = as.Date ("2017-11-27"),
-#'         by = "day"
-#'     )
-#' 
-#' 
+#' x <- seq.Date(from = as.Date("2017-03-15"),
+#'               to   = as.Date("2017-11-27"),
+#'               by   = "day")
+#'
+#'
 #' # If the user resides in a country that follows daylight saving time
-#' TZ2UTC (DT = x, TZ = "local")
-#' 
+#' TZ2UTC(Date = x, TZ = "local")
+#'
 #' \dontrun{
 #' # If not
-#'  TZ2UTC(DT = x, TZ = "America/New_York")
+#'  TZ2UTC(Date = x, TZ = "America/New_York")
 #' }
 #'
 #' @keywords UTC TZ
+#'
+#'
 #' @export
 
-TZ2UTC <- function (DT, TZ = "local") {
+TZ2UTC <- function (Date = NULL, TZ = "local", DT = NULL) {
+    # Step 0. Input Validation and Parameter Extraction -----------
+    if (is.null (Date) && is.null (DT)) {
+        Date <- as.Date ("2021-01-01")
+    }
+    if (is.null (Date) && !is.null (DT)) {
+        lifecycle::deprecate_soft (
+            when = "0.3.1",
+            what = "TZ2UTC(DT)",
+            with = "TZ2UTC(Date)"
+        )
+        Date <- DT
+    }
+
+    ## Process TZ
     if (TZ == "local") TZ <- Sys.timezone ()
 
-
-    # Validate the time zone
+    ## Validate the time zone
     valid_zones <- OlsonNames ()
     if (!TZ %in% valid_zones) {
-        stop (sprintf (
-            "The provided time zone \"%s\" is not recognized.\n",
-            TZ
-        ), "Please check the spelling or consult the IANA time zone table
+
+        sIANA <- mIANA ()
+
+        if (any(TZ %in% sIANA$TZ_Code)) {
+            TZ <- sIANA$Timezone_IANA [match (TZ, sIANA$TZ_Code)]
+        } else {
+            stop (sprintf (
+                "The provided time zone \"%s\" is not recognized.\n",
+                TZ
+            ), "Please check the spelling or consult the IANA time zone table
     (ActiGlobe::IANA).")
+        }
     }
 
 
-    DT <- as.Date (DT)
-    x <- lubridate::ymd_hms (paste0 (DT, " 12:00:00"), tz = TZ)
+    Date <- as.Date (Date)
+    x <- lubridate::ymd_hms (paste0 (Date, " 12:00:00"), tz = TZ)
     y <- lubridate::with_tz (x, tzone = "UTC")
 
     a <- as.POSIXct (format (x, format = "%H:%M"), format = "%H:%M")

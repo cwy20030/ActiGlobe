@@ -5,8 +5,8 @@ test_that ("mIANA returns a data frame with expected columns", {
     # Result should be a data frame with expected column names
     expect_s3_class (sIANA, "data.frame")
     expect_named (sIANA, c (
-        "Timezone_IANA", "TZ_Code",
-        "Offset", "Standard_Offset"
+        "Timezone_IANA", "TZ_Code", "DST_TZ_Code",
+        "Offset", "DST_Offset"
     ))
 
     # ---- Relationship checks ----
@@ -17,7 +17,7 @@ test_that ("mIANA returns a data frame with expected columns", {
     # ---- Content checks ----
     # Spot check known entries
     expect_true ("Europe/Amsterdam" %in% sIANA$Timezone_IANA)
-    expect_true ("CEST" %in% sIANA$TZ_Code)
+    expect_true ("CEST" %in% sIANA$DST_TZ_Code)
 })
 
 

@@ -151,11 +151,7 @@ ggActiGlobe(df = df2,
 
 <div class="figure">
 
-<<<<<<< HEAD
-<img src="vignettes/images/Adjusted_Overview.png" alt="&lt;b&gt; Figure 2. &lt;/b&gt; Overview of the &lt;u&gt;adjusted&lt;/u&gt; recording" width="1702" />
-=======
 <img src="vignettes/images/Adjusted_Overview.png" alt="&lt;b&gt; Figure 2. &lt;/b&gt; Overview of the &lt;u&gt;adjusted&lt;/u&gt; recording" width="545" />
->>>>>>> 4286eb0af04c4a8b1c96b9d8e09a9ec946bfea51
 <p class="caption">
 
 <b> Figure 2. </b> Overview of the <u>adjusted</u> recording

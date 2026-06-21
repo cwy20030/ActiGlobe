@@ -1,9 +1,28 @@
+#  File ActiGlobe/R/Geo2TZ.R
+#
+#  Copyright (C) 2025  C. William Yao, PhD
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+#
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
 #' @title Interactive Geological Location to TZ Offset Search Portal
 #'
 #' @description
 #' `Geo2TZ` provides an interactive prompt to search a place and
 #' return its time-zone offsets (standard, DST delta, current) and abbreviation.
 #' Note that internet is required for this process.
+#'
 #'
 #' @details
 #' Search is performed using OpenStreetMap Nominatim (no API key), mimicking
@@ -15,7 +34,7 @@
 #'
 #' @param Date A POSIXct time used to compute "current" offset. Note that
 #' when processing location with daylight saving time, it is crucial to be
-#' specific about the date. Default uses \code{Sys.time}
+#' specific about the date. Default uses \code{Sys.time}.
 #' @param Translate Logical; whether to translate suggestion labels
 #' (default = FALSE).
 #' @param Lang Target language code for translated place labels (e.g., "es",
@@ -25,6 +44,7 @@
 #' @param UA User agent string required by Nominatim (default provided;
 #' you should include a contact identifier).
 #'
+#'
 #' @returns
 #' Invisibly returns a named list with elements:
 #' \itemize{
@@ -32,15 +52,20 @@
 #'   \item Offset a list with `Standard`, `DST`, `Current`, `Abbrev`, `TZ`
 #' }
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
+#' # Minimum usage
+#' Geo2TZ ()
 #'
-#'   Geo2TZ ()
+#' # Try typing Taipei after running the following code
+#' Geo2TZ (Translate = FALSE, Lang = "es")
 #'
-#'   # Try typing Taipei after running the following code
-#'   Geo2TZ (Translate = FALSE, Lang = "es")
+#' # To specify a date, useful when a location practice daylight saving time
+#' ## For instance
+#' ### Montreal daylight saving time
+#' Geo2TZ (Date = 2024-07-01) # In the console window, type in Montreal
 #'
-#' }
+#' ### Montreal standard time
+#' Geo2TZ (Date = 2024-01-01)
 #'
 #' @export
 
@@ -57,11 +82,11 @@ Geo2TZ <- function (Date = Sys.time (),
   }
 
   ## Check User Agent string
-
-  if (is.null (UA) || !nzchar (UA)) {
+  if (any (c (is.null (UA), !nzchar (UA)))) {
     UA <- Default_UA ()
   }
 
+  Ds <- ValInput(Date, "Date")
 
   # Step 1 Interactive query loop ----------------------------------
   repeat {
@@ -79,10 +104,16 @@ Geo2TZ <- function (Date = Sys.time (),
                      Translate = Translate,
                      Lang = Lang)
 
-    if (!is.data.frame (Hits) || nrow (Hits) == 0) {
+    if (any (!is.data.frame (Hits), nrow (Hits) == 0)) {
       cat ("\nNo results. Try a different query.\n\n")
       next
     }
+
+    if (nrow (Hits) == 1) {
+      Idx <- 1L
+
+    } else {
+
 
     cat ("\nSuggestions:\n")
     for (i in seq_len (nrow (Hits))) {
@@ -105,20 +136,26 @@ Geo2TZ <- function (Date = Sys.time (),
       cat ("\nInvalid selection.\n\n")
       next
     }
+    }
 
     Pick <- Hits [Idx, ]
 
+    print (names(Pick))
+    print(Pick)
     ## Convert coordinates to time zone offsets
-    Off <- Coord2Offset (Lat = Pick$Lat, Lon = Pick$Lon)
+    Off    <- Coord2Offset (Lat = Pick$Lat, Lon = Pick$Lon, Date = Ds)
+    labels <- c("Standard time zone:", "Daylight saving time:",
+                "Current time zone offset:", "Time zone abbreviation:")
+    values <- c(Off$Standard, Off$DST, Off$Current, Off$Abbrev)
 
     cat ("\nSelected:\n")
     cat (Pick$Label, "\n\n")
+    cat ("Time difference to UTC+0 (a.k.a., Greenwich Mean Time, GMT)\n")
+    cat (paste (
+      format (labels, width = 25), values, sep = " "),
+      sep = "\n")
 
-    cat ("Time difference to GMT/UTC\n")
-    cat (paste0 ("Standard time zone:\t", Off$Standard, "\n"))
-    cat (paste0 ("Daylight saving time:\t", Off$DST, "\n"))
-    cat (paste0 ("Current time zone offset:\t", Off$Current, "\n"))
-    cat (paste0 ("Time zone abbreviation:\t", Off$Abbrev, "\n\n"))
+
 
     Pick$TZ <- Off$TZ
 
@@ -128,6 +165,32 @@ Geo2TZ <- function (Date = Sys.time (),
     )))
   }
 }
+
+
+
+
+
+
+
+
+#' @title Default User Agent String Generator
+#'
+#' @noRd
+
+Default_UA <- function () {
+
+  UD <- Sys.getenv ("USERDOMAIN")
+  UN <- Sys.getenv ("USERNAME")
+
+  ## Fallback for non-Windows
+  if (!nzchar (UN)) UN <- Sys.getenv ("USER")
+
+  if (!nzchar (UD)) UD <- "UnknownDomain"
+  if (!nzchar (UN)) UN <- "UnknownUser"
+
+  paste0 ("ActiGlobe TZ offset lookup (", UD, "\\", UN, ")")
+}
+
 
 
 
@@ -148,7 +211,7 @@ Offset_Labeler <- function (Sec, type = c("UTC","DST")) {
   HrA <- abs (Hr)
 
   Sgn <- ifelse (Hr >= 0, "+", "-")
-  Sgn <- ifelse (type == "UTC", paste0 ("UTC/GMT ", Sgn),
+  Sgn <- ifelse (type == "UTC", paste0 ("UTC ", Sgn),
                  ifelse (type == "DST", Sgn, NA))
 
   if (abs (HrA - round (HrA)) < 1e-9) {
@@ -172,11 +235,13 @@ Offset_Labeler <- function (Sec, type = c("UTC","DST")) {
 #'
 #' @importFrom lutz tz_lookup_coords
 #'
+#'
 #' @param Lat Latitude of the location.
 #' @param Lon Longitude of the location.
 #' @param Date A POSIXct time used to compute offset. Note that when processing
 #' location with daylight saving time, it is crucial to be specific about the
 #' date. Default uses \code{Sys.time}.
+#'
 #'
 #' @noRd
 

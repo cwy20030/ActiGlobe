@@ -2,7 +2,7 @@
 % Please edit documentation in R/UTC2Num.R
 \name{UTC2Num}
 \alias{UTC2Num}
-\title{Convert Standard UTC Offset to Numbers}
+\title{Convert Coordinated Universal Time (UTC) Offset to Numeric Values}
 \usage{
 UTC2Num(x)
 }
@@ -13,7 +13,7 @@ UTC2Num(x)
 Numeric values of UTC offsets
 }
 \description{
-Convert Standard UTC Offset to Numbers
+Convert Coordinated Universal Time (UTC) Offset to Numeric Values
 }
 \examples{
 # Convert UTC to numeric values
@@ -23,7 +23,11 @@ x1 <- UTC2Num (x)
 
 print (x)
 
+
+}
+\seealso{
+\code{\link{Num2UTC}}
 }
 \keyword{UTC}
-\keyword{num}
+\keyword{conversion}
 \keyword{offset}
