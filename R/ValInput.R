@@ -204,7 +204,7 @@ date-time objects! Please, verify and rerun the function.")
                 )
 
                 Out     <- DateFormat (Ds, as.date = TRUE)
-
+                Out     <- as.character (Out)
                 if (all (is.na (Out)))
 stop ("Unable to convert date object. Please check your input.")
 
@@ -215,7 +215,11 @@ stop ("Unable to convert date object. Please check your input.")
             "DT" = {
                 ### Do not worry about time zone because the values should be
                 ### adjusted already in ActiGlobe.
-                if (!inherits (x, c ("POSIXct", "POSIXlt"))) {
+                if (!inherits (x, c ("POSIXct", "POSIXlt",
+                                     "character")))
+stop ("The input date-time object should be class of character or POSIX
+date-time objects! Please, verify and rerun the function.")
+
                     ### Check the format
                     DForm <- DateFormat (x, as.date = FALSE)
                     TForm <- TimeFormat (x, as.time = FALSE)
@@ -255,9 +259,8 @@ of these funcitons.")
                     } else {
                         x <- format (x, format = paste0 (DForm, " ",TForm))
                     }
-
+                    return (x)
                 }
-                return (x)
-            }
+
     )
 }

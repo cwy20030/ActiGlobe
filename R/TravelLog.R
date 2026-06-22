@@ -35,7 +35,7 @@
 #'  \tab
 #'  \tab Common or Potential Issues \cr
 #'
-#' \stong{TZ}
+#' \strong{TZ}
 #'   \tab Moderate–High
 #'   \tab High
 #'   \tab
@@ -137,7 +137,7 @@
 #'  \item TZ: a data frame with columns
 #'   \itemize{
 #'    \item ID: Assigned identification of the participant
-#'    \item IANA_TZ_Identifiers: The IANA time zone identifier of the local
+#'    \item "Timezone_IANA": The IANA time zone identifier of the local
 #'    or travel destination time zone (e.g., "America/New_York"
 #'    or "Asia/Tokyo"). Users may use \code{\link{Geo2TZ}} or
 #'    \code{\link{IANA}} to help filling this column.

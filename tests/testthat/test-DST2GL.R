@@ -1,6 +1,6 @@
 test_that ("DST2GL detects DST transition correctly", {
     dates <- c ("2021-03-13", "2021-03-14", "2021-03-15")
-    res <- DST2GL (DT = dates, TZ = "America/New_York")
+    res <- DST2GL (Date = dates, TZ = "America/New_York")
 
     # ---- Structure checks ----
     # Result should be a numeric vector with names corresponding to input dates

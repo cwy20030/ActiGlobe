@@ -1,5 +1,5 @@
 test_that ("DST works for New York summer vs winter", {
-  dates <- as.POSIXct (c ("2021-06-15", "2021-12-15"), tz = "America/New_York")
+  dates <- c ("2021-06-15", "2021-12-15")
   res <- DST (dates, TZ = "America/New_York")
 
   # ---- Structure checks ----

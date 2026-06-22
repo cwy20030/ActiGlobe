@@ -38,11 +38,11 @@
 #'  \item{Country_Name}{Full name of the country (e.g., "Canada").}
 #'  \item{Country_Code}{Two-letter ISO 3166-1 alpha-2 country code (e.g., "CA").
 #'  }
-#'  \item{Timezone_IANA}{Canonical IANA timezone identifier (e.g.,
+#'  \item{Time_Zone_IANA}{Canonical IANA timezone identifier (e.g.,
 #'  "America/Montreal").}
-#'  \item{TimeZone_Identifiers}{Alternative or historical identifiers linked
+#'  \item{TZ_Identifiers}{Alternative or historical identifiers linked
 #'  to the IANA timezone.}
-#'  \item{Standard_Time_Zone_long_name}{Human-readable name of the timezone
+#'  \item{Standard_TZ_Long_Name}{Human-readable name of the timezone
 #'  during standard time, without daylight saving adjustment (e.g., "Eastern
 #'  Standard Time").}
 #'  \item{Standard_TZ_Code}{Abbreviation used during standard
@@ -52,7 +52,7 @@
 #'  \item{Standard_Offset_Numeric}{Numeric UTC offset in hours during standard
 #'  time (e.g., 3.00).}
 #'  \item{Observes_DST}{Logical flag indicating whether the timezone observes}
-#'  \item{DST_Time_Zone_long_name}{Human-readable name of the timezone
+#'  \item{DST_TZ_Long_Name}{Human-readable name of the timezone
 #'  during daylight saving time or other recurrent practice of time shift
 #'  (e.g., "Australian Central Daylight Time").}
 #'  \item{DST_TZ_Code}{Abbreviation used during daylight saving time or other

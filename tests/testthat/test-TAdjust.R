@@ -41,7 +41,7 @@ test_that ("TAdjust Test Completed", {
     expect_true (all (names (Bdf) %in% names (Nadj)))
 
     # ---- Content checks ----
-    # Ensure adjusted Bdf has more or equal rows than the original
+    # Ensure adjusted Bdf has more or equal rows  than the original
     expect_true (nrow (Nadj) >= nrow (Bdf))
 
     # ---- Error checks ----
@@ -49,3 +49,4 @@ test_that ("TAdjust Test Completed", {
     expect_error (tryCatch (TAdjust (Bdf = Bdf, TLog = tz_db,
                                      TZ = "Invalid/TZ")))
 })
+

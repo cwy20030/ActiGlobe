@@ -4,20 +4,20 @@ test_that ("IANA has correct structure and contents", {
   # -------------------------------------------------------------------
   expected_cols_IANA <- c (
     "Country_Name","Country_Code",
-    "Timezone_IANA","TimeZone_Identifiers",
-    "Standard_Time_Zone_long_name","Standard_TZ_Code",
+    "Time_Zone_IANA","TZ_Identifiers",
+    "Standard_TZ_Long_Name","Standard_TZ_Code",
     "Standard_Offset","Standard_Offset_Numeric",
     "Observes_DST",
-    "DST_Time_Zone_long_name","DST_TZ_Code",
+    "DST_TZ_Long_Name","DST_TZ_Code",
     "DST_Offset","DST_Offset_Numeric"
   )
 
   # ---- Structure checks ----
   # Ensure IANA is a data.frame
-  expect_s3_class (iIANA, "data.frame")
+  expect_s3_class (IANA, "data.frame")
 
   # Ensure IANA has exactly the expected column names
-  expect_equal (colnames (iIANA), expected_cols_IANA)
+  expect_equal (colnames (IANA), expected_cols_IANA)
 
   # ---- Relationship checks ----
   # mIANA() should return a subset of IANA with overlapping values
@@ -25,11 +25,11 @@ test_that ("IANA has correct structure and contents", {
 
   # ---- Content checks ----
   # Check that all values in sIANA are present in IANA for key columns
-  expect_true (all (sIANA$Timezone_IANA %in% iIANA$TZ_IANA))
+  expect_true (all (sIANA$Time_Zone_IANA %in% IANA$TZ_IANA))
   expect_true (all (sIANA$TZ_Code %in% iIANA$TZ_Code))
-  expect_true (all (sIANA$Standard_Offset %in% iIANA$Offset_Numeric))
+  expect_true (all (sIANA$Standard_Offset %in% IANA$Offset_Numeric))
   expect_true (all (sIANA$DST_Offset_Numeric %in% sIANA$Offset))
-  expect_true (all (sIANA$Standard_Offset %in% iIANA$Standard_Offset))
+  expect_true (all (sIANA$Standard_Offset %in% IANA$Standard_Offset))
 })
 
 test_that ("TLog has correct structure as compared to TravelLog template", {

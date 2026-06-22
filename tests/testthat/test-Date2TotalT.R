@@ -8,7 +8,7 @@ test_that ("Date2TotalT returns correct seconds for one day", {
 
     # ---- Content checks ----
     # The day should correspond to 24 hours
-    expect_equal (res, 24)
+    expect_equal (unname (res), 24)
 })
 
 
@@ -28,7 +28,7 @@ test_that ("Date2TotalT handles unit names case-insensitively", {
 
     # ---- Content checks ----
     # All should equal 86400 seconds
-    expect_equal (Date2TotalT (d, "second"), 86400)
-    expect_equal (Date2TotalT (d, "SECOND"), 86400)
-    expect_equal (Date2TotalT (d, "SeCoNd"), 86400)
+    expect_equal (unname (Date2TotalT (d, "second")), 86400)
+    expect_equal (unname (Date2TotalT (d, "SECOND")), 86400)
+    expect_equal (unname (Date2TotalT (d, "SeCoNd")), 86400)
 })

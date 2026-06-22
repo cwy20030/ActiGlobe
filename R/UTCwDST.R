@@ -114,9 +114,9 @@ UTCwDST <- function (UTCs, Date = NULL, TZ = NULL, fork = FALSE, DT = NULL,
     OF <- UTCs
 
     ### Call mIANA
-    sIANA <- mIANA () # Time zone database
-    sTZ   <- sIANA$Timezone_IANA
-    Soff  <- sIANA$Standard_Offset
+    sIANA <- iIANA # Time zone database
+    sTZ   <- sIANA$TZ_IANA [sIANA$isDST == 0L]
+    Soff  <- sIANA$Offset [sIANA$isDST]
 
     #### Convert UTC to Hour offset if not converted....
     if (any (grep ("UTC|\\:", UTCs))) OF <- UTC2Num (UTCs)

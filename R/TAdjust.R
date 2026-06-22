@@ -287,8 +287,8 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
             U [Idxl + 1] <- U [Idxl] ### Assume the same UTC as the last
             gTZ [Idxl + 1] <- gTZ [Idxl] ### Assume the same TZ as the last
             nuUDST [Idxl + 1] <- DST (
-                DT = Ds [Idxl + 1],
-                TZ = gTZ [Idxl]
+                Date = Ds [Idxl + 1],
+                TZ   = gTZ [Idxl]
             ) ### Check if DST occur
             RS [Idxl + 1] <- RS [Idxl]
             ### Assume the same begining time as the last
@@ -296,7 +296,7 @@ TAdjust <- function (Bdf, TLog, TZ = NULL, fork = FALSE) {
             ### Extract the New last time of recording
             RE [Idxl + 1] <- format (HMSl [length (HMSl)], "%H:%M:%S")
             ### Check GL due to DST
-            GL [Idxl + 1] <- DST2GL (Date = as.POSIXct (Ds [Idxl + 1], 
+            GL [Idxl + 1] <- DST2GL (Date = as.POSIXct (Ds [Idxl + 1],
 														tz = gTZ [Idxl]))
             N [Idxl + 1] <- Nl2 ### Cumulative data points on the NEW last day
             ### Cumulative start second on the NEW last day

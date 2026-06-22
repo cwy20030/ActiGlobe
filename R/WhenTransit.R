@@ -532,6 +532,8 @@ WhenTransit <- function (TZ, Year = NULL, ...) {
   # Step 1. Check Missing UTC Offsets and Add DST Entries if Needed ------
   if (length (msOffset) > 0) {
 
+    if (length (na.omit (UTC)) > 1){
+
     dUTC <- abs (diff (UTC2Num (UTC)))
     dUTC [is.na (dUTC)] <- 0
 
@@ -546,7 +548,28 @@ WhenTransit <- function (TZ, Year = NULL, ...) {
 
     }
 
+  } else {
+
+  switch (Type [is.na (UTC)],
+          "DST" = {
+            dfAdd <- .WhenTS (Date [Type == "ST"], TZ, TSFrom = TRUE)
+            dfAdd <- setNames (as.data.frame (t (dfAdd)),
+                               c ("Type", "Date", "Time", "UTC"))
+            dfDST[Type == "DST",] <- dfAdd
+          },
+          "ST" = {
+            dfAdd <- .WhenTS (Date [Type == "DST"], TZ, TSFrom = FALSE)
+            dfAdd <- setNames (as.data.frame (t (dfAdd)),
+                               c ("Type", "Date", "Time", "UTC"))
+            dfDST[Type == "ST",] <- dfAdd
+          }
+
+          )
   }
+  }
+
+
+
 
   # Step 2. Return Output ------
   return (dfDST)
